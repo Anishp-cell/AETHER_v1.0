@@ -1,0 +1,73 @@
+# ======================
+# === Phase 1: Base Utilities ===
+# ======================
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.5.2
+matplotlib==3.9.2
+jupyter==1.1.1
+
+# ======================
+# === Phase 2: Core Deep Learning Stack ===
+# ======================
+# Torch stack (ensure CUDA version matches; otherwise, CPU build will install)
+torch==2.4.1
+torchvision==0.19.1
+torchaudio==2.4.1
+
+transformers==4.44.2
+accelerate==1.1.1
+
+# bitsandbytes does NOT support Windows natively.
+# Commented out — install bitsandbytes-windows manually if needed.
+# bitsandbytes==0.43.3
+
+# ======================
+# === Phase 3: NLP & Memory ===
+# ======================
+sentence-transformers==3.1.1
+faiss-cpu==1.9.0.post1
+langchain==0.3.2
+
+# llama-cpp-python requires MSVC + CMake on Windows.
+# Prefer prebuilt wheels; otherwise, leave commented.
+# llama-cpp-python==0.3.16
+
+# ======================
+# === Phase 4: Speech (STT + TTS) ===
+# ======================
+openai-whisper==20240930
+soundfile==0.12.1
+pydub==0.25.1
+TTS==0.22.0
+
+# ======================
+# === Phase 5: Vision ===
+# ======================
+opencv-python==4.10.0.84
+mediapipe==0.10.21
+ultralytics==8.3.25
+Pillow==10.4.0
+transformers[vision]==4.44.2
+
+# ======================
+# === Phase 6: RLHF & Training ===
+# ======================
+trl==0.9.6
+peft==0.12.0
+datasets==3.0.2
+wandb==0.18.2
+
+# ======================
+# === Phase 7: UI & Orchestration ===
+# ======================
+fastapi==0.115.0
+uvicorn==0.31.1
+python-socketio==5.11.4
+streamlit==1.39.0
+
+# ======================
+# === Phase 8: Infra & Tools ===
+# ======================
+gitpython==3.1.43N
+pytest==8.3.3

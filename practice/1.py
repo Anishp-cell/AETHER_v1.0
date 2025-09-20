@@ -27,3 +27,12 @@ def model_info(model):
     print(model.model_run())
 
 model_info(llm1)
+
+#encapsulation
+class agent:
+    def __init__(self,secret_key):
+        self.secret_key= secret_key #private attribute
+    def get_key(self): #public method to access private attribute
+        return self.secret_key
+agent1= agent("abcd")
+print(agent1.get_key())

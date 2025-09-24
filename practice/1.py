@@ -36,3 +36,17 @@ class agent:
         return self.secret_key
 agent1= agent("abcd")
 print(agent1.get_key())
+
+#abstraction
+from abc import ABC, abstractmethod
+class abstract_model(ABC):
+    @abstractmethod #abstract method decorator- indicates that the method is abstract and must be implemented in any subclass
+    def train(self): #abstract method
+        pass
+class concrete_model(abstract_model):
+    def train(self): #implementing the abstract method
+        return "Training the concrete model"
+
+concrete1= concrete_model()
+print(concrete1.train())
+

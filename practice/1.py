@@ -49,4 +49,16 @@ class concrete_model(abstract_model):
 
 concrete1= concrete_model()
 print(concrete1.train())
+#decorator
+def model_decorator(func):
+    def wrapper(*args, **kwargs):
+        print("Before Model execution")
+        result= func(*args, **kwargs)
+        print("After model execution")
+        return result
+    return wrapper
 
+@model_decorator
+def run_model(name):
+    return f"Running model: {name}"
+print(run_model("AetherV2"))

@@ -62,3 +62,28 @@ def model_decorator(func):
 def run_model(name):
     return f"Running model: {name}"
 print(run_model("AetherV2"))
+
+# iterators and generators
+# An iterator is an object that lets you loop through data one element at a time.
+# It remembers its position in the sequence → so it doesn’t need all data in memory at once.
+# Built using two special methods:
+# __iter__() → returns the iterator itself.
+# __next__() → returns the next value (or raises StopIteration when done).  
+class ModelIterator:
+    def __init__(self,model):
+        self.model= model 
+        self.index= 0
+        def __iter__(self): #returns the iterator object itself
+            return self
+        def __next__(self):
+            if self.index < len(self.model): #this means if the index is less than the length of the model list then return the current element
+                result=  self.model[self.index]
+                self.index +=1
+                return result
+            else:
+                raise StopIteration #when the index is equal to the length of the model list then raise StopIteration
+        def reset(self): #reset the iterator to the beginning 
+            self.index= 0        
+        def reverse(self): #reverse the iterator
+            self.model= self.model[::-1]
+            self.reset()            

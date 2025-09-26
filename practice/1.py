@@ -73,17 +73,28 @@ class ModelIterator:
     def __init__(self,model):
         self.model= model 
         self.index= 0
-        def __iter__(self): #returns the iterator object itself
+    def __iter__(self): #returns the iterator object itself
             return self
-        def __next__(self):
+    def __next__(self):
             if self.index < len(self.model): #this means if the index is less than the length of the model list then return the current element
                 result=  self.model[self.index]
                 self.index +=1
                 return result
             else:
                 raise StopIteration #when the index is equal to the length of the model list then raise StopIteration
-        def reset(self): #reset the iterator to the beginning 
+    def reset(self): #reset the iterator to the beginning 
             self.index= 0        
-        def reverse(self): #reverse the iterator
+    def reverse(self): #reverse the iterator
             self.model= self.model[::-1]
-            self.reset()            
+            self.reset()
+models= ['AetherV1', 'AetherV2', 'Aether-LLM']
+model_iterator= ModelIterator(models)
+print("Iterating through models:")
+for model in models:
+    print("Model:")
+    print(model)
+    print("Reversed models:")
+    model_iterator.reverse()
+    for model in model_iterator:
+        print(model)
+    

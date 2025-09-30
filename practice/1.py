@@ -97,4 +97,14 @@ for model in models:
     model_iterator.reverse()
     for model in model_iterator:
         print(model)
+#generator(simple)
+def model_generator(models):
+     for model in models:
+        yield model
+#token stream generator- 
+def token_stream_generator(sentence):
+    for token in sentence.split():
+          yield token
+    return "ENd"
+
     

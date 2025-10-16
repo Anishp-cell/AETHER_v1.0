@@ -106,5 +106,10 @@ def token_stream_generator(sentence):
     for token in sentence.split():
           yield token
     return "ENd"
+def batch_generator(data, batch_size):
+    for i in (0, len(data), batch_size):
+        yield data[i:i+ batch_size]
+    
+
 
     

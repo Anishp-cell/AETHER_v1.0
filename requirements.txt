@@ -10,10 +10,11 @@ jupyter==1.1.1
 # ======================
 # === Phase 2: Core Deep Learning Stack ===
 # ======================
-# Torch stack (ensure CUDA version matches; otherwise, CPU build will install)
-torch==2.4.1
-torchvision==0.19.1
-torchaudio==2.4.1
+# Torch stack (CUDA 12.4)
+# --extra-index-url https://download.pytorch.org/whl/cu124
+# torch==2.4.1+cu124
+# torchvision==0.19.1+cu124
+# torchaudio==2.4.1+cu124
 
 transformers==4.44.2
 accelerate==1.1.1
@@ -36,10 +37,13 @@ langchain==0.3.2
 # ======================
 # === Phase 4: Speech (STT + TTS) ===
 # ======================
-openai-whisper==20240930
+faster-whisper==1.0.3
 soundfile==0.12.1
 pydub==0.25.1
-TTS==0.22.0
+pyttsx3==2.91
+SpeechRecognition==3.10.4
+PyAudio==0.2.14
+
 
 # ======================
 # === Phase 5: Vision ===
@@ -69,5 +73,5 @@ streamlit==1.39.0
 # ======================
 # === Phase 8: Infra & Tools ===
 # ======================
-gitpython==3.1.43N
+gitpython==3.1.43
 pytest==8.3.3

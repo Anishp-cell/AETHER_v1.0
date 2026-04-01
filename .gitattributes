@@ -1,0 +1,14 @@
+# Normalize all text files
+* text=auto
+
+# Explicitly treat config and README as text
+*.conf text
+*.txt text
+README text
+
+# Binary files (never touch line endings)
+*.exe binary
+*.dll binary
+*.so binary
+*.bin binary
+*.model binary

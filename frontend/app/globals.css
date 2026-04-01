@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #05080f;
+    --bg-card: rgba(255, 255, 255, 0.02);
+    --border-subtle: rgba(255, 255, 255, 0.05);
+    --cyan-glow: #00f5ff;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background: var(--bg-primary);
+    color: #e0e0e0;
+    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+    min-height: 100vh;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+@layer utilities {
+  /* Glassmorphism panel */
+  .glass-panel {
+    background: rgba(8, 12, 24, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Ambient glow effect */
+  .glow-cyan {
+    box-shadow: 0 0 30px rgba(0, 245, 255, 0.05), 0 0 60px rgba(0, 245, 255, 0.02);
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 30px rgba(170, 68, 255, 0.05), 0 0 60px rgba(170, 68, 255, 0.02);
+  }
+
+  /* Fade-in animation for chat messages */
+  .animate-fadeIn {
+    animation: fadeIn 0.4s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Subtle grid background */
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Ambient gradient */
+  .ambient-gradient {
+    background: radial-gradient(
+      ellipse at 50% 50%,
+      rgba(0, 245, 255, 0.03) 0%,
+      rgba(0, 102, 255, 0.01) 40%,
+      transparent 70%
+    );
+  }
+}

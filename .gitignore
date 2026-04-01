@@ -1,0 +1,78 @@
+# ===============================
+# Python Virtual Environments
+# ===============================
+.venv/
+venv/
+env/
+
+# ===============================
+# Python Cache / Bytecode
+# ===============================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ===============================
+# Jupyter
+# ===============================
+.ipynb_checkpoints/
+
+# ===============================
+# OS / Editor
+# ===============================
+.DS_Store
+Thumbs.db
+.vscode/
+
+# ===============================
+# Logs
+# ===============================
+*.log
+
+# ===============================
+# AETHER ML Models & Databases
+# ===============================
+# Blocks 100MB Piper TTS Models from breaking Github upload
+*.onnx
+*.onnx.json
+
+# Blocks FAISS Vector Memory from being tracked globally
+*.bin
+*.npy
+
+# Temporary TTS or Audio Streams
+*.wav
+temp_speech.wav
+
+# ===============================
+# Frontend (Next.js & Node)
+# ===============================
+node_modules/
+.next/
+out/
+build/
+
+# ===============================
+# Sensitive & Env
+# ===============================
+.env
+.env.local
+.env.*
+
+# ===============================
+# AETHER Execution Sandboxes & Data
+# ===============================
+aether_workspace/
+.faiss
+*.db
+*.sqlite3
+models/
+*.pth
+*.safetensors
+*.model
+*.gguf
+patent_search.txt
+pdf&rendition=1 (1).pdf
+git-sizer/
+practice/

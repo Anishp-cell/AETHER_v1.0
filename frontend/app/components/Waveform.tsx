@@ -6,9 +6,10 @@ interface Props {
   status: string;
   isMuted: boolean;
   onToggleMute: () => void;
+  onInterrupt: () => void;
 }
 
-export default function Waveform({ energy, status, isMuted, onToggleMute }: Props) {
+export default function Waveform({ energy, status, isMuted, onToggleMute, onInterrupt }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const barsRef = useRef<number[]>(new Array(64).fill(0));
   const animRef = useRef<number>(0);
@@ -109,6 +110,17 @@ export default function Waveform({ energy, status, isMuted, onToggleMute }: Prop
             <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
           </svg>
         )}
+      </button>
+
+      {/* Stop / Interrupt Button */}
+      <button
+        onClick={onInterrupt}
+        title="Stop Aether"
+        className="flex-shrink-0 w-14 h-14 rounded-2xl border bg-white/[0.03] border-white/10 hover:bg-white/[0.06] hover:border-red-500/30 flex items-center justify-center transition-all duration-300 cursor-pointer select-none"
+      >
+        <svg className="w-6 h-6 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M6 6h12v12H6z" />
+        </svg>
       </button>
 
       {/* Waveform canvas */}

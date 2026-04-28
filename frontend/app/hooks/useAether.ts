@@ -60,6 +60,8 @@ export function useAether() {
   const [state, setState] = useState<AetherState>(DEFAULT_STATE);
   const [energy, setEnergy] = useState(0);
   const [connected, setConnected] = useState(false);
+  const [cameraFrame, setCameraFrame] = useState<string | null>(null);
+  const [systemMetrics, setSystemMetrics] = useState<{ cpu: number; ram: number; battery: number | null; plugged: boolean | null } | null>(null);
   const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
@@ -85,6 +87,10 @@ export function useAether() {
           ...prev,
           authRequest: { action_name: msg.action_name, details: msg.details }
         }));
+      } else if (msg.type === "camera_frame") {
+        setCameraFrame(msg.frame);
+      } else if (msg.type === "system_metrics") {
+        setSystemMetrics({ cpu: msg.cpu, ram: msg.ram, battery: msg.battery, plugged: msg.plugged });
       }
     };
 
@@ -116,5 +122,23 @@ export function useAether() {
     }
   }, []);
 
-  return { state, energy, connected, sendPTT, sendAuthResponse, toggleMute };
+  const sendShutdown = useCallback(() => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({ action: "shutdown" }));
+    }
+  }, []);
+
+  const interruptAudio = useCallback(() => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({ action: "interrupt" }));
+    }
+  }, []);
+
+  const setMode = useCallback((mode: string) => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({ action: "set_mode", mode }));
+    }
+  }, []);
+
+  return { state, energy, connected, cameraFrame, systemMetrics, sendPTT, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode };
 }

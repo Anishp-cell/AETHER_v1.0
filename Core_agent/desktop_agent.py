@@ -143,6 +143,21 @@ def run_computer_command(action_type: str, target: str) -> str:
             out_str = output[:1000] if output else "Executed successfully but returned no text."
             return f"Executed '{target}'. Shell output: {out_str}"
             
+        elif action_type == "mouse_click":
+            x, y = map(int, target.split(","))
+            pyautogui.click(x, y)
+            return f"Successfully clicked mouse at X:{x}, Y:{y}"
+
+        elif action_type == "mouse_scroll":
+            amount = int(target)
+            pyautogui.scroll(amount)
+            return f"Successfully scrolled mouse by {amount}"
+
+        elif action_type == "keyboard_hotkey":
+            keys = target.split(",")
+            pyautogui.hotkey(*[k.strip() for k in keys])
+            return f"Successfully triggered keyboard hotkey combination: {target}"
+            
         return f"[Agent Error] Unknown action_type '{action_type}'"
         
     except Exception as e:
@@ -172,6 +187,15 @@ def open_app_and_type(app_name: str, text_to_type: str) -> str:
                 if clean_query.startswith(prefix):
                     clean_query = clean_query[len(prefix):]
             clean_query = clean_query.strip("'\"")
+            
+            if clean_query.strip().lower() in ["", "music", "the music", "my playlist", "some music", "audio"]:
+                print("\n[Desktop Agent] Opening Spotify to resume playback...")
+                os.startfile("spotify:")
+                time.sleep(2)
+                _focus_window_by_title("spotify", timeout=5.0)
+                time.sleep(1)
+                pyautogui.press('playpause')
+                return "Successfully opened Spotify and resumed playback."
             
             search_query = urllib.parse.quote(clean_query)
             spotify_uri = f"spotify:search:{search_query}"
@@ -264,6 +288,41 @@ def search_web(query: str) -> str:
     except Exception as e:
         return f"[Desktop Sub-Agent Error] Web search failed: {e}"
 
+def open_url(url: str) -> str:
+    """
+    Opens a specific URL directly in the default web browser.
+    Use for navigating to a website by name or URL.
+    """
+    if not confirm_action("open_url", f"Navigating browser to: {url}"):
+        return "[V3.0 Core] User explicitly DENIED permission."
+    
+    try:
+        import webbrowser
+        # If user gave a site name like 'linkedin', convert to URL
+        site_map = {
+            "linkedin": "https://www.linkedin.com",
+            "youtube": "https://www.youtube.com",
+            "instagram": "https://www.instagram.com",
+            "facebook": "https://www.facebook.com",
+            "twitter": "https://www.twitter.com",
+            "x": "https://www.x.com",
+            "netflix": "https://www.netflix.com",
+            "github": "https://www.github.com",
+            "reddit": "https://www.reddit.com",
+            "gmail": "https://mail.google.com",
+            "google": "https://www.google.com",
+        }
+        clean = url.strip().lower().rstrip("/")
+        # Check if it matches a known site name
+        if clean in site_map:
+            url = site_map[clean]
+        elif not url.startswith("http"):
+            url = "https://" + url
+        webbrowser.open(url)
+        return f"Successfully opened browser and navigated to: {url}"
+    except Exception as e:
+        return f"[Desktop Sub-Agent Error] URL navigation failed: {e}"
+
 def analyze_screen_with_llava(task_query: str) -> str:
     """
     Takes a screenshot of the user's desktop, encodes it, and sends it to the local 
@@ -295,3 +354,118 @@ def analyze_screen_with_llava(task_query: str) -> str:
         
     except Exception as e:
         return f"[Sub-Agent Vision Error] Could not parse screen: {e}"
+
+# ── JARVIS OS AUTOMATION FEATURES (Phase 7) ──
+
+def get_system_diagnostics() -> str:
+    """Read CPU, RAM, and Battery telemetry natively."""
+    try:
+        import psutil
+        cpu = psutil.cpu_percent(interval=0.5)
+        ram = psutil.virtual_memory().percent
+        bat = psutil.sensors_battery()
+        bat_str = f"Battery at {bat.percent}% ({'plugged in' if bat.power_plugged else 'discharging'})." if bat else "Desktop PC (No Battery)."
+        return f"System Diagnostics: CPU Usage is {cpu}%. RAM is {ram}% utilized. {bat_str}"
+    except Exception as e:
+        return f"[Diagnostic Error] Failed to read sensors: {str(e)}"
+
+def media_control(action: str, value: int = None) -> str:
+    """Controls OS media playback and absolute volume levels using PyAutoGUI and PyCaw."""
+    try:
+        import pyautogui
+        action = action.lower().strip()
+        
+        if action in ("play_pause", "play", "pause", "resume", "stop"):
+            pyautogui.press("playpause")
+            return "Toggled play/pause."
+        elif action in ("next_track", "next", "skip", "forward"):
+            pyautogui.press("nexttrack")
+            return "Skipped to next track."
+        elif action in ("prev_track", "prev", "previous", "back"):
+            pyautogui.press("prevtrack")
+            return "Returned to previous track."
+        elif action in ("mute", "unmute", "toggle_mute"):
+            pyautogui.press("volumemute")
+            return "Toggled system mute."
+        elif action == "set_volume" and value is not None:
+            # Requires pycaw to set absolute volume scalar without glitchy UI macros
+            import pythoncom
+            pythoncom.CoInitialize()
+            from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
+            from ctypes import cast, POINTER
+            from comtypes import CLSCTX_ALL
+            
+            devices = AudioUtilities.GetSpeakers()
+            interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
+            volume = cast(interface, POINTER(IAudioEndpointVolume))
+            
+            # Map 0-100 to 0.0-1.0
+            scalar = max(0.0, min(1.0, float(value) / 100.0))
+            volume.SetMasterVolumeLevelScalar(scalar, None)
+            return f"System Master Volume set precisely to {value}%."
+            
+        return f"Unknown media action: {action}"
+    except Exception as e:
+        return f"[Media Control Error]: {str(e)}"
+
+def send_whatsapp_message(contact_name: str, message: str) -> str:
+    """
+    Automates WhatsApp Desktop to send a message.
+    Requires User Confirmation via the React Frontend before physically taking over the mouse/keyboard.
+    """
+    if not confirm_action("send_whatsapp_message", f"To: {contact_name}\nMsg: {message}"):
+        return "User denied WhatsApp injection."
+        
+    try:
+        import os
+        import time
+        import pyautogui
+        import pyperclip
+        
+        # 1. Launch WhatsApp via Windows URI
+        os.system('start whatsapp:')
+        time.sleep(2.5) # Wait for app to render
+        
+        # 2. Focus Search and inject contact name
+        pyautogui.hotkey('ctrl', 'f')
+        time.sleep(0.5)
+        pyperclip.copy(contact_name)
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(1.5) # Wait for search results
+        pyautogui.press('enter')
+        time.sleep(0.5)
+        
+        # 3. Inject message body and send
+        pyperclip.copy(message)
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(1.0)
+        pyautogui.press('enter')
+        time.sleep(0.5)
+        pyautogui.press('enter')
+        
+        return f"Successfully sent WhatsApp message to {contact_name}."
+    except Exception as e:
+        return f"[WhatsApp Automation Error]: {str(e)}"
+
+def set_timer(minutes: float, reminder_message: str) -> str:
+    """Spawns an asynchronous background thread that speaks via native OS TTS when completed."""
+    try:
+        import threading
+        import subprocess
+        
+        def _timer_callback(msg):
+            # We use native Powershell SpeechSynthesis to avoid locking up AETHER's local Kokoro TTS engine!
+            safe_msg = msg.replace("'", "")
+            ps_cmd = f"Add-Type -AssemblyName System.Speech; (New-Object System.Speech.Synthesis.SpeechSynthesizer).Speak('Sir, your timer is complete. Reminder: {safe_msg}')"
+            subprocess.Popen(["powershell", "-Command", ps_cmd], creationflags=subprocess.CREATE_NO_WINDOW)
+            print(f"[Timer Triggered] {safe_msg}")
+            
+        seconds = float(minutes) * 60
+        timer_thread = threading.Timer(seconds, _timer_callback, args=[reminder_message])
+        timer_thread.daemon = True
+        timer_thread.start()
+        
+        return f"Background timer successfully armed for {minutes} minutes."
+    except Exception as e:
+        return f"[Timer Error]: {str(e)}"
+

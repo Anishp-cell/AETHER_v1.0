@@ -46,6 +46,11 @@ ADAPTER_URGENT = """
 [Adapter: Emergency Protocol] The user needs something done right now.
 Skip all preamble. Execute the task immediately and confirm completion in one sentence."""
 
+ADAPTER_EXECUTION = """
+[Adapter: Tool Execution Mode] CRITICAL: YOU ARE EXECUTING A TOOL. 
+Do not converse. Do not be polite. Do not be enthusiastic. 
+You must output ONLY raw JSON data as instructed."""
+
 
 class PolicyRouter:
     """
@@ -68,19 +73,23 @@ class PolicyRouter:
 
         # ── POLICY RULES (Claim 7: governed by policy constraints) ──
 
-        # Rule 1: Emotion gates take priority
-        if emotion == "frustrated":
-            adapters.append(ADAPTER_FRUSTRATED_USER)
-            adapters.append(ADAPTER_CONCISE)
-            routing_log.append("Emotion:Frustrated → [Empathy + Precision]")
-
-        elif emotion == "urgent":
-            adapters.append(ADAPTER_URGENT)
-            routing_log.append("Emotion:Urgent → [Emergency Protocol]")
-
-        elif emotion == "excited":
-            adapters.append(ADAPTER_EXCITED)
-            routing_log.append("Emotion:Excited → [High-Energy]")
+        # Rule 0: Execution Priority
+        # If we are executing a desktop tool, we completely bypass conversational emotion.
+        if intent == "desktop command":
+            adapters.append(ADAPTER_EXECUTION)
+            routing_log.append("Intent:DesktopCommand → [Tool Execution Mode]")
+        else:
+            # Rule 1: Emotion gates take priority (Only if not executing a tool)
+            if emotion == "frustrated":
+                adapters.append(ADAPTER_FRUSTRATED_USER)
+                adapters.append(ADAPTER_CONCISE)
+                routing_log.append("Emotion:Frustrated → [Empathy + Precision]")
+            elif emotion == "urgent":
+                adapters.append(ADAPTER_URGENT)
+                routing_log.append("Emotion:Urgent → [Emergency Protocol]")
+            elif emotion == "excited":
+                adapters.append(ADAPTER_EXCITED)
+                routing_log.append("Emotion:Excited → [High-Energy]")
 
         # Rule 2: Intent-based expert activation
         if "debug" in intent or "debugging" in intent:

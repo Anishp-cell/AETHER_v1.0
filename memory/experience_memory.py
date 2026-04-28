@@ -136,6 +136,35 @@ If no permanent fact exists: return exactly "NONE"."""
         thread = threading.Thread(target=background_extraction, daemon=True)
         thread.start()
 
+    def force_store_async(self, user_statement: str):
+        def background_extraction():
+            try:
+                prompt = f"""Extract the core information from this text as a concise, permanent fact about the user.
+User said: "{user_statement}"
+
+Return ONLY the fact as one concise sentence. Do not add any conversational text. Example: "User prefers dark mode."
+"""
+                payload = {
+                    "model": self.base_model,
+                    "prompt": prompt,
+                    "stream": False,
+                    "options": {"temperature": 0.0}
+                }
+                res = requests.post(self.llm_url, json=payload, timeout=10).json()
+                extracted = res.get("response", "").strip().strip('"\'')
+                
+                if extracted and "NONE" not in extracted.upper() and len(extracted) < 200 and not self._is_hallucinated(extracted):
+                    profile = self.load_profile()
+                    existing = [f.lower() for f in profile.get("Facts", [])]
+                    if extracted.lower() not in existing:
+                        profile["Facts"].append(extracted)
+                        self.save_profile(profile)
+                        print(f"\n🧠 [Deep Memory] FORCE Stored: '{extracted}'")
+            except Exception as e:
+                print(f"[Deep Memory Error] {e}")
+                
+        threading.Thread(target=background_extraction, daemon=True).start()
+
     def forget_fact(self, keyword: str):
         """Remove facts containing a keyword. E.g. forget_fact('sleep') removes sleep-related facts."""
         profile = self.load_profile()

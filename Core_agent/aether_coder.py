@@ -13,7 +13,7 @@ class AetherCoder:
     Sub-Agent specialized in autonomously writing, saving, and executing Python scripts.
     It uses the DeepSeek-R1 logic model for high-quality code generation.
     """
-    def __init__(self, workspace_dir="aether_workspace", model="deepseek-r1:1.5b"):
+    def __init__(self, workspace_dir="aether_workspace", model="qwen2.5-coder:3b"):
         self.workspace = os.path.join(os.path.dirname(os.path.dirname(__file__)), workspace_dir)
         self.model = model
         self.url = "http://127.0.0.1:11434/api/chat"

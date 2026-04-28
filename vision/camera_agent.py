@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import time
+import base64
 
 class VisionPerception:
     def __init__(self):
@@ -71,6 +72,21 @@ class VisionPerception:
 
     def close(self):
         self.cap.release()
+
+    def get_base64_frame(self, quality=50, max_width=480):
+        """Returns the latest camera frame as a base64-encoded JPEG string for WebSocket streaming."""
+        frame = self.get_latest_frame()
+        if frame is None:
+            return None
+        
+        # Resize for bandwidth
+        h, w = frame.shape[:2]
+        ratio = max_width / w
+        if ratio < 1.0:
+            frame = cv2.resize(frame, (max_width, int(h * ratio)))
+        
+        _, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, quality])
+        return base64.b64encode(buffer).decode('utf-8')
 
 if __name__ == "__main__":
     vision = VisionPerception()

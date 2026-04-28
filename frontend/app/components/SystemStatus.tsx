@@ -5,6 +5,7 @@ interface Props {
   agents: AgentStatus;
   adapters: string[];
   signal: { intent: string; intent_confidence: number; emotion: string };
+  onShutdown: () => void;
 }
 
 const AGENT_LABELS: Record<keyof AgentStatus, { label: string; icon: string }> = {
@@ -31,7 +32,7 @@ function StatusDot({ status }: { status: string }) {
   );
 }
 
-export default function SystemStatus({ agents, adapters, signal }: Props) {
+export default function SystemStatus({ agents, adapters, signal, onShutdown }: Props) {
   return (
     <div className="flex flex-col h-full p-4 gap-4">
       {/* Title */}
@@ -115,6 +116,17 @@ export default function SystemStatus({ agents, adapters, signal }: Props) {
           )}
         </div>
       </div>
+      
+      {/* Spacer */}
+      <div className="flex-1" />
+
+      {/* EMERGENCY SHUTDOWN */}
+      <button
+        onClick={onShutdown}
+        className="w-full mt-4 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-500 font-mono text-xs tracking-[0.2em] uppercase transition-all rounded-lg border border-red-500/30 hover:border-red-500 hover:shadow-[0_0_15px_rgba(239,68,68,0.3)] flex items-center justify-center gap-2"
+      >
+        <span className="text-sm">⏻</span> System Shutdown
+      </button>
     </div>
   );
 }

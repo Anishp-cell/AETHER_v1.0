@@ -1,4 +1,8 @@
 {
-    "Facts": [
-    ]
+    "name": "sir",
+    "location": "Pune",
+    "reminders": [],
+    "remembered_facts": [],
+    "preferred_apps": [],
+    "last_seen": ""
 }

@@ -1,7 +1,5 @@
 import openwakeword
 from openwakeword.model import Model
-import numpy as np
-import time
 
 class WakeWordDetector:
     def __init__(self, wake_words=["hey_jarvis"]):
@@ -15,7 +13,7 @@ class WakeWordDetector:
         # openwakeword automatically caches public models internally
         try:
             openwakeword.utils.download_models()
-        except:
+        except Exception:
             pass # Fails gracefully if already downloaded
             
         self.owwModel = Model(wakeword_models=wake_words, inference_framework="onnx")

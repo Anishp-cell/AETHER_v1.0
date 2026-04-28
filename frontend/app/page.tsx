@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { useAether } from "./hooks/useAether";
 import SystemStatus from "./components/SystemStatus";
 import ChatPanel from "./components/ChatPanel";
+import SystemMonitor from "./components/SystemMonitor";
 import Waveform from "./components/Waveform";
 import { useEffect, useCallback } from "react";
 
@@ -17,7 +18,7 @@ const HologramOrb = dynamic(() => import("./components/HologramOrb"), {
 });
 
 export default function Home() {
-  const { state, energy, connected, sendAuthResponse, toggleMute } = useAether();
+  const { state, energy, connected, systemMetrics, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode } = useAether();
 
   // Global keyboard Mute Toggle (Spacebar)
   const handleKeyDown = useCallback(
@@ -55,7 +56,31 @@ export default function Home() {
           </span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-[10px] font-mono text-gray-600 uppercase tracking-wider">
+          {/* Mode Toggle */}
+          <div className="flex items-center gap-1 bg-white/[0.03] p-1 rounded-lg border border-white/[0.05]">
+            <button
+              onClick={() => setMode("Voice")}
+              className={`px-3 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider transition-all duration-300 ${
+                state.mode !== "Memory" 
+                  ? "bg-cyan-500/20 text-cyan-300 shadow-[0_0_10px_rgba(34,211,238,0.2)]" 
+                  : "text-gray-500 hover:text-gray-400"
+              }`}
+            >
+              Voice
+            </button>
+            <button
+              onClick={() => setMode("Memory")}
+              className={`px-3 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider transition-all duration-300 ${
+                state.mode === "Memory" 
+                  ? "bg-purple-500/20 text-purple-300 shadow-[0_0_10px_rgba(168,85,247,0.2)]" 
+                  : "text-gray-500 hover:text-gray-400"
+              }`}
+            >
+              Memory
+            </button>
+          </div>
+
+          <span className="text-[10px] font-mono text-gray-600 uppercase tracking-wider hidden md:inline">
             System-Level MoE Runtime
           </span>
           <div className="flex items-center gap-1.5">
@@ -73,18 +98,24 @@ export default function Home() {
 
       {/* Main 3-column layout */}
       <div className="absolute inset-0 top-12 bottom-20 flex">
-        {/* LEFT: System Status sidebar */}
-        <aside className="w-64 flex-shrink-0 glass-panel border-r border-white/[0.04] overflow-y-auto">
-          <SystemStatus
-            agents={state.agents}
-            adapters={state.adapters}
-            signal={state.micro_expert_signal}
-          />
+        {/* LEFT: System Status + Camera Feed */}
+        <aside className="w-64 flex-shrink-0 glass-panel border-r border-white/[0.04] flex flex-col">
+          <div className="flex-1 overflow-y-auto">
+            <SystemStatus
+              agents={state.agents}
+              adapters={state.adapters}
+              signal={state.micro_expert_signal}
+              onShutdown={sendShutdown}
+            />
+          </div>
+          <div className="h-56 border-t border-white/[0.04] flex-shrink-0 bg-black/20">
+            <SystemMonitor metrics={systemMetrics} />
+          </div>
         </aside>
 
         {/* CENTER: Hologram Orb */}
         <section className="flex-1 relative">
-          <HologramOrb status={state.status} isMuted={Boolean(state.mic_muted)} />
+          <HologramOrb status={state.status} energy={energy} isMuted={Boolean(state.mic_muted)} />
         </section>
 
         {/* RIGHT: Chat Transcript */}
@@ -93,13 +124,14 @@ export default function Home() {
         </aside>
       </div>
 
-      {/* BOTTOM: Waveform + Mute */}
+      {/* BOTTOM: Waveform + Mute + Stop */}
       <footer className="absolute bottom-0 inset-x-0 h-20 glass-panel border-t border-white/[0.04]">
         <Waveform
           energy={energy}
           status={state.status}
           isMuted={Boolean(state.mic_muted)}
           onToggleMute={toggleMute}
+          onInterrupt={interruptAudio}
         />
       </footer>
 

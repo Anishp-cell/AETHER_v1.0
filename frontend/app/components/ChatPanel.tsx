@@ -1,5 +1,8 @@
 "use client";
 import { useEffect, useRef } from "react";
+import ReactMarkdown from "react-markdown";
+import rehypeHighlight from "rehype-highlight";
+import "highlight.js/styles/github-dark.css";
 import { TranscriptEntry } from "../hooks/useAether";
 
 interface Props {
@@ -88,7 +91,7 @@ export default function ChatPanel({ transcript, status }: Props) {
 
             {/* Message bubble */}
             <div
-              className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
+              className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed prose prose-invert max-w-none ${
                 entry.role === "user"
                   ? "bg-cyan-500/10 border border-cyan-500/15 text-cyan-100 rounded-br-md"
                   : "bg-white/[0.04] border border-white/[0.06] text-gray-200 rounded-bl-md"
@@ -97,7 +100,13 @@ export default function ChatPanel({ transcript, status }: Props) {
               {entry.role === "aether" && (
                 <span className="text-[10px] font-mono text-purple-400 block mb-1">AETHER</span>
               )}
-              {entry.text}
+              {entry.role === "user" ? (
+                entry.text
+              ) : (
+                <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+                  {entry.text}
+                </ReactMarkdown>
+              )}
             </div>
           </div>
         ))}

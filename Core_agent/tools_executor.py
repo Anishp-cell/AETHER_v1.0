@@ -17,7 +17,7 @@ def route_to_deepseek(query):
     """
     return "[DEEPSEEK_ROUTING_ACTIVATED]" 
 
-from desktop_agent import run_computer_command, analyze_screen_with_llava, open_app_and_type, search_web
+from desktop_agent import run_computer_command, analyze_screen_with_llava, open_app_and_type, search_web, open_url, get_system_diagnostics, media_control, send_whatsapp_message, set_timer
 from aether_coder import AetherCoder
 import sys
 import os
@@ -28,6 +28,9 @@ from web_agent import search_and_read_web, read_specific_url
 
 _coder_instance = AetherCoder()
 
+from skill_factory import SkillFactory
+_skill_factory = SkillFactory()
+
 # The mapping dictionary that Ollama's tool call JSON directly hooks into
 AVAILABLE_TOOLS = {
     "get_current_time": get_current_time,
@@ -37,9 +40,15 @@ AVAILABLE_TOOLS = {
     "analyze_screen_with_llava": analyze_screen_with_llava,
     "open_app_and_type": open_app_and_type,
     "search_web": search_web,
+    "open_url": open_url,
     "search_and_read_web": search_and_read_web,
     "read_specific_url": read_specific_url,
-    "write_and_run_script": _coder_instance.write_and_run_script
+    "write_and_run_script": _coder_instance.write_and_run_script,
+    "teach_new_skill": _skill_factory.teach_new_skill,
+    "get_system_diagnostics": get_system_diagnostics,
+    "media_control": media_control,
+    "send_whatsapp_message": send_whatsapp_message,
+    "set_timer": set_timer
 }
 
 
@@ -99,6 +108,20 @@ OLLAMA_TOOL_DEFINITIONS = [
     {
         "type": "function",
         "function": {
+            "name": "open_url",
+            "description": "MUST be used when the user wants to navigate to a specific website like LinkedIn, YouTube, Instagram, Netflix, Gmail, or any URL. For example: 'go to LinkedIn', 'open YouTube', 'navigate to github.com'. Pass the site name or full URL.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "url": {"type": "string", "description": "The site name (e.g. 'linkedin') or full URL (e.g. 'https://www.linkedin.com') to open."}
+                },
+                "required": ["url"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
             "name": "search_web",
             "description": "MUST be used when the user wants to search for something on the web, Google, or Chrome. For example: 'search for paneer recipe', 'Google how to learn python', 'look up the weather'.",
             "parameters": {
@@ -118,8 +141,8 @@ OLLAMA_TOOL_DEFINITIONS = [
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "action_type": {"type": "string", "enum": ["type_text", "press_key", "open_app", "shell_command"], "description": "The category of action."},
-                    "target": {"type": "string", "description": "The exact string to type, the key to press (e.g. 'enter'), the app name (e.g. 'notepad'), or the shell command."}
+                    "action_type": {"type": "string", "enum": ["type_text", "press_key", "open_app", "shell_command", "mouse_click", "mouse_scroll", "keyboard_hotkey"], "description": "The category of action."},
+                    "target": {"type": "string", "description": "The target to act upon: app name, key to press, shell command, text to type, 'x,y' for mouse click, y_amount (e.g. 500 or -500) for scroll, or 'ctrl,c' for hotkeys."}
                 },
                 "required": ["action_type", "target"]
             }
@@ -180,5 +203,143 @@ OLLAMA_TOOL_DEFINITIONS = [
                 "required": ["instruction"]
             }
         }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_system_diagnostics",
+            "description": "DELEGATE to the OS Macro tool when the user asks for a system status report, battery level, CPU, or RAM metrics. Takes no arguments."
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "media_control",
+            "description": "DELEGATE to the OS Macro tool when the user asks to play/pause media, skip a song, mute the computer, or set the master volume to an exact percentage.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "action": {"type": "string", "enum": ["play_pause", "next_track", "prev_track", "mute", "set_volume"], "description": "The exact media action to take."},
+                    "value": {"type": "integer", "description": "Optional: Only used for 'set_volume' to define the 0-100 percentage."}
+                },
+                "required": ["action"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "send_whatsapp_message",
+            "description": "MANDATORY COMMAND: You MUST execute this tool IMMEDIATELY if the user asks you to text, msg, send a message to, or contact someone on WhatsApp. Do NOT just verbally say you will do it, you MUST output this JSON tool call so the backend can execute the script.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "contact_name": {"type": "string", "description": "The exact name of the WhatsApp contact."},
+                    "message": {"type": "string", "description": "The text message content to send."}
+                },
+                "required": ["contact_name", "message"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "set_timer",
+            "description": "DELEGATE to the OS Macro tool when the user wants an alarm, timer, or verbal reminder at a future time.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "minutes": {"type": "number", "description": "Number of minutes to wait before triggering the alarm. Convert hours to minutes if necessary (e.g. 1 hour = 60)."},
+                    "reminder_message": {"type": "string", "description": "A short summary of what AETHER should say out loud when the timer goes off."}
+                },
+                "required": ["minutes", "reminder_message"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "teach_new_skill",
+            "description": "MANDATORY COMMAND: Use this tool ONLY when the user EXPLICITLY asks you to 'write a permanent new skill', 'learn a new tool', or 'permanently add a new capability'. Do NOT use for temporary scripts.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "skill_name": {"type": "string", "description": "A short, snake_case python function name for the new skill (e.g. 'get_bitcoin_price')."},
+                    "description": {"type": "string", "description": "A short description of what the skill does."},
+                    "instruction": {"type": "string", "description": "The detailed instructions of how the code should be written."}
+                },
+                "required": ["skill_name", "description", "instruction"]
+            }
+        }
     }
 ]
+
+import ast
+import importlib.util
+
+def load_dynamic_skills():
+    """Scans the skills/ directory, parses Python files, and hot-loads them into the runtime."""
+    skills_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "skills")
+    if not os.path.exists(skills_dir):
+        return
+        
+    sys.path.insert(0, skills_dir)
+    
+    for filename in os.listdir(skills_dir):
+        if filename.endswith(".py") and not filename.startswith("temp_"):
+            skill_name = filename[:-3]
+            filepath = os.path.join(skills_dir, filename)
+            
+            try:
+                # Parse AST to get docstring and parameters
+                with open(filepath, "r", encoding="utf-8") as f:
+                    tree = ast.parse(f.read())
+                    
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.FunctionDef) and node.name == skill_name:
+                        docstring = ast.get_docstring(node) or f"Dynamically loaded skill: {skill_name}"
+                        
+                        # Extract arguments for JSON Schema
+                        properties = {}
+                        required = []
+                        for arg in node.args.args:
+                            arg_name = arg.arg
+                            properties[arg_name] = {"type": "string", "description": f"Argument {arg_name}"}
+                            required.append(arg_name)
+                            
+                        # Build OLLAMA schema
+                        schema = {
+                            "type": "function",
+                            "function": {
+                                "name": skill_name,
+                                "description": docstring,
+                            }
+                        }
+                        if properties:
+                            schema["function"]["parameters"] = {
+                                "type": "object",
+                                "properties": properties,
+                                "required": required
+                            }
+                            
+                        # Load module and inject
+                        spec = importlib.util.spec_from_file_location(skill_name, filepath)
+                        module = importlib.util.module_from_spec(spec)
+                        spec.loader.exec_module(module)
+                        
+                        func = getattr(module, skill_name)
+                        
+                        # Inject
+                        AVAILABLE_TOOLS[skill_name] = func
+                        
+                        # Check if already in definitions to prevent duplicates on hot-reload if not cleared
+                        if not any(t["function"]["name"] == skill_name for t in OLLAMA_TOOL_DEFINITIONS):
+                            OLLAMA_TOOL_DEFINITIONS.append(schema)
+                            
+                        print(f"[SkillFactory] ⚡ Hot-Loaded dynamic skill: {skill_name}")
+                        break
+                        
+            except Exception as e:
+                print(f"[SkillFactory Error] Failed to load dynamic skill {filename}: {e}")
+
+load_dynamic_skills()

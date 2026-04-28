@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, MeshDistortMaterial } from "@react-three/drei";
 import * as THREE from "three";
 
 // ── COLOR THEMES ─────────────────────────────────────────────────────────────
@@ -33,10 +33,9 @@ function InnerCore({ status }: { status: string }) {
   );
 }
 
-// ── SUB-COMPONENT: Wireframe Shell ──
-function WireframeShell({ radius, speedX, speedY, status, detail = 2 }: { radius: number; speedX: number; speedY: number; status: string; detail?: number }) {
+// ── SUB-COMPONENT: Wireframe Fluid Shell ──
+function WireframeShell({ radius, speedX, speedY, status, energy = 0, detail = 2 }: { radius: number; speedX: number; speedY: number; status: string; energy?: number; detail?: number }) {
   const meshRef = useRef<THREE.Mesh>(null!);
-  const materialRef = useRef<THREE.MeshBasicMaterial>(null!);
   const targetColor = useMemo(() => new THREE.Color(STATUS_COLORS[status]?.wire || "#e69900"), [status]);
 
   useFrame(({ clock }) => {
@@ -44,21 +43,26 @@ function WireframeShell({ radius, speedX, speedY, status, detail = 2 }: { radius
     if (meshRef.current) {
       meshRef.current.rotation.x = t * speedX;
       meshRef.current.rotation.y = t * speedY;
-      
-      if (status === "speaking") {
-        const scale = 1.0 + Math.sin(t * 15) * 0.02;
-        meshRef.current.scale.setScalar(scale);
-      } else {
-        meshRef.current.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
-      }
     }
-    if (materialRef.current) materialRef.current.color.lerp(targetColor, 0.05);
   });
+
+  // Calculate liquid distortion based on microphone input and status
+  const normalizedEnergy = Math.min(1.0, energy / 1500); 
+  const distortAmount = status === 'listening' ? 0.15 + (normalizedEnergy * 0.4) : (status === 'speaking' ? 0.35 : 0.1);
+  const distortSpeed = status === 'speaking' ? 6 : (status === 'listening' ? 2 + (normalizedEnergy * 4) : 1);
 
   return (
     <mesh ref={meshRef}>
-      <icosahedronGeometry args={[radius, detail]} />
-      <meshBasicMaterial ref={materialRef} wireframe transparent opacity={0.3} blending={THREE.AdditiveBlending} />
+      <sphereGeometry args={[radius, 32, 32]} />
+      <MeshDistortMaterial 
+        color={targetColor}
+        wireframe 
+        transparent 
+        opacity={0.3} 
+        blending={THREE.AdditiveBlending}
+        distort={distortAmount}
+        speed={distortSpeed}
+      />
     </mesh>
   );
 }
@@ -102,20 +106,20 @@ function DataDust({ status }: { status: string }) {
 }
 
 // ── MAIN EXPORT ─────────────────────────────────────────────────────────────
-export default function HologramOrb({ status, isMuted }: { status: string; isMuted?: boolean }) {
+export default function HologramOrb({ status, energy = 0, isMuted }: { status: string; energy?: number; isMuted?: boolean }) {
   const effectiveStatus = isMuted ? "muted" : status;
   return (
     <div className="relative flex flex-col items-center justify-center h-full w-full cursor-move">
-      <Canvas camera={{ position: [0, 0, 4.5], fov: 50 }} className="!absolute inset-0 z-0">
+      <Canvas camera={{ position: [0, 0, 5], fov: 50 }} className="!absolute inset-0 z-0">
         <ambientLight intensity={0.5} />
         
         {/* Core layers */}
         <InnerCore status={effectiveStatus} />
         
-        {/* Concentric Wireframe Shells */}
-        <WireframeShell radius={1.2} speedX={0.2} speedY={0.3} status={effectiveStatus} detail={3} />
-        <WireframeShell radius={1.6} speedX={-0.1} speedY={0.4} status={effectiveStatus} detail={2} />
-        <WireframeShell radius={2.0} speedX={0.05} speedY={-0.2} status={effectiveStatus} detail={3} />
+        {/* Distorted Liquid Wireframe Shells */}
+        <WireframeShell radius={1.2} speedX={0.2} speedY={0.3} status={effectiveStatus} energy={energy} />
+        <WireframeShell radius={1.6} speedX={-0.1} speedY={0.4} status={effectiveStatus} energy={energy} />
+        <WireframeShell radius={2.0} speedX={0.05} speedY={-0.2} status={effectiveStatus} energy={energy} />
         
         {/* Particle Cloud */}
         <DataDust status={effectiveStatus} />

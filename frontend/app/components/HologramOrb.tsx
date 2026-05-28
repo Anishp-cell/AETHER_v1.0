@@ -6,12 +6,12 @@ import * as THREE from "three";
 
 // ── COLOR THEMES ─────────────────────────────────────────────────────────────
 const STATUS_COLORS: Record<string, { core: string; wire: string }> = {
-  booting:   { core: "#555555", wire: "#333333" },
-  idle:      { core: "#b87300", wire: "#e69900" }, // Deeper, more authentic amber/gold
-  listening: { core: "#00b386", wire: "#00e6ac" },
-  thinking:  { core: "#b33c00", wire: "#e64d00" },
-  speaking:  { core: "#7a00cc", wire: "#9900ff" },
-  muted:     { core: "#550000", wire: "#880000" },
+  booting:   { core: "#475569", wire: "#708090" },
+  idle:      { core: "#b87300", wire: "#ffaa00" }, // Premium amber gold
+  listening: { core: "#009973", wire: "#00e6ac" }, // Tactical emerald cyan
+  thinking:  { core: "#b33c00", wire: "#ff4d00" }, // Processing hot orange
+  speaking:  { core: "#6600cc", wire: "#9900ff" }, // Neural speech purple
+  muted:     { core: "#991b1b", wire: "#ef4444" }, // Secure lock crimson red
 };
 
 // ── SUB-COMPONENT: Glowing Core ──

@@ -48,10 +48,10 @@
 @layer utilities {
   /* Glassmorphism panel */
   .glass-panel {
-    background: rgba(8, 12, 24, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(6, 10, 18, 0.75);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(0, 245, 255, 0.08);
   }
 
   /* Ambient glow effect */
@@ -82,18 +82,168 @@
   /* Subtle grid background */
   .bg-grid {
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-    background-size: 40px 40px;
+      linear-gradient(rgba(0, 245, 255, 0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 245, 255, 0.015) 1px, transparent 1px);
+    background-size: 50px 50px;
   }
 
   /* Ambient gradient */
   .ambient-gradient {
     background: radial-gradient(
       ellipse at 50% 50%,
-      rgba(0, 245, 255, 0.03) 0%,
-      rgba(0, 102, 255, 0.01) 40%,
+      rgba(0, 245, 255, 0.04) 0%,
+      rgba(122, 0, 204, 0.02) 40%,
       transparent 70%
     );
+  }
+
+  /* Cybernetic Angled Tech Border (Clip Path) */
+  .tech-clip {
+    clip-path: polygon(
+      0px 10px, 
+      10px 0px, 
+      calc(100% - 10px) 0px, 
+      100% 10px, 
+      100% calc(100% - 10px), 
+      calc(100% - 10px) 100%, 
+      10px 100%, 
+      0px calc(100% - 10px)
+    );
+  }
+
+  .tech-clip-subtle {
+    clip-path: polygon(
+      0px 6px, 
+      6px 0px, 
+      calc(100% - 6px) 0px, 
+      100% 6px, 
+      100% calc(100% - 6px), 
+      calc(100% - 6px) 100%, 
+      6px 100%, 
+      0px calc(100% - 6px)
+    );
+  }
+
+  /* Custom high-tech scanning line sweep */
+  @keyframes scannerSweep {
+    0% {
+      top: 0%;
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      top: 100%;
+      opacity: 0;
+    }
+  }
+
+  .animate-scanner {
+    animation: scannerSweep 4s linear infinite;
+  }
+
+  /* Dotted scanning scanlines */
+  .hud-scanlines {
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+  }
+
+  /* Neon glows depending on status */
+  .hud-glow-idle {
+    box-shadow: inset 0 0 20px rgba(184, 115, 0, 0.05), 0 0 30px rgba(184, 115, 0, 0.05);
+    border-color: rgba(184, 115, 0, 0.2) !important;
+  }
+
+  .hud-glow-listening {
+    box-shadow: inset 0 0 25px rgba(0, 230, 172, 0.1), 0 0 35px rgba(0, 230, 172, 0.08);
+    border-color: rgba(0, 230, 172, 0.3) !important;
+  }
+
+  .hud-glow-thinking {
+    box-shadow: inset 0 0 25px rgba(230, 77, 0, 0.1), 0 0 35px rgba(230, 77, 0, 0.08);
+    border-color: rgba(230, 77, 0, 0.3) !important;
+  }
+
+  .hud-glow-speaking {
+    box-shadow: inset 0 0 30px rgba(153, 0, 255, 0.12), 0 0 40px rgba(153, 0, 255, 0.1);
+    border-color: rgba(153, 0, 255, 0.35) !important;
+  }
+
+  .hud-glow-muted {
+    box-shadow: inset 0 0 20px rgba(220, 38, 38, 0.08), 0 0 30px rgba(220, 38, 38, 0.05);
+    border-color: rgba(220, 38, 38, 0.25) !important;
+  }
+
+  /* HUD Concentric Orbits rotations */
+  @keyframes spin-clockwise {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin-counterclockwise {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+
+  .animate-spin-slow {
+    animation: spin-clockwise 25s linear infinite;
+  }
+
+  .animate-spin-reverse-slow {
+    animation: spin-counterclockwise 35s linear infinite;
+  }
+
+  .animate-spin-medium {
+    animation: spin-clockwise 10s linear infinite;
+  }
+
+  .animate-spin-reverse-medium {
+    animation: spin-counterclockwise 12s linear infinite;
+  }
+
+  .animate-spin-fast {
+    animation: spin-clockwise 3s linear infinite;
+  }
+
+  .animate-spin-reverse-fast {
+    animation: spin-counterclockwise 4s linear infinite;
+  }
+
+  /* Glitch Text Shimmer */
+  @keyframes glitch-text {
+    0%, 100% { text-shadow: 0 0 2px rgba(0, 245, 255, 0.5); }
+    50% { text-shadow: -1px -1px 0px rgba(255, 0, 128, 0.3), 1px 1px 0px rgba(0, 255, 255, 0.3), 0 0 4px rgba(0, 245, 255, 0.8); }
+  }
+
+  .tech-glitch {
+    animation: glitch-text 2s infinite;
+  }
+
+  /* Corner Node Dot markers */
+  .tech-node {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: currentColor;
+    border-radius: 50%;
+    z-index: 10;
   }
 }

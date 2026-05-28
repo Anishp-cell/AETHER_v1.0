@@ -5,6 +5,7 @@ import SystemStatus from "./components/SystemStatus";
 import ChatPanel from "./components/ChatPanel";
 import SystemMonitor from "./components/SystemMonitor";
 import Waveform from "./components/Waveform";
+import HudOverlay from "./components/HudOverlay";
 import { useEffect, useCallback } from "react";
 
 // Dynamic import for Three.js (no SSR)
@@ -19,6 +20,17 @@ const HologramOrb = dynamic(() => import("./components/HologramOrb"), {
 
 export default function Home() {
   const { state, energy, connected, systemMetrics, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode } = useAether();
+
+  const stateGlowClass = 
+    state.mic_muted 
+      ? "hud-glow-muted" 
+      : state.status === "listening" 
+      ? "hud-glow-listening" 
+      : state.status === "thinking" 
+      ? "hud-glow-thinking" 
+      : state.status === "speaking" 
+      ? "hud-glow-speaking" 
+      : "hud-glow-idle";
 
   // Global keyboard Mute Toggle (Spacebar)
   const handleKeyDown = useCallback(
@@ -99,7 +111,7 @@ export default function Home() {
       {/* Main 3-column layout */}
       <div className="absolute inset-0 top-12 bottom-20 flex">
         {/* LEFT: System Status + Camera Feed */}
-        <aside className="w-64 flex-shrink-0 glass-panel border-r border-white/[0.04] flex flex-col">
+        <aside className={`w-64 flex-shrink-0 glass-panel border-r flex flex-col transition-all duration-500 ${stateGlowClass}`}>
           <div className="flex-1 overflow-y-auto">
             <SystemStatus
               agents={state.agents}
@@ -113,19 +125,31 @@ export default function Home() {
           </div>
         </aside>
 
-        {/* CENTER: Hologram Orb */}
-        <section className="flex-1 relative">
+        {/* CENTER: Interactive Tactical HUD Viewport */}
+        <section className={`flex-1 relative transition-all duration-500 overflow-hidden bg-black/10`}>
+          {/* Subtle grid and scanning scanlines overlay */}
+          <div className="absolute inset-0 pointer-events-none hud-scanlines opacity-20 z-0" />
+          
+          {/* High-fidelity HUD Overlay */}
+          <HudOverlay
+            status={state.mic_muted ? "muted" : state.status}
+            energy={energy}
+            microExpertSignal={state.micro_expert_signal}
+            adapters={state.adapters}
+          />
+          
+          {/* Core 3D Hologram */}
           <HologramOrb status={state.status} energy={energy} isMuted={Boolean(state.mic_muted)} />
         </section>
 
         {/* RIGHT: Chat Transcript */}
-        <aside className="w-96 flex-shrink-0 glass-panel glow-purple border-l border-white/[0.04] overflow-hidden">
+        <aside className={`w-96 flex-shrink-0 glass-panel border-l overflow-hidden transition-all duration-500 ${stateGlowClass}`}>
           <ChatPanel transcript={state.transcript} status={state.status} />
         </aside>
       </div>
 
       {/* BOTTOM: Waveform + Mute + Stop */}
-      <footer className="absolute bottom-0 inset-x-0 h-20 glass-panel border-t border-white/[0.04]">
+      <footer className={`absolute bottom-0 inset-x-0 h-20 glass-panel border-t transition-all duration-500 ${stateGlowClass}`}>
         <Waveform
           energy={energy}
           status={state.status}

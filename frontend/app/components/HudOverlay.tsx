@@ -19,7 +19,8 @@ const COLOR_THEMES: Record<string, { primary: string; secondary: string; glow: s
   muted:     { primary: "#ef4444", secondary: "#991b1b", glow: "rgba(239,68,68,0.4)", text: "text-red-500" },
 };
 
-export default function HudOverlay({ status, energy = 0, microExpertSignal, adapters }: Props) {
+export default function HudOverlay({ status, energy = 0, microExpertSignal, adapters, isScreenCapturing = false }: Props) {
+
   const containerRef = useRef<HTMLDivElement>(null);
   
   // Mouse position tracking

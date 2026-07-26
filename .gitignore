@@ -76,3 +76,28 @@ patent_search.txt
 pdf&rendition=1 (1).pdf
 git-sizer/
 practice/
+
+# ===============================
+# Private Resume, Temporary Plans & Screenshots
+# ===============================
+Anish_Pathak_Resume.txt
+implementation_planV2
+image.png
+
+# ===============================
+# Secret Research Materials & Paper Sources
+# ===============================
+resources_far/
+*.zip
+AuthorKit27__2_*.pdf
+
+# ===============================
+# Temporary Speech & Audio Buffers
+# ===============================
+temp_audio/
+
+# ===============================
+# Debug Screenshots
+# ===============================
+debug_screenshots/
+

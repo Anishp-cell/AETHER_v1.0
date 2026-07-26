@@ -35,6 +35,10 @@ class KokoroTTS:
         self.is_interrupted = False
         self.speak_thread = None
 
+    @property
+    def _is_speaking(self):
+        return self.speak_thread is not None and self.speak_thread.is_alive()
+
     def stop(self):
         """Immediately halts all active speech and flushes the generation pipeline."""
         self.is_interrupted = True

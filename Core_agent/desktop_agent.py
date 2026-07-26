@@ -18,6 +18,10 @@ APP_ALIASES = {
     "calculator": "calc",
     "calc": "calc",
     "paint": "mspaint",
+    "notepad": "notepad",
+    "note pad": "notepad",
+    "wordpad": "write",
+    "word pad": "write",
     "settings": "ms-settings:",
     "store": "ms-windows-store:",
     "mail": "outlookmail:",
@@ -28,6 +32,8 @@ APP_ALIASES = {
     "snipping tool": "snippingtool",
     "snip": "snippingtool",
     "cmd": "cmd",
+    "command prompt": "cmd",
+    "cmd prompt": "cmd",
     "terminal": "wt",
     "powershell": "powershell",
     "explorer": "explorer",
@@ -335,8 +341,20 @@ def analyze_screen_with_llava(task_query: str) -> str:
         from io import BytesIO
         
         image = pyautogui.screenshot()
+        
+        # Save debug screenshot
+        import os
+        try:
+            base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            debug_dir = os.path.join(base_dir, "debug_screenshots")
+            os.makedirs(debug_dir, exist_ok=True)
+            image.save(os.path.join(debug_dir, "llava_tool_screen.jpg"), format="JPEG", quality=90)
+            print(f"[Vision Layer] Saved debug screenshot: debug_screenshots/llava_tool_screen.jpg")
+        except Exception as e:
+            print(f"[Vision Layer] Failed to save debug screenshot: {e}")
+            
         buffered = BytesIO()
-        image.save(buffered, format="JPEG", quality=50)
+        image.save(buffered, format="JPEG", quality=90)
         img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
         
         payload = {
@@ -391,13 +409,10 @@ def media_control(action: str, value: int = None) -> str:
             # Requires pycaw to set absolute volume scalar without glitchy UI macros
             import pythoncom
             pythoncom.CoInitialize()
-            from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
-            from ctypes import cast, POINTER
-            from comtypes import CLSCTX_ALL
+            from pycaw.pycaw import AudioUtilities
             
             devices = AudioUtilities.GetSpeakers()
-            interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-            volume = cast(interface, POINTER(IAudioEndpointVolume))
+            volume = devices.EndpointVolume
             
             # Map 0-100 to 0.0-1.0
             scalar = max(0.0, min(1.0, float(value) / 100.0))
@@ -447,7 +462,7 @@ def send_whatsapp_message(contact_name: str, message: str) -> str:
     except Exception as e:
         return f"[WhatsApp Automation Error]: {str(e)}"
 
-def set_timer(minutes: float, reminder_message: str) -> str:
+def set_timer(minutes: float = 0.0, seconds: float = 0.0, reminder_message: str = "") -> str:
     """Spawns an asynchronous background thread that speaks via native OS TTS when completed."""
     try:
         import threading
@@ -460,12 +475,19 @@ def set_timer(minutes: float, reminder_message: str) -> str:
             subprocess.Popen(["powershell", "-Command", ps_cmd], creationflags=subprocess.CREATE_NO_WINDOW)
             print(f"[Timer Triggered] {safe_msg}")
             
-        seconds = float(minutes) * 60
-        timer_thread = threading.Timer(seconds, _timer_callback, args=[reminder_message])
+        total_seconds = float(minutes) * 60 + float(seconds)
+        timer_thread = threading.Timer(total_seconds, _timer_callback, args=[reminder_message])
         timer_thread.daemon = True
         timer_thread.start()
         
-        return f"Background timer successfully armed for {minutes} minutes."
+        duration_str = ""
+        if minutes > 0:
+            duration_str += f"{minutes} minutes "
+        if seconds > 0:
+            duration_str += f"{seconds} seconds"
+        duration_str = duration_str.strip() or "0 seconds"
+        
+        return f"Background timer successfully armed for {duration_str}."
     except Exception as e:
         return f"[Timer Error]: {str(e)}"
 

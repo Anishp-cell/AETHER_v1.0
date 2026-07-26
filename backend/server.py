@@ -228,9 +228,10 @@ def ai_loop():
             print("\n[TTS Layer] Initializing Kokoro-82M Voice Engine on CPU...")
             import sys; sys.stdout.flush()
             try:
-                from speech.TTS_kokoro import TTSEngine
-                tts_ref[0] = TTSEngine()
-            except Exception:
+                from speech.TTS_kokoro import KokoroTTS
+                tts_ref[0] = KokoroTTS(voice="bm_daniel", lang_code="b")
+            except Exception as e:
+                print(f"[TTS Layer] Kokoro init failed: {e}")
                 raise RuntimeError("Kokoro failed, no fallback available. Use Edge-TTS.")
         GLOBAL_TTS = tts_ref[0]
         update_state(**{"agents": {**agent_state["agents"], "voice_engine": "online"}})
@@ -330,19 +331,21 @@ Golden Rules:
     "Online, aware, and ready. How can I assist today?",
     "Execution environment initialized. Awaiting your command, sir."
 ]
-    # Startup Briefing — runs every time AETHER starts (weather, Bitcoin, HN, reminders)
-    try:
-        sys.path.insert(0, os.path.join(PROJECT_ROOT, "skills"))
-        from startup_briefing import startup_briefing
-        print("[AETHER] Generating startup briefing...")
-        briefing_text = startup_briefing()
-    except Exception as e:
-        print(f"[AETHER] Briefing failed, using fallback: {e}")
-        briefing_text = "Aether systems online. Ready for your command, sir."
+    # Startup Briefing — runs every time AETHER starts (commented out for faster recording/boot)
+    # try:
+    #     sys.path.insert(0, os.path.join(PROJECT_ROOT, "skills"))
+    #     from startup_briefing import startup_briefing
+    #     print("[AETHER] Generating startup briefing...")
+    #     briefing_text = startup_briefing()
+    # except Exception as e:
+    #     print(f"[AETHER] Briefing failed, using fallback: {e}")
+    #     briefing_text = "Aether systems online. Ready for your command, sir."
+    
+    greeting_text = random.choice(greetings)
 
     update_state(status="speaking")
-    push_transcript("aether", briefing_text)
-    tts.speak(briefing_text)
+    push_transcript("aether", greeting_text)
+    tts.speak(greeting_text)
     
     # Wait for the greeting to finish before entering the VAD loop
     # Edge-TTS is non-blocking (threaded), so we must wait for playback to end
@@ -539,7 +542,7 @@ Golden Rules:
                                 screen_b64 = None
                                 if any(kw in user_text.lower() for kw in screen_keywords):
                                     try:
-                                        screen_b64 = screen_cap.capture(max_width=1280, quality=60)
+                                        screen_b64 = screen_cap.capture(max_width=1280, quality=90)
                                         print("[Vision Layer] Screen captured for LLM analysis.")
                                     except Exception as e:
                                         print(f"[Vision Layer] Screen capture failed: {e}")

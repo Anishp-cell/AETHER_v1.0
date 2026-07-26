@@ -1,0 +1,40 @@
+\documentclass[letterpaper]{article}
+\usepackage[submission]{aaai2027}
+\usepackage[hyphens]{url}
+\usepackage{graphicx}
+\urlstyle{rm}
+\def\UrlFont{\rm}
+\usepackage{natbib}
+\usepackage{caption}
+\frenchspacing
+
+\title{ARN: AAAI 2027 Reproducibility Checklist}
+\author{Anonymous Submission}
+\affiliations{Paper ID: AAAI 2027}
+
+\begin{document}
+\maketitle
+
+\section*{AAAI 2027 Reproducibility Checklist}
+
+\subsection*{1. Paper Claims}
+\begin{itemize}
+    \item \textbf{Include a clear description of the main claims made in the paper:} Yes (Abstract, Section 1, Section 3).
+    \item \textbf{State the theoretical or empirical foundation for each claim:} Yes (Section 2 \& 3).
+\end{itemize}
+
+\subsection*{2. Algorithmic Code and Datasets}
+\begin{itemize}
+    \item \textbf{Include specification of all data processing steps:} Yes (Section 2.2).
+    \item \textbf{Provide source code for all models and training routines:} Yes (Included in Code Supplement zip).
+    \item \textbf{Specify all hyperparameter choices:} Yes (Section 2 \& Config).
+\end{itemize}
+
+\subsection*{3. Experimental Results}
+\begin{itemize}
+    \item \textbf{Report computing infrastructure used:} Yes (Intel Core i7-12700H CPU, single-threaded PyTorch runtime).
+    \item \textbf{Report exact execution times and RAM usage:} Yes (9.99 ms latency, 5.55 MB RAM, 16.96 MB disk footprint).
+    \item \textbf{Report evaluation metrics used:} Yes (Micro F1, Active Slot Accuracy, False Positive Rejection Rate).
+\end{itemize}
+
+\end{document}

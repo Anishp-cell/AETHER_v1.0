@@ -1,7 +1,7 @@
 import requests
 import re
 import json
-from tools_executor import AVAILABLE_TOOLS, OLLAMA_TOOL_DEFINITIONS
+import tools_executor
 
 class FrozenLLMEngine:
     def __init__(self, base_model="qwen2.5-coder:1.5b", thinking_model="deepseek-r1:1.5b", orchestrator_model="Aether-Orchestrator"):
@@ -62,12 +62,12 @@ class FrozenLLMEngine:
         ]
         
         # Dynamically append names of all loaded tools to trigger list
-        for tool in OLLAMA_TOOL_DEFINITIONS:
+        for tool in tools_executor.OLLAMA_TOOL_DEFINITIONS:
             name_parts = tool["function"]["name"].split("_")
             action_trigger_keywords.extend(name_parts)
         
         # Build a list of loaded tools to explicitly inject into the prompt
-        loaded_tool_names = [t["function"]["name"] for t in OLLAMA_TOOL_DEFINITIONS]
+        loaded_tool_names = [t["function"]["name"] for t in tools_executor.OLLAMA_TOOL_DEFINITIONS]
         dynamic_hint = f" AVAILABLE TOOLS: {', '.join(loaded_tool_names)}."
         
         target_model = self.base_model
@@ -85,7 +85,15 @@ class FrozenLLMEngine:
             messages = [
                 {
                     "role": "system", 
-                    "content": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation." + dynamic_hint + " CRITICAL RULE: If the user asks to USE or RUN a skill, find its exact match in the available tools and execute it. DO NOT trigger 'teach_new_skill' unless the user uses the words 'write', 'create', 'teach' or 'learn'."
+                    "content": (
+                        "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. "
+                        "No text, no markdown, no explanation. " + dynamic_hint + "\n\n"
+                        "CRITICAL SEARCH RULES:\n"
+                        "- Always use 'search_and_read_web' for research, scraping, finding information, or compiling summaries. "
+                        "- Never use 'search_web' unless the user explicitly wants to open a visible Google search tab in their browser.\n\n"
+                        "CRITICAL RULE: If the user asks to USE or RUN a skill, find its exact match in the available tools and execute it. "
+                        "DO NOT trigger 'teach_new_skill' unless the user uses the words 'write', 'create', 'teach' or 'learn'."
+                    )
                 },
                 {
                     "role": "user",
@@ -100,7 +108,8 @@ class FrozenLLMEngine:
             "model": target_model,
             "messages": messages,
             "stream": False,
-            "tools": OLLAMA_TOOL_DEFINITIONS,
+            "tools": tools_executor.OLLAMA_TOOL_DEFINITIONS,
+            "keep_alive": 0,  # Unload model from RAM instantly
             "options": {"temperature": 0.1}
         }
         
@@ -143,7 +152,16 @@ class FrozenLLMEngine:
                             parsed = json.loads(json_str)
                             fallback_tools = parsed if isinstance(parsed, list) else [parsed]
                     except Exception as e:
-                        print(f"[JSON Fallback Error] {e}")
+                        print(f"[JSON Fallback Error] First attempt failed: {e}")
+                        try:
+                            # Try to escape invalid backslashes (e.g. \*.py) that are not valid JSON escape sequences
+                            # Valid sequences in JSON are \", \\, \/, \b, \f, \n, \r, \t, and \uXXXX
+                            sanitized = re.sub(r'\\(?!["\\/bfnrt]|u[0-9a-fA-F]{4})', r'\\\\', json_str)
+                            parsed = json.loads(sanitized)
+                            fallback_tools = parsed if isinstance(parsed, list) else [parsed]
+                            print("[JSON Fallback] Successfully parsed after escaping backslashes.")
+                        except Exception as e2:
+                            print(f"[JSON Fallback Error] Second attempt failed: {e2}")
 
             # 2. EXECUTE TOOLS (Sequential Chaining)
             tools_to_run = fallback_tools if fallback_tools else tool_calls_detected
@@ -161,7 +179,7 @@ class FrozenLLMEngine:
                         tool_name = tool_call.get("name", "")
                         tool_args = tool_call.get("arguments", {})
 
-                    if tool_name not in AVAILABLE_TOOLS and "instruction" in tool_args and "description" in tool_args:
+                    if tool_name not in tools_executor.AVAILABLE_TOOLS and "instruction" in tool_args and "description" in tool_args:
                         # Auto-correct hallucinated skill name mapped to the tool name
                         print(f"🔧 [Auto-Correct] Redirecting hallucinated tool '{tool_name}' to 'teach_new_skill'")
                         tool_args["skill_name"] = tool_name
@@ -171,7 +189,7 @@ class FrozenLLMEngine:
                     if tool_name == "teach_new_skill":
                         # Check if any loaded dynamic tool matches the user's prompt
                         found_existing_tool = None
-                        for loaded_tool in OLLAMA_TOOL_DEFINITIONS:
+                        for loaded_tool in tools_executor.OLLAMA_TOOL_DEFINITIONS:
                             t_name = loaded_tool["function"]["name"]
                             # Skip default tools
                             if t_name in ["search_web", "open_app_and_type", "teach_new_skill", "search_and_read_web"]:
@@ -195,15 +213,112 @@ class FrozenLLMEngine:
 
                     print(f"\n[Action Router] Triggered Tool: {tool_name}")
                     
-                    if tool_name in AVAILABLE_TOOLS:
+                    if tool_name in tools_executor.AVAILABLE_TOOLS:
+                        # App Typing Intercept (Base Model generates the content if the text to type is a prompt/instruction)
+                        if tool_name == "open_app_and_type" and "text_to_type" in tool_args:
+                            gen_payload = {
+                                "model": self.base_model,
+                                "messages": [
+                                    {
+                                        "role": "system", 
+                                        "content": (
+                                            "You are a desktop assistant that generates content to be typed into an application.\n"
+                                            "Look at the user's original request. Your job is to generate ONLY the exact text content that should be pasted into the application to satisfy their request.\n"
+                                            "If the user wants to type a literal string (e.g., 'hello world', '3 + 5 =', a specific name or URL), output that literal text exactly as-is, without quotes.\n"
+                                            "If the user wants you to write, draft, generate, or explain something (e.g., a poem, an email, code, a summary), generate the complete, detailed content that was requested.\n"
+                                            "Output ONLY the final text to be typed. Do not wrap the text in quotes. Do not include markdown code block wrappers (do not wrap in ```). Do not include any chat pleasantries or explanation. Just the raw content."
+                                        )
+                                    },
+                                    {"role": "user", "content": f"User Request: \"{user_input}\""}
+                                ],
+                                "stream": False
+                            }
+                            try:
+                                gen_resp = requests.post(self.url, json=gen_payload).json()
+                                generated_text = gen_resp.get("message", {}).get("content", tool_args["text_to_type"]).strip()
+                                
+                                # Clean markdown code blocks if the LLM outputted them
+                                clean_gen = re.sub(r'^```[a-zA-Z]*\n', '', generated_text)
+                                clean_gen = re.sub(r'\n```$', '', clean_gen).strip()
+                                tool_args["text_to_type"] = clean_gen
+                            except Exception as e:
+                                print(f"[App Typing Intercept Error] Failed to generate content: {e}")
+
+                        # Timer Duration Correction Intercept (Orchestrator maps all durations to minutes. We translate it correctly here.)
+                        if tool_name == "set_timer":
+                            gen_payload = {
+                                "model": self.base_model,
+                                "messages": [
+                                    {
+                                        "role": "system",
+                                        "content": (
+                                            "You are a duration parser for a timer tool.\n"
+                                            "Look at the user's request and extract the exact time duration they want to set the timer for.\n"
+                                            "Return a JSON object with two keys:\n"
+                                            "- 'minutes': the number of minutes (float)\n"
+                                            "- 'seconds': the number of seconds (float)\n"
+                                            "For example:\n"
+                                            "- '10 seconds' -> {\"minutes\": 0, \"seconds\": 10}\n"
+                                            "- '5 minutes' -> {\"minutes\": 5, \"seconds\": 0}\n"
+                                            "- '1.5 hours' -> {\"minutes\": 90, \"seconds\": 0}\n"
+                                            "Output ONLY the raw JSON object. Do not wrap in ``` code blocks, do not include explanation or extra characters."
+                                        )
+                                    },
+                                    {"role": "user", "content": f"User Request: \"{user_input}\""}
+                                ],
+                                "stream": False
+                            }
+                            try:
+                                gen_resp = requests.post(self.url, json=gen_payload).json()
+                                res_text = gen_resp.get("message", {}).get("content", "").strip()
+                                clean_json = re.sub(r'^```(?:json)?\s*', '', res_text, flags=re.MULTILINE)
+                                clean_json = re.sub(r'```\s*$', '', clean_json, flags=re.MULTILINE).strip()
+                                duration = json.loads(clean_json)
+                                tool_args["minutes"] = float(duration.get("minutes", 0))
+                                tool_args["seconds"] = float(duration.get("seconds", 0))
+                            except Exception as e:
+                                print(f"[Timer Intercept Error] Failed to parse duration: {e}")
+
+                        # Skill Factory Refinement Intercept (Ensure instruction matches user constraints instead of orchestrator's generic hallucination)
+                        if tool_name == "teach_new_skill":
+                            inst_val = tool_args.get("instruction", "")
+                            skill_name_val = tool_args.get("skill_name", "")
+                            gen_payload = {
+                                "model": self.base_model,
+                                "messages": [
+                                    {
+                                        "role": "system",
+                                        "content": (
+                                            "You are a technical coordinator. Your job is to draft a clean, precise instruction for a code generation model.\n"
+                                            "The user wants to create a new python skill. Look at their original request and the skill name.\n"
+                                            "Draft a detailed, step-by-step instruction for writing the Python function. Make sure it explicitly incorporates all constraints, mock values, APIs, or behaviors the user asked for (e.g. if they say 'returns weather is sunny', ensure the instruction specifies returning that exact string, rather than fetching live API data).\n"
+                                            "Do not write the python code itself. Just write the prompt/instruction that describes what the code should do.\n"
+                                            "Keep it clear and direct. Output ONLY the instruction text."
+                                        )
+                                    },
+                                    {"role": "user", "content": f"User Request: \"{user_input}\"\nSkill name: \"{skill_name_val}\"\nOrchestrator draft: \"{inst_val}\""}
+                                ],
+                                "stream": False
+                            }
+                            try:
+                                gen_resp = requests.post(self.url, json=gen_payload).json()
+                                tool_args["instruction"] = gen_resp.get("message", {}).get("content", inst_val).strip()
+                            except Exception as e:
+                                print(f"[Teach Skill Intercept Error] Failed to refine instruction: {e}")
+
                         # WhatsApp Generate Intercept (Base Model handles content creation based on earlier tool results!)
                         if tool_name == "send_whatsapp_message" and "message" in tool_args:
                             msg = str(tool_args["message"])
-                            # Detect hallucinated JSON data from Orchestrator OR explicit summary requests
+                            # Detect if the message contains placeholders, JSON strings, or references to tool results
                             needs_generative_fill = False
-                            if "{" in msg or "[" in msg or "name\":" in msg.lower():
+                            
+                            # Regex patterns for common placeholders: $XXX, $(var), [var], <var>, ..., placeholder, __
+                            placeholder_regex = r"\$X+|\$\(.*?\)|\[.*?\]|<.*?>|\.\.\.|placeholder|__|undefined"
+                            has_placeholder = bool(re.search(placeholder_regex, msg, re.IGNORECASE))
+                            
+                            if "{" in msg or "[" in msg or "name\":" in msg.lower() or has_placeholder:
                                 needs_generative_fill = True
-                            elif len(msg) < 80 and any(m in msg.lower() for m in ["descri", "explain", "tell", "about", "summary"]):
+                            elif len(msg) < 120 and any(m in msg.lower() for m in ["descri", "explain", "tell", "about", "summary", "status", "update", "result", "paper", "diagnostics"]):
                                 needs_generative_fill = True
                                 
                             if needs_generative_fill:
@@ -222,12 +337,14 @@ class FrozenLLMEngine:
                         try:
                             from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeout
                             with ThreadPoolExecutor(max_workers=1) as executor:
-                                future = executor.submit(AVAILABLE_TOOLS[tool_name], **tool_args)
+                                future = executor.submit(tools_executor.AVAILABLE_TOOLS[tool_name], **tool_args)
                                 try:
-                                    tool_result = future.result(timeout=15)
+                                    # Set longer timeout (45s) for heavy vision, script execution, and skill-forging tools, 15s for others
+                                    timeout_val = 45 if tool_name in ["analyze_screen_with_llava", "write_and_run_script", "teach_new_skill"] else 15
+                                    tool_result = future.result(timeout=timeout_val)
                                 except FuturesTimeout:
-                                    tool_result = f"Tool '{tool_name}' timed out after 15 seconds. Please try again."
-                                    print(f"[Timeout] Tool '{tool_name}' exceeded 15s limit.")
+                                    tool_result = f"Tool '{tool_name}' timed out after {timeout_val} seconds. Please try again."
+                                    print(f"[Timeout] Tool '{tool_name}' exceeded {timeout_val}s limit.")
                             if tool_result == "[DEEPSEEK_ROUTING_ACTIVATED]":
                                 return self._generate_thinking_response(system_prompt, user_input, chat_history)
                         except Exception as e:
@@ -288,8 +405,15 @@ class FrozenLLMEngine:
         }
         
         try:
-            response = requests.post(self.url, json=payload).json()
-            raw_text = response.get("message", {}).get("content", "")
+            response = requests.post(self.url, json=payload)
+            # If the model is not found, Ollama returns status 404 or an error
+            if response.status_code == 404 or (response.status_code == 200 and "error" in response.json()):
+                print(f"[Thinking Engine Fallback] Model '{self.thinking_model}' not found or errored. Falling back to base model '{self.base_model}'.")
+                payload["model"] = self.base_model
+                response = requests.post(self.url, json=payload)
+                
+            response_json = response.json()
+            raw_text = response_json.get("message", {}).get("content", "")
             
             # Scrub the structural reasoning tags out so Piper TTS doesn't try to dictate AETHER's inner thoughts
             cleaned_text = re.sub(r'<think>.*?</think>', '', raw_text, flags=re.DOTALL).strip()

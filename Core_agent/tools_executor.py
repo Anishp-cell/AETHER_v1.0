@@ -249,10 +249,11 @@ OLLAMA_TOOL_DEFINITIONS = [
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "minutes": {"type": "number", "description": "Number of minutes to wait before triggering the alarm. Convert hours to minutes if necessary (e.g. 1 hour = 60)."},
+                    "minutes": {"type": "number", "description": "Optional: Number of minutes to wait before triggering the alarm. Defaults to 0."},
+                    "seconds": {"type": "number", "description": "Optional: Number of seconds to wait before triggering the alarm. Defaults to 0. Use this if the user specifies seconds (e.g. '10 seconds')."},
                     "reminder_message": {"type": "string", "description": "A short summary of what AETHER should say out loud when the timer goes off."}
                 },
-                "required": ["minutes", "reminder_message"]
+                "required": ["reminder_message"]
             }
         }
     },

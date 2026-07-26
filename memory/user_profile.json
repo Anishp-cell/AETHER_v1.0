@@ -2,7 +2,14 @@
     "name": "sir",
     "location": "Pune",
     "reminders": [],
-    "remembered_facts": [],
+    "remembered_facts": [
+                        "20 year old CSE student aiming for AI engineer role in Anthropic or nvidia, or Google deepmind",
+                        "Highly research oriented in AI, Machine learning, Deep Learning",
+                        "Preferred coding language is C and python",
+                        "Prefers short, concise, and technical answers over long, conversational ones.",
+                        "Experienced in Computer vision, NLP and transformers, by building multiple projects",
+                        "Has good research experience in AI/ML projects"
+                        ],
     "preferred_apps": [],
     "last_seen": ""
 }

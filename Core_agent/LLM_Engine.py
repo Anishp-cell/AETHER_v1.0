@@ -110,7 +110,8 @@ class FrozenLLMEngine:
                 from arn_router import ARN_ROUTER
                 arn_res = ARN_ROUTER.route_query(user_input)
                 if arn_res.get("is_local_route") and arn_res.get("tool_calls"):
-                    print(f"\n⚡ [ARN Fast-Path] Local Sub-10ms Route Triggered! ({arn_res['latency_ms']}ms | Conf: {arn_res['confidence']})")
+                    print(f"\n[ARN Fast-Path] Local Sub-10ms Route Triggered! ({arn_res['latency_ms']}ms | Conf: {arn_res['confidence']})")
+
                     print(f"   Target Tools: {arn_res['tools']}")
                     print(f"   Payload: {json.dumps(arn_res['tool_calls'])}")
                     tools_to_run = arn_res["tool_calls"]

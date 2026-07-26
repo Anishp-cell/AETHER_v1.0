@@ -101,74 +101,88 @@ class FrozenLLMEngine:
                 }
             ]
         
-        # --- EXECUTION LAYER (Single-Pass Sequential) ---
+        # --- EXECUTION LAYER (Single-Pass Sequential with ARN Fast-Path) ---
         secret_log = ""
-        
-        payload = {
-            "model": target_model,
-            "messages": messages,
-            "stream": False,
-            "tools": tools_executor.OLLAMA_TOOL_DEFINITIONS,
-            "keep_alive": 0,  # Unload model from RAM instantly
-            "options": {"temperature": 0.1}
-        }
-        
         try:
-            response = requests.post(self.url, json=payload)
-            response.raise_for_status() 
-            data = response.json()
-            message = data.get("message", {})
-            
-            raw_content = message.get("content", "").strip()
-            tool_calls_detected = message.get("tool_calls", [])
-            
-            # 1. ATTEMPT JSON FALLBACK PARSING
-            clean_content = re.sub(r'^```(?:json)?\s*', '', raw_content, flags=re.MULTILINE)
-            clean_content = re.sub(r'```\s*$', '', clean_content, flags=re.MULTILINE).strip()
-            fallback_tools = []
-            
-            if clean_content:
-                json_match = re.search(r'\{[^{}]*"name"\s*:\s*"(\w+)"[^{}]*"arguments"\s*:\s*\{[^}]*\}[^}]*\}', clean_content, re.DOTALL)
-                if not json_match:
-                    json_match = re.search(r'\[\s*\{[^{}]*"name"\s*:\s*"(\w+)"', clean_content, re.DOTALL)
-                
-                if json_match:
-                    try:
-                        start_idx = clean_content.find('[')
-                        start_obj = clean_content.find('{')
-                        start = min(start_idx, start_obj) if start_idx != -1 and start_obj != -1 else max(start_idx, start_obj)
-                        
-                        stack = []; json_str = None
-                        for i in range(start, len(clean_content)):
-                            char = clean_content[i]
-                            if char in ['{', '[']: stack.append(char)
-                            elif char in ['}', ']']:
-                                if stack: stack.pop()
-                                if not stack:
-                                    json_str = clean_content[start:i+1]
-                                    break
-                                    
-                        if json_str:
-                            parsed = json.loads(json_str)
-                            fallback_tools = parsed if isinstance(parsed, list) else [parsed]
-                    except Exception as e:
-                        print(f"[JSON Fallback Error] First attempt failed: {e}")
-                        try:
-                            # Try to escape invalid backslashes (e.g. \*.py) that are not valid JSON escape sequences
-                            # Valid sequences in JSON are \", \\, \/, \b, \f, \n, \r, \t, and \uXXXX
-                            sanitized = re.sub(r'\\(?!["\\/bfnrt]|u[0-9a-fA-F]{4})', r'\\\\', json_str)
-                            parsed = json.loads(sanitized)
-                            fallback_tools = parsed if isinstance(parsed, list) else [parsed]
-                            print("[JSON Fallback] Successfully parsed after escaping backslashes.")
-                        except Exception as e2:
-                            print(f"[JSON Fallback Error] Second attempt failed: {e2}")
+            # 1. ARN LOCAL FAST-PATH ROUTER (<10ms CPU)
+            tools_to_run = []
+            try:
+                from arn_router import ARN_ROUTER
+                arn_res = ARN_ROUTER.route_query(user_input)
+                if arn_res.get("is_local_route") and arn_res.get("tool_calls"):
+                    print(f"\n⚡ [ARN Fast-Path] Local Sub-10ms Route Triggered! ({arn_res['latency_ms']}ms | Conf: {arn_res['confidence']})")
+                    print(f"   Target Tools: {arn_res['tools']}")
+                    print(f"   Payload: {json.dumps(arn_res['tool_calls'])}")
+                    tools_to_run = arn_res["tool_calls"]
+            except Exception as e:
+                print(f"[ARN Router Warning] Fast-path evaluation skipped: {e}")
 
-            # 2. EXECUTE TOOLS (Sequential Chaining)
-            tools_to_run = fallback_tools if fallback_tools else tool_calls_detected
+            # 2. CLOUD / OLLAMA ORCHESTRATOR FALLBACK
+            raw_content = ""
+            if not tools_to_run:
+                payload = {
+                    "model": target_model,
+                    "messages": messages,
+                    "stream": False,
+                    "tools": tools_executor.OLLAMA_TOOL_DEFINITIONS,
+                    "keep_alive": 0,  # Unload model from RAM instantly
+                    "options": {"temperature": 0.1}
+                }
+                
+                response = requests.post(self.url, json=payload)
+                response.raise_for_status() 
+                data = response.json()
+                message = data.get("message", {})
+                
+                raw_content = message.get("content", "").strip()
+                tool_calls_detected = message.get("tool_calls", [])
+                
+                clean_content = re.sub(r'^```(?:json)?\s*', '', raw_content, flags=re.MULTILINE)
+                clean_content = re.sub(r'```\s*$', '', clean_content, flags=re.MULTILINE).strip()
+                fallback_tools = []
+                
+                if clean_content:
+                    json_match = re.search(r'\{[^{}]*"name"\s*:\s*"(\w+)"[^{}]*"arguments"\s*:\s*\{[^}]*\}[^}]*\}', clean_content, re.DOTALL)
+                    if not json_match:
+                        json_match = re.search(r'\[\s*\{[^{}]*"name"\s*:\s*"(\w+)"', clean_content, re.DOTALL)
+                    
+                    if json_match:
+                        try:
+                            start_idx = clean_content.find('[')
+                            start_obj = clean_content.find('{')
+                            start = min(start_idx, start_obj) if start_idx != -1 and start_obj != -1 else max(start_idx, start_obj)
+                            
+                            stack = []; json_str = None
+                            for i in range(start, len(clean_content)):
+                                char = clean_content[i]
+                                if char in ['{', '[']: stack.append(char)
+                                elif char in ['}', ']']:
+                                    if stack: stack.pop()
+                                    if not stack:
+                                        json_str = clean_content[start:i+1]
+                                        break
+                                        
+                            if json_str:
+                                parsed = json.loads(json_str)
+                                fallback_tools = parsed if isinstance(parsed, list) else [parsed]
+                        except Exception as e:
+                            print(f"[JSON Fallback Error] First attempt failed: {e}")
+                            try:
+                                sanitized = re.sub(r'\\(?!["\\/bfnrt]|u[0-9a-fA-F]{4})', r'\\\\', json_str)
+                                parsed = json.loads(sanitized)
+                                fallback_tools = parsed if isinstance(parsed, list) else [parsed]
+                            except Exception as e2:
+                                print(f"[JSON Fallback Error] Second attempt failed: {e2}")
+
+                tools_to_run = fallback_tools if fallback_tools else tool_calls_detected
+
+
             
+            secret_log = ""
             if tools_to_run:
                 tool_results_history = []
-                messages.append({'role': 'assistant', 'content': raw_content if raw_content else 'Executing tools...'})
+                messages.append({'role': 'assistant', 'content': 'Executing tools...'})
+
                 
                 for tool_call in tools_to_run:
                     # Extract name & args

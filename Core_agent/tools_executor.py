@@ -337,10 +337,11 @@ def load_dynamic_skills():
                         if not any(t["function"]["name"] == skill_name for t in OLLAMA_TOOL_DEFINITIONS):
                             OLLAMA_TOOL_DEFINITIONS.append(schema)
                             
-                        print(f"[SkillFactory] ⚡ Hot-Loaded dynamic skill: {skill_name}")
+                        print(f"[SkillFactory] Hot-Loaded dynamic skill: {skill_name}")
                         break
                         
             except Exception as e:
                 print(f"[SkillFactory Error] Failed to load dynamic skill {filename}: {e}")
+
 
 load_dynamic_skills()

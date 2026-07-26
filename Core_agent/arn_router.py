@@ -101,20 +101,22 @@ class ARNRouter:
         attention_mask = inputs["attention_mask"].to(self.device)
 
         with torch.no_grad():
-            # Get raw logits from FAR cross-attention head and tagger
-            features = self.model.encoder(input_ids, attention_mask)[0]
-            far_logits = self.model.far_head(features)
+            outputs = self.model.encoder(input_ids=input_ids, attention_mask=attention_mask)
+            features = outputs.last_hidden_state
+            
+            far_logits, routing_weights = self.model.far(features, attention_mask)
             tool_probs = torch.sigmoid(far_logits)[0]
             
-            # Predict tools above binary activation threshold (0.5)
-            tool_preds = (tool_probs >= self.config.FAR_THRESHOLD).int()
+            far_threshold = getattr(self.config, "FAR_THRESHOLD", 0.5)
+            tool_preds = (tool_probs >= far_threshold).int()
+
             active_indices = torch.where(tool_preds)[0].tolist()
             predicted_tools = [IDX_TO_TOOL[idx] for idx in active_indices]
 
-            # Sequence tagging decoding
-            tag_logits = self.model.tag_head(features)
-            tag_preds = self.model.crf(tag_logits, mask=attention_mask.bool())
+            emissions = self.model.slot_tagger(features)
+            tag_preds = self.model.crf.viterbi_decode(emissions, attention_mask)
             predicted_tag_ids = tag_preds[0]
+
 
         # Calculate max and mean FAR confidence for active predictions
         if len(active_indices) > 0:

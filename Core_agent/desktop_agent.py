@@ -491,3 +491,46 @@ def set_timer(minutes: float = 0.0, seconds: float = 0.0, reminder_message: str 
     except Exception as e:
         return f"[Timer Error]: {str(e)}"
 
+
+# ── AETHER V2.0 NATIVE WINDOWS GLOBAL HOTKEY LISTENER (Ctrl+Shift+A) ──
+
+def listen_for_aether_hotkey(callback=None):
+    """
+    Registers a zero-dependency, native Windows OS global hotkey (Ctrl + Shift + A).
+    When pressed anywhere in Windows, triggers the callback to focus AETHER.
+    """
+    import ctypes
+    import ctypes.wintypes
+    import threading
+
+    def _hotkey_loop():
+        user32 = ctypes.windll.user32
+        HOTKEY_ID = 101
+        MOD_CONTROL = 0x0002
+        MOD_SHIFT = 0x0004
+        VK_A = 0x41  # 'A' key
+        WM_HOTKEY = 0x0312
+
+        if user32.RegisterHotKey(None, HOTKEY_ID, MOD_CONTROL | MOD_SHIFT, VK_A):
+            print("\n⚡ [AETHER V2.0] Registered Native Global Hotkey: Press 'Ctrl + Shift + A' anywhere!")
+            msg = ctypes.wintypes.MSG()
+            try:
+                while user32.GetMessageW(ctypes.byref(msg), None, 0, 0) != 0:
+                    if msg.message == WM_HOTKEY and msg.wParam == HOTKEY_ID:
+                        print("\n🎯 [Global Hotkey Triggered] Ctrl + Shift + A pressed!")
+                        if callback:
+                            callback()
+                        else:
+                            _focus_window_by_title("aether", timeout=2.0)
+                    user32.TranslateMessage(ctypes.byref(msg))
+                    user32.DispatchMessageW(ctypes.byref(msg))
+            finally:
+                user32.UnregisterHotKey(None, HOTKEY_ID)
+        else:
+            print("[AETHER Hotkey Warning] Could not register global hotkey (Ctrl+Shift+A).")
+
+    thread = threading.Thread(target=_hotkey_loop, daemon=True)
+    thread.start()
+    return thread
+
+

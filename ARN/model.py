@@ -11,22 +11,21 @@ os.environ["HF_HUB_DISABLE_SYMLINKS"] = "1"
 from transformers import AutoModel
 
 class AetherRoutingNetwork(nn.Module):
-    def __init__(self,config:ARNconfig):
+    def __init__(self, config: ARNconfig, load_pretrained: bool = True):
         super().__init__()
-        self.config=config
-        # Load pre-trained BERT-tiny as shared trunk
-        self.encoder = AutoModel.from_pretrained("google/bert_uncased_L-2_H-128_A-2")
-        
-        # Freeze the BERT-tiny encoder trunk to prevent catastrophic forgetting
-        # Only FAR, CRF, and slot tagger heads will be trained
-        for param in self.encoder.parameters():
-            param.requires_grad = False
-            
-        self.far=FactoredAttentionRouter(num_tools=config.NUM_TOOLS,
-                                        hidden_dim=config.HIDDEN_DIM,
-                                        dropout=config.DROPOUT)
-        self.slot_tagger=nn.Linear(config.HIDDEN_DIM,len(TAG_TO_IDX))
-        self.crf=CRF(num_tags=len(TAG_TO_IDX))
+        self.config = config
+        if load_pretrained:
+            # Load pre-trained BERT-tiny as shared trunk (eager attention for ONNX compatibility)
+            self.encoder = AutoModel.from_pretrained("google/bert_uncased_L-2_H-128_A-2", attn_implementation="eager")
+            for param in self.encoder.parameters():
+                param.requires_grad = False
+        else:
+            self.encoder = None
+
+        self.far = FactoredAttentionRouter(num_tools=config.NUM_TOOLS, hidden_dim=config.HIDDEN_DIM, dropout=config.DROPOUT)
+        self.slot_tagger = nn.Linear(config.HIDDEN_DIM, len(TAG_TO_IDX))
+        self.crf = CRF(num_tags=len(TAG_TO_IDX))
+
     def forward(self, input_ids, attention_mask, tags=None, tool_labels=None):
         # Forward pass through frozen BERT-tiny trunk
         outputs = self.encoder(input_ids=input_ids, attention_mask=attention_mask)

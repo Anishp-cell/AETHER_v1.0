@@ -23,10 +23,14 @@ class ScreenCapture:
         """
         import time
         try:
-            from screen_overlay import flash_orange_border
+            try:
+                from vision.screen_overlay import flash_orange_border
+            except ImportError:
+                from screen_overlay import flash_orange_border
             flash_orange_border(duration_ms=350)
-        except Exception:
-            pass
+        except Exception as _e:
+            print(f"[Vision Layer Warning] Overlay trigger failed: {_e}")
+
 
         start_time = time.perf_counter()
         with mss.mss() as sct:

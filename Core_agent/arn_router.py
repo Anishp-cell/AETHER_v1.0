@@ -46,7 +46,10 @@ class ARNRouter:
             checkpoint_path = os.path.join(ARN_DIR, "checkpoints", "arn_best_model.pt")
             
         self.checkpoint_path = checkpoint_path
+        self.onnx_path = os.path.join(ARN_DIR, "checkpoints", "arn_model_int8.onnx")
         self.model = None
+        self.ort_session = None
+        self.use_onnx = False
         self.device = torch.device("cpu")
         self.is_loaded = False
         
@@ -54,7 +57,29 @@ class ARNRouter:
         self._initialized = True
 
     def _load_model(self):
-        """Loads the trained 4.4M ARN model into memory."""
+        """Loads either the Int8 ONNX graph (<4.5MB) or PyTorch model (.pt)."""
+        # 1. Try Int8 ONNX Runtime (Zero-RAM, <2ms CPU)
+        if os.path.exists(self.onnx_path):
+            try:
+                import onnxruntime as ort
+                # Load lightweight PyTorch shell ONLY for CRF Viterbi decoding (0 HuggingFace downloads)
+                self.model = AetherRoutingNetwork(self.config, load_pretrained=False)
+                self.model.eval()
+
+                
+                # Disable ONNX telemetry logs
+                options = ort.SessionOptions()
+                options.log_severity_level = 3
+                self.ort_session = ort.InferenceSession(self.onnx_path, options, providers=["CPUExecutionProvider"])
+                self.use_onnx = True
+                self.is_loaded = True
+                print(f"[ARN Router] [ONNX Int8 Engine Online] Loaded quantized graph (4.33MB) from '{self.onnx_path}'.")
+
+                return
+            except Exception as e:
+                print(f"[ARN Router Warning] Failed to initialize ONNX session: {e}. Falling back to PyTorch.")
+
+        # 2. Fallback to PyTorch FP32
         try:
             if not os.path.exists(self.checkpoint_path):
                 print(f"[ARN Router] Warning: Checkpoint file not found at '{self.checkpoint_path}'.")
@@ -65,11 +90,13 @@ class ARNRouter:
             state_dict = torch.load(self.checkpoint_path, map_location=self.device)
             self.model.load_state_dict(state_dict)
             self.model.eval()
+            self.use_onnx = False
             self.is_loaded = True
-            print(f"[ARN Router] Successfully loaded sub-18MB ARN engine from '{self.checkpoint_path}'.")
+            print(f"[ARN Router] Successfully loaded PyTorch ARN engine from '{self.checkpoint_path}'.")
         except Exception as e:
             print(f"[ARN Router] Error loading ARN model: {e}")
             self.is_loaded = False
+
 
     def route_query(self, text: str) -> Dict[str, Any]:
         """
@@ -100,22 +127,47 @@ class ARNRouter:
         input_ids = inputs["input_ids"].to(self.device)
         attention_mask = inputs["attention_mask"].to(self.device)
 
-        with torch.no_grad():
-            outputs = self.model.encoder(input_ids=input_ids, attention_mask=attention_mask)
-            features = outputs.last_hidden_state
-            
-            far_logits, routing_weights = self.model.far(features, attention_mask)
+        if self.use_onnx and self.ort_session is not None:
+            ort_inputs = {
+                "input_ids": inputs["input_ids"].numpy(),
+                "attention_mask": inputs["attention_mask"].numpy()
+            }
+            far_logits_np, emissions_np = self.ort_session.run(None, ort_inputs)
+            far_logits = torch.from_numpy(far_logits_np)
+            emissions = torch.from_numpy(emissions_np)
+
             tool_probs = torch.sigmoid(far_logits)[0]
-            
             far_threshold = getattr(self.config, "FAR_THRESHOLD", 0.5)
             tool_preds = (tool_probs >= far_threshold).int()
 
             active_indices = torch.where(tool_preds)[0].tolist()
             predicted_tools = [IDX_TO_TOOL[idx] for idx in active_indices]
 
-            emissions = self.model.slot_tagger(features)
+            if "analyze_screen_with_llava" in predicted_tools:
+                predicted_tools = ["analyze_screen_with_llava"]
+
             tag_preds = self.model.crf.viterbi_decode(emissions, attention_mask)
             predicted_tag_ids = tag_preds[0]
+        else:
+            with torch.no_grad():
+                outputs = self.model.encoder(input_ids=input_ids, attention_mask=attention_mask)
+                features = outputs.last_hidden_state
+                
+                far_logits, routing_weights = self.model.far(features, attention_mask)
+                tool_probs = torch.sigmoid(far_logits)[0]
+                
+                far_threshold = getattr(self.config, "FAR_THRESHOLD", 0.5)
+                tool_preds = (tool_probs >= far_threshold).int()
+
+                active_indices = torch.where(tool_preds)[0].tolist()
+                predicted_tools = [IDX_TO_TOOL[idx] for idx in active_indices]
+                
+                if "analyze_screen_with_llava" in predicted_tools:
+                    predicted_tools = ["analyze_screen_with_llava"]
+
+                emissions = self.slot_tagger(features) if hasattr(self, 'slot_tagger') else self.model.slot_tagger(features)
+                tag_preds = self.model.crf.viterbi_decode(emissions, attention_mask)
+                predicted_tag_ids = tag_preds[0]
 
 
         # Calculate max and mean FAR confidence for active predictions

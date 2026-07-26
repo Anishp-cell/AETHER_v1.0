@@ -507,7 +507,10 @@ Golden Rules:
                                     "best ", "how to ",
                                     "summary of", "give me", "today's",
                                     "what happened", "recent ", "update on", "updates",
+                                    "top ", "grossing", "highest", "most popular", "chart", "billboard",
+                                    "2026", "2025", "till now", "so far", "this year"
                                 ]
+
                                 
                                 # Track web search need INDEPENDENTLY of tool routing
                                 _needs_web_search = any(kw in low for kw in web_keywords)

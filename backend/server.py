@@ -50,6 +50,43 @@ from screen_capture import ScreenCapture
 from micro_expert import MicroExpert
 from policy_router import PolicyRouter
 
+# Native Windows Floating HUD Overlay Integration
+try:
+    sys.path.insert(0, os.path.join(PROJECT_ROOT, "Core_agent"))
+    from desktop_overlay import DESKTOP_HUD
+    from arn_router import ARN_ROUTER
+    from tools_executor import AVAILABLE_TOOLS
+
+    def _process_hud_action(prompt_text):
+        try:
+            route_res = ARN_ROUTER.route_query(prompt_text)
+            if route_res["is_local_route"]:
+                tools = route_res["tools"]
+                payload = route_res["tool_calls"]
+                DESKTOP_HUD.append_log(f"ARN Fast-Path Route: {tools}")
+                for call in payload:
+                    t_name = call["name"]
+                    t_args = call["arguments"]
+                    if t_name in AVAILABLE_TOOLS:
+                        res = AVAILABLE_TOOLS[t_name](**t_args)
+                        DESKTOP_HUD.append_log(f"Result: {res}")
+            else:
+                DESKTOP_HUD.append_log(f"Routing to LLM Engine...")
+                if 'llm' in globals() and llm is not None:
+                    response = llm.generate_response(prompt_text)
+                    DESKTOP_HUD.append_log(f"AETHER: {response[:150]}...")
+                else:
+                    DESKTOP_HUD.append_log("LLM Engine initializing... Please wait.")
+        except Exception as _e:
+            DESKTOP_HUD.append_log(f"Error: {_e}")
+
+
+    DESKTOP_HUD.action_callback = _process_hud_action
+    DESKTOP_HUD.start_in_thread()
+except Exception as _e:
+    print(f"[Server Warning] Could not initialize Desktop HUD: {_e}")
+
+
 # ──────────────────────────────────────────────────────────────────────
 # Global State
 # ──────────────────────────────────────────────────────────────────────
@@ -215,9 +252,11 @@ def ai_loop():
     cam_thread.start()
 
     # 2. Init core engines — PARALLELIZED
+    global llm, policy_router
     print("[Logic Layer] Triple-Model LLM Engine Initialized (qwen2.5-coder:1.5b, deepseek-r1:1.5b, plano:3b)")
     llm = FrozenLLMEngine(base_model="qwen2.5-coder:1.5b", thinking_model="deepseek-r1:1.5b", orchestrator_model="Aether-Orchestrator")
     policy_router = PolicyRouter()
+
 
     tts_ref = [None]; stt_ref = [None]; wake_ref = [None]; micro_ref = [None]
 

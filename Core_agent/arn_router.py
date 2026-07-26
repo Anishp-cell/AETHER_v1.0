@@ -295,6 +295,22 @@ class ARNRouter:
 
 
 
+        # Fallback keyword rules if ARN confidence is low or tool list is empty
+        low_text = text.lower()
+        if len(predicted_tools) == 0 or confidence < self.confidence_threshold:
+            if any(kw in low_text for kw in ["system diagnostics", "system status", "telemetry", "cpu", "ram", "battery"]):
+                predicted_tools = ["get_system_diagnostics"]
+                confidence = 0.99
+                tool_calls = [{"name": "get_system_diagnostics", "arguments": {}}]
+            elif any(kw in low_text for kw in ["analyze my screen", "read my screen", "what is on my screen", "what's on my screen", "screen analysis"]):
+                predicted_tools = ["analyze_screen_with_llava"]
+                confidence = 0.99
+                tool_calls = [{"name": "analyze_screen_with_llava", "arguments": {"task_query": "Describe what is on screen"}}]
+            elif any(kw in low_text for kw in ["current time", "what time is it", "what's the time"]):
+                predicted_tools = ["get_current_time"]
+                confidence = 0.99
+                tool_calls = [{"name": "get_current_time", "arguments": {}}]
+
         # Hybrid local vs cloud decision rule
         is_local = (
             len(predicted_tools) > 0 and 
@@ -309,6 +325,7 @@ class ARNRouter:
             "arguments": arguments,
             "tool_calls": tool_calls
         }
+
 
 
 # Global singleton instance for quick importing

@@ -196,6 +196,10 @@ class ARNRouter:
                 elif tool_name in ["search_web", "search_and_read_web"]:
                     if tag_key in ["query", "message", "target"]:
                         tool_args["query"] = val
+                elif tool_name == "analyze_screen_with_llava":
+                    if tag_key in ["query", "message", "target"]:
+                        tool_args["task_query"] = val
+
                 elif tool_name == "handle_smart_home":
                     if tag_key == "device":
                         tool_args["device"] = val

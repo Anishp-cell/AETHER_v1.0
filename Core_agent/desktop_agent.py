@@ -329,16 +329,18 @@ def open_url(url: str) -> str:
     except Exception as e:
         return f"[Desktop Sub-Agent Error] URL navigation failed: {e}"
 
-def analyze_screen_with_llava(task_query: str) -> str:
+def analyze_screen_with_llava(task_query: str = None, query: str = None, **kwargs) -> str:
     """
     Takes a screenshot of the user's desktop, encodes it, and sends it to the local 
     multimodal model (llava-phi3) for analysis.
     """
+    prompt_query = task_query or query or "Describe what is on screen"
     try:
         import pyautogui
         import base64
         import requests
         from io import BytesIO
+
         
         image = pyautogui.screenshot()
         
@@ -359,10 +361,11 @@ def analyze_screen_with_llava(task_query: str) -> str:
         
         payload = {
             "model": "llava-phi3",
-            "prompt": f"You are a computer use vision assistant analyzing a screenshot. {task_query} Provide highly specific details.",
+            "prompt": f"You are a computer use vision assistant analyzing a screenshot. {prompt_query} Provide highly specific details.",
             "images": [img_str],
             "stream": False
         }
+
         
         print("\n👁️ [Agent Swarm] Vision module analyzing screen...")
         res = requests.post("http://127.0.0.1:11434/api/generate", json=payload).json()

@@ -172,19 +172,72 @@ class ARNRouter:
         # Build tool calls payload compatible with AETHER tools_executor
         tool_calls = []
         for tool_name in predicted_tools:
-            # Extract arguments belonging to this tool prefix (e.g. whatsapp_message -> text)
             tool_args = {}
             for tag_key, val in arguments.items():
-                if tag_key.startswith(f"{tool_name}_"):
-                    param_name = tag_key[len(f"{tool_name}_"):]
-                    tool_args[param_name] = val
-                elif "_" not in tag_key:
-                    tool_args[tag_key] = val
+                # Direct tool-specific parameter mapping
+                if tool_name == "send_whatsapp_message":
+                    if tag_key == "contact":
+                        tool_args["contact_name"] = val
+                    elif tag_key == "message":
+                        tool_args["message"] = val
+                elif tool_name == "open_app_and_type":
+                    if tag_key == "app":
+                        tool_args["app_name"] = val
+                    elif tag_key in ["message", "query", "value"]:
+                        tool_args["text_to_type"] = val
+                elif tool_name == "set_timer":
+                    if tag_key == "value" and val.isdigit():
+                        tool_args["minutes"] = float(val)
+                    elif tag_key in ["reminder", "message"]:
+                        tool_args["reminder_message"] = val
+                elif tool_name == "open_url":
+                    if tag_key in ["url", "target"]:
+                        tool_args["url"] = val
+                elif tool_name in ["search_web", "search_and_read_web"]:
+                    if tag_key in ["query", "message", "target"]:
+                        tool_args["query"] = val
+                elif tool_name == "handle_smart_home":
+                    if tag_key == "device":
+                        tool_args["device"] = val
+                    elif tag_key == "action":
+                        tool_args["action"] = val
+                elif tool_name == "media_control":
+                    if tag_key == "action":
+                        tool_args["action"] = val
+                    elif tag_key == "value" and val.isdigit():
+                        tool_args["value"] = int(val)
+                elif tool_name == "run_computer_command":
+                    if tag_key == "action":
+                        tool_args["action_type"] = val
+                    elif tag_key == "target":
+                        tool_args["target"] = val
+                else:
+                    # Fallback mapping
+                    if tag_key.startswith(f"{tool_name}_"):
+                        param_name = tag_key[len(f"{tool_name}_"):]
+                        tool_args[param_name] = val
+                    elif "_" not in tag_key:
+                        tool_args[tag_key] = val
+
+            # Default fallbacks if required fields missing
+            if tool_name == "send_whatsapp_message":
+                if "contact_name" not in tool_args:
+                    contact_match = re.search(r'(?:to|contact)\s+([A-Za-z0-9\s]+?)\s+(?:saying|that|telling|msg|message|say|$)', text, re.IGNORECASE)
+                    if contact_match:
+                        tool_args["contact_name"] = contact_match.group(1).strip()
+                if "message" not in tool_args:
+                    msg_match = re.search(r'(?:saying|that|telling|message|msg)\s+(.+)$', text, re.IGNORECASE)
+                    tool_args["message"] = msg_match.group(1).strip() if msg_match else text
+
+            if tool_name == "set_timer" and "reminder_message" not in tool_args:
+                tool_args["reminder_message"] = "Timer complete"
 
             tool_calls.append({
                 "name": tool_name,
                 "arguments": tool_args
             })
+
+
 
         # Hybrid local vs cloud decision rule
         is_local = (

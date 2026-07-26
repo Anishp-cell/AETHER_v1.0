@@ -61,7 +61,9 @@ export function useAether() {
   const [energy, setEnergy] = useState(0);
   const [connected, setConnected] = useState(false);
   const [cameraFrame, setCameraFrame] = useState<string | null>(null);
+  const [screenCaptureFlash, setScreenCaptureFlash] = useState(false);
   const [systemMetrics, setSystemMetrics] = useState<{ cpu: number; ram: number; battery: number | null; plugged: boolean | null } | null>(null);
+
   const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
@@ -91,7 +93,11 @@ export function useAether() {
         setCameraFrame(msg.frame);
       } else if (msg.type === "system_metrics") {
         setSystemMetrics({ cpu: msg.cpu, ram: msg.ram, battery: msg.battery, plugged: msg.plugged });
+      } else if (msg.type === "screen_capture_flash") {
+        setScreenCaptureFlash(true);
+        setTimeout(() => setScreenCaptureFlash(false), msg.duration || 350);
       }
+
     };
 
     return () => ws.close();
@@ -140,5 +146,6 @@ export function useAether() {
     }
   }, []);
 
-  return { state, energy, connected, cameraFrame, systemMetrics, sendPTT, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode };
+  return { state, energy, connected, cameraFrame, screenCaptureFlash, systemMetrics, sendPTT, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode };
 }
+

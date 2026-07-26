@@ -19,7 +19,8 @@ const HologramOrb = dynamic(() => import("./components/HologramOrb"), {
 });
 
 export default function Home() {
-  const { state, energy, connected, systemMetrics, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode } = useAether();
+  const { state, energy, connected, systemMetrics, screenCaptureFlash, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode } = useAether();
+
 
   const stateGlowClass = 
     state.mic_muted 
@@ -136,7 +137,9 @@ export default function Home() {
             energy={energy}
             microExpertSignal={state.micro_expert_signal}
             adapters={state.adapters}
+            isScreenCapturing={screenCaptureFlash}
           />
+
           
           {/* Core 3D Hologram */}
           <HologramOrb status={state.status} energy={energy} isMuted={Boolean(state.mic_muted)} />

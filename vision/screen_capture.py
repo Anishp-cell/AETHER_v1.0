@@ -20,19 +20,24 @@ class ScreenCapture:
         """
         Captures the primary monitor, resizes to max_width (preserving aspect ratio),
         and returns a base64-encoded JPEG string suitable for LLM vision APIs.
-        
-        Args:
-            max_width: Maximum width of the output image (smaller = faster LLM processing).
-            quality: JPEG compression quality (1-100). Lower = smaller payload.
-        
-        Returns:
-            base64 encoded JPEG string
         """
+        import time
+        try:
+            from screen_overlay import flash_orange_border
+            flash_orange_border(duration_ms=350)
+        except Exception:
+            pass
+
+        start_time = time.perf_counter()
         with mss.mss() as sct:
             monitor = sct.monitors[1]  # Primary monitor
             screenshot = sct.grab(monitor)
         
+        elapsed_ms = (time.perf_counter() - start_time) * 1000.0
+        print(f"[Vision Layer] 📸 Screen capture complete in {elapsed_ms:.1f}ms! You can now freely switch windows.")
+        
         img = Image.frombytes("RGB", screenshot.size, screenshot.bgra, "raw", "BGRX")
+
         
         # Save debug screenshot
         import os

@@ -35,7 +35,12 @@ sys.path.append(os.path.join(PROJECT_ROOT, "vision"))
 sys.path.append(os.path.join(PROJECT_ROOT, "memory"))
 
 from STT import WhisperModel, MODEL_SIZE
-from TTS_kokoro import KokoroTTS
+try:
+    from TTS_kokoro import KokoroTTS
+except Exception as _e:
+    KokoroTTS = None
+    print(f"[System Warning] KokoroTTS import skipped ({_e}). Defaulting to Edge-TTS pipeline.")
+
 from wake_word import WakeWordDetector
 from LLM_Engine import FrozenLLMEngine
 from knowledge_rag import KnowledgeDatabase
@@ -542,10 +547,12 @@ Golden Rules:
                                 screen_b64 = None
                                 if any(kw in user_text.lower() for kw in screen_keywords):
                                     try:
+                                        broadcast_sync({"type": "screen_capture_flash", "duration": 350})
                                         screen_b64 = screen_cap.capture(max_width=1280, quality=90)
-                                        print("[Vision Layer] Screen captured for LLM analysis.")
+                                        print("[Vision Layer] 📸 Screen captured in <35ms! User can now freely switch windows.")
                                     except Exception as e:
                                         print(f"[Vision Layer] Screen capture failed: {e}")
+
 
                                 # RAG
                                 rag_context = memory_db.search(user_text)

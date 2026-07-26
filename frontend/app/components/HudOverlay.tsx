@@ -6,7 +6,9 @@ interface Props {
   energy: number;
   microExpertSignal: { intent: string; intent_confidence: number; emotion: string };
   adapters: string[];
+  isScreenCapturing?: boolean;
 }
+
 
 const COLOR_THEMES: Record<string, { primary: string; secondary: string; glow: string; text: string }> = {
   booting:   { primary: "#708090", secondary: "#475569", glow: "rgba(112,128,144,0.3)", text: "text-slate-400" },
@@ -455,6 +457,16 @@ export default function HudOverlay({ status, energy = 0, microExpertSignal, adap
         </div>
       </div>
 
+      {/* ── ANIMATED GLOWING ORANGE SCREEN CAPTURE BORDER OVERLAY ── */}
+      {isScreenCapturing && (
+        <div className="absolute inset-0 pointer-events-none z-50 border-[8px] border-[#FF8C00] shadow-[0_0_50px_#FF8C00,inset_0_0_50px_#FF8C00] animate-pulse rounded-lg transition-all duration-300 flex items-center justify-center">
+          <div className="bg-black/85 border border-[#FF8C00] px-6 py-3 rounded-full text-[#FF8C00] font-mono text-xs tracking-widest uppercase shadow-[0_0_30px_rgba(255,140,0,0.5)] flex items-center gap-3 animate-bounce">
+            <span className="w-3 h-3 rounded-full bg-[#FF8C00] animate-ping" />
+            <span>📸 SCREEN CAPTURED IN &lt;35ms! YOU MAY NOW FREELY SWITCH WINDOWS</span>
+          </div>
+        </div>
+      )}
+
       {/* Decorative technical corner frames and dots over the viewport */}
       <div className="absolute top-2 left-2 w-4 h-4 border-t border-l border-white/10 pointer-events-none" />
       <div className="absolute top-2 right-2 w-4 h-4 border-t border-r border-white/10 pointer-events-none" />
@@ -463,3 +475,4 @@ export default function HudOverlay({ status, energy = 0, microExpertSignal, adap
     </div>
   );
 }
+

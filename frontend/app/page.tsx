@@ -1,13 +1,15 @@
 "use client";
 import dynamic from "next/dynamic";
 import { useAether } from "./hooks/useAether";
+import { useHandGesture } from "./hooks/useHandGesture";
 import SystemStatus from "./components/SystemStatus";
 import ChatPanel from "./components/ChatPanel";
 import SystemMonitor from "./components/SystemMonitor";
+import CameraFeed from "./components/CameraFeed";
 import Waveform from "./components/Waveform";
 import HudOverlay from "./components/HudOverlay";
 import AetherCanvas from "./components/AetherCanvas";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 
 // Dynamic import for Three.js (no SSR)
 const HologramOrb = dynamic(() => import("./components/HologramOrb"), {
@@ -20,8 +22,10 @@ const HologramOrb = dynamic(() => import("./components/HologramOrb"), {
 });
 
 export default function Home() {
-  const { state, energy, connected, systemMetrics, screenCaptureFlash, latestArtifact, clearArtifact, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode } = useAether();
+  const { state, energy, connected, cameraFrame, systemMetrics, screenCaptureFlash, latestArtifact, clearArtifact, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode } = useAether();
 
+  const [gestureEnabled, setGestureEnabled] = useState(false);
+  const gestureData = useHandGesture(gestureEnabled);
 
   const stateGlowClass = 
     state.mic_muted 
@@ -70,6 +74,19 @@ export default function Home() {
           </span>
         </div>
         <div className="flex items-center gap-4">
+          {/* Gesture Toggle Button */}
+          <button
+            onClick={() => setGestureEnabled((prev) => !prev)}
+            className={`px-3 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider transition-all duration-300 flex items-center gap-1.5 border ${
+              gestureEnabled
+                ? "bg-cyan-500/20 text-cyan-300 border-cyan-400/50 shadow-[0_0_15px_rgba(0,245,255,0.3)] animate-pulse"
+                : "bg-white/[0.03] text-gray-500 border-white/[0.05] hover:text-gray-300"
+            }`}
+          >
+            <span>🖐️</span>
+            <span>GESTURE: {gestureEnabled ? "ON" : "OFF"}</span>
+          </button>
+
           {/* Mode Toggle */}
           <div className="flex items-center gap-1 bg-white/[0.03] p-1 rounded-lg border border-white/[0.05]">
             <button
@@ -123,7 +140,7 @@ export default function Home() {
             />
           </div>
           <div className="h-56 border-t border-white/[0.04] flex-shrink-0 bg-black/20">
-            <SystemMonitor metrics={systemMetrics} />
+            <CameraFeed frame={cameraFrame} gestureLandmarks={gestureData.landmarks} />
           </div>
         </aside>
 
@@ -141,9 +158,8 @@ export default function Home() {
             isScreenCapturing={screenCaptureFlash}
           />
 
-          
           {/* Core 3D Hologram */}
-          <HologramOrb status={state.status} energy={energy} isMuted={Boolean(state.mic_muted)} />
+          <HologramOrb status={state.status} energy={energy} isMuted={Boolean(state.mic_muted)} gestureData={gestureData} />
         </section>
 
         {/* RIGHT: Chat Transcript */}

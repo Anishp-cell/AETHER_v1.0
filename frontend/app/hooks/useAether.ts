@@ -54,6 +54,7 @@ export interface AetherState {
   authRequest: { action_name: string; details: string; } | null;
   mic_muted?: boolean;
   latest_artifact?: CodingArtifact | null;
+  camera_frame?: string | null;
 }
 
 const DEFAULT_STATE: AetherState = {

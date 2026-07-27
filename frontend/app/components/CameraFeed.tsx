@@ -1,11 +1,62 @@
 "use client";
+import { useEffect, useRef } from "react";
 
 interface Props {
   frame: string | null;
   emotionSignal?: string;
+  gestureLandmarks?: Array<{ x: number; y: number; z: number }> | null;
 }
 
-export default function CameraFeed({ frame, emotionSignal }: Props) {
+export default function CameraFeed({ frame, emotionSignal, gestureLandmarks }: Props) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  // Draw MediaPipe Hand Skeleton connections on overlay canvas
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (gestureLandmarks && gestureLandmarks.length === 21) {
+      const w = canvas.width;
+      const h = canvas.height;
+
+      // Hand skeleton connections (21 MediaPipe points)
+      const connections = [
+        [0, 1], [1, 2], [2, 3], [3, 4],     // Thumb
+        [0, 5], [5, 6], [6, 7], [7, 8],     // Index
+        [5, 9], [9, 10], [10, 11], [11, 12], // Middle
+        [9, 13], [13, 14], [14, 15], [15, 16], // Ring
+        [13, 17], [17, 18], [18, 19], [19, 20], // Pinky
+        [0, 17],
+      ];
+
+      ctx.strokeStyle = "#00F5FF";
+      ctx.lineWidth = 2;
+      ctx.shadowColor = "#00F5FF";
+      ctx.shadowBlur = 8;
+
+      connections.forEach(([i, j]) => {
+        const p1 = gestureLandmarks[i];
+        const p2 = gestureLandmarks[j];
+        ctx.beginPath();
+        ctx.moveTo(p1.x * w, p1.y * h);
+        ctx.lineTo(p2.x * w, p2.y * h);
+        ctx.stroke();
+      });
+
+      // Draw glowing joint nodes
+      gestureLandmarks.forEach((pt, idx) => {
+        ctx.fillStyle = idx === 4 || idx === 8 ? "#FF007F" : "#FFFFFF"; // Highlight thumb & index tip in magenta
+        ctx.beginPath();
+        ctx.arc(pt.x * w, pt.y * h, idx === 4 || idx === 8 ? 4 : 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+  }, [gestureLandmarks]);
+
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
@@ -47,6 +98,14 @@ export default function CameraFeed({ frame, emotionSignal }: Props) {
           </div>
         )}
 
+        {/* Hand Landmark Skeleton Canvas Overlay */}
+        <canvas
+          ref={canvasRef}
+          width={480}
+          height={360}
+          className="absolute inset-0 w-full h-full pointer-events-none z-10"
+        />
+
         {/* Scanline overlay effect */}
         {frame && (
           <div
@@ -69,10 +128,10 @@ export default function CameraFeed({ frame, emotionSignal }: Props) {
 
         {/* Bottom info strip */}
         {frame && (
-          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent px-3 py-2">
+          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent px-3 py-2 z-20">
             <div className="flex items-center justify-between">
               <span className="text-[9px] font-mono text-cyan-400/60 tracking-wider uppercase">
-                MediaPipe FaceMesh
+                {gestureLandmarks ? "MediaPipe WASM Hands" : "MediaPipe FaceMesh"}
               </span>
               <span className="text-[9px] font-mono text-green-400/60">
                 ● REC

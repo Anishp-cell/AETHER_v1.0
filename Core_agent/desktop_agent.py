@@ -409,12 +409,15 @@ def play_spotify_media(query: str) -> str:
                 q_lower = q_lower[len(prefix):].strip()
 
         # 1. Liked Songs / My Music Fallback
-        if q_lower in ("liked songs", "my liked songs", "liked", "my songs", "my playlist", "favorites", "favourite songs"):
+        if any(term in q_lower for term in ["liked songs", "liked", "my songs", "my playlist", "favorites", "favourite"]):
             print("\n[Spotify Engine] Opening Spotify Liked Songs...")
             os.startfile("spotify:collection:tracks")
-            time.sleep(2.5)
+            time.sleep(2.0)
             _focus_window_by_title("spotify", timeout=4.0)
             time.sleep(0.5)
+            # Press Space and Play/Pause to trigger playback
+            pyautogui.press("space")
+            time.sleep(0.3)
             pyautogui.press("playpause")
             return "Opened Spotify Liked Songs and started playback."
 
@@ -423,16 +426,19 @@ def play_spotify_media(query: str) -> str:
         spotify_uri = f"spotify:search:{search_query}"
         print(f"\n[Spotify Engine] Triggering Spotify search URI: '{spotify_uri}'...")
         os.startfile(spotify_uri)
-        time.sleep(3.0)
+        time.sleep(2.5)
 
         focused = _focus_window_by_title("spotify", timeout=4.0)
         if focused:
             time.sleep(0.5)
-            pyautogui.press("tab")
-            time.sleep(0.2)
+            # Navigate into search results: Tab into top result card and press Enter / Space
             pyautogui.press("tab")
             time.sleep(0.2)
             pyautogui.press("enter")
+            time.sleep(0.3)
+            pyautogui.press("space")
+            time.sleep(0.2)
+            pyautogui.press("playpause")
             return f"Playing '{query}' on Spotify."
         else:
             pyautogui.press("playpause")

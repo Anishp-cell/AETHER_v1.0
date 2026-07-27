@@ -191,9 +191,26 @@ class DesktopHUDOverlay:
         if self.root:
             self.root.after(50, self._poll_queue)
 
-    def show(self):
-        """Shows the floating HUD overlay."""
+    def show(self, anchor_to_cursor=True):
+        """Shows the floating HUD overlay anchored to cursor or top-right."""
         if self.root:
+            if anchor_to_cursor:
+                try:
+                    pt = wintypes.POINT()
+                    ctypes.windll.user32.GetCursorPos(ctypes.byref(pt))
+                    cursor_x, cursor_y = pt.x, pt.y
+                    
+                    screen_w = self.root.winfo_screenwidth()
+                    screen_h = self.root.winfo_screenheight()
+                    w, h = 440, 280
+                    
+                    # Position slightly offset from cursor (down & right), keeping inside screen bounds
+                    target_x = min(cursor_x + 15, screen_w - w - 10)
+                    target_y = min(cursor_y + 15, screen_h - h - 10)
+                    self.root.geometry(f"{w}x{h}+{target_x}+{target_y}")
+                except Exception as _e:
+                    print(f"[Desktop HUD] Cursor position query error: {_e}")
+
             self.root.deiconify()
             self.root.wm_attributes("-topmost", True)
             self.root.focus_force()

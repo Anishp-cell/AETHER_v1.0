@@ -390,6 +390,56 @@ def get_system_diagnostics() -> str:
     except Exception as e:
         return f"[Diagnostic Error] Failed to read sensors: {str(e)}"
 
+def play_spotify_media(query: str) -> str:
+    """
+    Plays specified music, artist, playlist, or Liked Songs on Spotify Desktop.
+    Uses native Windows Spotify URIs (spotify:search:... and spotify:collection:tracks).
+    """
+    try:
+        import os
+        import time
+        import urllib.parse
+        import pyautogui
+
+        q_lower = query.strip().lower()
+
+        # Strip common prefixes
+        for prefix in ["play ", "search ", "find ", "put on ", "listen to "]:
+            if q_lower.startswith(prefix):
+                q_lower = q_lower[len(prefix):].strip()
+
+        # 1. Liked Songs / My Music Fallback
+        if q_lower in ("liked songs", "my liked songs", "liked", "my songs", "my playlist", "favorites", "favourite songs"):
+            print("\n[Spotify Engine] Opening Spotify Liked Songs...")
+            os.startfile("spotify:collection:tracks")
+            time.sleep(2.5)
+            _focus_window_by_title("spotify", timeout=4.0)
+            time.sleep(0.5)
+            pyautogui.press("playpause")
+            return "Opened Spotify Liked Songs and started playback."
+
+        # 2. General Query Search & Auto-Play
+        search_query = urllib.parse.quote(query)
+        spotify_uri = f"spotify:search:{search_query}"
+        print(f"\n[Spotify Engine] Triggering Spotify search URI: '{spotify_uri}'...")
+        os.startfile(spotify_uri)
+        time.sleep(3.0)
+
+        focused = _focus_window_by_title("spotify", timeout=4.0)
+        if focused:
+            time.sleep(0.5)
+            pyautogui.press("tab")
+            time.sleep(0.2)
+            pyautogui.press("tab")
+            time.sleep(0.2)
+            pyautogui.press("enter")
+            return f"Playing '{query}' on Spotify."
+        else:
+            pyautogui.press("playpause")
+            return f"Opened Spotify search for '{query}'."
+    except Exception as e:
+        return f"[Spotify Engine Error]: {str(e)}"
+
 def media_control(action: str, value: int = None) -> str:
     """Controls OS media playback and absolute volume levels using PyAutoGUI and PyCaw."""
     try:
@@ -408,6 +458,14 @@ def media_control(action: str, value: int = None) -> str:
         elif action in ("mute", "unmute", "toggle_mute"):
             pyautogui.press("volumemute")
             return "Toggled system mute."
+        elif action in ("volume_up", "vol_up"):
+            for _ in range(5):
+                pyautogui.press("volumeup")
+            return "Increased system volume."
+        elif action in ("volume_down", "vol_down"):
+            for _ in range(5):
+                pyautogui.press("volumedown")
+            return "Decreased system volume."
         elif action == "set_volume" and value is not None:
             # Requires pycaw to set absolute volume scalar without glitchy UI macros
             import pythoncom
@@ -425,6 +483,7 @@ def media_control(action: str, value: int = None) -> str:
         return f"Unknown media action: {action}"
     except Exception as e:
         return f"[Media Control Error]: {str(e)}"
+
 
 def send_whatsapp_message(contact_name: str, message: str) -> str:
     """

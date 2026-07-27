@@ -17,8 +17,10 @@ def route_to_deepseek(query):
     """
     return "[DEEPSEEK_ROUTING_ACTIVATED]" 
 
-from desktop_agent import run_computer_command, analyze_screen_with_llava, open_app_and_type, search_web, open_url, get_system_diagnostics, media_control, send_whatsapp_message, set_timer
+from desktop_agent import run_computer_command, analyze_screen_with_llava, open_app_and_type, search_web, open_url, get_system_diagnostics, media_control, send_whatsapp_message, set_timer, play_spotify_media
 from aether_coder import AetherCoder
+from screen_annotator import annotate_screen
+from skill_registry import SKILL_REGISTRY
 import sys
 import os
 
@@ -47,9 +49,12 @@ AVAILABLE_TOOLS = {
     "teach_new_skill": _skill_factory.teach_new_skill,
     "get_system_diagnostics": get_system_diagnostics,
     "media_control": media_control,
+    "play_spotify_media": play_spotify_media,
     "send_whatsapp_message": send_whatsapp_message,
-    "set_timer": set_timer
+    "set_timer": set_timer,
+    "annotate_screen": annotate_screen
 }
+
 
 
 # The architectural blueprint we feed to Qwen
@@ -345,3 +350,4 @@ def load_dynamic_skills():
 
 
 load_dynamic_skills()
+SKILL_REGISTRY.discover_and_load_skills(AVAILABLE_TOOLS, OLLAMA_TOOL_DEFINITIONS)

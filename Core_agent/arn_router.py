@@ -310,6 +310,26 @@ class ARNRouter:
                 predicted_tools = ["get_current_time"]
                 confidence = 0.99
                 tool_calls = [{"name": "get_current_time", "arguments": {}}]
+            elif "spotify" in low_text or any(kw in low_text for kw in ["play my liked songs", "play hans zimmer", "play song", "play track"]):
+                predicted_tools = ["play_spotify_media"]
+                confidence = 0.99
+                # Extract query after 'play '
+                query = text
+                if "play " in low_text:
+                    query = text[low_text.index("play ") + 5:].strip()
+                tool_calls = [{"name": "play_spotify_media", "arguments": {"query": query}}]
+            elif any(kw in low_text for kw in ["set volume to", "volume to ", "turn up volume", "turn down volume"]):
+                predicted_tools = ["media_control"]
+                confidence = 0.99
+                vol_match = re.search(r'(\d+)\s*%?', text)
+                val = int(vol_match.group(1)) if vol_match else 50
+                action = "set_volume"
+                if "turn up" in low_text or "increase" in low_text:
+                    action = "volume_up"
+                elif "turn down" in low_text or "decrease" in low_text:
+                    action = "volume_down"
+                tool_calls = [{"name": "media_control", "arguments": {"action": action, "value": val}}]
+
 
         # Hybrid local vs cloud decision rule
         is_local = (

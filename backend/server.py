@@ -70,11 +70,31 @@ try:
                     if t_name in AVAILABLE_TOOLS:
                         res = AVAILABLE_TOOLS[t_name](**t_args)
                         DESKTOP_HUD.append_log(f"Result: {res}")
+                
+                # Check for generated coding artifacts
+                try:
+                    import aether_coder
+                    if aether_coder.LATEST_CODING_ARTIFACT is not None:
+                        art_payload = aether_coder.LATEST_CODING_ARTIFACT
+                        aether_coder.LATEST_CODING_ARTIFACT = None
+                        agent_state["latest_artifact"] = art_payload
+                        broadcast_sync({"type": "artifact_generated", "artifact": art_payload})
+                except Exception:
+                    pass
             else:
                 DESKTOP_HUD.append_log(f"Routing to LLM Engine...")
                 if 'llm' in globals() and llm is not None:
                     response = llm.generate_response(prompt_text)
                     DESKTOP_HUD.append_log(f"AETHER: {response[:150]}...")
+                    try:
+                        import aether_coder
+                        if aether_coder.LATEST_CODING_ARTIFACT is not None:
+                            art_payload = aether_coder.LATEST_CODING_ARTIFACT
+                            aether_coder.LATEST_CODING_ARTIFACT = None
+                            agent_state["latest_artifact"] = art_payload
+                            broadcast_sync({"type": "artifact_generated", "artifact": art_payload})
+                    except Exception:
+                        pass
                 else:
                     DESKTOP_HUD.append_log("LLM Engine initializing... Please wait.")
         except Exception as _e:
@@ -636,6 +656,22 @@ Your job is to take the search results above and present them to the user as a s
                                     push_transcript("system", f"[Background System Task Completed]\n{log_content}")
                                     reply = re.sub(r'<SECRET_TOOL_LOG>.*?</SECRET_TOOL_LOG>', '', reply, flags=re.DOTALL).strip()
                                 
+                                # Check if AetherCoder generated visual artifacts (plots, tables, HTML)
+                                try:
+                                    from aether_coder import LATEST_CODING_ARTIFACT
+                                    import aether_coder
+                                    if aether_coder.LATEST_CODING_ARTIFACT is not None:
+                                        art_payload = aether_coder.LATEST_CODING_ARTIFACT
+                                        aether_coder.LATEST_CODING_ARTIFACT = None # Consume
+                                        agent_state["latest_artifact"] = art_payload
+                                        broadcast_sync({
+                                            "type": "artifact_generated",
+                                            "artifact": art_payload
+                                        })
+                                        print(f"[AetherCoder Canvas] Broadcasted artifact '{art_payload['filename']}' ({len(art_payload['artifacts'])} visual assets) to frontend.")
+                                except Exception as _art_err:
+                                    print(f"[Artifact Broadcast Error] {_art_err}")
+
                                 # ── ACTION SPEECH SUPPRESSION ──
                                 # If we just sent a WhatsApp message, don't read the whole thing out.
                                 _tool_log_text = log_content if secret_logs else ""

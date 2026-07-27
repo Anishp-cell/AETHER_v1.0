@@ -6,6 +6,7 @@ import ChatPanel from "./components/ChatPanel";
 import SystemMonitor from "./components/SystemMonitor";
 import Waveform from "./components/Waveform";
 import HudOverlay from "./components/HudOverlay";
+import AetherCanvas from "./components/AetherCanvas";
 import { useEffect, useCallback } from "react";
 
 // Dynamic import for Three.js (no SSR)
@@ -19,7 +20,7 @@ const HologramOrb = dynamic(() => import("./components/HologramOrb"), {
 });
 
 export default function Home() {
-  const { state, energy, connected, systemMetrics, screenCaptureFlash, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode } = useAether();
+  const { state, energy, connected, systemMetrics, screenCaptureFlash, latestArtifact, clearArtifact, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode } = useAether();
 
 
   const stateGlowClass = 
@@ -203,6 +204,9 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* AetherCoder Interactive Artifact Canvas (GUI Code Renderer) */}
+      <AetherCanvas artifact={latestArtifact} onClose={clearArtifact} />
     </main>
   );
 }

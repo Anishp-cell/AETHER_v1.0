@@ -25,6 +25,24 @@ export interface AgentStatus {
   llm_engine: string;
 }
 
+export interface CodingArtifact {
+  instruction: string;
+  filename: string;
+  code: string;
+  stdout: string;
+  stderr: string;
+  returncode: number;
+  artifacts: Array<{
+    type: "image" | "html" | "table";
+    name: string;
+    src?: string;
+    content?: string;
+    headers?: string[];
+    rows?: string[][];
+  }>;
+  timestamp: number;
+}
+
 export interface AetherState {
   status: "booting" | "idle" | "listening" | "thinking" | "speaking";
   mode: string;
@@ -35,6 +53,7 @@ export interface AetherState {
   audio_energy: number;
   authRequest: { action_name: string; details: string; } | null;
   mic_muted?: boolean;
+  latest_artifact?: CodingArtifact | null;
 }
 
 const DEFAULT_STATE: AetherState = {
@@ -63,6 +82,7 @@ export function useAether() {
   const [cameraFrame, setCameraFrame] = useState<string | null>(null);
   const [screenCaptureFlash, setScreenCaptureFlash] = useState(false);
   const [systemMetrics, setSystemMetrics] = useState<{ cpu: number; ram: number; battery: number | null; plugged: boolean | null } | null>(null);
+  const [latestArtifact, setLatestArtifact] = useState<CodingArtifact | null>(null);
 
   const wsRef = useRef<WebSocket | null>(null);
 
@@ -77,6 +97,9 @@ export function useAether() {
       const msg = JSON.parse(event.data);
       if (msg.type === "state_update") {
         setState(msg.state);
+        if (msg.state.latest_artifact) {
+          setLatestArtifact(msg.state.latest_artifact);
+        }
       } else if (msg.type === "transcript") {
         setState((prev) => ({
           ...prev,
@@ -96,11 +119,16 @@ export function useAether() {
       } else if (msg.type === "screen_capture_flash") {
         setScreenCaptureFlash(true);
         setTimeout(() => setScreenCaptureFlash(false), msg.duration || 350);
+      } else if (msg.type === "artifact_generated") {
+        setLatestArtifact(msg.artifact);
       }
-
     };
 
     return () => ws.close();
+  }, []);
+
+  const clearArtifact = useCallback(() => {
+    setLatestArtifact(null);
   }, []);
 
   const sendPTT = useCallback(
@@ -146,6 +174,6 @@ export function useAether() {
     }
   }, []);
 
-  return { state, energy, connected, cameraFrame, screenCaptureFlash, systemMetrics, sendPTT, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode };
+  return { state, energy, connected, cameraFrame, screenCaptureFlash, systemMetrics, latestArtifact, clearArtifact, sendPTT, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode };
 }
 

@@ -8,6 +8,7 @@ interface AetherCanvasProps {
 }
 
 export default function AetherCanvas({ artifact, onClose }: AetherCanvasProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"render" | "code" | "terminal">("render");
   const [isMaximized, setIsMaximized] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -32,15 +33,37 @@ export default function AetherCanvas({ artifact, onClose }: AetherCanvasProps) {
     URL.revokeObjectURL(url);
   };
 
+  // ── COLLAPSED FLOATING ICON BADGE ──
+  if (!isOpen) {
+    return (
+      <button
+        onClick={() => setIsOpen(true)}
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-2.5 rounded-full bg-slate-900/90 text-cyan-300 border border-cyan-500/50 shadow-[0_0_25px_rgba(0,245,255,0.4)] backdrop-blur-md hover:scale-105 transition-all group cursor-pointer"
+        title="Click to view generated code canvas"
+      >
+        <div className="relative flex items-center justify-center">
+          <div className="w-3 h-3 rounded-full bg-cyan-400 animate-ping absolute" />
+          <div className="w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_10px_#00f5ff]" />
+        </div>
+        <span className="text-xs font-mono font-bold tracking-wider uppercase group-hover:text-white">
+          ⚡ CANVAS ARTIFACT READY
+        </span>
+        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-200 border border-cyan-500/30">
+          {artifact.artifacts?.length || 0} Assets
+        </span>
+      </button>
+    );
+  }
+
   return (
     <div
-      className={`fixed z-50 transition-all duration-500 ease-out flex flex-col glass-panel shadow-[0_0_50px_rgba(0,245,255,0.2)] border border-cyan-500/30 overflow-hidden backdrop-blur-xl ${
+      className={`fixed z-50 transition-all duration-500 ease-out flex flex-col glass-panel shadow-[0_0_50px_rgba(0,245,255,0.25)] border border-cyan-500/40 overflow-hidden backdrop-blur-xl ${
         isMaximized
           ? "inset-4 rounded-2xl"
           : "bottom-6 right-6 w-[720px] h-[540px] rounded-xl"
       }`}
       style={{
-        background: "rgba(10, 15, 30, 0.92)",
+        background: "rgba(10, 15, 30, 0.94)",
       }}
     >
       {/* Canvas Top Bar */}
@@ -67,6 +90,13 @@ export default function AetherCanvas({ artifact, onClose }: AetherCanvasProps) {
         {/* Canvas Controls */}
         <div className="flex items-center gap-2">
           <button
+            onClick={() => setIsOpen(false)}
+            className="p-1.5 text-gray-400 hover:text-cyan-300 transition-colors text-xs font-mono"
+            title="Minimize to Floating Icon"
+          >
+            🗕
+          </button>
+          <button
             onClick={() => setIsMaximized(!isMaximized)}
             className="p-1.5 text-gray-400 hover:text-cyan-300 transition-colors text-xs font-mono"
             title={isMaximized ? "Restore Size" : "Maximize"}
@@ -74,7 +104,7 @@ export default function AetherCanvas({ artifact, onClose }: AetherCanvasProps) {
             {isMaximized ? "🗗" : "🗖"}
           </button>
           <button
-            onClick={onClose}
+            onClick={() => { setIsOpen(false); onClose(); }}
             className="p-1.5 text-gray-400 hover:text-red-400 transition-colors text-xs font-mono font-bold"
             title="Close Canvas"
           >

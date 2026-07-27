@@ -17,10 +17,13 @@ def route_to_deepseek(query):
     """
     return "[DEEPSEEK_ROUTING_ACTIVATED]" 
 
-from desktop_agent import run_computer_command, analyze_screen_with_llava, open_app_and_type, search_web, open_url, get_system_diagnostics, media_control, send_whatsapp_message, set_timer, play_spotify_media
+from desktop_agent import run_computer_command, analyze_screen_with_llava, open_app_and_type, search_web, open_url, get_system_diagnostics, media_control, send_whatsapp_message, set_timer, play_spotify_media, clipboard_action, smart_action
 from aether_coder import AetherCoder
 from screen_annotator import annotate_screen
 from skill_registry import SKILL_REGISTRY
+from vision_click_engine import vision_click, vision_read, vision_highlight
+from window_manager import snap_window, tile_windows, close_foreground_window
+from screen_watcher import start_screen_watch, stop_screen_watch
 import sys
 import os
 
@@ -52,7 +55,17 @@ AVAILABLE_TOOLS = {
     "play_spotify_media": play_spotify_media,
     "send_whatsapp_message": send_whatsapp_message,
     "set_timer": set_timer,
-    "annotate_screen": annotate_screen
+    "annotate_screen": annotate_screen,
+    "vision_click": vision_click,
+    "vision_read": vision_read,
+    "vision_highlight": vision_highlight,
+    "snap_window": snap_window,
+    "tile_windows": tile_windows,
+    "close_foreground_window": close_foreground_window,
+    "start_screen_watch": start_screen_watch,
+    "stop_screen_watch": stop_screen_watch,
+    "clipboard_action": clipboard_action,
+    "smart_action": smart_action,
 }
 
 

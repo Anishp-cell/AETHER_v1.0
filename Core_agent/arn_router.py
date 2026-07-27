@@ -309,6 +309,66 @@ class ARNRouter:
             confidence = 0.99
             tool_calls = [{"name": "write_and_run_script", "arguments": {"instruction": text}}]
 
+        elif re.search(r'click\s+(?:the|on|on the)?\s*([a-zA-Z0-9\s]+)', low_text) and not re.search(r'\d+,\s*\d+', low_text):
+            # Natural language vision click: e.g. "click the search bar", "click submit button"
+            predicted_tools = ["vision_click"]
+            confidence = 0.99
+            target_elem = re.sub(r'^(?:click|press)\s+(?:the|on|on the)?\s*', '', text, flags=re.IGNORECASE).strip()
+            tool_calls = [{"name": "vision_click", "arguments": {"element_description": target_elem}}]
+
+        elif any(kw in low_text for kw in ["read the error", "read that error", "read error on screen", "read text on screen", "what does that say"]):
+            predicted_tools = ["vision_read"]
+            confidence = 0.99
+            tool_calls = [{"name": "vision_read", "arguments": {"query": text}}]
+
+        elif any(kw in low_text for kw in ["highlight the", "show me where", "find the start menu", "highlight start"]):
+            predicted_tools = ["vision_highlight"]
+            confidence = 0.99
+            target_elem = re.sub(r'^(?:highlight|show me where|find)\s+(?:the)?\s*', '', text, flags=re.IGNORECASE).strip()
+            tool_calls = [{"name": "vision_highlight", "arguments": {"element_description": target_elem}}]
+
+        elif any(kw in low_text for kw in ["snap window", "snap left", "snap right", "snap top", "snap bottom", "maximize window", "minimize window"]):
+            predicted_tools = ["snap_window"]
+            confidence = 0.99
+            dir_match = "left"
+            for d in ["left", "right", "top", "bottom", "maximize", "minimize", "restore"]:
+                if d in low_text:
+                    dir_match = d
+                    break
+            tool_calls = [{"name": "snap_window", "arguments": {"direction": dir_match}}]
+
+        elif any(kw in low_text for kw in ["tile windows", "tile all windows", "tile the windows"]):
+            predicted_tools = ["tile_windows"]
+            confidence = 0.99
+            tool_calls = [{"name": "tile_windows", "arguments": {}}]
+
+        elif any(kw in low_text for kw in ["close this window", "close active window", "close window"]):
+            predicted_tools = ["close_foreground_window"]
+            confidence = 0.99
+            tool_calls = [{"name": "close_foreground_window", "arguments": {}}]
+
+        elif any(kw in low_text for kw in ["tell me when", "alert me when", "watch for", "watch the screen for"]):
+            predicted_tools = ["start_screen_watch"]
+            confidence = 0.99
+            cond = re.sub(r'^(?:tell me when|alert me when|watch for|watch the screen for)\s+(?:the)?\s*', '', text, flags=re.IGNORECASE).strip()
+            tool_calls = [{"name": "start_screen_watch", "arguments": {"condition": cond}}]
+
+        elif any(kw in low_text for kw in ["stop watching", "stop screen watch"]):
+            predicted_tools = ["stop_screen_watch"]
+            confidence = 0.99
+            tool_calls = [{"name": "stop_screen_watch", "arguments": {}}]
+
+        elif any(kw in low_text for kw in ["clipboard", "search clipboard", "copy text", "what is on my clipboard"]):
+            predicted_tools = ["clipboard_action"]
+            confidence = 0.99
+            action_type = "search" if "search" in low_text else ("read" if "read" in low_text or "what" in low_text else "read")
+            tool_calls = [{"name": "clipboard_action", "arguments": {"action": action_type}}]
+
+        elif any(kw in low_text for kw in ["save this", "undo that", "run this", "go back"]):
+            predicted_tools = ["smart_action"]
+            confidence = 0.99
+            tool_calls = [{"name": "smart_action", "arguments": {"command": text}}]
+
         elif any(kw in low_text for kw in ["click on", "click at", "mouse click", "click screen"]):
             predicted_tools = ["run_computer_command"]
             confidence = 0.99

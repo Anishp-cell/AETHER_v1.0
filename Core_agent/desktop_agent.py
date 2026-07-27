@@ -606,3 +606,107 @@ def listen_for_aether_hotkey(callback=None):
     return thread
 
 
+# ── AETHER V3.0 DYNAMIC COMMAND INTELLIGENCE ──
+
+def get_foreground_app() -> str:
+    """Returns the title and process name of the current active foreground window."""
+    try:
+        import ctypes
+        user32 = ctypes.windll.user32
+        hwnd = user32.GetForegroundWindow()
+        if hwnd:
+            length = user32.GetWindowTextLengthW(hwnd)
+            if length > 0:
+                buff = ctypes.create_unicode_buffer(length + 1)
+                user32.GetWindowTextW(hwnd, buff, length + 1)
+                return buff.value.strip()
+        return "Desktop"
+    except Exception:
+        return "Unknown"
+
+
+def clipboard_action(action: str = "read", text_to_set: str = None) -> str:
+    """
+    Performs OS clipboard operations.
+    Options:
+    - 'read' / 'copy_read': reads clipboard text.
+    - 'write' / 'set': copies text_to_set to clipboard.
+    - 'search': reads clipboard content and searches Google.
+    """
+    try:
+        import pyperclip
+        import webbrowser
+        import urllib.parse
+
+        action = action.lower().strip()
+
+        if action in ("read", "get", "copy_read"):
+            content = pyperclip.paste().strip()
+            return f"Clipboard Content: {content[:1000]}" if content else "Clipboard is currently empty."
+
+        elif action in ("write", "set", "copy"):
+            if not text_to_set:
+                return "No text provided to copy to clipboard."
+            pyperclip.copy(text_to_set)
+            return f"Copied text to clipboard: '{text_to_set[:100]}...'"
+
+        elif action in ("search", "google_search", "search_clipboard"):
+            content = pyperclip.paste().strip()
+            if not content:
+                return "Clipboard is empty. Cannot perform web search."
+            search_url = f"https://www.google.com/search?q={urllib.parse.quote(content)}"
+            webbrowser.open(search_url)
+            return f"Searched Google for clipboard text: '{content[:80]}...'"
+
+        return f"Unknown clipboard action: '{action}'."
+
+    except Exception as e:
+        return f"[Clipboard Error]: {str(e)}"
+
+
+def smart_action(command: str) -> str:
+    """
+    Executes context-aware keyboard shortcuts based on the currently active application.
+    Examples: 'run this', 'save this', 'go back', 'undo', 'refresh'
+    """
+    try:
+        import pyautogui
+        app_title = get_foreground_app().lower()
+        cmd = command.lower().strip()
+
+        print(f"\n[SmartAction] Foreground App: '{app_title}' | Command: '{cmd}'")
+
+        if "run" in cmd or "build" in cmd:
+            if "code" in app_title or "visual studio" in app_title:
+                pyautogui.hotkey("ctrl", "shift", "b")
+                return "Triggered VS Code Build (Ctrl + Shift + B)."
+            elif "terminal" in app_title or "cmd" in app_title or "powershell" in app_title:
+                pyautogui.press("enter")
+                return "Pressed Enter in Terminal."
+
+        elif "save" in cmd:
+            pyautogui.hotkey("ctrl", "s")
+            return f"Triggered Save (Ctrl + S) in {app_title}."
+
+        elif "undo" in cmd:
+            pyautogui.hotkey("ctrl", "z")
+            return f"Triggered Undo (Ctrl + Z) in {app_title}."
+
+        elif "go back" in cmd or "back" in cmd:
+            if any(b in app_title for b in ["chrome", "edge", "firefox", "browser"]):
+                pyautogui.hotkey("alt", "left")
+                return "Navigated browser back (Alt + Left)."
+
+        elif "refresh" in cmd or "reload" in cmd:
+            pyautogui.hotkey("ctrl", "r")
+            return f"Refreshed window ({app_title})."
+
+        # Fallback general shortcut mapping
+        pyautogui.hotkey("ctrl", "s")
+        return f"Executed default action for '{command}' in {app_title}."
+
+    except Exception as e:
+        return f"[SmartAction Error]: {str(e)}"
+
+
+

@@ -143,9 +143,6 @@ class ARNRouter:
             active_indices = torch.where(tool_preds)[0].tolist()
             predicted_tools = [IDX_TO_TOOL[idx] for idx in active_indices]
 
-            if "analyze_screen_with_llava" in predicted_tools:
-                predicted_tools = ["analyze_screen_with_llava"]
-
             tag_preds = self.model.crf.viterbi_decode(emissions, attention_mask)
             predicted_tag_ids = tag_preds[0]
         else:
@@ -161,9 +158,6 @@ class ARNRouter:
 
                 active_indices = torch.where(tool_preds)[0].tolist()
                 predicted_tools = [IDX_TO_TOOL[idx] for idx in active_indices]
-                
-                if "analyze_screen_with_llava" in predicted_tools:
-                    predicted_tools = ["analyze_screen_with_llava"]
 
                 emissions = self.slot_tagger(features) if hasattr(self, 'slot_tagger') else self.model.slot_tagger(features)
                 tag_preds = self.model.crf.viterbi_decode(emissions, attention_mask)
@@ -295,9 +289,44 @@ class ARNRouter:
 
 
 
-        # Fallback keyword rules if ARN confidence is low or tool list is empty
-        low_text = text.lower()
-        if len(predicted_tools) == 0 or confidence < self.confidence_threshold:
+        low_text = text.lower().strip()
+        
+        # ── HIGH-PRECISION DESKTOP & INTENT OVERRIDES ──
+        if "spotify" in low_text or any(kw in low_text for kw in ["liked songs", "my playlist", "play music", "play track", "play song"]):
+            predicted_tools = ["play_spotify_media"]
+            confidence = 0.99
+            query_clean = text
+            # Strip prefixes
+            for p in ["play ", "search ", "listen to ", "put on "]:
+                if query_clean.lower().startswith(p):
+                    query_clean = query_clean[len(p):].strip()
+            # Strip trailing " on spotify", " in spotify"
+            query_clean = re.sub(r'\s+(?:on|in|using)\s+spotify.*$', '', query_clean, flags=re.IGNORECASE).strip(". ")
+            tool_calls = [{"name": "play_spotify_media", "arguments": {"query": query_clean}}]
+
+        elif any(kw in low_text for kw in ["write a script", "python script", "matplotlib", "create a chart", "plot"]):
+            predicted_tools = ["write_and_run_script"]
+            confidence = 0.99
+            tool_calls = [{"name": "write_and_run_script", "arguments": {"instruction": text}}]
+
+        elif any(kw in low_text for kw in ["click on", "click at", "mouse click", "click screen"]):
+            predicted_tools = ["run_computer_command"]
+            confidence = 0.99
+            coords = re.findall(r'\d+', text)
+            target_coords = f"{coords[0]},{coords[1]}" if len(coords) >= 2 else "500,500"
+            tool_calls = [{"name": "run_computer_command", "arguments": {"action_type": "mouse_click", "target": target_coords}}]
+
+        elif any(kw in low_text for kw in ["draw a box", "draw box", "highlight", "annotate"]):
+            predicted_tools = ["annotate_screen"]
+            confidence = 0.99
+            coords = [int(c) for c in re.findall(r'\d+', text)]
+            x = coords[0] if len(coords) >= 1 else 200
+            y = coords[1] if len(coords) >= 2 else 200
+            w = coords[2] if len(coords) >= 3 else 400
+            h = coords[3] if len(coords) >= 4 else 250
+            tool_calls = [{"name": "annotate_screen", "arguments": {"x": x, "y": y, "width": w, "height": h, "label": "AETHER Target"}}]
+
+        elif len(predicted_tools) == 0 or confidence < self.confidence_threshold:
             if any(kw in low_text for kw in ["system diagnostics", "system status", "telemetry", "cpu", "ram", "battery"]):
                 predicted_tools = ["get_system_diagnostics"]
                 confidence = 0.99
@@ -310,25 +339,6 @@ class ARNRouter:
                 predicted_tools = ["get_current_time"]
                 confidence = 0.99
                 tool_calls = [{"name": "get_current_time", "arguments": {}}]
-            elif "spotify" in low_text or any(kw in low_text for kw in ["play my liked songs", "play hans zimmer", "play song", "play track"]):
-                predicted_tools = ["play_spotify_media"]
-                confidence = 0.99
-                # Extract query after 'play '
-                query = text
-                if "play " in low_text:
-                    query = text[low_text.index("play ") + 5:].strip()
-                tool_calls = [{"name": "play_spotify_media", "arguments": {"query": query}}]
-            elif any(kw in low_text for kw in ["set volume to", "volume to ", "turn up volume", "turn down volume"]):
-                predicted_tools = ["media_control"]
-                confidence = 0.99
-                vol_match = re.search(r'(\d+)\s*%?', text)
-                val = int(vol_match.group(1)) if vol_match else 50
-                action = "set_volume"
-                if "turn up" in low_text or "increase" in low_text:
-                    action = "volume_up"
-                elif "turn down" in low_text or "decrease" in low_text:
-                    action = "volume_down"
-                tool_calls = [{"name": "media_control", "arguments": {"action": action, "value": val}}]
 
 
         # Hybrid local vs cloud decision rule

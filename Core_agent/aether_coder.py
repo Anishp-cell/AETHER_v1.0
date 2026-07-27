@@ -22,11 +22,14 @@ class AetherCoder:
         os.makedirs(self.workspace, exist_ok=True)
         print(f"[AetherCoder] Online. Workspace bound to: {self.workspace}")
 
-    def write_and_run_script(self, instruction: str) -> str:
+    def write_and_run_script(self, instruction: str = None, **kwargs) -> str:
         """
         Generates Python code from the instruction, saves it to a file, executes it, 
         and returns the terminal output.
         """
+        if not instruction:
+            instruction = kwargs.get("message") or kwargs.get("task") or kwargs.get("prompt") or kwargs.get("query") or kwargs.get("text") or "Write a python script"
+            
         if not confirm_action("AetherCoder Generation", instruction):
             return "[V3.0 Core] User explicitly DENIED permission for script generation."
             
@@ -37,7 +40,7 @@ class AetherCoder:
 You ONLY output raw, perfectly functional Python code.
 You never output markdown ticks (```python) or conversational text.
 Your goal is to write a self-contained python script that fulfills the user's objective. 
-If libraries might be missing, use standard libraries where possible.
+If libraries might be missing, use standard libraries where possible and prevent writing comments.
 DO NOT wrap the code in ```python. Just output the raw code."""
 
         payload = {

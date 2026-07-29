@@ -24,6 +24,16 @@ except ImportError:
     cv2 = None
     np = None
 
+try:
+    import ctypes
+    ctypes.windll.shcore.SetProcessDpiAwareness(2)
+except Exception:
+    try:
+        import ctypes
+        ctypes.windll.user32.SetProcessDPIAware()
+    except Exception:
+        pass
+
 # Import screen annotator singleton
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CORE_AGENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -61,13 +71,14 @@ class VisionClickEngine:
         print(f"\n👁️ [VisionClickEngine] Analyzing screen for UI element: '{element_description}'...")
         image, img_b64, screen_w, screen_h = self._take_screenshot()
 
-        prompt = f"""Analyze this desktop screenshot ({screen_w}x{screen_h} pixels).
-Locate the target UI element described as: '{element_description}'.
-Return ONLY a valid raw JSON object with pixel coordinates relative to top-left corner:
-{{"x": int, "y": int, "width": int, "height": int, "found": true}}
-If the element is not visible, return:
+        prompt = f"""Analyze this desktop screenshot (screen dimension: {screen_w}x{screen_h} pixels).
+Target element to locate: '{element_description}'.
+Provide normalized coordinates on a 0-1000 scale:
+Return ONLY a valid raw JSON object:
+{{"ymin": int, "xmin": int, "ymax": int, "xmax": int, "found": true}}
+If not found on screen, return:
 {{"found": false}}
-Do not include markdown or explanations. Return ONLY raw JSON."""
+Do not include markdown code block formatting or explanation."""
 
         try:
             payload = {
@@ -83,15 +94,28 @@ Do not include markdown or explanations. Return ONLY raw JSON."""
             json_match = re.search(r'\{[^{}]*\}', response_text)
             if json_match:
                 data = json.loads(json_match.group(0))
-                if data.get("found", False) or "x" in data:
-                    x = int(data.get("x", 100))
-                    y = int(data.get("y", 100))
-                    w = int(data.get("width", 200))
-                    h = int(data.get("height", 100))
-                    
-                    # Bound coordinates within screen
-                    x = max(0, min(x, screen_w - 10))
-                    y = max(0, min(y, screen_h - 10))
+                if data.get("found", False) or "ymin" in data or "x" in data:
+                    if "ymin" in data and "xmin" in data:
+                        # Normalized 0-1000 bounding box
+                        ymin = max(0, min(1000, int(data.get("ymin", 0))))
+                        xmin = max(0, min(1000, int(data.get("xmin", 0))))
+                        ymax = max(0, min(1000, int(data.get("ymax", 1000))))
+                        xmax = max(0, min(1000, int(data.get("xmax", 1000))))
+
+                        x = int((xmin / 1000.0) * screen_w)
+                        y = int((ymin / 1000.0) * screen_h)
+                        w = int(((xmax - xmin) / 1000.0) * screen_w)
+                        h = int(((ymax - ymin) / 1000.0) * screen_h)
+                    else:
+                        x = int(data.get("x", 100))
+                        y = int(data.get("y", 100))
+                        w = int(data.get("width", 200))
+                        h = int(data.get("height", 100))
+
+                    w = max(40, w)
+                    h = max(30, h)
+                    x = max(0, min(x, screen_w - w))
+                    y = max(0, min(y, screen_h - h))
                     cx = x + w // 2
                     cy = y + h // 2
 
@@ -99,7 +123,7 @@ Do not include markdown or explanations. Return ONLY raw JSON."""
         except Exception as e:
             print(f"[VisionClickEngine Error] LLaVA locate failed: {e}")
 
-        # Smart fallback: If LLaVA fails, return screen center offset or default area
+        # Fallback to screen center if element is generic
         return {
             "x": screen_w // 4,
             "y": screen_h // 4,

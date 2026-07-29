@@ -327,7 +327,7 @@ class ARNRouter:
             target_elem = re.sub(r'^(?:highlight|show me where|find)\s+(?:the)?\s*', '', text, flags=re.IGNORECASE).strip()
             tool_calls = [{"name": "vision_highlight", "arguments": {"element_description": target_elem}}]
 
-        elif any(kw in low_text for kw in ["snap window", "snap left", "snap right", "snap top", "snap bottom", "maximize window", "minimize window"]):
+        elif re.search(r'\b(?:snap|move|place|put|map|dock)\b.*\b(left|right|top|bottom|maximize|minimize|restore)\b', low_text) or any(kw in low_text for kw in ["snap window", "maximize window", "minimize window", "restore window"]):
             predicted_tools = ["snap_window"]
             confidence = 0.99
             dir_match = "left"
@@ -337,12 +337,12 @@ class ARNRouter:
                     break
             tool_calls = [{"name": "snap_window", "arguments": {"direction": dir_match}}]
 
-        elif any(kw in low_text for kw in ["tile windows", "tile all windows", "tile the windows"]):
+        elif any(kw in low_text for kw in ["tile windows", "tile all windows", "tile the windows", "tile window"]):
             predicted_tools = ["tile_windows"]
             confidence = 0.99
             tool_calls = [{"name": "tile_windows", "arguments": {}}]
 
-        elif any(kw in low_text for kw in ["close this window", "close active window", "close window"]):
+        elif any(kw in low_text for kw in ["close this window", "close active window", "close window", "close the window"]):
             predicted_tools = ["close_foreground_window"]
             confidence = 0.99
             tool_calls = [{"name": "close_foreground_window", "arguments": {}}]

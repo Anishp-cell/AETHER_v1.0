@@ -17,7 +17,7 @@ except ImportError:
     pass
 
 ACTIVE_WATCHER = None
-
+    
 
 class ScreenWatcher:
     """

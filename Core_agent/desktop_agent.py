@@ -56,7 +56,7 @@ def _resolve_app_name(app_name: str) -> str:
 
 def _focus_window_by_title(partial_title: str, timeout: float = 5.0):
     """
-    Attempts to find a window whose title contains `partial_title` and bring it to the foreground.
+    Attempts to find a window whose title or process name contains `partial_title` and bring it to the foreground.
     Polls every 0.5s up to `timeout` seconds.
     """
     EnumWindows = ctypes.windll.user32.EnumWindows
@@ -66,19 +66,35 @@ def _focus_window_by_title(partial_title: str, timeout: float = 5.0):
     IsWindowVisible = ctypes.windll.user32.IsWindowVisible
     SetForegroundWindow = ctypes.windll.user32.SetForegroundWindow
     ShowWindow = ctypes.windll.user32.ShowWindow
+    GetWindowThreadProcessId = ctypes.windll.user32.GetWindowThreadProcessId
     
     target_lower = partial_title.lower()
     found_hwnd = [None]
+
+    target_pids = set()
+    try:
+        import psutil
+        for proc in psutil.process_iter(['pid', 'name']):
+            if target_lower in proc.info['name'].lower():
+                target_pids.add(proc.info['pid'])
+    except Exception:
+        pass
     
     def enum_handler(hwnd, lParam):
         if IsWindowVisible(hwnd):
             length = GetWindowTextLengthW(hwnd)
+            title = ""
             if length > 0:
                 buff = ctypes.create_unicode_buffer(length + 1)
                 GetWindowTextW(hwnd, buff, length + 1)
-                if target_lower in buff.value.lower():
-                    found_hwnd[0] = hwnd
-                    return False  # stop enumerating
+                title = buff.value.lower()
+
+            pid = ctypes.c_ulong()
+            GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
+
+            if target_lower in title or (pid.value in target_pids and length > 0):
+                found_hwnd[0] = hwnd
+                return False  # stop enumerating
         return True
     
     start = time.time()
@@ -428,23 +444,24 @@ def play_spotify_media(query: str) -> str:
         spotify_uri = f"spotify:search:{search_query}"
         print(f"\n[Spotify Engine] Triggering Spotify search URI: '{spotify_uri}'...")
         os.startfile(spotify_uri)
-        time.sleep(2.5)
+        time.sleep(2.0)
 
         focused = _focus_window_by_title("spotify", timeout=4.0)
         if focused:
             time.sleep(0.5)
-            # Navigate into search results: Tab into top result card and press Enter / Space
-            pyautogui.press("tab")
-            time.sleep(0.2)
+            pyautogui.hotkey("ctrl", "l")
+            time.sleep(0.3)
+            import pyperclip
+            pyperclip.copy(query)
+            pyautogui.hotkey("ctrl", "v")
+            time.sleep(0.3)
+            pyautogui.press("enter")
+            time.sleep(0.6)
             pyautogui.press("enter")
             time.sleep(0.3)
             pyautogui.press("space")
-            time.sleep(0.2)
-            pyautogui.press("playpause")
             return f"Playing '{query}' on Spotify."
         else:
-            pyautogui.press("space")
-            time.sleep(0.2)
             pyautogui.press("playpause")
             return f"Opened Spotify search for '{query}'."
     except Exception as e:

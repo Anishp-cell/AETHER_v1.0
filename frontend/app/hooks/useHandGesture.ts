@@ -38,14 +38,25 @@ export function useHandGesture(enabled: boolean) {
         "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.17/wasm"
       );
 
-      landmarkerRef.current = await HandLandmarker.createFromOptions(filesetResolver, {
-        baseOptions: {
-          modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
-          delegate: "GPU",
-        },
-        runningMode: "VIDEO",
-        numHands: 1,
-      });
+      try {
+        landmarkerRef.current = await HandLandmarker.createFromOptions(filesetResolver, {
+          baseOptions: {
+            modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+            delegate: "GPU",
+          },
+          runningMode: "VIDEO",
+          numHands: 1,
+        });
+      } catch (gpuErr) {
+        landmarkerRef.current = await HandLandmarker.createFromOptions(filesetResolver, {
+          baseOptions: {
+            modelAssetPath: "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+            delegate: "CPU",
+          },
+          runningMode: "VIDEO",
+          numHands: 1,
+        });
+      }
 
       console.log("⚡ [MediaPipe WASM] HandLandmarker initialized successfully!");
     } catch (err) {

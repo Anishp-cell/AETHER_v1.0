@@ -6,6 +6,7 @@ import SystemStatus from "./components/SystemStatus";
 import ChatPanel from "./components/ChatPanel";
 import SystemMonitor from "./components/SystemMonitor";
 import CameraFeed from "./components/CameraFeed";
+import DigitalHandCanvas from "./components/DigitalHandCanvas";
 import Waveform from "./components/Waveform";
 import HudOverlay from "./components/HudOverlay";
 import AetherCanvas from "./components/AetherCanvas";
@@ -139,8 +140,12 @@ export default function Home() {
               onShutdown={sendShutdown}
             />
           </div>
-          <div className="h-56 border-t border-white/[0.04] flex-shrink-0 bg-black/20">
-            <CameraFeed frame={cameraFrame} gestureLandmarks={gestureData.landmarks} />
+          <div className="h-56 border-t border-white/[0.04] flex-shrink-0 bg-black/20 p-1">
+            {gestureEnabled ? (
+              <DigitalHandCanvas gestureData={gestureData} />
+            ) : (
+              <CameraFeed frame={cameraFrame} />
+            )}
           </div>
         </aside>
 

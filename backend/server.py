@@ -56,6 +56,12 @@ try:
     from desktop_overlay import DESKTOP_HUD
     from arn_router import ARN_ROUTER
     from tools_executor import AVAILABLE_TOOLS
+    from ambient_daemon import start_ambient_daemon
+
+    try:
+        start_ambient_daemon()
+    except Exception as _e:
+        print(f"[AmbientDaemon Warning] Could not start ambient daemon: {_e}")
 
     def _process_hud_action(prompt_text):
         try:

@@ -27,14 +27,11 @@ from screen_watcher import start_screen_watch, stop_screen_watch
 import sys
 import os
 
-# Ensure web_agent is reachable
-sys.path.append(os.path.dirname(__file__))
-from web_agent import search_and_read_web, read_specific_url
-
-_coder_instance = AetherCoder()
-
-from skill_factory import SkillFactory
-_skill_factory = SkillFactory()
+from auto_skill_forge import forge_new_skill
+from reflection_engine import reflect_and_execute
+from ambient_daemon import get_morning_briefing, start_ambient_daemon
+from screen_canvas_copilot import voice_canvas_draw
+from hybrid_router import route_hybrid_query
 
 # The mapping dictionary that Ollama's tool call JSON directly hooks into
 AVAILABLE_TOOLS = {
@@ -66,6 +63,11 @@ AVAILABLE_TOOLS = {
     "stop_screen_watch": stop_screen_watch,
     "clipboard_action": clipboard_action,
     "smart_action": smart_action,
+    "forge_new_skill": forge_new_skill,
+    "reflect_and_execute": reflect_and_execute,
+    "get_morning_briefing": get_morning_briefing,
+    "voice_canvas_draw": voice_canvas_draw,
+    "route_hybrid_query": route_hybrid_query,
 }
 
 

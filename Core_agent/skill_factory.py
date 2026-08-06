@@ -24,6 +24,17 @@ class SkillFactory:
         os.makedirs(self.skills_dir, exist_ok=True)
         print(f"[SkillFactory] Online. Ready to forge new tools.")
 
+    def register_skill(self, skill_name: str, file_path: str) -> tuple:
+        """Dynamically registers an existing skill file into SkillFactory."""
+        try:
+            target_path = os.path.join(self.skills_dir, f"{skill_name}.py")
+            if os.path.abspath(file_path) != os.path.abspath(target_path):
+                shutil.copy(file_path, target_path)
+            print(f"[SkillFactory] Registered skill '{skill_name}' at '{target_path}'.")
+            return True, "Skill registered successfully."
+        except Exception as e:
+            return False, str(e)
+
     def teach_new_skill(self, skill_name: str, description: str, instruction: str) -> str:
         """
         Autonomously generates a new permanent Python tool, tests it safely, 
@@ -124,3 +135,8 @@ CRITICAL RULES:
 
             except Exception as e:
                 return f"[SkillFactory Error] {str(e)}"
+
+
+# Singleton Instance
+SKILL_FACTORY = SkillFactory()
+

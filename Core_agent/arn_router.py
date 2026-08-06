@@ -52,9 +52,15 @@ class ARNRouter:
         self.use_onnx = False
         self.device = torch.device("cpu")
         self.is_loaded = False
+        self.dynamic_skill_overrides: Dict[str, List[str]] = {}
         
         self._load_model()
         self._initialized = True
+
+    def register_dynamic_skill(self, skill_name: str, keywords: List[str]):
+        """Registers dynamic skill keywords into fast-path router overrides."""
+        self.dynamic_skill_overrides[skill_name] = [kw.lower() for kw in keywords if kw]
+        print(f"[ARN Router] Registered dynamic fast-path override for skill '{skill_name}'.")
 
     def _load_model(self):
         """Loads either the Int8 ONNX graph (<4.5MB) or PyTorch model (.pt)."""
@@ -291,6 +297,18 @@ class ARNRouter:
 
         low_text = text.lower().strip()
         
+        # Check dynamic auto-forged skill overrides
+        for s_name, kws in self.dynamic_skill_overrides.items():
+            if any(kw in low_text for kw in kws):
+                return {
+                    "is_local_route": True,
+                    "confidence": 0.99,
+                    "latency_ms": round((time.time() - start_time) * 1000.0, 2),
+                    "tools": [s_name],
+                    "arguments": {"query": text},
+                    "tool_calls": [{"name": s_name, "arguments": {"query": text}}]
+                }
+
         # ── HIGH-PRECISION DESKTOP & INTENT OVERRIDES ──
         if "spotify" in low_text or any(kw in low_text for kw in ["liked songs", "my playlist", "play music", "play track", "play song"]):
             predicted_tools = ["play_spotify_media"]

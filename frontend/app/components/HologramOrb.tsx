@@ -71,17 +71,45 @@ function WireframeShell({
   const meshRef = useRef<THREE.Mesh>(null!);
   const targetColor = useMemo(() => new THREE.Color(STATUS_COLORS[status]?.wire || "#e69900"), [status]);
 
+  // Angular momentum physics for globe spinning
+  const spinVelX = useRef(0);
+  const spinVelY = useRef(0);
+  const rotAngleX = useRef(0);
+  const rotAngleY = useRef(0);
+
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
-    if (meshRef.current) {
-      if (gestureData && gestureData.enabled && gestureData.isTracking) {
-        // Override rotation with gesture angles
-        meshRef.current.rotation.x = gestureData.rotationX * (radius / 1.5);
-        meshRef.current.rotation.y = gestureData.rotationY * (radius / 1.5);
+    if (!meshRef.current) return;
+
+    if (gestureData && gestureData.enabled) {
+      if (gestureData.isFist) {
+        // Fist Magnetic Brake: Freeze rotation instantly
+        spinVelX.current = 0;
+        spinVelY.current = 0;
       } else {
-        meshRef.current.rotation.x = t * speedX;
-        meshRef.current.rotation.y = t * speedY;
+        // Add swiping velocity momentum
+        if (Math.abs(gestureData.velocityX) > 0.002) {
+          spinVelX.current += gestureData.velocityX * 0.06;
+        }
+        if (Math.abs(gestureData.velocityY) > 0.002) {
+          spinVelY.current += gestureData.velocityY * 0.06;
+        }
       }
+
+      // Apply exponential rotational friction
+      spinVelX.current *= 0.965;
+      spinVelY.current *= 0.965;
+
+      // Accumulate physics spinning angle
+      rotAngleX.current += spinVelX.current;
+      rotAngleY.current += spinVelY.current;
+
+      // Combine hand tilt target with momentum rotation
+      meshRef.current.rotation.x = (gestureData.rotationX * (radius / 1.5)) + rotAngleX.current;
+      meshRef.current.rotation.y = (gestureData.rotationY * (radius / 1.5)) + rotAngleY.current;
+    } else {
+      meshRef.current.rotation.x = t * speedX;
+      meshRef.current.rotation.y = t * speedY;
     }
   });
 

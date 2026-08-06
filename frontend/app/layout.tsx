@@ -12,14 +12,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="antialiased" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+      <body className="antialiased" style={{ fontFamily: "'Inter', system-ui, sans-serif" }} suppressHydrationWarning>
         {children}
       </body>
     </html>

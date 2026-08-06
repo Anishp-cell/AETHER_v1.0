@@ -29,5 +29,12 @@
     "eslint-config-next": "16.2.1",
     "tailwindcss": "^4",
     "typescript": "^5"
-  }
-}
+  },
+"overrides": {
+    "brace-expansion": ">=2.0.2 <3.0.0 || >=1.1.12 <2.0.0",
+    "postcss": "^8.5.18",
+    "sharp": "^0.35.3",
+    "minimatch": {
+      "brace-expansion": ">=1.1.12 <2.0.0"
+    }
+      }

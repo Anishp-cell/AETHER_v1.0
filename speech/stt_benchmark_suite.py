@@ -149,39 +149,71 @@ class STTBenchmarkSuite:
         return text, latency_ms, "small.en + VAD"
 
     # ─────────────────────────────────────────────────────────────────────────
-    # CONFIGURATION 5: Side-by-Side Multi-Run Comparison
+    # CONFIGURATION 5: Side-by-Side Comparison: Option 2 (base.en) vs Option 4 (small.en)
     # ─────────────────────────────────────────────────────────────────────────
     def test_option_5_all_side_by_side(self, audio_data: np.ndarray):
-        print("\n" + "=" * 70)
-        print("  📊 RUNNING MULTI-ENGINE SIDE-BY-SIDE BENCHMARK ON SAME AUDIO")
-        print("=" * 70)
+        print("\n" + "═" * 75)
+        print("  📊 RUNNING DIRECT HEAD-TO-HEAD BENCHMARK (OPTION 2 vs OPTION 4)")
+        print("═" * 75)
 
-        t1, l1, d1 = self.test_option_1_baseline(audio_data)
-        t2, l2, d2 = self.test_option_2_prompt_armor(audio_data)
-        t3, l3, d3 = self.test_option_3_greedy(audio_data)
+        # Run Option 2: base.en + Prompt Armor + VAD
+        text_opt2, lat_opt2, desc_opt2 = self.test_option_2_prompt_armor(audio_data)
 
-        print(f"\n[Option 1 - Baseline Default]:")
-        print(f"   ⏱️ Latency: {l1:.1f}ms | 📝 Output: \"{t1}\"")
+        # Run Option 4: small.en + Prompt Armor + VAD
+        self.load_whisper("small.en")
+        t0 = time.time()
+        segments, _ = self.model.transcribe(
+            audio_data,
+            language="en",
+            initial_prompt="AETHER assistant desktop voice command:",
+            vad_filter=True,
+            vad_parameters=dict(min_silence_duration_ms=500),
+            condition_on_previous_text=False
+        )
+        raw_small = " ".join([s.text for s in segments]).strip()
+        cleaned_small = raw_small
+        for p in [r'\[music\]', r'thank you for watching', r'subtitles by', r'^thank you\.?$', r'^bye\.?$']:
+            cleaned_small = re.sub(p, '', cleaned_small, flags=re.IGNORECASE).strip()
+        lat_opt4 = (time.time() - t0) * 1000
+        text_opt4 = cleaned_small or "(Filtered Hallucination / Silence)"
 
-        print(f"\n[Option 2 - VAD + Prompt Armor + Anti-Hallucination]:")
-        print(f"   ⏱️ Latency: {l2:.1f}ms | 📝 Output: \"{t2}\"")
+        print(f"\n[Option 2 — base.en + Prompt Armor + VAD]:")
+        print(f"   ⏱️ Latency: {lat_opt2:.1f} ms  |  ⚡ Speed Advantage: {(lat_opt4 / max(1, lat_opt2)):.1f}x Faster")
+        print(f"   📝 Output:  \"{text_opt2}\"")
 
-        print(f"\n[Option 3 - Fast Greedy (beam=1, temp=0.0)]:")
-        print(f"   ⏱️ Latency: {l3:.1f}ms | 📝 Output: \"{t3}\"")
-        print("=" * 70)
+        print(f"\n[Option 4 — small.en + Prompt Armor + VAD]:")
+        print(f"   ⏱️ Latency: {lat_opt4:.1f} ms")
+        print(f"   📝 Output:  \"{text_opt4}\"")
+
+        # Delta analysis
+        print("\n" + "─" * 75)
+        if text_opt2.lower().strip() == text_opt4.lower().strip():
+            print("🎯 Match: Both models transcribed the EXACT same text perfectly!")
+        else:
+            print(f"🔍 Difference Detected:")
+            print(f"   • base.en : \"{text_opt2}\"")
+            print(f"   • small.en: \"{text_opt4}\"")
+        print("═" * 75)
 
 
 def print_menu():
-    print("\n" + "═" * 60)
-    print("      🎙️ AETHER STT BENCHMARK & COMPARISON TESTBED")
-    print("═" * 60)
+    print("\n" + "═" * 75)
+    print("      🎙️ AETHER STT BENCHMARK & HEAD-TO-HEAD COMPARISON TESTBED")
+    print("═" * 75)
+    print(" 📖 HARDER CHALLENGE SENTENCES TO TEST WITH:")
+    print("  [A] Fast Desktop: 'Snap the active terminal window to the left and tile all windows.'")
+    print("  [B] Technical/API: 'Calculate the latest stock rises for Nvidia, Apple, and Google via yfinance.'")
+    print("  [C] Media/Soundalike: 'Play my liked songs playlist on Spotify and raise volume to 50 percent.'")
+    print("  [D] Visual Precision: 'Highlight the search input bar in the top navigation header on my screen.'")
+    print("  [E] Acoustic Noise: (Stay completely silent, cough, snap fingers, or type on keyboard)")
+    print("─" * 75)
     print(" [1] Option 1: Baseline Faster-Whisper (Default base.en)")
-    print(" [2] Option 2: Faster-Whisper + Prompt Armor + VAD (Anti-Hallucination)")
+    print(" [2] Option 2: Faster-Whisper + Prompt Armor + VAD (base.en ~450ms)")
     print(" [3] Option 3: Fast Greedy Decoder (beam_size=1, sub-50ms CPU)")
-    print(" [4] Option 4: Higher-Accuracy 'small.en' with VAD")
-    print(" [5] Option 5: Side-by-Side Multi-Run (Runs 1 audio through ALL configs)")
+    print(" [4] Option 4: Higher-Accuracy small.en with Prompt Armor + VAD (~1300ms)")
+    print(" [5] Option 5: ⚔️ Head-to-Head Multi-Run (Runs EXACT SAME audio on Option 2 vs 4)")
     print(" [6] Exit Testbed")
-    print("═" * 60)
+    print("═" * 75)
 
 
 def main():
@@ -197,7 +229,7 @@ def main():
                 text, lat, desc = suite.test_option_1_baseline(audio)
                 print(f"\n✅ Result ({lat:.1f}ms): \"{text}\"")
         elif choice == "2":
-            print("\n--- Testing Option 2: VAD + Prompt Armor + Anti-Hallucination ---")
+            print("\n--- Testing Option 2: base.en + Prompt Armor + VAD ---")
             audio = suite.record_utterance()
             if len(audio) > 0:
                 text, lat, desc = suite.test_option_2_prompt_armor(audio)
@@ -209,13 +241,13 @@ def main():
                 text, lat, desc = suite.test_option_3_greedy(audio)
                 print(f"\n✅ Result ({lat:.1f}ms): \"{text}\"")
         elif choice == "4":
-            print("\n--- Testing Option 4: small.en + VAD ---")
+            print("\n--- Testing Option 4: small.en + Prompt Armor + VAD ---")
             audio = suite.record_utterance()
             if len(audio) > 0:
                 text, lat, desc = suite.test_option_4_small_en(audio)
                 print(f"\n✅ Result ({lat:.1f}ms): \"{text}\"")
         elif choice == "5":
-            print("\n--- Testing Option 5: Side-by-Side Comparison ---")
+            print("\n--- Testing Option 5: ⚔️ Head-to-Head Comparison (Option 2 vs Option 4) ---")
             audio = suite.record_utterance()
             if len(audio) > 0:
                 suite.test_option_5_all_side_by_side(audio)

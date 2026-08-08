@@ -122,23 +122,28 @@ export function useHandGesture(enabled: boolean) {
 
     let lastVideoTime = -1;
 
-    navigator.mediaDevices
-      .getUserMedia({ video: { width: 640, height: 480 } })
-      .then((stream) => {
+    const startCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: "user" },
+        }).catch(() => navigator.mediaDevices.getUserMedia({ video: true }));
+
         video.srcObject = stream;
         video.onloadedmetadata = () => {
-          video.play();
+          video.play().catch(() => {});
           detectFrame();
         };
-      })
-      .catch((err) => {
+      } catch (err) {
         console.warn("[HandGesture] Camera access denied or unavailable:", err);
-      });
+      }
+    };
+
+    startCamera();
 
     const detectFrame = () => {
       if (!enabled) return;
 
-      if (video.currentTime !== lastVideoTime && landmarkerRef.current && video.readyState >= 2) {
+      if (landmarkerRef.current && video.readyState >= 2) {
         lastVideoTime = video.currentTime;
         const now = performance.now();
 

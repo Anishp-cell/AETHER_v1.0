@@ -18,14 +18,13 @@ class VisionPerception:
             min_detection_confidence=0.5,
             min_tracking_confidence=0.5
         )
-        
-        # Open default laptop webcam
-        self.cap = cv2.VideoCapture(0)
-        # Briefly warm up the camera
-        time.sleep(1)
-        
+        self.cap = None
+        self.last_frame = None
+
     def capture_emotion_signal(self):
-        ret, frame = self.cap.read()
+        cap = cv2.VideoCapture(0)
+        ret, frame = cap.read()
+        cap.release()
         if not ret:
             self.last_frame = None
             return "Camera is not accessible."

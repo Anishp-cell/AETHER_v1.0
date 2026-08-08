@@ -13,6 +13,9 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(_
 OUTPUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "samples")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+# ─────────────────────────────────────────────────────────────────────────────
+# 🛠️ CUSTOMIZATION SECTION: Add your custom wake phrases, voices, and cadences here
+# ─────────────────────────────────────────────────────────────────────────────
 TARGET_PHRASES = [
     "Hey AETHER",
     "AETHER",
@@ -50,7 +53,7 @@ async def generate_single_clip(phrase: str, voice: str, rate: str, pitch: str, f
 
 async def generate_dataset(max_samples: int = 150):
     """Generates synthetic dataset of target wake phrases."""
-    print(f"🎙️ [WakeWord Generator] Generating {max_samples} synthetic training samples in '{OUTPUT_DIR}'...")
+    print(f"[WakeWord Generator] Generating {max_samples} synthetic training samples in '{OUTPUT_DIR}'...")
     count = 0
     tasks = []
 
@@ -72,7 +75,7 @@ async def generate_dataset(max_samples: int = 150):
 
     results = await asyncio.gather(*tasks)
     success_count = sum(1 for r in results if r)
-    print(f"✅ [WakeWord Generator] Generated {success_count}/{count} synthetic clips for 'Hey AETHER'!")
+    print(f"[WakeWord Generator] Successfully generated {success_count}/{count} synthetic clips for 'Hey AETHER'!")
     return success_count
 
 

@@ -10,31 +10,23 @@ class WakeWordDetector:
         """
         Initializes the incredibly lightweight Wake-Word engine.
         Runs 100% on the CPU via ONNX, consuming <0.1% CPU and <15MB RAM.
-        Active Wake-Words: 'Hey AETHER', 'AETHER', 'Hey Jarvis', 'Jarvis'.
+        Active Wake-Words: 'Hey AETHER', 'AETHER'.
         """
         if wake_words is None:
-            wake_words = []
-            if os.path.exists(CUSTOM_MODEL_PATH):
-                wake_words.append(CUSTOM_MODEL_PATH)
-            wake_words.append("hey_jarvis")
+            wake_words = [CUSTOM_MODEL_PATH] if os.path.exists(CUSTOM_MODEL_PATH) else ["speech/wake_words/hey_aether.onnx"]
 
-        print(f"[Acoustic Layer] Loading Wake Word: {wake_words} (CPU Idle Matrix)")
+        print(f"[Acoustic Layer] Loading Wake Word: ['Hey AETHER', 'AETHER'] (CPU Idle Matrix)")
         
-        try:
-            openwakeword.utils.download_models()
-        except Exception:
-            pass
-            
         try:
             self.owwModel = Model(wakeword_models=wake_words, inference_framework="onnx")
         except Exception as e:
-            print(f"[WakeWordDetector Warning] Falling back to default: {e}")
-            self.owwModel = Model(wakeword_models=["hey_jarvis"], inference_framework="onnx")
+            print(f"[WakeWordDetector Warning] Error loading model: {e}")
+            self.owwModel = Model(wakeword_models=[CUSTOM_MODEL_PATH], inference_framework="onnx")
 
     def detect(self, audio_chunk):
         """
         Processes a raw 16kHz int16 audio chunk.
-        Returns True if user invoked 'Hey AETHER' or 'Hey Jarvis'.
+        Returns True if user invoked 'Hey AETHER' or 'AETHER'.
         """
         prediction = self.owwModel.predict(audio_chunk)
         for mdl in prediction.keys():
@@ -44,4 +36,3 @@ class WakeWordDetector:
         
     def get_required_sample_rate(self):
         return 16000 # OpenWakeWord requires exactly 16kHz
-

@@ -44,22 +44,12 @@ class WakeWordGate:
             print("[Acoustic Gate Warning] openwakeword not found. Operating in fallback mode.")
             return
 
-        models_to_load = []
-        if os.path.exists(self.custom_model_path):
-            models_to_load.append(self.custom_model_path)
-        
-        # Add default hey_jarvis for dual-wake robustness
-        models_to_load.append("hey_jarvis")
-
+        models_to_load = [self.custom_model_path]
         try:
             self.oww_model = Model(wakeword_models=models_to_load, inference_framework="onnx")
-            print(f"[Acoustic Gate] Online. Active Wake-Words: ['Hey AETHER', 'AETHER', 'Hey Jarvis', 'Jarvis']")
+            print(f"[Acoustic Gate] Online. Active Wake-Words: ['Hey AETHER', 'AETHER']")
         except Exception as e:
-            print(f"[Acoustic Gate] Warning loading ONNX models: {e}. Falling back to default.")
-            try:
-                self.oww_model = Model(wakeword_models=["hey_jarvis"], inference_framework="onnx")
-            except Exception:
-                pass
+            print(f"[Acoustic Gate] Warning loading ONNX models: {e}.")
 
     def check_audio_frame(self, audio_chunk_16khz: np.ndarray) -> bool:
         """

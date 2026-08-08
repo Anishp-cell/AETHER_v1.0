@@ -52,68 +52,95 @@ function InnerCore({ status }: { status: string }) {
   );
 }
 
-// ── SUB-COMPONENT: Wireframe Fluid Shell ──
-function WireframeShell({
-  radius,
-  speedX,
-  speedY,
+// ── UNIFIED HOLOGRAM PHYSICS GROUP ──────────────────────────────────────────
+function HologramPhysicsGroup({
   status,
   energy = 0,
   gestureData,
 }: {
-  radius: number;
-  speedX: number;
-  speedY: number;
   status: string;
   energy?: number;
   gestureData?: GestureData;
 }) {
-  const meshRef = useRef<THREE.Mesh>(null!);
-  const targetColor = useMemo(() => new THREE.Color(STATUS_COLORS[status]?.wire || "#e69900"), [status]);
+  const groupRef = useRef<THREE.Group>(null!);
 
-  // Angular momentum physics for globe spinning
-  const spinVelX = useRef(0);
-  const spinVelY = useRef(0);
-  const rotAngleX = useRef(0);
-  const rotAngleY = useRef(0);
+  // Physics momentum state
+  const velX = useRef(0);
+  const velY = useRef(0);
+  const angleX = useRef(0);
+  const angleY = useRef(0);
+  const tiltX = useRef(0);
+  const tiltY = useRef(0);
 
-  useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
-    if (!meshRef.current) return;
+  useFrame((_, delta) => {
+    if (!groupRef.current) return;
 
     if (gestureData && gestureData.enabled) {
       if (gestureData.isFist) {
-        // Fist Magnetic Brake: Freeze rotation instantly
-        spinVelX.current = 0;
-        spinVelY.current = 0;
+        // Fist Magnetic Brake: halt rotation instantly
+        velX.current = 0;
+        velY.current = 0;
       } else {
-        // Add swiping velocity momentum
-        if (Math.abs(gestureData.velocityX) > 0.002) {
-          spinVelX.current += gestureData.velocityX * 0.06;
+        // Impart swiping velocity momentum
+        if (Math.abs(gestureData.velocityX) > 0.001) {
+          velY.current += gestureData.velocityX * 0.08;
         }
-        if (Math.abs(gestureData.velocityY) > 0.002) {
-          spinVelY.current += gestureData.velocityY * 0.06;
+        if (Math.abs(gestureData.velocityY) > 0.001) {
+          velX.current += gestureData.velocityY * 0.08;
         }
       }
 
-      // Apply exponential rotational friction
-      spinVelX.current *= 0.965;
-      spinVelY.current *= 0.965;
+      // Smooth hand position tracking / tilt
+      if (gestureData.isTracking) {
+        tiltX.current += (gestureData.rotationX * 0.8 - tiltX.current) * 0.1;
+        tiltY.current += (gestureData.rotationY * 0.8 - tiltY.current) * 0.1;
+      } else {
+        // When hand leaves frame, smoothly return tilt to neutral while keeping continuous momentum spin
+        tiltX.current *= 0.95;
+        tiltY.current *= 0.95;
+      }
 
-      // Accumulate physics spinning angle
-      rotAngleX.current += spinVelX.current;
-      rotAngleY.current += spinVelY.current;
+      // Realistic aerodynamic rotational friction (slow coast down over ~12 seconds)
+      velX.current *= 0.988;
+      velY.current *= 0.988;
 
-      // Combine hand tilt target with momentum rotation
-      meshRef.current.rotation.x = (gestureData.rotationX * (radius / 1.5)) + rotAngleX.current;
-      meshRef.current.rotation.y = (gestureData.rotationY * (radius / 1.5)) + rotAngleY.current;
+      // Base idle orbit + velocity momentum
+      angleX.current += velX.current + 0.001;
+      angleY.current += velY.current + 0.003;
+
+      groupRef.current.rotation.x = angleX.current + tiltX.current;
+      groupRef.current.rotation.y = angleY.current + tiltY.current;
     } else {
-      meshRef.current.rotation.x = t * speedX;
-      meshRef.current.rotation.y = t * speedY;
+      // Natural idle rotation
+      groupRef.current.rotation.x += 0.002;
+      groupRef.current.rotation.y += 0.005;
     }
   });
 
-  // Calculate liquid distortion based on microphone input and status
+  return (
+    <group ref={groupRef}>
+      <InnerCore status={status} />
+      <WireframeShell radius={1.2} status={status} energy={energy} />
+      <WireframeShell radius={1.6} status={status} energy={energy} />
+      <WireframeShell radius={2.0} status={status} energy={energy} />
+      <DataDust status={status} />
+    </group>
+  );
+}
+
+// ── SUB-COMPONENT: Wireframe Fluid Shell ──
+function WireframeShell({
+  radius,
+  status,
+  energy = 0,
+}: {
+  radius: number;
+  status: string;
+  energy?: number;
+}) {
+  const meshRef = useRef<THREE.Mesh>(null!);
+  const targetColor = useMemo(() => new THREE.Color(STATUS_COLORS[status]?.wire || "#e69900"), [status]);
+
   const normalizedEnergy = Math.min(1.0, energy / 1500);
   const distortAmount = status === "listening" ? 0.15 + normalizedEnergy * 0.4 : status === "speaking" ? 0.35 : 0.1;
   const distortSpeed = status === "speaking" ? 6 : status === "listening" ? 2 + normalizedEnergy * 4 : 1;
@@ -204,19 +231,11 @@ export default function HologramOrb({
 
         <CameraGestureController gestureData={gestureData} />
 
-        {/* Core layers */}
-        <InnerCore status={effectiveStatus} />
+        {/* Unified Physics Momentum Group */}
+        <HologramPhysicsGroup status={effectiveStatus} energy={energy} gestureData={gestureData} />
 
-        {/* Distorted Liquid Wireframe Shells */}
-        <WireframeShell radius={1.2} speedX={0.2} speedY={0.3} status={effectiveStatus} energy={energy} gestureData={gestureData} />
-        <WireframeShell radius={1.6} speedX={-0.1} speedY={0.4} status={effectiveStatus} energy={energy} gestureData={gestureData} />
-        <WireframeShell radius={2.0} speedX={0.05} speedY={-0.2} status={effectiveStatus} energy={energy} gestureData={gestureData} />
-
-        {/* Particle Cloud */}
-        <DataDust status={effectiveStatus} />
-
-        {/* Mouse Orbit Controls — autoRotate disabled during active gesture tracking */}
-        <OrbitControls enableZoom={false} enablePan={false} autoRotate={!isGestureActive} autoRotateSpeed={0.5} />
+        {/* Orbit Controls (autoRotate disabled when gesture enabled so physics are never overridden) */}
+        <OrbitControls enableZoom={false} enablePan={false} autoRotate={!gestureData?.enabled} autoRotateSpeed={0.5} />
       </Canvas>
     </div>
   );

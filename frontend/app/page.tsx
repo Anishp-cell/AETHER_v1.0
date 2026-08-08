@@ -140,11 +140,25 @@ export default function Home() {
               onShutdown={sendShutdown}
             />
           </div>
-          <div className="h-56 border-t border-white/[0.04] flex-shrink-0 bg-black/20 p-1">
+          <div className="h-56 border-t border-white/[0.04] flex-shrink-0 bg-black/40 p-2 flex flex-col justify-center items-center text-center">
             {gestureEnabled ? (
               <DigitalHandCanvas gestureData={gestureData} />
             ) : (
-              <CameraFeed frame={cameraFrame} />
+              <div className="w-full h-full border border-white/[0.05] rounded-lg bg-black/60 flex flex-col items-center justify-center p-3 text-gray-500">
+                <span className="text-xl mb-1.5 opacity-40">📷</span>
+                <span className="text-[10px] font-mono tracking-wider uppercase text-gray-400">
+                  CAMERA STANDBY
+                </span>
+                <span className="text-[8px] font-mono text-gray-600 mt-1">
+                  GESTURE CONTROL IS OFF
+                </span>
+                <button
+                  onClick={() => setGestureEnabled(true)}
+                  className="mt-2.5 px-2.5 py-1 rounded bg-cyan-500/10 border border-cyan-500/30 text-[9px] font-mono text-cyan-400 hover:bg-cyan-500/20 transition-all"
+                >
+                  ACTIVATE GESTURES
+                </button>
+              </div>
             )}
           </div>
         </aside>

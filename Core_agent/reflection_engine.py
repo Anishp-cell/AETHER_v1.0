@@ -95,7 +95,14 @@ class ReflectionEngine:
                 
                 # 2. Reflection & Parameter Adjustment Phase
                 if attempt < self.max_retries:
-                    print(f"🧠 [ReflectionEngine] Entering Reflection Phase... Adjusting execution parameters for retry {attempt + 1}...")
+                    heads_up_msg = f"Task encountered a small issue, auto-correcting and retrying now..."
+                    print(f"🧠 [ReflectionEngine] {heads_up_msg} (Attempt {attempt + 1}/{self.max_retries})")
+                    try:
+                        # Notify HUD if desktop overlay is available
+                        from desktop_overlay import DESKTOP_HUD
+                        DESKTOP_HUD.broadcast_hud_status(f"⚡ Auto-healing: retrying {action_name}...")
+                    except Exception:
+                        pass
                     time.sleep(0.5)
 
             except Exception as e:

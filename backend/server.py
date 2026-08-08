@@ -252,30 +252,11 @@ def ai_loop():
     print(" AETHER v3.0 - SYSTEM-LEVEL MoE RUNTIME ")
     print("==========================================")
 
-    # 1. Init Memory & Vision
+    # 1. Init Memory & Screen
     memory_db = KnowledgeDatabase()
     exp_memory = ExperienceMemory()
-    vision = VisionPerception()
     screen_cap = ScreenCapture()
     update_state(**{"agents": {**agent_state["agents"], "vision": "online", "deep_memory": "online"}})
-
-    # Start camera frame streaming thread (5 fps) — lazy: only streams when clients are connected
-    def camera_stream_loop():
-        while True:
-            try:
-                if connected_clients:  # Only process camera when dashboard is open
-                    vision.capture_emotion_signal()
-                    b64 = vision.get_base64_frame(quality=40, max_width=480)
-                    if b64:
-                        broadcast_sync({"type": "camera_frame", "frame": b64})
-                    time.sleep(0.2)  # ~5 fps when active
-                else:
-                    time.sleep(2.0)  # Low-power poll when no clients connected
-            except Exception:
-                pass
-    
-    cam_thread = threading.Thread(target=camera_stream_loop, daemon=True)
-    cam_thread.start()
 
     # 2. Init core engines — PARALLELIZED
     global llm, policy_router
@@ -604,11 +585,6 @@ Golden Rules:
                                 push_transcript("user", user_text,
                                               intent=signals.get("intent", ""),
                                               emotion=signals.get("emotion", ""))
-
-                                # Vision context
-                                vision_signal = vision.capture_emotion_signal()
-                                if "visible" not in vision_signal:
-                                    active_prompt += f"\n\n[Live Camera Signal]: {vision_signal}"
 
                                 # Screen Reader — triggered when user asks about screen content
                                 screen_keywords = ["screen", "monitor", "display", "looking at", "what do you see", "read this", "debug this", "this error", "what's on", "what is on", "help me with this"]

@@ -36,6 +36,7 @@ from reflection_engine import reflect_and_execute
 from ambient_daemon import get_morning_briefing, start_ambient_daemon
 from screen_canvas_copilot import voice_canvas_draw
 from hybrid_router import route_hybrid_query
+from task_timer import TASK_TIMER
 
 # The mapping dictionary that Ollama's tool call JSON directly hooks into
 AVAILABLE_TOOLS = {

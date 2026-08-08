@@ -372,23 +372,29 @@ class FrozenLLMEngine:
                 # 3. BASE-MODEL VERBAL SUMMARY
                 if tool_results_history:
                     log_str = "\n".join([f"Executed {t[0]}: {t[1][:200]}..." for t in tool_results_history])
-                    secret_log += f"\n{log_str}"
-                    
                     print(f"[Speaking Engine] Generating natural vocal response...")
-                    # Downshift back to conversational Qwen2.5 for speech
+                    # Natural conversational personal assistant response prompt
+                    assistant_system_prompt = (
+                        "You are AETHER, Anish's personal, highly capable, intelligent AI companion. "
+                        "You speak directly to Anish in first-person ('I', 'we'). "
+                        "Never speak like a third-person corporate chatbot. Never say 'The tool completed its task' or 'The agent has'. "
+                        "For simple OS/media actions (like window snapping, playing songs, volume): give a crisp, natural 1-sentence confirmation. "
+                        "For questions, research, and data: explain the answer articulately and naturally with real substance. "
+                        "Be charismatic, helpful, and sharp."
+                    )
                     final_payload = {
                         "model": self.base_model,
                         "messages": [
-                            {"role": "system", "content": "Your agent pipeline just executed tasks and returned data. Inform the user of the final result or answer in 1-2 conversational sentences. If the tool returned specific data (like a price, time, or a fact), tell the user the data! Do not just say 'task complete'."},
-                            {"role": "user", "content": f"The user originally asked: '{user_input}'\nTool Logs: {log_str}"}
+                            {"role": "system", "content": assistant_system_prompt},
+                            {"role": "user", "content": f"User prompt: '{user_input}'\nTool Execution Results: {log_str}"}
                         ],
                         "stream": False
                     }
                     try:
                         final_resp = requests.post(self.url, json=final_payload).json()
-                        answer = final_resp.get("message", {}).get("content", "Task completed.").strip()
+                        answer = final_resp.get("message", {}).get("content", "Got it, task completed.").strip()
                     except Exception:
-                        answer = "Task executed successfully."
+                        answer = "Got it, done."
                         
                     answer += f"\n\n<SECRET_TOOL_LOG>{secret_log}\n</SECRET_TOOL_LOG>"
                     return answer

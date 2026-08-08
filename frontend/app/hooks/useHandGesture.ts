@@ -238,14 +238,14 @@ export function useHandGesture(enabled: boolean) {
             });
           } else {
             prevHandPos.current = null;
-            currentVelX.current *= 0.95;
-            currentVelY.current *= 0.95;
+            currentVelX.current *= 0.985;
+            currentVelY.current *= 0.985;
             setGestureData((prev) => ({
               ...prev,
               isTracking: false,
               handCount: 0,
-              velocityX: prev.velocityX * 0.95,
-              velocityY: prev.velocityY * 0.95,
+              velocityX: currentVelX.current,
+              velocityY: currentVelY.current,
               landmarks: null,
               secondLandmarks: null,
             }));

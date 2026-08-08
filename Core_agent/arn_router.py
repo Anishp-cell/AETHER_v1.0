@@ -327,23 +327,30 @@ class ARNRouter:
             confidence = 0.99
             tool_calls = [{"name": "write_and_run_script", "arguments": {"instruction": text}}]
 
-        elif re.search(r'click\s+(?:the|on|on the)?\s*([a-zA-Z0-9\s]+)', low_text) and not re.search(r'\d+,\s*\d+', low_text):
-            # Natural language vision click: e.g. "click the search bar", "click submit button"
+        elif any(kw in low_text for kw in ["click the", "click on", "press the", "click submit", "click button", "click search"]):
             predicted_tools = ["vision_click"]
             confidence = 0.99
-            target_elem = re.sub(r'^(?:click|press)\s+(?:the|on|on the)?\s*', '', text, flags=re.IGNORECASE).strip()
-            tool_calls = [{"name": "vision_click", "arguments": {"element_description": target_elem}}]
+            # Extract clean target element name
+            clean_elem = text.split("[SYSTEM INJECTED")[0].strip()
+            clean_elem = re.sub(r'^(?:and\s+you\s+|can\s+you\s+|please\s+|could\s+you\s+|hey\s+aether\s*,?\s*|aether\s*,?\s*)', '', clean_elem, flags=re.IGNORECASE)
+            clean_elem = re.sub(r'^(?:click\s+(?:on|the|on the)?|press\s+(?:the)?)\s*', '', clean_elem, flags=re.IGNORECASE)
+            clean_elem = re.sub(r'(?:in|on)\s+(?:my|the)?\s*(?:current)?\s*(?:screen|display|window)\.?$', '', clean_elem, flags=re.IGNORECASE).strip()
+            tool_calls = [{"name": "vision_click", "arguments": {"element_description": clean_elem}}]
 
         elif any(kw in low_text for kw in ["read the error", "read that error", "read error on screen", "read text on screen", "what does that say"]):
             predicted_tools = ["vision_read"]
             confidence = 0.99
             tool_calls = [{"name": "vision_read", "arguments": {"query": text}}]
 
-        elif any(kw in low_text for kw in ["highlight the", "show me where", "find the start menu", "highlight start"]):
+        elif any(kw in low_text for kw in ["highlight the", "show me where", "find the start menu", "highlight start", "highlight search", "highlight"]):
             predicted_tools = ["vision_highlight"]
             confidence = 0.99
-            target_elem = re.sub(r'^(?:highlight|show me where|find)\s+(?:the)?\s*', '', text, flags=re.IGNORECASE).strip()
-            tool_calls = [{"name": "vision_highlight", "arguments": {"element_description": target_elem}}]
+            # Extract clean target element name
+            clean_elem = text.split("[SYSTEM INJECTED")[0].strip()
+            clean_elem = re.sub(r'^(?:and\s+you\s+|can\s+you\s+|please\s+|could\s+you\s+|hey\s+aether\s*,?\s*|aether\s*,?\s*)', '', clean_elem, flags=re.IGNORECASE)
+            clean_elem = re.sub(r'^(?:highlight\s+(?:the)?|show\s+me\s+where\s+(?:the)?|find\s+(?:the)?)\s*', '', clean_elem, flags=re.IGNORECASE)
+            clean_elem = re.sub(r'(?:in|on)\s+(?:my|the)?\s*(?:current)?\s*(?:screen|display|window)\.?$', '', clean_elem, flags=re.IGNORECASE).strip()
+            tool_calls = [{"name": "vision_highlight", "arguments": {"element_description": clean_elem}}]
 
         elif re.search(r'\b(?:snap|move|place|put|map|dock)\b.*\b(left|right|top|bottom|maximize|minimize|restore)\b', low_text) or any(kw in low_text for kw in ["snap window", "maximize window", "minimize window", "restore window"]):
             predicted_tools = ["snap_window"]
@@ -355,7 +362,7 @@ class ARNRouter:
                     break
             tool_calls = [{"name": "snap_window", "arguments": {"direction": dir_match}}]
 
-        elif any(kw in low_text for kw in ["tile windows", "tile all windows", "tile the windows", "tile window"]):
+        elif any(kw in low_text for kw in ["tile windows", "tile all windows", "tile the windows", "tile window", "dial all windows", "dial windows", "tail all windows"]):
             predicted_tools = ["tile_windows"]
             confidence = 0.99
             tool_calls = [{"name": "tile_windows", "arguments": {}}]

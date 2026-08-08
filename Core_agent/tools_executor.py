@@ -1,3 +1,5 @@
+import os
+import sys
 import datetime
 
 def get_current_time():
@@ -24,8 +26,10 @@ from skill_registry import SKILL_REGISTRY
 from vision_click_engine import vision_click, vision_read, vision_highlight
 from window_manager import snap_window, tile_windows, close_foreground_window
 from screen_watcher import start_screen_watch, stop_screen_watch
-import sys
-import os
+from web_agent import search_and_read_web, read_specific_url
+from skill_factory import SkillFactory, SKILL_FACTORY
+_coder_instance = AetherCoder()
+_skill_factory = SKILL_FACTORY
 
 from auto_skill_forge import forge_new_skill
 from reflection_engine import reflect_and_execute

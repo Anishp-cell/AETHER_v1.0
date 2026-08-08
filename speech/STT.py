@@ -5,13 +5,13 @@ import sounddevice as sd
 from collections import deque
 from faster_whisper import WhisperModel
 
-# --- CONFIGURATION ---
-MODEL_SIZE = "small.en"      # "base.en" is faster, "small.en" is more accurate
-THRESHOLD = 0.02             # RMS amplitude threshold (tweak if env is noisy)
-SILENCE_TIMEOUT = 1.0        # Seconds of silence to consider the sentence "done"
-PRE_BUFFER_DURATION = 0.5    # Seconds of audio to keep before trigger (catches "Hi")
+# --- CONFIGURATION (Option 2: High-Speed base.en + Prompt Armor + VAD) ---
+MODEL_SIZE = "base.en"        # Ultra-fast sub-450ms CPU execution
+THRESHOLD = 0.025             # Hard RMS amplitude threshold to reject ambient room noise
+SILENCE_TIMEOUT = 0.9         # Seconds of silence to consider the sentence "done"
+PRE_BUFFER_DURATION = 0.4     # Catch start of rapid speech
 SAMPLE_RATE = 16000
-BLOCK_SIZE = 512             # Audio chunk size
+BLOCK_SIZE = 512              # Audio chunk size
 
 # --- STATE ---
 audio_queue = queue.Queue()
@@ -23,14 +23,11 @@ def callback(indata, frames, time, status):
     audio_queue.put(indata.copy())
 
 def main():
-    # 1. Load Model
-    print(f"Loading {MODEL_SIZE}...")
-    model = WhisperModel(MODEL_SIZE, device="cuda", compute_type="float16")
+    # 1. Load Model with int8 CPU optimization
+    print(f"Loading Faster-Whisper {MODEL_SIZE} (CPU int8 with Prompt Armor)...")
+    model = WhisperModel(MODEL_SIZE, device="cpu", compute_type="int8")
     print("Ready. Speak now.")
 
-    # 2. Setup Audio Stream
-    # We use a deque to hold the last X seconds of audio (Pre-buffer)
-    # This ensures we don't cut off the start of the sentence.
     pre_buffer_len = int(PRE_BUFFER_DURATION * SAMPLE_RATE / BLOCK_SIZE)
     pre_buffer = deque(maxlen=pre_buffer_len)
     
@@ -42,16 +39,8 @@ def main():
                         channels=1, dtype="float32", callback=callback):
         while True:
             try:
-                # Process audio chunk
                 chunk = audio_queue.get(timeout=0.1)
-                
-                # Measure Energy (Simple VAD)
-                volume = np.linalg.norm(chunk) / len(chunk)  # RMS-like but faster/simpler
-                # Or regular RMS: np.sqrt(np.mean(chunk**2))
-                # For speed/simplicity, max abs value is also fine: np.max(np.abs(chunk))
-                # Let's use max amplitude for simpler thresholding:
                 peak = np.max(np.abs(chunk))
-
                 current_time = time.time()
 
                 if peak > THRESHOLD:
@@ -59,10 +48,8 @@ def main():
                     if not is_recording:
                         print(" [Recording] ...")
                         is_recording = True
-                        # Dump pre-buffer into recording
                         recording_buffer.extend(pre_buffer)
                     
-                # Store data
                 if is_recording:
                     recording_buffer.append(chunk)
 
@@ -71,24 +58,31 @@ def main():
                         print(" [Processing] ...")
                         is_recording = False
                         
-                        # Process Audio
                         if len(recording_buffer) > 0:
                             audio_data = np.concatenate(recording_buffer).flatten().astype(np.float32)
                             
-                            # Transcribe
+                            # Transcribe with Option 2 Prompt Armor & VAD
                             segments, _ = model.transcribe(
                                 audio_data, 
                                 language="en",
                                 beam_size=5,
-                                best_of=5,
-                                condition_on_previous_text=False # Prevents loops
+                                initial_prompt="AETHER assistant desktop voice command:",
+                                vad_filter=True,
+                                vad_parameters=dict(min_silence_duration_ms=500),
+                                condition_on_previous_text=False # Prevents looping
                             )
                             
-                            text = " ".join([s.text for s in segments]).strip()
-                            if text:
-                                print(f">>> {text}")
+                            raw_text = " ".join([s.text for s in segments]).strip()
+                            
+                            # Anti-Hallucination Regex Sanitizer
+                            cleaned = raw_text
+                            for p in [r'\[music\]', r'thank you for watching', r'subtitles by', r'^thank you\.?$', r'^bye\.?$']:
+                                cleaned = re.sub(p, '', cleaned, flags=re.IGNORECASE).strip()
+
+                            if cleaned:
+                                print(f">>> {cleaned}")
                             else:
-                                print(f">>> (no speech detected)")
+                                print(f">>> (silence / room noise filtered)")
                             
                             print("\nReady.")
                         

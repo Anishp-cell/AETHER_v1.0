@@ -475,17 +475,24 @@ Golden Rules:
                             recording_buffer = [] # Reset
 
                             def process_utterance(audio_array):
-                                # STT Processing
-                                segments, _ = stt_model.transcribe(audio_array, language="en", condition_on_previous_text=False)
+                                # STT Processing with Option 2 Prompt Armor & VAD
+                                segments, _ = stt_model.transcribe(
+                                    audio_array,
+                                    language="en",
+                                    initial_prompt="AETHER assistant desktop voice command:",
+                                    vad_filter=True,
+                                    vad_parameters=dict(min_silence_duration_ms=500),
+                                    condition_on_previous_text=False
+                                )
                                 user_text = " ".join([s.text for s in segments]).strip()
 
                                 # Anti-Hallucination Filter for raw STT noise
                                 dirty = user_text.lower()
                                 hallucinations = [
                                     "thank you for watching", "thanks for watching", "subscribe", 
-                                    "amara.org", "by amara.org", "subtitles by"
+                                    "amara.org", "by amara.org", "subtitles by", "okay. okay", "you're welcome"
                                 ]
-                                if len(dirty) < 3 or any(h in dirty for h in hallucinations):
+                                if len(dirty) < 3 or any(h in dirty for h in hallucinations) or dirty == "thank you.":
                                     update_state(status="idle")
                                     return
 

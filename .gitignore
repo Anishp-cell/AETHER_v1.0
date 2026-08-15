@@ -89,7 +89,15 @@ image.png
 # ===============================
 resources_far/
 *.zip
-AuthorKit27__2_*.pdf
+AuthorKit*
+IEEE*
+*.tex
+*.bib
+*.cls
+*.sty
+*.bst
+*.synctex.gz
+*.docx
 
 # ===============================
 # Temporary Speech & Audio Buffers

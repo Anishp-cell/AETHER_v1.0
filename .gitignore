@@ -95,6 +95,12 @@ AuthorKit27__2_*.pdf
 # Temporary Speech & Audio Buffers
 # ===============================
 temp_audio/
+*.mp3
+
+# ===============================
+# Wakeword Training Samples
+# ===============================
+speech/train_custom_wakeword/samples/
 
 # ===============================
 # Debug Screenshots

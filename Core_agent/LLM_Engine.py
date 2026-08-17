@@ -1,7 +1,34 @@
 import requests
 import re
 import json
+import os
+import sys
+
+CORE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(CORE_DIR)
+for p in [CORE_DIR, PROJECT_ROOT, os.path.join(PROJECT_ROOT, "memory"), os.path.join(PROJECT_ROOT, "speech")]:
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
 import tools_executor
+
+try:
+    from experience_memory import ExperienceMemory
+except ImportError:
+    ExperienceMemory = None
+
+try:
+    from knowledge_rag import KnowledgeDatabase
+except ImportError:
+    KnowledgeDatabase = None
+
+try:
+    from sound_effects import play_tactical_chime
+except ImportError:
+    try:
+        from speech.sound_effects import play_tactical_chime
+    except ImportError:
+        def play_tactical_chime(chime_type="action"): pass
 
 class FrozenLLMEngine:
     def __init__(self, base_model="qwen2.5-coder:1.5b", thinking_model="deepseek-r1:1.5b", orchestrator_model="Aether-Orchestrator"):
@@ -9,18 +36,68 @@ class FrozenLLMEngine:
         self.thinking_model = thinking_model
         self.orchestrator_model = orchestrator_model
         self.url = "http://127.0.0.1:11434/api/chat"
-        print(f"[Logic Layer] Triple-Model LLM Engine Initialized ({base_model}, {thinking_model}, {orchestrator_model})")
+        
+        # 3-Tier Memory Engines
+        self.history = []  # Tier 1: Sliding window conversation history (max 8 turns)
+        self.exp_memory = ExperienceMemory(base_model=base_model) if ExperienceMemory else None  # Tier 2: User profile
+        self.knowledge_db = KnowledgeDatabase() if KnowledgeDatabase else None  # Tier 3: FAISS Vector RAG
+        
+        print(f"[Logic Layer] Triple-Model LLM Engine Initialized ({base_model}, {thinking_model}, {orchestrator_model}) with 3-Tier Memory")
+
+    def add_to_history(self, role: str, content: str):
+        """Tier 1: Adds a turn to the sliding window conversation history."""
+        if not content:
+            return
+        # Clean internal system flags
+        clean = content.replace(" -- [INTERRUPTED BY USER]", "").replace("[INTERRUPTED BY USER]", "")
+        clean = re.sub(r'<SECRET_TOOL_LOG>.*?</SECRET_TOOL_LOG>', '', clean, flags=re.DOTALL).strip()
+        if clean:
+            self.history.append({"role": role, "content": clean})
+            if len(self.history) > 8:
+                self.history = self.history[-8:]
+
+    def clear_history(self):
+        """Clears the short-term conversation buffer."""
+        self.history.clear()
 
     def generate_response(self, system_prompt: str, user_input: str, chat_history: list = None, image_b64: str = None) -> str:
+        # Tier 2 Fast-Path: Intercept Explicit Memory Commands
+        if self.exp_memory:
+            is_handled, mem_resp = self.exp_memory.handle_explicit_memory_command(user_input)
+            if is_handled and mem_resp:
+                self.add_to_history("user", user_input)
+                self.add_to_history("assistant", mem_resp)
+                return mem_resp
+
+        # Tier 2: Inject Relevant User Profile Facts into System Prompt
+        if self.exp_memory:
+            relevant_facts = self.exp_memory.get_relevant_facts(user_input, limit=4)
+            if relevant_facts:
+                facts_str = "\n".join([f"• {f}" for f in relevant_facts])
+                system_prompt += f"\n\n<USER_PROFILE_FACTS>\n{facts_str}\n</USER_PROFILE_FACTS>"
+            # Background asynchronous personal fact extraction
+            self.exp_memory.extract_and_store_async(user_input)
+
+        # Tier 3: Inject Distance-Gated FAISS Vector RAG Knowledge Context
+        if self.knowledge_db:
+            rag_context = self.knowledge_db.search(user_input, top_k=2)
+            if rag_context:
+                system_prompt += f"\n\n<RELEVANT_KNOWLEDGE_CONTEXT>\n{rag_context}\n</RELEVANT_KNOWLEDGE_CONTEXT>"
+
         messages = [{"role": "system", "content": system_prompt}]
         
-        # Inject context history
+        # Inject context history (merge incoming chat_history with Tier 1 sliding buffer)
+        effective_history = []
         if chat_history:
-            for hp in chat_history:
+            effective_history = chat_history
+        elif self.history:
+            effective_history = [{"role": "aether" if h["role"] == "assistant" else "user", "text": h["content"]} for h in self.history]
+
+        if effective_history:
+            for hp in effective_history:
                 role_val = "assistant" if hp.get("role") == "aether" else "user"
                 content_val = hp.get("text", "")
                 if content_val:
-                    # Strip internal system markers so the LLM doesn't reproduce them
                     content_val = content_val.replace(" -- [INTERRUPTED BY USER]", "").replace("[INTERRUPTED BY USER]", "")
                     content_val = re.sub(r'\[Background System Task Completed\].*', '', content_val, flags=re.DOTALL).strip()
                     if content_val:
@@ -369,17 +446,50 @@ class FrozenLLMEngine:
                         messages.append({"role": "tool", "content": str(tool_result)})
                         tool_results_history.append((tool_name, str(tool_result)))
                 
-                # 3. BASE-MODEL VERBAL SUMMARY
+                # 3. 3-TIER VOCAL POLICY EXECUTION
                 if tool_results_history:
-                    log_str = "\n".join([f"Executed {t[0]}: {t[1][:200]}..." for t in tool_results_history])
-                    print(f"[Speaking Engine] Generating natural vocal response...")
-                    # Natural conversational personal assistant response prompt
+                    tier_1_mechanical_tools = {
+                        "snap_window", "tile_windows", "close_foreground_window", 
+                        "media_control", "handle_smart_home", "clipboard_action"
+                    }
+                    tier_2_fast_data_tools = {
+                        "get_current_time", "get_system_diagnostics", "set_timer"
+                    }
+                    
+                    executed_names = [t[0] for t in tool_results_history]
+                    all_mechanical = all(name in tier_1_mechanical_tools for name in executed_names)
+                    all_fast_data = all(name in tier_2_fast_data_tools for name in executed_names)
+                    
+                    # ── TIER 1: Mechanical OS Actions (Zero LLM Text Generation) ──
+                    if all_mechanical:
+                        play_tactical_chime("action")
+                        # Crisp 2-word tactical confirmation directly from tool results
+                        direct_results = [t[1] for t in tool_results_history if t[1] and not str(t[1]).startswith("Error")]
+                        answer = " ".join(direct_results).strip() if direct_results else "Done."
+                        print(f"🔊 [Tactical Chime Fast-Path] {executed_names} -> '{answer}'")
+                        self.add_to_history("user", user_input)
+                        self.add_to_history("assistant", answer)
+                        answer += f"\n\n<SECRET_TOOL_LOG>{secret_log}\n</SECRET_TOOL_LOG>"
+                        return answer
+
+                    # ── TIER 2: Direct Fast-Path Data (No conversational filler) ──
+                    elif all_fast_data:
+                        direct_results = [t[1] for t in tool_results_history if t[1]]
+                        answer = " ".join(direct_results).strip()
+                        print(f"🔊 [Direct Data Fast-Path] {executed_names} -> '{answer}'")
+                        self.add_to_history("user", user_input)
+                        self.add_to_history("assistant", answer)
+                        answer += f"\n\n<SECRET_TOOL_LOG>{secret_log}\n</SECRET_TOOL_LOG>"
+                        return answer
+
+                    # ── TIER 3: Complex Reasoning & Research (Sharp 2-Sentence Conversational LLM) ──
+                    log_str = "\n".join([f"Executed {t[0]}: {t[1][:250]}..." for t in tool_results_history])
+                    print(f"[Speaking Engine] Generating concise vocal response for complex task...")
                     assistant_system_prompt = (
                         "You are AETHER, Anish's personal, highly capable, intelligent AI companion. "
                         "You speak directly to Anish in first-person ('I', 'we'). "
                         "Never speak like a third-person corporate chatbot. Never say 'The tool completed its task' or 'The agent has'. "
-                        "For simple OS/media actions (like window snapping, playing songs, volume): give a crisp, natural 1-sentence confirmation. "
-                        "For questions, research, and data: explain the answer articulately and naturally with real substance. "
+                        "Explain the findings and results clearly in 1-2 natural sentences. "
                         "Be charismatic, helpful, and sharp."
                     )
                     final_payload = {
@@ -392,14 +502,18 @@ class FrozenLLMEngine:
                     }
                     try:
                         final_resp = requests.post(self.url, json=final_payload).json()
-                        answer = final_resp.get("message", {}).get("content", "Got it, task completed.").strip()
+                        answer = final_resp.get("message", {}).get("content", "Task completed.").strip()
                     except Exception:
-                        answer = "Got it, done."
+                        answer = "Task completed."
                         
+                    self.add_to_history("user", user_input)
+                    self.add_to_history("assistant", answer)
                     answer += f"\n\n<SECRET_TOOL_LOG>{secret_log}\n</SECRET_TOOL_LOG>"
                     return answer
 
             # If no tools were detected, return the raw chat text from the base model
+            self.add_to_history("user", user_input)
+            self.add_to_history("assistant", raw_content)
             return raw_content
 
         except Exception as e:

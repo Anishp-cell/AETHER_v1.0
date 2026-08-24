@@ -1,0 +1,52 @@
+{
+  "benchmark": "google/mobile-actions (eval split)",
+  "eval_rows": 961,
+  "ordered_strict_exact_match": 49.74,
+  "relaxed_exact_match": 49.95,
+  "name_only_accuracy": 95.01,
+  "single_tool_accuracy": 61.41,
+  "multi_tool_accuracy": 26.48,
+  "mean_latency_ms": 8.67,
+  "leaderboard": [
+    {
+      "Model": "LFM2.5 (Liquid AI)",
+      "Params": "230M",
+      "Quant": "f16",
+      "RAM": ">400 MB",
+      "Accuracy": 69.1,
+      "Routing_Acc": 93.0
+    },
+    {
+      "Model": "FunctionGemma (Google)",
+      "Params": "270M",
+      "Quant": "f16",
+      "RAM": ">500 MB",
+      "Accuracy": 64.0,
+      "Routing_Acc": 87.3
+    },
+    {
+      "Model": "Needle 2 (Cactus)",
+      "Params": "45M",
+      "Quant": "CQ2-bit",
+      "RAM": "28 MB",
+      "Accuracy": 63.7,
+      "Routing_Acc": 98.3
+    },
+    {
+      "Model": "Apple FM (Apple)",
+      "Params": "~3B",
+      "Quant": "Native",
+      "RAM": ">1 GB",
+      "Accuracy": 57.6,
+      "Routing_Acc": 94.2
+    },
+    {
+      "Model": "ARN-Mobile (Ours)",
+      "Params": "4.4M",
+      "Quant": "FP32 / INT8",
+      "RAM": "5.5 MB",
+      "Accuracy": 49.7,
+      "Routing_Acc": 95.0
+    }
+  ]
+}

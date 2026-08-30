@@ -1,9 +1,20 @@
 import time
 import queue
+import re
 import numpy as np
 import sounddevice as sd
 from collections import deque
 from faster_whisper import WhisperModel
+
+try:
+    from dynamic_turn_taking import (
+        get_patience_timeout,
+        assess_transcription_quality,
+        refine_disfluencies
+    )
+    _DTT_AVAILABLE = True
+except ImportError:
+    _DTT_AVAILABLE = False
 
 # --- CONFIGURATION (Option 2: High-Speed base.en + Prompt Armor + VAD) ---
 MODEL_SIZE = "base.en"        # Ultra-fast sub-450ms CPU execution
@@ -60,9 +71,10 @@ def main():
                         
                         if len(recording_buffer) > 0:
                             audio_data = np.concatenate(recording_buffer).flatten().astype(np.float32)
+                            audio_dur_s = len(audio_data) / SAMPLE_RATE
                             
                             # Transcribe with Option 2 Prompt Armor & VAD
-                            segments, _ = model.transcribe(
+                            segments_iter, _ = model.transcribe(
                                 audio_data, 
                                 language="en",
                                 beam_size=5,
@@ -71,13 +83,20 @@ def main():
                                 vad_parameters=dict(min_silence_duration_ms=500),
                                 condition_on_previous_text=False # Prevents looping
                             )
-                            
+                            segments = list(segments_iter)
                             raw_text = " ".join([s.text for s in segments]).strip()
                             
-                            # Anti-Hallucination Regex Sanitizer
-                            cleaned = raw_text
-                            for p in [r'\[music\]', r'thank you for watching', r'subtitles by', r'^thank you\.?$', r'^bye\.?$']:
-                                cleaned = re.sub(p, '', cleaned, flags=re.IGNORECASE).strip()
+                            if _DTT_AVAILABLE:
+                                quality = assess_transcription_quality(segments, raw_text, audio_dur_s)
+                                if not quality.is_trustworthy:
+                                    print(f">>> (untrustworthy audio filtered: {quality.reason})")
+                                    cleaned = ""
+                                else:
+                                    cleaned = refine_disfluencies(raw_text)
+                            else:
+                                cleaned = raw_text
+                                for p in [r'\[music\]', r'thank you for watching', r'subtitles by', r'^thank you\.?$', r'^bye\.?$']:
+                                    cleaned = re.sub(p, '', cleaned, flags=re.IGNORECASE).strip()
 
                             if cleaned:
                                 print(f">>> {cleaned}")

@@ -5,6 +5,7 @@ that streams real-time state to the Next.js dashboard.
 """
 import sys
 import os
+import re
 import queue
 import json
 import asyncio
@@ -36,10 +37,41 @@ sys.path.append(os.path.join(PROJECT_ROOT, "memory"))
 
 from STT import WhisperModel, MODEL_SIZE
 try:
+    from dynamic_turn_taking import (
+        ConversationContext, TurnState,
+        estimate_syntactic_completeness, get_patience_timeout,
+        classify_interruption, InterruptionAnalysis,
+        assess_transcription_quality, get_clarification_response,
+        refine_disfluencies, update_ambient_floor,
+    )
+    _TURN_TAKING_AVAILABLE = True
+    print("[Conversational Engine] Sparrow-2 style dynamic turn-taking loaded.")
+except ImportError as _tt_err:
+    _TURN_TAKING_AVAILABLE = False
+    print(f"[Conversational Engine] Dynamic turn-taking not available: {_tt_err}")
+try:
     from TTS_kokoro import KokoroTTS
 except Exception as _e:
     KokoroTTS = None
     print(f"[System Warning] KokoroTTS import skipped ({_e}). Defaulting to Edge-TTS pipeline.")
+
+try:
+    from response_tier import format_for_speech, classify_and_format, ResponseTier
+    _RESPONSE_TIER_AVAILABLE = True
+except ImportError:
+    _RESPONSE_TIER_AVAILABLE = False
+
+try:
+    from interruption_recovery import INTERRUPTION_RECOVERY
+    _RECOVERY_AVAILABLE = True
+except ImportError:
+    _RECOVERY_AVAILABLE = False
+
+try:
+    from streaming_stt import STREAMING_STT
+    _STREAMING_STT_AVAILABLE = True
+except ImportError:
+    _STREAMING_STT_AVAILABLE = False
 
 from wake_word import WakeWordDetector
 from LLM_Engine import FrozenLLMEngine
@@ -420,6 +452,11 @@ Golden Rules:
     consecutive_loud = 0
     consecutive_silent = 0
 
+    # ── Sparrow-2 Conversational Context ──
+    conv_ctx = ConversationContext() if _TURN_TAKING_AVAILABLE else None
+    _patience_partial = ""   # Partial transcript for dynamic patience
+    _recording_start_time = 0.0  # Tracks when recording started for duration calc
+
     try:
         with sd.InputStream(samplerate=SAMPLE_RATE, blocksize=CHUNK_SIZE,
                             channels=1, dtype="int16", callback=audio_callback):
@@ -445,6 +482,10 @@ Golden Rules:
                         continue
 
                     current_threshold = LOUD_INTERRUPTION_THRESHOLD if agent_state["status"] == "speaking" else ENERGY_THRESHOLD
+
+                    # ── Sparrow-2: Adaptive Ambient Floor ──
+                    if _TURN_TAKING_AVAILABLE and conv_ctx and agent_state["status"] == "idle":
+                        update_ambient_floor(conv_ctx, energy)
                     
                     if energy > current_threshold:
                         consecutive_loud += 1
@@ -458,8 +499,10 @@ Golden Rules:
                                 tts.stop()
                                 update_state(status="listening", adapters=[])
                                 recording_buffer = [] # Start fresh
+                                _recording_start_time = time.time()
                             elif agent_state["status"] in ["idle", "booting"]:
                                 update_state(status="listening")
+                                _recording_start_time = time.time()
                     else:
                         consecutive_silent += 1
                         consecutive_loud = 0
@@ -467,16 +510,38 @@ Golden Rules:
                     if agent_state["status"] == "listening":
                         recording_buffer.append(chunk_1d)
                         
-                        # Trigger STT processing after 0.8 seconds of silence for faster response
-                        if consecutive_silent > 8:
+                        # ── Fast Streaming STT & Partial Completeness ──
+                        if _STREAMING_STT_AVAILABLE:
+                            STREAMING_STT.add_chunk(chunk_1d, model=stt_model)
+                            if STREAMING_STT.partial_transcript:
+                                _patience_partial = STREAMING_STT.partial_transcript
+                        
+                        # ── Sparrow-2 Dynamic Patience ──
+                        # Instead of fixed 0.8s silence, use syntactic completeness
+                        # to decide when the user is truly done speaking.
+                        silence_threshold_frames = 8  # Default: ~0.8s
+                        if _TURN_TAKING_AVAILABLE and _patience_partial:
+                            dynamic_timeout = get_patience_timeout(_patience_partial)
+                            silence_threshold_frames = max(4, int(dynamic_timeout * 10))
+
+                        # Check if fast dispatch is triggered (<150ms) or standard silence exceeded
+                        is_fast_dispatch = _STREAMING_STT_AVAILABLE and STREAMING_STT.check_fast_dispatch_ready(consecutive_silent)
+                        if consecutive_silent > silence_threshold_frames or is_fast_dispatch:
+                            if is_fast_dispatch:
+                                print(f"⚡ [Fast Turn-Taking] Early dispatch triggered (comp={STREAMING_STT.completeness_score:.2f})")
                             update_state(status="thinking")
                             audio_data = np.concatenate(recording_buffer)
                             audio_float = audio_data.astype(np.float32) / 32768.0
+                            audio_duration_s = len(audio_data) / SAMPLE_RATE
                             recording_buffer = [] # Reset
+                            _patience_partial = ""  # Reset partial
+                            if _STREAMING_STT_AVAILABLE:
+                                STREAMING_STT.reset()
 
-                            def process_utterance(audio_array):
-                                # STT Processing with Option 2 Prompt Armor & VAD
-                                segments, _ = stt_model.transcribe(
+                            def process_utterance(audio_array, _audio_dur=audio_duration_s):
+                                import re
+                                # STT Processing with Prompt Armor & VAD
+                                segments_list, info = stt_model.transcribe(
                                     audio_array,
                                     language="en",
                                     initial_prompt="AETHER assistant desktop voice command:",
@@ -484,17 +549,93 @@ Golden Rules:
                                     vad_parameters=dict(min_silence_duration_ms=500),
                                     condition_on_previous_text=False
                                 )
-                                user_text = " ".join([s.text for s in segments]).strip()
+                                segments_materialized = list(segments_list)
+                                user_text = " ".join([s.text for s in segments_materialized]).strip()
 
-                                # Anti-Hallucination Filter for raw STT noise
-                                dirty = user_text.lower()
-                                hallucinations = [
-                                    "thank you for watching", "thanks for watching", "subscribe", 
-                                    "amara.org", "by amara.org", "subtitles by", "okay. okay", "you're welcome"
-                                ]
-                                if len(dirty) < 3 or any(h in dirty for h in hallucinations) or dirty == "thank you.":
+                                # ── Sparrow-2 Honest Listening Gate (Intent-Aware) ──
+                                # Uses Whisper logprobs + no_speech_prob + compression_ratio
+                                # to detect low-confidence transcriptions and request domain-targeted clarification
+                                if _TURN_TAKING_AVAILABLE:
+                                    quality = assess_transcription_quality(
+                                        segments_materialized, user_text, _audio_dur
+                                    )
+                                    print(f"  [Quality Gate] {quality.reason} (conf={quality.confidence_score:.2f})")
+                                    
+                                    if not quality.is_trustworthy:
+                                        clarification = get_clarification_response(quality, partial_text=user_text)
+                                        if clarification:
+                                            print(f"  [Honest Listening] Requesting intent clarification: {clarification}")
+                                            update_state(status="speaking")
+                                            push_transcript("aether", clarification)
+                                            threading.Thread(
+                                                target=lambda: tts.speak(clarification,
+                                                    on_complete=lambda: update_state(status="idle")),
+                                                daemon=True
+                                            ).start()
+                                            return
+                                        else:
+                                            # Pure noise / phantom — silently ignore
+                                            update_state(status="idle")
+                                            return
+                                else:
+                                    # Fallback: old-style hallucination filter
+                                    dirty = user_text.lower()
+                                    hallucinations = [
+                                        "thank you for watching", "thanks for watching", "subscribe", 
+                                        "amara.org", "by amara.org", "subtitles by", "okay. okay", "you're welcome"
+                                    ]
+                                    if len(dirty) < 3 or any(h in dirty for h in hallucinations) or dirty == "thank you.":
+                                        update_state(status="idle")
+                                        return
+
+                                # ── Sparrow-2 Disfluency Refinement ──
+                                if _TURN_TAKING_AVAILABLE:
+                                    cleaned = refine_disfluencies(user_text)
+                                    if cleaned and cleaned != user_text:
+                                        print(f"  [Disfluency] '{user_text}' -> '{cleaned}'")
+                                        user_text = cleaned
+                                
+                                if not user_text or len(user_text.strip()) < 2:
                                     update_state(status="idle")
                                     return
+
+                                # ── Guard Against Incomplete Trailing Utterances ──
+                                if _TURN_TAKING_AVAILABLE:
+                                    comp_score = estimate_syntactic_completeness(user_text)
+                                    is_trailing = bool(re.search(r'(?:and|or|to|for|the|a|an|\.\.\.)\s*$', user_text, re.IGNORECASE))
+                                    if (comp_score <= 0.35 and len(user_text.split()) <= 3) or is_trailing:
+                                        print(f"  [Incomplete Utterance] User trailed off ('{user_text}', comp={comp_score:.2f}). Prompting for completion...")
+                                        if re.search(r'\bopen\b', user_text, re.IGNORECASE):
+                                            clarification = "What would you like me to open?"
+                                        elif re.search(r'\bsearch\b', user_text, re.IGNORECASE):
+                                            clarification = "What would you like me to search for?"
+                                        elif re.search(r'\b(?:send|message|text)\b', user_text, re.IGNORECASE):
+                                            clarification = "Who would you like me to send a message to?"
+                                        else:
+                                            clarification = "What would you like me to do next?"
+                                        
+                                        update_state(status="speaking")
+                                        push_transcript("aether", clarification)
+                                        threading.Thread(
+                                            target=lambda: tts.speak(clarification,
+                                                on_complete=lambda: update_state(status="idle")),
+                                            daemon=True
+                                        ).start()
+                                        return
+
+                                # ── Contextual Interruption Resumption Check ──
+                                if _RECOVERY_AVAILABLE:
+                                    resumed_text = INTERRUPTION_RECOVERY.check_resumption_agreement(user_text)
+                                    if resumed_text:
+                                        print(f"  [Interruption Recovery] Resuming previous topic ({len(resumed_text.split())} words)...")
+                                        update_state(status="speaking")
+                                        push_transcript("aether", resumed_text)
+                                        threading.Thread(
+                                            target=lambda: tts.speak(resumed_text,
+                                                on_complete=lambda: update_state(status="idle")),
+                                            daemon=True
+                                        ).start()
+                                        return
 
                                 print(f"\nUser: {user_text}")
 
@@ -550,7 +691,11 @@ Golden Rules:
                                     # Scripting & OS Controls
                                     "python script", "write a script", "code", "run the shell",
                                     "mouse", "click at", "scroll", "keyboard shortcut", "press ",
-                                    "shell command", "new skill", "learn a tool", "permanent tool"
+                                    "shell command", "new skill", "learn a tool", "permanent tool",
+                                    # Browser automation / e-commerce / forms
+                                    "book flight", "book a flight", "book tickets", "book ticket", "book hotel",
+                                    "buy on amazon", "order on amazon", "check cart", "add to cart", "checkout",
+                                    "fill out form", "fill the form", "submit form", "browser agent", "browser task"
                                 ]
                                 web_keywords = [
                                     "search the internet", "search the web", "look up", "google ",
@@ -637,7 +782,6 @@ Your job is to take the search results above and present them to the user as a s
                                 reply = llm.generate_response(active_prompt, user_text, chat_history=history_slice, image_b64=screen_b64)
                                 
                                 # Extract secret tool logs and strip them from the spoken text
-                                import re
                                 secret_logs = re.search(r'<SECRET_TOOL_LOG>(.*?)</SECRET_TOOL_LOG>', reply, flags=re.DOTALL)
                                 if secret_logs:
                                     log_content = secret_logs.group(1).strip()
@@ -672,6 +816,10 @@ Your job is to take the search results above and present them to the user as a s
                                         print("🔇 [System] Suppressing long speech for WhatsApp task.")
                                         reply = "Message sent successfully, sir."
 
+                                # ── Interruption Recovery Cue Injection ──
+                                if _RECOVERY_AVAILABLE:
+                                    reply = INTERRUPTION_RECOVERY.format_reply_with_resumption_cue(reply, user_text)
+
                                 print(f"AETHER: {reply}")
 
                                 # Sanitize for TTS — comprehensive pipeline to strip ALL non-spoken syntax
@@ -705,6 +853,13 @@ Your job is to take the search results above and present them to the user as a s
                                 spoken_reply = re.sub(r'\n+', ' ', spoken_reply)
                                 spoken_reply = re.sub(r'\s{2,}', ' ', spoken_reply).strip()
 
+                                # ── Sparrow-2 Tiered Response Controller ──
+                                if _RESPONSE_TIER_AVAILABLE:
+                                    intent_str = signals.get("intent", "") if "signals" in locals() else ""
+                                    tiered = classify_and_format(spoken_reply, intent=intent_str)
+                                    spoken_reply = format_for_speech(spoken_reply, intent=intent_str)
+                                    print(f"  [Response Tier] Tier {int(tiered.tier)} ({tiered.tier.name}): speed={tiered.speed}x, words={len(spoken_reply.split())}")
+
                                 # Speak asynchronously (Daemon Thread)
                                 update_state(status="speaking", adapters=active_adapters)
                                 push_transcript("aether", reply, adapters=active_adapters)
@@ -713,6 +868,8 @@ Your job is to take the search results above and present them to the user as a s
                                     update_state(status="idle", adapters=[])
                                     
                                 def on_interrupted(spoken_so_far):
+                                    if _RECOVERY_AVAILABLE:
+                                        INTERRUPTION_RECOVERY.record_interruption(spoken_reply, spoken_so_far)
                                     if agent_state["transcript"] and agent_state["transcript"][-1]["role"] == "aether":
                                         agent_state["transcript"][-1]["text"] = f"{spoken_so_far} -- [INTERRUPTED BY USER]"
                                         # Force sync to update GUI

@@ -211,6 +211,61 @@ DIAGNOSTIC_QUERIES = [
 ]
 
 
+# ── Browser task vocabulary ──────────────────────────────────────────
+BROWSER_SITES = [
+    "youtube.com", "netflix.com", "github.com", "amazon.in",
+    "amazon.com", "linkedin.com", "twitter.com", "reddit.com",
+    "wikipedia.org", "stackoverflow.com", "spotify.com",
+    "flipkart.com", "maps.google.com", "news.ycombinator.com",
+    "instagram.com", "twitch.tv", "notion.so", "figma.com",
+]
+BROWSER_SITE_NAMES = [
+    "YouTube", "Netflix", "GitHub", "Amazon",
+    "LinkedIn", "Twitter", "Reddit", "Wikipedia",
+    "Stack Overflow", "Spotify", "Flipkart",
+    "Google Maps", "Hacker News", "Instagram",
+    "Twitch", "Notion", "Figma",
+]
+BROWSER_MUSIC_QUERIES = [
+    "lofi hip hop", "synthwave", "chill beats", "jazz playlist",
+    "top 10 songs 2026", "workout music", "study music", "bollywood hits",
+    "relaxing piano", "lo-fi beats to study to", "phonk mix",
+    "Drake playlist", "Taylor Swift songs", "Arijit Singh hits",
+]
+BROWSER_SEARCH_QUERIES = [
+    "best noise cancelling headphones 2026",
+    "how to fix windows 11 update stuck",
+    "NVIDIA Cosmos AI model overview",
+    "latest Python 3.14 features",
+    "compare iPhone 17 vs Samsung Galaxy S26",
+    "how to invest in index funds",
+    "best anime to watch in 2026",
+    "top GitHub repositories for AI agents",
+    "how to get a data science job",
+    "GPT-5 vs Gemini Ultra benchmark",
+    "best mechanical keyboard under 5000 rupees",
+    "how to reset Windows 11 without losing data",
+]
+BROWSER_INTERACT_TASKS = [
+    ("amazon.in", "add the best selling laptop to my cart"),
+    ("flipkart.com", "search for gaming mouse under 2000 and add top result to cart"),
+    ("linkedin.com", "like the first 3 posts in my feed"),
+    ("reddit.com", "find top posts in r/MachineLearning today"),
+    ("github.com", "star the trending Python repository"),
+    ("amazon.in", "book mark deals of the day"),
+    ("twitter.com", "search for NVIDIA news and retweet the top result"),
+    ("notion.so", "create a new page called Daily Standup Notes"),
+    ("maps.google.com", "find the nearest coffee shop to my location"),
+    ("instagram.com", "like the first 5 posts on my home feed"),
+    ("figma.com", "open my latest project and take a screenshot"),
+]
+BROWSER_FLIGHT_CITIES = [
+    ("Delhi", "Mumbai"), ("Mumbai", "Bangalore"), ("Chennai", "Hyderabad"),
+    ("Kolkata", "Pune"), ("Delhi", "Goa"), ("Bangalore", "Delhi"),
+]
+
+
+
 def make_contact():
     """Return a contact name string as it would appear in the prompt."""
     if random.random() < 0.4:
@@ -635,6 +690,88 @@ def make_compound_script_and_search():
     return t, tools
 
 
+# ── Browser task generators ─────────────────────────────────────────
+
+def make_pair_browser_task():
+    """Generates browser_task samples: YouTube play, site navigation, web search via browser."""
+    kind = random.choice(["youtube", "navigate", "search", "flight"])
+
+    if kind == "youtube":
+        query = random.choice(BROWSER_MUSIC_QUERIES)
+        templates = [
+            ("{pfx}play {query} on youtube{sfx}", f"play {query} on youtube"),
+            ("{pfx}open youtube and play {query}{sfx}", f"open youtube and play {query}"),
+            ("{pfx}put on {query} on youtube{sfx}", f"put on {query} on youtube"),
+            ("{pfx}watch {query} on youtube{sfx}", f"watch {query} on youtube"),
+            ("bro play {query} on youtube{sfx}", f"play {query} on youtube"),
+            ("{pfx}search youtube for {query} and play{sfx}", f"search youtube for {query} and play"),
+        ]
+        template, task_val = random.choice(templates)
+        t = template.format(pfx=random.choice(PREFIXES), sfx=random.choice(SUFFIXES), query=query)
+        tools = [{"name": "browser_task", "arguments": {"task": task_val}}]
+
+    elif kind == "navigate":
+        idx = random.randint(0, len(BROWSER_SITES) - 1)
+        site = BROWSER_SITES[idx]
+        templates = [
+            ("{pfx}open {site} in the browser{sfx}", f"open {site} in the browser"),
+            ("{pfx}go to {site} in browser{sfx}", f"go to {site} in browser"),
+            ("{pfx}navigate to {site}{sfx}", f"navigate to {site}"),
+            ("{pfx}open browser and go to {site}{sfx}", f"open browser and go to {site}"),
+            ("{pfx}launch browser and visit {site}{sfx}", f"launch browser and visit {site}"),
+        ]
+        template, task_val = random.choice(templates)
+        t = template.format(pfx=random.choice(PREFIXES), sfx=random.choice(SUFFIXES), site=site)
+        tools = [{"name": "browser_task", "arguments": {"task": task_val}}]
+
+    elif kind == "search":
+        query = random.choice(BROWSER_SEARCH_QUERIES)
+        templates = [
+            ("{pfx}use the browser to search for {query}{sfx}", f"use the browser to search for {query}"),
+            ("{pfx}search for {query} in the browser{sfx}", f"search for {query} in the browser"),
+            ("{pfx}open browser search for {query} and summarize{sfx}", f"open browser search for {query} and summarize"),
+            ("{pfx}search {query} in browser{sfx}", f"search {query} in browser"),
+        ]
+        template, task_val = random.choice(templates)
+        t = template.format(pfx=random.choice(PREFIXES), sfx=random.choice(SUFFIXES), query=query)
+        tools = [{"name": "browser_task", "arguments": {"task": task_val}}]
+
+    else:  # flight
+        city1, city2 = random.choice(BROWSER_FLIGHT_CITIES)
+        templates = [
+            ("{pfx}book a flight from {city1} to {city2} in the browser{sfx}", f"book a flight from {city1} to {city2} in the browser"),
+            ("{pfx}search for flights from {city1} to {city2}{sfx}", f"search for flights from {city1} to {city2}"),
+            ("{pfx}open browser and book a flight from {city1} to {city2}{sfx}", f"open browser and book a flight from {city1} to {city2}"),
+        ]
+        template, task_val = random.choice(templates)
+        t = template.format(pfx=random.choice(PREFIXES), sfx=random.choice(SUFFIXES), city1=city1, city2=city2)
+        tools = [{"name": "browser_task", "arguments": {"task": task_val}}]
+
+    return t, tools
+
+
+def make_pair_browser_open_and_interact():
+    """Generates browser_open_and_interact samples: open a site and do a specific action on it."""
+    site, interact_task = random.choice(BROWSER_INTERACT_TASKS)
+    templates = [
+        "{pfx}open {site} and {interact_task}{sfx}",
+        "{pfx}go to {site} and {interact_task}{sfx}",
+        "{pfx}launch browser go to {site} then {interact_task}{sfx}",
+        "{pfx}browser {site} kholo aur {interact_task}{sfx}",
+        "{pfx}navigate to {site} and {interact_task}{sfx}",
+        "{pfx}use browser to open {site} and {interact_task}{sfx}",
+    ]
+    t = random.choice(templates).format(
+        pfx=random.choice(PREFIXES), sfx=random.choice(SUFFIXES),
+        site=site, interact_task=interact_task
+    )
+    tools = [{"name": "browser_open_and_interact", "arguments": {
+        "site": site,
+        "interact_task": interact_task
+    }}]
+    return t, tools
+
+
 # ── All generators with weights ─────────────────────────────────────
 
 GENERATORS = [
@@ -655,6 +792,9 @@ GENERATORS = [
     (make_pair_send_whatsapp_correction, 4),
     (make_pair_set_timer, 5),
     (make_pair_teach_new_skill, 5),
+    # Browser automation tools (boosted weight for balanced representation)
+    (make_pair_browser_task, 12),
+    (make_pair_browser_open_and_interact, 12),
     # Compound (multi-tool)
     (make_compound_whatsapp_and_timer, 4),
     (make_compound_search_and_message, 4),

@@ -8,14 +8,21 @@ from config import ARNconfig
 
 
 #mapping the json keys in the dataset with bio tags defined in tag_to_idx
-ARG_TO_TAG_BASE={"contact_name":"contact", "message": "message",
-                 "text_to_type":"message", "url":"url",
-                 "app_name":"app","device":"device",
-                 "action": "action", "action_type":"action",
-                 "target": "target", "query":"query",
-                 "task_query":"query", "minutes":"value",
-                 "reminder_message":"reminder", "instruction":"message",
-                 "skill_name":"target", "description":"message"}
+ARG_TO_TAG_BASE={
+    # --- existing tools ---
+    "contact_name":"contact", "message": "message",
+    "text_to_type":"message", "url":"url",
+    "app_name":"app","device":"device",
+    "action": "action", "action_type":"action",
+    "target": "target", "query":"query",
+    "task_query":"query", "minutes":"value",
+    "reminder_message":"reminder", "instruction":"message",
+    "skill_name":"target", "description":"message",
+    # --- browser_task / browser_open_and_interact args ---
+    "task":"browser_task",          # browser_task(task=...)
+    "site":"site",                  # browser_open_and_interact(site=...)
+    "interact_task":"browser_task", # browser_open_and_interact(interact_task=...)
+}
 #function to convert raw user sentence and list of tool calls into word-level bio tags
 def generate_word_level_tags(texts:str, tool_calls:list):
     words=texts.split()

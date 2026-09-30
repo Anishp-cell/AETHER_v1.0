@@ -9,7 +9,7 @@ class ARNconfig:
     NUM_HEADS= 2 #attention heads of BERT-tiny
     NUM_LAYERS= 2 #num of encoder blocks
     MAX_SEQ_LEN=64
-    NUM_TOOLS=16
+    NUM_TOOLS=18  # expanded: +browser_task (16) +browser_open_and_interact (17)
     DROPOUT=0.1
     LR=3e-4
     BATCH_SIZE=32

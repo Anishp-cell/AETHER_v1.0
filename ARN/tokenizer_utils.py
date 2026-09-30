@@ -58,12 +58,15 @@ TAG_TO_IDX={
     "B-target":15,"I-target":16,
     "B-value":17,"I-value":18,
     "B-reminder":19, "I-reminder":20,
-    "<PAD>": 21
+    # Browser task argument tags (added for browser_task / browser_open_and_interact)
+    "B-site": 21, "I-site": 22,
+    "B-browser_task": 23, "I-browser_task": 24,
+    "<PAD>": 25
 }
 
 IDX_TO_TAG= {v:k for k,v in TAG_TO_IDX.items()} #returns the tag name for a given index
 # print(IDX_TO_TAG)
-#tool set in derivation named as T containing 16 possible tool calls
+#tool set in derivation named as T containing 18 possible tool calls
 TOOL_TO_IDX= {
     "get_current_time":0,
     "handle_smart_home": 1,
@@ -80,7 +83,10 @@ TOOL_TO_IDX= {
     "media_control":12,
     "send_whatsapp_message":13,
     "set_timer": 14,
-    "teach_new_skill":15
+    "teach_new_skill":15,
+    # Browser automation tools (indices 16-17)
+    "browser_task": 16,
+    "browser_open_and_interact": 17,
 }
 IDX_TO_TOOL= {v:k for k,v in TOOL_TO_IDX.items()}
 # print(IDX_TO_TOOL)

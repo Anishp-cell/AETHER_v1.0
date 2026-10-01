@@ -74,7 +74,8 @@ class CRF(nn.Module):
                 best_tag_id = bptrs_t[best_tag_id].item()
                 path.append(best_tag_id)
             path.reverse()
-            path.extend([21] * (seq_len - len(path))) 
+            pad_val = TAG_TO_IDX.get("<PAD>", 25)
+            path.extend([pad_val] * (seq_len - len(path))) 
             best_paths.append(path)
         return best_paths
 if __name__=='__main__':

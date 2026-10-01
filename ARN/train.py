@@ -22,7 +22,7 @@ def calculate_metrics(tool_preds, tool_labels, tag_preds, target_tag_ids):
     tool_f1_macro = f1_score(tool_labels_np, tool_preds_np, average='macro', zero_division=0)
     
     # ── 2. Slot Tagging (Token-level & Entity-level) Metrics ──
-    pad_idx = TAG_TO_IDX.get("<PAD>", 21)
+    pad_idx = TAG_TO_IDX.get("<PAD>", 25)
     o_idx = TAG_TO_IDX.get("O", 0)
     
     y_true_all = []
@@ -82,10 +82,33 @@ def calculate_metrics(tool_preds, tool_labels, tag_preds, target_tag_ids):
     }
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description="ARN Trainer / Fine-tuner")
+    parser.add_argument("--checkpoint", type=str, default=None,
+                        help="Path to a .pt checkpoint to warm-start from (surgical weight transfer for fine-tune).")
+    parser.add_argument("--epochs", type=int, default=None,
+                        help="Override EPOCHS from config (useful for fine-tune: set to 10).")
+    parser.add_argument("--lr", type=float, default=None,
+                        help="Override LR from config (fine-tune should use 5e-5 or lower).")
+    parser.add_argument("--dataset", type=str,
+                        default=r"D:\python\AETHER_V1.0\ARN\aether_orchestrator_dataset_augmented.jsonl",
+                        help="Path to the training JSONL dataset.")
+    parser.add_argument("--device", type=str,
+                        default="cuda" if torch.cuda.is_available() else "cpu",
+                        help="Device to train on ('cuda' or 'cpu'). Defaults to CUDA if available.")
+    args = parser.parse_args()
+
     config = ARNconfig()
-    device = torch.device("cpu")
-    
-    dataset = ARNDataset(r"D:\python\AETHER_V1.0\ARN\aether_orchestrator_dataset_augmented.jsonl", TOKENIZER, config.MAX_SEQ_LEN)
+    device = torch.device(args.device)
+    device_desc = f"{torch.cuda.get_device_name(0)}" if device.type == "cuda" else "CPU"
+    print(f"[Train] Active device: {device} ({device_desc})")
+
+    # CLI overrides
+    epochs_to_run = args.epochs if args.epochs is not None else config.EPOCHS
+    lr_to_use = args.lr if args.lr is not None else config.LR
+
+    dataset = ARNDataset(args.dataset, TOKENIZER, config.MAX_SEQ_LEN)
+
     train_size = int(0.8 * len(dataset))
     val_size = len(dataset) - train_size
     train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
@@ -94,7 +117,53 @@ def main():
     val_loader = DataLoader(val_dataset, batch_size=config.BATCH_SIZE, shuffle=False)
     
     model = AetherRoutingNetwork(config).to(device)
-    
+
+    # ── Warm-start from existing checkpoint (fine-tune mode) ──
+    if args.checkpoint:
+        print(f"[Train] Warm-starting from checkpoint: {args.checkpoint}")
+        old_state = torch.load(args.checkpoint, map_location=device)
+        new_state = model.state_dict()
+        transferred, skipped = 0, 0
+        for key in new_state:
+            if key in old_state and old_state[key].shape == new_state[key].shape:
+                new_state[key] = old_state[key]
+                transferred += 1
+            elif key in old_state:
+                # Shape mismatch — surgical partial copy (e.g. FAR head expanding 16→18, slot tags 22→26)
+                old_t = old_state[key]
+                new_t = new_state[key]
+                if key == "far.tool_embeddings.weight":
+                    new_t[0:16] = old_t[0:16]
+                    new_state[key] = new_t
+                    print(f"  [Surgical copy] {key}: {list(old_t.shape)} -> {list(new_t.shape)} (transferred 16 tools)")
+                    transferred += 1
+                elif key in ("slot_tagger.weight", "slot_tagger.bias", "crf.start_transitions", "crf.end_transitions"):
+                    new_t[0:21] = old_t[0:21]
+                    new_t[25] = old_t[21]  # preserve <PAD>
+                    new_state[key] = new_t
+                    print(f"  [Surgical copy] {key}: {list(old_t.shape)} -> {list(new_t.shape)} (remapped <PAD> 21->25)")
+                    transferred += 1
+                elif key == "crf.transitions":
+                    new_t[0:21, 0:21] = old_t[0:21, 0:21]
+                    new_t[0:21, 25] = old_t[0:21, 21]
+                    new_t[25, 0:21] = old_t[21, 0:21]
+                    new_t[25, 25] = old_t[21, 21]
+                    new_state[key] = new_t
+                    print(f"  [Surgical copy] {key}: {list(old_t.shape)} -> {list(new_t.shape)} (remapped <PAD> 21->25)")
+                    transferred += 1
+                elif old_t.dim() == new_t.dim():
+                    slices = tuple(slice(0, min(o, n)) for o, n in zip(old_t.shape, new_t.shape))
+                    new_t[slices] = old_t[slices]
+                    new_state[key] = new_t
+                    print(f"  [Surgical copy] {key}: {list(old_t.shape)} -> {list(new_t.shape)}")
+                    transferred += 1
+                else:
+                    skipped += 1
+            else:
+                skipped += 1
+        model.load_state_dict(new_state)
+        print(f"[Train] Loaded {transferred} layers, skipped {skipped} (new/incompatible).")
+
     # ── Diagnostic: Log trainable vs frozen params ──
     total_params = sum(p.numel() for p in model.parameters())
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -105,14 +174,17 @@ def main():
     print(f"  Trainable params: {trainable_params:,} ({100*trainable_params/total_params:.1f}%)")
     print(f"  Frozen params:    {frozen_params:,} ({100*frozen_params/total_params:.1f}%)")
     print(f"  LAMBDA_SLOT:      {config.LAMBDA_SLOT}")
+    print(f"  EPOCHS:           {epochs_to_run}")
+    print(f"  LR:               {lr_to_use}")
     print(f"{'='*60}\n")
-    
-    optimizer = AdamW(filter(lambda p: p.requires_grad, model.parameters()), lr=config.LR, weight_decay=0.01)
-    schedular = CosineAnnealingLR(optimizer, T_max=config.EPOCHS)
+
+    optimizer = AdamW(filter(lambda p: p.requires_grad, model.parameters()), lr=lr_to_use, weight_decay=0.01)
+    schedular = CosineAnnealingLR(optimizer, T_max=epochs_to_run)
+
     
     best_val_loss = float('inf')
     
-    for epoch in range(config.EPOCHS):
+    for epoch in range(epochs_to_run):
         model.train()
         running_loss = 0.0
         running_tool_loss = 0.0
@@ -177,7 +249,7 @@ def main():
         avg_metrics = {k: v / num_batches for k, v in metric_sums.items()}
         
         print(
-            f"EPOCH:{epoch+1:02d}/{config.EPOCHS} | "
+            f"EPOCH:{epoch+1:02d}/{epochs_to_run} | "
             f"TRAIN LOSS:{epoch_train_loss:.4f} (Tool:{epoch_train_tool_loss:.4f}, Slot:{epoch_train_slot_loss:.4f}, "
             f"Ratio Tool:Slot = 1:{epoch_train_slot_loss/(epoch_train_tool_loss+1e-8):.1f}) | "
             f"VAL LOSS:{epoch_val_loss:.4f} (Tool:{epoch_val_tool_loss:.4f}, Slot:{epoch_val_slot_loss:.4f})\n"
@@ -207,7 +279,7 @@ def main():
     all_slot_labels = []
     all_slot_preds = []
     
-    pad_idx = TAG_TO_IDX.get("<PAD>", 21)
+    pad_idx = TAG_TO_IDX.get("<PAD>", 25)
     
     with torch.no_grad():
         for batch in val_loader:

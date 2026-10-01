@@ -75,6 +75,7 @@ def export_and_quantize():
         export_params=True,
         opset_version=14,
         do_constant_folding=True,
+        dynamo=False,
         input_names=["input_ids", "attention_mask"],
         output_names=["tool_logits", "emissions"],
         dynamic_axes={

@@ -41,6 +41,13 @@ class FrozenLLMEngine:
         self.history = []  # Tier 1: Sliding window conversation history (max 8 turns)
         self.exp_memory = ExperienceMemory(base_model=base_model) if ExperienceMemory else None  # Tier 2: User profile
         self.knowledge_db = KnowledgeDatabase() if KnowledgeDatabase else None  # Tier 3: FAISS Vector RAG
+
+        # Session Awareness Gate
+        try:
+            import session_state
+            session_state.set_active(True)
+        except Exception:
+            pass
         
         print(f"[Logic Layer] Triple-Model LLM Engine Initialized ({base_model}, {thinking_model}, {orchestrator_model}) with 3-Tier Memory")
 
@@ -61,6 +68,13 @@ class FrozenLLMEngine:
         self.history.clear()
 
     def generate_response(self, system_prompt: str, user_input: str, chat_history: list = None, image_b64: str = None) -> str:
+        # Keep session active while user is interacting
+        try:
+            import session_state
+            session_state.record_heartbeat()
+        except Exception:
+            pass
+
         # Tier 2 Fast-Path: Intercept Explicit Memory Commands
         if self.exp_memory:
             is_handled, mem_resp = self.exp_memory.handle_explicit_memory_command(user_input)
@@ -83,6 +97,15 @@ class FrozenLLMEngine:
             rag_context = self.knowledge_db.search(user_input, top_k=2)
             if rag_context:
                 system_prompt += f"\n\n<RELEVANT_KNOWLEDGE_CONTEXT>\n{rag_context}\n</RELEVANT_KNOWLEDGE_CONTEXT>"
+
+        # Tier 4: Inject Privacy-Safe Top Visited Base Domains Context
+        try:
+            from site_history_manager import SiteHistoryManager
+            sites_ctx = SiteHistoryManager().get_sites_as_context(top_n=5)
+            if sites_ctx:
+                system_prompt += f"\n\n<USER_SITE_PREFERENCES>\n{sites_ctx}\n</USER_SITE_PREFERENCES>"
+        except Exception:
+            pass
 
         messages = [{"role": "system", "content": system_prompt}]
         
@@ -133,7 +156,8 @@ class FrozenLLMEngine:
             "whatsapp", "text", "message", "send", "timer", "open", "search", "find", "scrape", "google",
             "battery", "cpu", "ram", "diagnostics", "status report", "system health", "system status",
             "linkedin", "youtube", "instagram", "facebook", "netflix", "github", "reddit", "gmail", "twitter",
-            "navigate", "go to", "website",
+            "navigate", "go to", "website", "browser", "book", "flight", "hotel", "amazon", "flipkart",
+            "cart", "buy", "purchase", "checkout", "form",
             "script", "python", "code", "mouse", "click", "scroll", "keyboard", "shortcut", "shell",
             "spotify", "song", "music", "play", "pause", "stop", "volume", "mute", "media", "tool", "skill"
         ]
@@ -165,9 +189,10 @@ class FrozenLLMEngine:
                     "content": (
                         "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. "
                         "No text, no markdown, no explanation. " + dynamic_hint + "\n\n"
-                        "CRITICAL SEARCH RULES:\n"
-                        "- Always use 'search_and_read_web' for research, scraping, finding information, or compiling summaries. "
-                        "- Never use 'search_web' unless the user explicitly wants to open a visible Google search tab in their browser.\n\n"
+                        "CRITICAL SEARCH & BROWSER RULES:\n"
+                        "- Always use 'search_and_read_web' for quick research, scraping, finding information, or compiling summaries.\n"
+                        "- Use 'browser_task' for interactive, multi-step browser tasks like booking tickets/flights, buying items on Amazon/Flipkart, filling web forms, logging into accounts, or navigating interactive web portals.\n"
+                        "- Never use 'search_web' unless the user explicitly wants to open a visible Google search tab in their default browser.\n\n"
                         "CRITICAL RULE: If the user asks to USE or RUN a skill, find its exact match in the available tools and execute it. "
                         "DO NOT trigger 'teach_new_skill' unless the user uses the words 'write', 'create', 'teach' or 'learn'."
                     )
@@ -431,8 +456,13 @@ class FrozenLLMEngine:
                             with ThreadPoolExecutor(max_workers=1) as executor:
                                 future = executor.submit(tools_executor.AVAILABLE_TOOLS[tool_name], **tool_args)
                                 try:
-                                    # Set longer timeout (45s) for heavy vision, script execution, and skill-forging tools, 15s for others
-                                    timeout_val = 45 if tool_name in ["analyze_screen_with_llava", "write_and_run_script", "teach_new_skill"] else 15
+                                    # Set longer timeout: 180s for browser automation, 45s for vision/coding/skills, 15s for others
+                                    if tool_name in ["browser_task", "browser_open_and_interact"]:
+                                        timeout_val = 180
+                                    elif tool_name in ["analyze_screen_with_llava", "write_and_run_script", "teach_new_skill"]:
+                                        timeout_val = 45
+                                    else:
+                                        timeout_val = 15
                                     tool_result = future.result(timeout=timeout_val)
                                 except FuturesTimeout:
                                     tool_result = f"Tool '{tool_name}' timed out after {timeout_val} seconds. Please try again."
@@ -450,7 +480,8 @@ class FrozenLLMEngine:
                 if tool_results_history:
                     tier_1_mechanical_tools = {
                         "snap_window", "tile_windows", "close_foreground_window", 
-                        "media_control", "handle_smart_home", "clipboard_action"
+                        "media_control", "handle_smart_home", "clipboard_action",
+                        "open_app_and_type", "play_spotify_media", "open_browser", "take_screenshot"
                     }
                     tier_2_fast_data_tools = {
                         "get_current_time", "get_system_diagnostics", "set_timer"
@@ -465,7 +496,10 @@ class FrozenLLMEngine:
                         play_tactical_chime("action")
                         # Crisp 2-word tactical confirmation directly from tool results
                         direct_results = [t[1] for t in tool_results_history if t[1] and not str(t[1]).startswith("Error")]
-                        answer = " ".join(direct_results).strip() if direct_results else "Done."
+                        if direct_results:
+                            answer = " ".join(direct_results).strip()
+                        else:
+                            answer = "Done, sir."
                         print(f"🔊 [Tactical Chime Fast-Path] {executed_names} -> '{answer}'")
                         self.add_to_history("user", user_input)
                         self.add_to_history("assistant", answer)
@@ -482,15 +516,16 @@ class FrozenLLMEngine:
                         answer += f"\n\n<SECRET_TOOL_LOG>{secret_log}\n</SECRET_TOOL_LOG>"
                         return answer
 
-                    # ── TIER 3: Complex Reasoning & Research (Sharp 2-Sentence Conversational LLM) ──
+                    # ── TIER 3: Complex Reasoning & Research (Sharp 1-2 Sentence Conversational LLM) ──
                     log_str = "\n".join([f"Executed {t[0]}: {t[1][:250]}..." for t in tool_results_history])
                     print(f"[Speaking Engine] Generating concise vocal response for complex task...")
                     assistant_system_prompt = (
-                        "You are AETHER, Anish's personal, highly capable, intelligent AI companion. "
-                        "You speak directly to Anish in first-person ('I', 'we'). "
-                        "Never speak like a third-person corporate chatbot. Never say 'The tool completed its task' or 'The agent has'. "
-                        "Explain the findings and results clearly in 1-2 natural sentences. "
-                        "Be charismatic, helpful, and sharp."
+                        "You are AETHER, a witty, brilliant, concise AI assistant. "
+                        "Speak directly in first-person ('I', 'we'). "
+                        "RULES:\n"
+                        "1. Maximum 1-2 short, natural spoken sentences.\n"
+                        "2. NEVER explain how you executed the tool, never say 'As an AI' or 'The tool was executed'.\n"
+                        "3. Directly deliver the answer or key insight."
                     )
                     final_payload = {
                         "model": self.base_model,
@@ -498,7 +533,8 @@ class FrozenLLMEngine:
                             {"role": "system", "content": assistant_system_prompt},
                             {"role": "user", "content": f"User prompt: '{user_input}'\nTool Execution Results: {log_str}"}
                         ],
-                        "stream": False
+                        "stream": False,
+                        "options": {"num_predict": 60, "temperature": 0.3}
                     }
                     try:
                         final_resp = requests.post(self.url, json=final_payload).json()

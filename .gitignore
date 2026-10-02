@@ -111,7 +111,11 @@ temp_audio/
 speech/train_custom_wakeword/samples/
 
 # ===============================
-# Debug Screenshots
+# Runtime Session Flags & Debug
 # ===============================
+*.flag
+.aether/*.flag
 debug_screenshots/
+
+
 

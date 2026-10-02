@@ -25,6 +25,7 @@ if sys.platform == "win32":
         pass
 
 WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(WORKSPACE_ROOT / "Core_agent"))
 USAGE_FILE = WORKSPACE_ROOT / ".aether" / "nim_usage.json"
 DEFAULT_STARTING_CREDITS = 1000  # NVIDIA Developer free tier default
 
@@ -165,8 +166,19 @@ class NIMUsageTracker:
 
     def get_summary(self) -> Dict[str, Any]:
         """
-        Returns structured usage and remaining quota metrics.
+        Returns structured usage and remaining quota metrics, synchronized with multi-key pool.
         """
+        try:
+            from nim_key_pool import KEY_POOL
+            pool_summary = KEY_POOL.get_summary()
+            if pool_summary["total_keys"] > 0:
+                pooled_credits = pool_summary["starting_pooled_quota"]
+                if self.data.get("starting_credits", DEFAULT_STARTING_CREDITS) < pooled_credits:
+                    self.data["starting_credits"] = pooled_credits
+                    self._save()
+        except Exception:
+            pass
+
         starting = self.data.get("starting_credits", DEFAULT_STARTING_CREDITS)
         used = self.data.get("total_requests", 0)
         remaining = max(0, starting - used)
@@ -206,6 +218,16 @@ class NIMUsageTracker:
         lt = s["lifetime_tokens"]
         key_str = f"  Key:               {api_key_preview}\n" if api_key_preview else ""
 
+        # Pool summary
+        pool_info_line = None
+        try:
+            from nim_key_pool import KEY_POOL
+            psum = KEY_POOL.get_summary()
+            if psum["total_keys"] > 0:
+                pool_info_line = f"🟢 {psum['healthy_keys']} Healthy / {psum['total_keys']} Pooled ({psum['starting_pooled_quota']:,} calls quota)"
+        except Exception:
+            pass
+
         models_lines = []
         for m, stats in s["per_model"].items():
             short_name = m.split("/")[-1] if "/" in m else m
@@ -227,8 +249,11 @@ class NIMUsageTracker:
             "╠══════════════════════════════════════════════════════════════════════╣",
             f"║  Status:            {status_badge:<48}║",
         ]
-        if api_key_preview:
+        if pool_info_line:
+            lines.append(f"║  Key Pool:          {pool_info_line:<48}║")
+        elif api_key_preview:
             lines.append(f"║  Active Key:        {api_key_preview:<48}║")
+
         lines.extend([
             f"║  Starting Quota:    {s['starting_credits']:,} API calls (NVIDIA Free Tier){'':<17}║",
             f"║  Requests Used:     {s['used_requests']:,} calls{'':<43}║",

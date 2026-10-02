@@ -58,9 +58,9 @@ class TokenTracker:
 
 
 def _build_tracking_llm_class(base_cls):
-    """Dynamically wraps a ChatOpenAI class to intercept token usage on ainvoke."""
+    """Dynamically wraps a ChatOpenAI class to intercept token usage on ainvoke and report key pool status."""
     class TrackingChatModel(base_cls):
-        def __init__(self, *args, token_tracker=None, **kwargs):
+        def __init__(self, *args, token_tracker=None, active_key=None, **kwargs):
             # browser_use.ChatOpenAI does not accept callbacks; pop if not supported
             callbacks = kwargs.pop("callbacks", None)
             try:
@@ -70,15 +70,35 @@ def _build_tracking_llm_class(base_cls):
                     kwargs["callbacks"] = callbacks
                 super().__init__(*args, **kwargs)
             self.token_tracker = token_tracker
+            self.active_key = active_key
 
         async def ainvoke(self, messages, output_format=None, **kwargs):
-            res = await super().ainvoke(messages, output_format=output_format, **kwargs)
-            if hasattr(res, "usage") and res.usage and self.token_tracker:
-                p = getattr(res.usage, "prompt_tokens", 0) or 0
-                c = getattr(res.usage, "completion_tokens", 0) or 0
-                t = getattr(res.usage, "total_tokens", p + c) or (p + c)
-                self.token_tracker.record_step(p, c, t)
-            return res
+            try:
+                res = await super().ainvoke(messages, output_format=output_format, **kwargs)
+                if hasattr(res, "usage") and res.usage and self.token_tracker:
+                    p = getattr(res.usage, "prompt_tokens", 0) or 0
+                    c = getattr(res.usage, "completion_tokens", 0) or 0
+                    t = getattr(res.usage, "total_tokens", p + c) or (p + c)
+                    self.token_tracker.record_step(p, c, t)
+                if self.active_key:
+                    try:
+                        from nim_key_pool import KEY_POOL
+                        KEY_POOL.report_success(self.active_key)
+                    except Exception:
+                        pass
+                return res
+            except Exception as e:
+                err_str = str(e).lower()
+                if self.active_key:
+                    try:
+                        from nim_key_pool import KEY_POOL
+                        if "429" in err_str or "rate limit" in err_str:
+                            KEY_POOL.report_rate_limit(self.active_key, cooldown_s=60, detail=str(e)[:100])
+                        elif any(x in err_str for x in ["402", "403", "quota", "credit"]):
+                            KEY_POOL.report_quota_exhausted(self.active_key, detail=str(e)[:100])
+                    except Exception:
+                        pass
+                raise
 
     return TrackingChatModel
 
@@ -86,7 +106,7 @@ def _build_tracking_llm_class(base_cls):
 def get_llm(tracker: Optional[TokenTracker] = None):
     """
     Dynamically select and configure the best available LLM provider for Browser-Use.
-    Prioritizes NVIDIA NIM, followed by OpenAI, Groq, and local Ollama.
+    Prioritizes NVIDIA NIM (with multi-key pool failover), followed by OpenAI, Groq, and local Ollama.
     """
     try:
         from browser_use import ChatOpenAI as BaseChatOpenAI
@@ -99,11 +119,22 @@ def get_llm(tracker: Optional[TokenTracker] = None):
     ChatModelClass = _build_tracking_llm_class(BaseChatOpenAI)
 
     llm = None
-    # 1. NVIDIA NIM Cloud Inference (Preferred for AETHER v4.0)
-    nvidia_key = os.getenv("NVIDIA_API_KEY") or os.getenv("NIM_API_KEY")
+    # 1. NVIDIA NIM Cloud Inference with Multi-Key Pool (Preferred for AETHER v4.0)
+    nvidia_key = None
+    key_preview = ""
+    try:
+        from nim_key_pool import KEY_POOL
+        nvidia_key, key_preview = KEY_POOL.get_active_key()
+    except Exception:
+        pass
+
+    if not nvidia_key:
+        nvidia_key = os.getenv("NVIDIA_API_KEY") or os.getenv("NIM_API_KEY")
+        key_preview = nvidia_key[:8] + "..." if nvidia_key else ""
+
     if nvidia_key:
         model = os.getenv("NVIDIA_BROWSER_MODEL", "meta/llama-3.2-11b-vision-instruct")
-        print(f"[AetherBrowserWorker] Using NVIDIA NIM LLM: {model}", file=sys.stderr)
+        print(f"[AetherBrowserWorker] Using NVIDIA NIM LLM: {model} (Key: {key_preview})", file=sys.stderr)
         llm = ChatModelClass(
             base_url="https://integrate.api.nvidia.com/v1",
             api_key=nvidia_key,
@@ -112,7 +143,8 @@ def get_llm(tracker: Optional[TokenTracker] = None):
             add_schema_to_system_prompt=True,
             dont_force_structured_output=True,
             max_completion_tokens=4096,
-            token_tracker=tracker
+            token_tracker=tracker,
+            active_key=nvidia_key
         )
 
     # 2. OpenAI API

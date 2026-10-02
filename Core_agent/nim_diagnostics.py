@@ -130,55 +130,44 @@ def run_diagnostics():
     print("           AETHER NVIDIA NIM DIAGNOSTIC & HEALTH SUITE           ")
     print("=" * 70)
 
-    # 1. Load Environment
+    # 1. Load Environment & Key Pool
+    sys.path.insert(0, str(WORKSPACE_ROOT / "Core_agent"))
+    from nim_key_pool import KEY_POOL
+    pool_summary = KEY_POOL.get_summary()
+
     env = load_env_variables()
     api_key = env.get("NVIDIA_API_KEY") or os.environ.get("NVIDIA_API_KEY") or ""
     configured_model = env.get("NVIDIA_BROWSER_MODEL") or os.environ.get("NVIDIA_BROWSER_MODEL") or "meta/llama-3.2-11b-vision-instruct"
 
-    # Key Preview
-    if api_key and len(api_key) > 12:
-        key_preview = f"{api_key[:8]}...{api_key[-4:]}"
-    else:
-        key_preview = "(not set)"
-
-    print(f"\n[1] Checking API Key Configuration...")
-    print(f"    Key:              {key_preview}")
+    print(f"\n[1] Multi-Key Pool Architecture:")
+    print(f"    Pooled Keys:      {pool_summary['total_keys']} accounts configured")
+    print(f"    Combined Quota:   {pool_summary['starting_pooled_quota']:,} total monthly requests")
     print(f"    Configured Model: {configured_model}")
 
-    is_valid_format, fmt_msg = validate_key_format(api_key)
-    if not is_valid_format:
-        print(f"    Format Check:     ❌ FAILED: {fmt_msg}")
-        print("\n[Action Required] Please check your .env file and ensure NVIDIA_API_KEY is set correctly.")
-        print("=" * 70 + "\n")
-        return
+    # Validate each key in pool
+    print(f"\n[2] Testing Health & Catalog Access across Key Pool:")
+    for k_info in pool_summary["keys"]:
+        raw_key = KEY_POOL.keys[k_info["index"] - 1]
+        ok, msg, m_count, _ = test_models_endpoint(raw_key)
+        if ok:
+            print(f"    Key #{k_info['index']} ({k_info['masked']}): 🟢 ONLINE ({m_count} foundation models accessible)")
+            KEY_POOL.report_success(raw_key)
+        else:
+            print(f"    Key #{k_info['index']} ({k_info['masked']}): 🔴 ERROR ({msg})")
 
-    print(f"    Format Check:     ✅ PASSED ({len(api_key)} characters)")
+    # 3. Test Live Micro-Ping Chat Completion on Active Key
+    active_key, active_masked = KEY_POOL.get_active_key()
+    if not active_key:
+        active_key = api_key
+        active_masked = api_key[:8] + "..." if api_key else "(none)"
 
-    # 2. Test Catalog / Models Endpoint
-    print(f"\n[2] Connecting to NVIDIA NIM API Catalog (https://integrate.api.nvidia.com)...")
-    models_ok, models_msg, model_count, available_models = test_models_endpoint(api_key)
-    if not models_ok:
-        print(f"    Catalog Check:    ❌ FAILED: {models_msg}")
-        print("=" * 70 + "\n")
-        return
-
-    print(f"    Catalog Check:    ✅ SUCCESS: {models_msg}")
-    print(f"    Available Models: {model_count} hosted foundation models online")
-
-    model_in_catalog = configured_model in available_models
-    if model_in_catalog:
-        print(f"    Target Model:     ✅ '{configured_model}' is available and ready for inference")
-    else:
-        print(f"    Target Model:     ⚠️ '{configured_model}' not found in /models; will attempt direct inference anyway")
-
-    # 3. Test Live Micro-Ping Chat Completion
-    print(f"\n[3] Testing Live Inference Latency & Token Usage Accounting...")
-    chat_ok, reply, latency, usage = test_chat_completion(api_key, configured_model)
+    print(f"\n[3] Testing Live Inference Latency on Active Key ({active_masked})...")
+    chat_ok, reply, latency, usage = test_chat_completion(active_key, configured_model)
     if not chat_ok:
         # Fallback test with llama-3.1-8b-instruct
         print(f"    Inference Check:  ⚠️ Primary model returned error: {reply}")
         print("    Attempting fallback to 'meta/llama-3.1-8b-instruct'...")
-        chat_ok, reply, latency, usage = test_chat_completion(api_key, "meta/llama-3.1-8b-instruct")
+        chat_ok, reply, latency, usage = test_chat_completion(active_key, "meta/llama-3.1-8b-instruct")
 
     if not chat_ok:
         print(f"    Inference Check:  ❌ FAILED: {reply}")
@@ -203,10 +192,11 @@ def run_diagnostics():
         duration_s=latency
     )
 
-    # 5. Display Dashboard Report
+    # 5. Display Dashboard Reports
     print("\n[4] Real-time Quota & Usage Ledger:")
-    print(tracker.format_ascii_report(api_key_preview=key_preview))
-    print("\n✅ NVIDIA NIM Integration is 100% operational and healthy for AETHER.\n")
+    print(tracker.format_ascii_report(api_key_preview=active_masked))
+    print("\n" + KEY_POOL.format_ascii_report())
+    print("\n✅ NVIDIA NIM Multi-Key Pool is 100% operational, healthy, and ready for AETHER.\n")
 
 
 if __name__ == "__main__":

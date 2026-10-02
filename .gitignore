@@ -59,6 +59,7 @@ build/
 .env
 .env.local
 .env.*
+.aether/nim_key_pool.json
 
 # ===============================
 # AETHER Execution Sandboxes & Data

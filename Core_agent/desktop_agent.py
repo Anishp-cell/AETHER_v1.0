@@ -341,6 +341,11 @@ def open_url(url: str) -> str:
         elif not url.startswith("http"):
             url = "https://" + url
         webbrowser.open(url)
+        try:
+            from site_history_manager import SiteHistoryManager
+            SiteHistoryManager().record_visit(url)
+        except Exception:
+            pass
         return f"Successfully opened browser and navigated to: {url}"
     except Exception as e:
         return f"[Desktop Sub-Agent Error] URL navigation failed: {e}"

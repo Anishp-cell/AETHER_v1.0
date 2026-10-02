@@ -2,7 +2,7 @@ import os
 import sys
 import datetime
 
-def get_current_time():
+def get_current_time(*args, **kwargs):
     """Returns the current precise time for daily alarms or scheduling."""
     return datetime.datetime.now().strftime("%I:%M %p")
 
@@ -27,6 +27,7 @@ from vision_click_engine import vision_click, vision_read, vision_highlight
 from window_manager import snap_window, tile_windows, close_foreground_window
 from screen_watcher import start_screen_watch, stop_screen_watch
 from web_agent import search_and_read_web, read_specific_url
+from browser_agent import browser_task, browser_open_and_interact
 from skill_factory import SkillFactory, SKILL_FACTORY
 _coder_instance = AetherCoder()
 _skill_factory = SKILL_FACTORY
@@ -73,12 +74,64 @@ AVAILABLE_TOOLS = {
     "get_morning_briefing": get_morning_briefing,
     "voice_canvas_draw": voice_canvas_draw,
     "route_hybrid_query": route_hybrid_query,
+    "browser_task": browser_task,
+    "browser_open_and_interact": browser_open_and_interact,
+    "get_nim_usage": lambda *args, **kwargs: _get_nim_usage_helper(*args, **kwargs),
+    "get_nim_tokens": lambda *args, **kwargs: _get_nim_usage_helper(*args, **kwargs),
+    "get_token_usage": lambda *args, **kwargs: _get_nim_usage_helper(*args, **kwargs),
+    "get_most_visited_sites": lambda *args, **kwargs: _get_most_visited_sites_helper(*args, **kwargs),
+    "get_top_sites": lambda *args, **kwargs: _get_most_visited_sites_helper(*args, **kwargs),
+    "get_visited_sites": lambda *args, **kwargs: _get_most_visited_sites_helper(*args, **kwargs),
+    "get_site_history": lambda *args, **kwargs: _get_most_visited_sites_helper(*args, **kwargs),
 }
+
+
+def _get_nim_usage_helper(*args, **kwargs) -> str:
+    """Returns the current NVIDIA NIM token usage and remaining credit quota."""
+    try:
+        from nim_usage_tracker import NIMUsageTracker
+        tracker = NIMUsageTracker()
+        s = tracker.get_summary()
+        lt = s["lifetime_tokens"]
+        return (
+            f"[NVIDIA NIM Quota Status]: {s['remaining_credits']} requests remaining out of {s['starting_credits']} "
+            f"({s['percent_remaining']}% balance). Lifetime tokens: {lt.get('total_tokens', 0):,} "
+            f"across {s['used_requests']} requests."
+        )
+    except Exception as e:
+        return f"[NIM Usage Error]: Could not retrieve usage: {e}"
+
+
+def _get_most_visited_sites_helper(*args, **kwargs) -> str:
+    """Returns the most visited base websites recorded while using AETHER."""
+    try:
+        from site_history_manager import SiteHistoryManager
+        top = SiteHistoryManager().get_top_sites(limit=5)
+        if not top:
+            return "No site visits have been recorded yet during active AETHER sessions."
+        items = [f"{s['domain']} ({s['visit_count']} visits)" for s in top]
+        return f"Most visited base websites: {', '.join(items)}."
+    except Exception as e:
+        return f"[Site History Error]: Could not retrieve site history: {e}"
 
 
 
 # The architectural blueprint we feed to Qwen
 OLLAMA_TOOL_DEFINITIONS = [
+    {
+        "type": "function",
+        "function": {
+            "name": "get_nim_usage",
+            "description": "Fetch NVIDIA NIM API token usage statistics, remaining credits, and quota health."
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_most_visited_sites",
+            "description": "Fetch the user's most frequently visited base websites recorded while using AETHER."
+        }
+    },
     {
         "type": "function",
         "function": {
@@ -218,6 +271,52 @@ OLLAMA_TOOL_DEFINITIONS = [
     {
         "type": "function",
         "function": {
+            "name": "browser_task",
+            "description": "DELEGATE to the Autonomous Browser Agent (Browser-Use + Playwright) to perform multi-step web automation, navigate complex websites, click buttons, fill forms, book flights/hotels, buy items on Amazon/Flipkart, extract dynamic JavaScript data, or interact with web services. Use this whenever the user asks you to interact with or do something inside a browser.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "task": {
+                        "type": "string",
+                        "description": "Natural language instructions of what the browser agent should do on the web."
+                    },
+                    "headless": {
+                        "type": "boolean",
+                        "description": "True to run silently in the background, False to display a visible browser window so user can watch. Defaults to false."
+                    }
+                },
+                "required": ["task"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "browser_open_and_interact",
+            "description": "Navigate to a specific website URL and autonomously execute a goal on that page (fill forms, click buttons, extract data).",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "description": "The target website URL."
+                    },
+                    "goal": {
+                        "type": "string",
+                        "description": "Goal or instructions to perform on the website."
+                    },
+                    "headless": {
+                        "type": "boolean",
+                        "description": "True for background, False for visible window."
+                    }
+                },
+                "required": ["url", "goal"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
             "name": "write_and_run_script",
             "description": "DELEGATE to the AetherCoder Sub-Agent when the user asks you to write, save, and execute a python script or write a program to do something recursively/automagically on their local file system.",
             "parameters": {
@@ -295,6 +394,52 @@ OLLAMA_TOOL_DEFINITIONS = [
                     "instruction": {"type": "string", "description": "The detailed instructions of how the code should be written."}
                 },
                 "required": ["skill_name", "description", "instruction"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "browser_task",
+            "description": "DELEGATE to the autonomous dual-channel browser agent for web automation, looking up live web pages, playing YouTube media, searching the web, filling forms, and navigating websites.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "task": {
+                        "type": "string",
+                        "description": "Natural language instruction for what to accomplish in the browser (e.g. 'Play lofi hip hop on YouTube', 'Search for NVIDIA Cosmos', 'Go to news.ycombinator.com and extract top stories')."
+                    },
+                    "headless": {
+                        "type": "boolean",
+                        "description": "If True, runs browser silently in the background. If False, opens a visible window with visual glow highlighting."
+                    }
+                },
+                "required": ["task"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "browser_open_and_interact",
+            "description": "Opens a specific URL directly and completes an interaction or objective on the loaded web page.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "description": "The exact web address to navigate to (e.g. 'https://github.com', 'https://youtube.com')."
+                    },
+                    "goal": {
+                        "type": "string",
+                        "description": "What to do once the page is loaded (e.g. 'extract the latest release version', 'click login')."
+                    },
+                    "headless": {
+                        "type": "boolean",
+                        "description": "Whether to run headless or headed."
+                    }
+                },
+                "required": ["url", "goal"]
             }
         }
     }

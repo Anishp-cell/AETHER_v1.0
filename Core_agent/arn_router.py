@@ -110,6 +110,28 @@ class ARNRouter:
         Returns routing decision, extracted arguments, and execution payload.
         """
         start_time = time.perf_counter()
+
+        # Browser Automation Fast-Route (<1ms)
+        low = text.lower().strip()
+        is_youtube = "youtube" in low and any(w in low for w in ["play", "watch", "song", "video", "track", "music"])
+        is_cart_shop = any(w in low for w in ["to cart", "checkout", "add to cart"]) or (any(s in low for s in ["amazon", "flipkart", "ebay", "walmart"]) and any(w in low for w in ["buy", "order", "search", "add", "cart", "price"]))
+        is_travel = any(w in low for w in ["book a flight", "book flight", "book tickets", "book ticket", "book hotel", "reserve flight"])
+        is_browser = any(w in low for w in ["browser", "open website", "fill the form", "fill form", "fill out the form"]) or is_cart_shop or is_travel
+        is_direct_url = any(low.startswith(p) for p in ["go to ", "open ", "visit "]) and any(d in low for d in [".com", ".org", ".net", ".io", ".ai", "http"])
+        if is_youtube or is_browser or is_direct_url:
+            elapsed_ms = (time.perf_counter() - start_time) * 1000.0
+            return {
+                "is_local_route": True,
+                "confidence": 0.99,
+                "latency_ms": round(elapsed_ms, 2),
+                "tools": ["browser_task"],
+                "arguments": {"task": text, "headless": False},
+                "tool_calls": [{
+                    "name": "browser_task",
+                    "arguments": {"task": text, "headless": False}
+                }],
+                "reason": "Fast-path browser automation intent matched"
+            }
         
         if not self.is_loaded or self.model is None:
             return {
@@ -267,6 +289,20 @@ class ARNRouter:
                         tool_args["action_type"] = val
                     elif tag_key == "target":
                         tool_args["target"] = val
+                elif tool_name == "browser_task":
+                    tool_args["task"] = arguments.get("browser_task") or arguments.get("query") or text
+                    tool_args["headless"] = False
+                elif tool_name == "browser_open_and_interact":
+                    target_url = arguments.get("site") or arguments.get("url") or ""
+                    target_goal = arguments.get("browser_task") or arguments.get("action") or ""
+                    if not target_url:
+                        m_u = re.search(r'([a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(?:/[^\s]*)?)', text)
+                        target_url = m_u.group(1) if m_u else "https://google.com"
+                    if not target_goal:
+                        target_goal = text
+                    tool_args["url"] = target_url
+                    tool_args["goal"] = target_goal
+                    tool_args["headless"] = False
                 else:
                     # Fallback mapping
                     if tag_key.startswith(f"{tool_name}_"):
@@ -287,6 +323,19 @@ class ARNRouter:
 
             if tool_name == "set_timer" and "reminder_message" not in tool_args:
                 tool_args["reminder_message"] = "Timer complete"
+
+            if tool_name == "browser_task" and "task" not in tool_args:
+                tool_args["task"] = text
+                tool_args["headless"] = False
+
+            if tool_name == "browser_open_and_interact":
+                if "url" not in tool_args:
+                    m_u = re.search(r'([a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(?:/[^\s]*)?)', text)
+                    tool_args["url"] = m_u.group(1) if m_u else "https://google.com"
+                if "goal" not in tool_args:
+                    tool_args["goal"] = text
+            if tool_name in ["get_current_time", "get_system_diagnostics", "get_nim_usage", "get_most_visited_sites"]:
+                tool_args = {}
 
             tool_calls.append({
                 "name": tool_name,
@@ -310,16 +359,32 @@ class ARNRouter:
                 }
 
         # ── HIGH-PRECISION DESKTOP & INTENT OVERRIDES ──
-        if "spotify" in low_text or any(kw in low_text for kw in ["liked songs", "my playlist", "play music", "play track", "play song"]):
+        # Check if the user is asking to OPEN Spotify as an application
+        if re.search(r'\b(?:open|launch|start)\s+spotify\b', low_text) and not any(kw in low_text for kw in ["play ", "listen to ", "put on ", "stream "]):
+            predicted_tools = ["open_app_and_type"]
+            confidence = 0.99
+            tool_calls = [{"name": "open_app_and_type", "arguments": {"app_name": "spotify", "text_to_type": ""}}]
+
+        elif any(kw in low_text for kw in ["play ", "listen to ", "put on ", "stream ", "liked songs", "my playlist", "play music", "play track", "play song"]) and ("spotify" in low_text or "music" in low_text or "song" in low_text or "playlist" in low_text):
             predicted_tools = ["play_spotify_media"]
             confidence = 0.99
             query_clean = text
-            # Strip prefixes
-            for p in ["play ", "search ", "listen to ", "put on "]:
+            # If compound command like "play X and explain Y", isolate the play portion
+            if " and " in query_clean.lower():
+                and_parts = re.split(r'\s+and\s+', query_clean, flags=re.IGNORECASE)
+                for part in and_parts:
+                    if any(kw in part.lower() for kw in ["play", "spotify", "music", "song", "listen"]):
+                        query_clean = part
+                        break
+
+            # Strip command prefixes
+            for p in ["play ", "search ", "listen to ", "put on ", "can you play ", "please play "]:
                 if query_clean.lower().startswith(p):
                     query_clean = query_clean[len(p):].strip()
             # Strip trailing " on spotify", " in spotify"
             query_clean = re.sub(r'\s+(?:on|in|using)\s+spotify.*$', '', query_clean, flags=re.IGNORECASE).strip(". ")
+            if not query_clean:
+                query_clean = "liked songs"
             tool_calls = [{"name": "play_spotify_media", "arguments": {"query": query_clean}}]
 
         elif any(kw in low_text for kw in ["write a script", "python script", "matplotlib", "create a chart", "plot"]):
@@ -411,6 +476,16 @@ class ARNRouter:
             h = coords[3] if len(coords) >= 4 else 250
             tool_calls = [{"name": "annotate_screen", "arguments": {"x": x, "y": y, "width": w, "height": h, "label": "AETHER Target"}}]
 
+        elif any(kw in low_text for kw in [
+            "book a flight", "book flight", "book tickets", "book ticket", "book hotel",
+            "buy on amazon", "order on amazon", "check my cart", "add to cart",
+            "fill out the form", "fill this form", "fill the form", "submit the form",
+            "compare prices on", "track order on", "navigate browser"
+        ]):
+            predicted_tools = ["browser_task"]
+            confidence = 0.99
+            tool_calls = [{"name": "browser_task", "arguments": {"task": text, "headless": False}}]
+
         elif len(predicted_tools) == 0 or confidence < self.confidence_threshold:
             if any(kw in low_text for kw in ["system diagnostics", "system status", "telemetry", "cpu", "ram", "battery"]):
                 predicted_tools = ["get_system_diagnostics"]
@@ -424,6 +499,14 @@ class ARNRouter:
                 predicted_tools = ["get_current_time"]
                 confidence = 0.99
                 tool_calls = [{"name": "get_current_time", "arguments": {}}]
+            elif any(kw in low_text for kw in ["nim token", "nim tokens", "token usage", "nim usage", "nim quota", "tokens have i used"]):
+                predicted_tools = ["get_nim_usage"]
+                confidence = 0.99
+                tool_calls = [{"name": "get_nim_usage", "arguments": {}}]
+            elif any(kw in low_text for kw in ["visited sites", "most visited", "website history", "site history", "websites have i visited"]):
+                predicted_tools = ["get_most_visited_sites"]
+                confidence = 0.99
+                tool_calls = [{"name": "get_most_visited_sites", "arguments": {}}]
 
 
         # Hybrid local vs cloud decision rule

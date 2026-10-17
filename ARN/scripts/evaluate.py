@@ -141,27 +141,53 @@ def evaluate_dataset(model, dataset, device) -> Dict[str, Any]:
 
     # 1. Tool Routing Metrics
     tool_exact_matches = np.all(all_tool_preds == all_tool_targets, axis=1)
-    tool_em_acc = float(np.mean(tool_exact_matches))
+    tool_em_count = int(np.sum(tool_exact_matches))
+    tool_em_acc = float(tool_em_count / max(total_samples, 1))
 
     # Precision, Recall, F1 (micro & macro)
-    tp = np.sum((all_tool_preds == 1) & (all_tool_targets == 1))
-    fp = np.sum((all_tool_preds == 1) & (all_tool_targets == 0))
-    fn = np.sum((all_tool_preds == 0) & (all_tool_targets == 1))
+    tp = int(np.sum((all_tool_preds == 1) & (all_tool_targets == 1)))
+    fp = int(np.sum((all_tool_preds == 1) & (all_tool_targets == 0)))
+    fn = int(np.sum((all_tool_preds == 0) & (all_tool_targets == 1)))
 
     micro_prec = tp / max(tp + fp, 1)
     micro_rec = tp / max(tp + fn, 1)
-    micro_f1 = 2 * micro_prec * micro_rec / max(micro_prec + micro_rec, 1e-8)
+    micro_f1 = 2 * micro_prec * micro_rec / max(micro_prec + micro_rec, 1e-8) if (micro_prec + micro_rec) > 0 else 0.0
 
-    # Per-tool macro
+    # Per-tool macro & per-tool details
+    per_tool_results = {}
     macro_f1s = []
+    macro_precs = []
+    macro_recs = []
+
     for k in range(all_tool_targets.shape[1]):
-        t_tp = np.sum((all_tool_preds[:, k] == 1) & (all_tool_targets[:, k] == 1))
-        t_fp = np.sum((all_tool_preds[:, k] == 1) & (all_tool_targets[:, k] == 0))
-        t_fn = np.sum((all_tool_preds[:, k] == 0) & (all_tool_targets[:, k] == 1))
-        p = t_tp / max(t_tp + t_fp, 1)
-        r = t_tp / max(t_tp + t_fn, 1)
+        tool_name = IDX_TO_TOOL.get(k, f"tool_{k}")
+        t_tp = int(np.sum((all_tool_preds[:, k] == 1) & (all_tool_targets[:, k] == 1)))
+        t_fp = int(np.sum((all_tool_preds[:, k] == 1) & (all_tool_targets[:, k] == 0)))
+        t_fn = int(np.sum((all_tool_preds[:, k] == 0) & (all_tool_targets[:, k] == 1)))
+        t_support = int(np.sum(all_tool_targets[:, k] == 1))
+
+        p = t_tp / max(t_tp + t_fp, 1) if (t_tp + t_fp) > 0 else 0.0
+        r = t_tp / max(t_tp + t_fn, 1) if (t_tp + t_fn) > 0 else 0.0
         f = 2 * p * r / max(p + r, 1e-8) if (p + r) > 0 else 0.0
+
+        macro_precs.append(p)
+        macro_recs.append(r)
         macro_f1s.append(f)
+
+        support_status = "sufficient" if t_support >= 10 else "insufficient support"
+        per_tool_results[tool_name] = {
+            "support": t_support,
+            "tp": t_tp,
+            "fp": t_fp,
+            "fn": t_fn,
+            "precision": float(p),
+            "recall": float(r),
+            "f1": float(f),
+            "status": support_status,
+        }
+
+    macro_prec = float(np.mean(macro_precs))
+    macro_rec = float(np.mean(macro_recs))
     macro_f1 = float(np.mean(macro_f1s))
 
     # 2. Span F1 Metrics
@@ -169,8 +195,8 @@ def evaluate_dataset(model, dataset, device) -> Dict[str, Any]:
     total_pred_spans = sum(len(s) for s in pred_spans_all)
     correct_spans = sum(len(g & p) for g, p in zip(gold_spans_all, pred_spans_all))
 
-    span_prec = correct_spans / max(total_pred_spans, 1)
-    span_rec = correct_spans / max(total_gold_spans, 1)
+    span_prec = correct_spans / max(total_pred_spans, 1) if total_pred_spans > 0 else 0.0
+    span_rec = correct_spans / max(total_gold_spans, 1) if total_gold_spans > 0 else 0.0
     span_f1 = 2 * span_prec * span_rec / max(span_prec + span_rec, 1e-8) if (span_prec + span_rec) > 0 else 0.0
 
     # 3. Joint Frame Accuracy
@@ -182,22 +208,38 @@ def evaluate_dataset(model, dataset, device) -> Dict[str, Any]:
     return {
         "num_samples": total_samples,
         "tool_routing": {
+            "exact_match_count": tool_em_count,
+            "exact_match_total": total_samples,
             "exact_match_accuracy": tool_em_acc,
-            "micro_f1": float(micro_f1),
-            "macro_f1": macro_f1,
-            "micro_precision": float(micro_prec),
-            "micro_recall": float(micro_rec),
+            "micro": {
+                "tp": tp,
+                "fp": fp,
+                "fn": fn,
+                "precision": float(micro_prec),
+                "recall": float(micro_rec),
+                "f1": float(micro_f1),
+            },
+            "macro": {
+                "precision": macro_prec,
+                "recall": macro_rec,
+                "f1": macro_f1,
+            },
             "calibration_ece": ece,
+            "per_tool": per_tool_results,
         },
         "slot_tagging": {
-            "span_f1": float(span_f1),
+            "correct_spans": correct_spans,
+            "total_pred_spans": total_pred_spans,
+            "total_gold_spans": total_gold_spans,
             "span_precision": float(span_prec),
             "span_recall": float(span_rec),
-            "total_gold_spans": total_gold_spans,
-            "total_pred_spans": total_pred_spans,
-            "correct_spans": correct_spans,
+            "span_f1": float(span_f1),
         },
-        "joint_frame_accuracy": float(joint_frame_acc),
+        "joint_frame": {
+            "exact_match_count": joint_correct,
+            "exact_match_total": total_samples,
+            "exact_match_accuracy": float(joint_frame_acc),
+        },
     }
 
 
@@ -251,11 +293,35 @@ def main():
     results["model_type"] = model_type
 
     logger.info("=== Evaluation Results ===")
-    logger.info("Tool Exact Match Accuracy: %.2f%%", 100.0 * results["tool_routing"]["exact_match_accuracy"])
-    logger.info("Tool Macro F1:             %.2f%%", 100.0 * results["tool_routing"]["macro_f1"])
-    logger.info("Tool Calibration (ECE):    %.4f", results["tool_routing"]["calibration_ece"])
-    logger.info("Slot Span F1:              %.2f%%", 100.0 * results["slot_tagging"]["span_f1"])
-    logger.info("Joint Frame Accuracy:      %.2f%%", 100.0 * results["joint_frame_accuracy"])
+    tr = results["tool_routing"]
+    logger.info("Tool Exact Match Accuracy (Subset Acc): %d of %d (%.2f%%)",
+                tr["exact_match_count"], tr["exact_match_total"], 100.0 * tr["exact_match_accuracy"])
+    logger.info("Tool Micro Metrics: Prec=%.2f%%, Rec=%.2f%%, F1=%.2f%% (TP=%d, FP=%d, FN=%d)",
+                100.0 * tr["micro"]["precision"], 100.0 * tr["micro"]["recall"], 100.0 * tr["micro"]["f1"],
+                tr["micro"]["tp"], tr["micro"]["fp"], tr["micro"]["fn"])
+    logger.info("Tool Macro Metrics: Prec=%.2f%%, Rec=%.2f%%, F1=%.2f%%",
+                100.0 * tr["macro"]["precision"], 100.0 * tr["macro"]["recall"], 100.0 * tr["macro"]["f1"])
+    logger.info("Tool Calibration (ECE): %.4f", tr["calibration_ece"])
+
+    st = results["slot_tagging"]
+    logger.info("Slot Span Metrics: Prec=%d/%d (%.2f%%), Rec=%d/%d (%.2f%%), F1=%.2f%%",
+                st["correct_spans"], max(st["total_pred_spans"], 1), 100.0 * st["span_precision"],
+                st["correct_spans"], max(st["total_gold_spans"], 1), 100.0 * st["span_recall"],
+                100.0 * st["span_f1"])
+
+    jf = results["joint_frame"]
+    logger.info("Joint Exact Match Accuracy: %d of %d (%.2f%%)",
+                jf["exact_match_count"], jf["exact_match_total"], 100.0 * jf["exact_match_accuracy"])
+
+    logger.info("--- Per-Tool Breakdown ---")
+    logger.info("%-28s | %-8s | %-6s | %-6s | %-6s | %-8s | %-8s | %-8s | %s",
+                "Tool Name", "Support", "TP", "FP", "FN", "Prec", "Rec", "F1", "Status")
+    logger.info("-" * 105)
+    for t_name, m in tr["per_tool"].items():
+        status_flag = "[insufficient support]" if m["status"] == "insufficient support" else "[OK]"
+        logger.info("%-28s | %-8d | %-6d | %-6d | %-6d | %-7.2f%% | %-7.2f%% | %-7.2f%% | %s",
+                    t_name, m["support"], m["tp"], m["fp"], m["fn"],
+                    100.0 * m["precision"], 100.0 * m["recall"], 100.0 * m["f1"], status_flag)
 
     if args.output_json:
         out_path = Path(args.output_json)

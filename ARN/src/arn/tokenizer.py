@@ -138,14 +138,21 @@ def align_tags_to_tokens(
     )
 
     word_ids = tokenized.word_ids()
+    attn_mask = tokenized["attention_mask"]
     aligned_tag_ids: List[int] = []
     prev_word_idx: Optional[int] = None
 
     pad_idx = TAG_TO_IDX["<PAD>"]
+    o_idx = TAG_TO_IDX["O"]
 
-    for word_idx in word_ids:
+    for i, word_idx in enumerate(word_ids):
         if word_idx is None:
-            aligned_tag_ids.append(pad_idx)
+            # Boundary tokens ([CLS], [SEP]) within active sequence receive 'O'.
+            # Padding positions beyond [SEP] (attn_mask == 0) receive '<PAD>'.
+            if attn_mask[i] == 1:
+                aligned_tag_ids.append(o_idx)
+            else:
+                aligned_tag_ids.append(pad_idx)
             prev_word_idx = None
             continue
 
@@ -163,3 +170,4 @@ def align_tags_to_tokens(
         prev_word_idx = word_idx
 
     return tokenized["input_ids"], tokenized["attention_mask"], aligned_tag_ids
+

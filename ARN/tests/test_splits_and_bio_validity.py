@@ -25,11 +25,11 @@ from arn import (
     TOOL_TO_IDX,
 )
 from arn.crf import build_bio_transition_mask
-from scripts.make_splits import extract_semantic_frame
+from scripts.make_splits import extract_fine_semantic_frame, token_edit_sim
 
 
 def test_zero_group_overlap_across_splits():
-    """Verify strict group-disjoint partitioning and tool stratification."""
+    """Verify strict group-disjoint partitioning, near-duplicate absence, and tool stratification."""
     splits_dir = Path(__file__).resolve().parent.parent / "data" / "splits"
     train_path = splits_dir / "group_disjoint_train.jsonl"
     val_path = splits_dir / "group_disjoint_val.jsonl"
@@ -48,13 +48,24 @@ def test_zero_group_overlap_across_splits():
     test_data = load_split(test_path)
 
     # 1. Verify semantic frame group disjointness
-    train_groups = {extract_semantic_frame(s) for s in train_data}
-    val_groups = {extract_semantic_frame(s) for s in val_data}
-    test_groups = {extract_semantic_frame(s) for s in test_data}
+    train_groups = {extract_fine_semantic_frame(s) for s in train_data}
+    val_groups = {extract_fine_semantic_frame(s) for s in val_data}
+    test_groups = {extract_fine_semantic_frame(s) for s in test_data}
 
     assert train_groups.isdisjoint(val_groups), f"Train/Val group collision: {train_groups & val_groups}"
     assert train_groups.isdisjoint(test_groups), f"Train/Test group collision: {train_groups & test_groups}"
     assert val_groups.isdisjoint(test_groups), f"Val/Test group collision: {val_groups & test_groups}"
+
+    # 2. Verify zero near-duplicates (sim >= 0.80) between test/val and train
+    train_skels = list({extract_fine_semantic_frame(s).split(" || ")[1] for s in train_data})
+    val_skels = list({extract_fine_semantic_frame(s).split(" || ")[1] for s in val_data})
+    test_skels = list({extract_fine_semantic_frame(s).split(" || ")[1] for s in test_data})
+
+    val_max_sims = [max(token_edit_sim(vs, ts) for ts in train_skels) for vs in val_skels]
+    test_max_sims = [max(token_edit_sim(ts_eval, ts) for ts in train_skels) for ts_eval in test_skels]
+
+    assert max(val_max_sims) < 0.80, f"Found val skeleton with sim >= 0.80 to train: max={max(val_max_sims)}"
+    assert max(test_max_sims) < 0.80, f"Found test skeleton with sim >= 0.80 to train: max={max(test_max_sims)}"
 
     # 2. Verify zero utterance leakage
     train_utts = {next(m["content"] for m in s["messages"] if m["role"] == "user").strip().lower() for s in train_data}
@@ -79,8 +90,10 @@ def test_zero_group_overlap_across_splits():
     test_tools = get_tools_in_split(test_data)
 
     assert train_tools == all_expected_tools, f"Missing in train: {all_expected_tools - train_tools}"
-    assert val_tools == all_expected_tools, f"Missing in val: {all_expected_tools - val_tools}"
-    assert test_tools == all_expected_tools, f"Missing in test: {all_expected_tools - test_tools}"
+    # open_url only has 1 cluster in the entire dataset, so it cannot appear in val/test without leakage
+    tools_with_sufficient_clusters = all_expected_tools - {"open_url"}
+    assert tools_with_sufficient_clusters.issubset(val_tools), f"Missing in val: {tools_with_sufficient_clusters - val_tools}"
+    assert tools_with_sufficient_clusters.issubset(test_tools), f"Missing in test: {tools_with_sufficient_clusters - test_tools}"
 
 
 def test_all_dataset_gold_tags_are_valid_under_bio_mask():

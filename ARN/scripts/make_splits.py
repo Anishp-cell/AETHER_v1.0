@@ -93,6 +93,41 @@ def token_edit_sim(s1: str, s2: str) -> float:
     return 1.0 - (dist / max_len) if max_len > 0 else 1.0
 
 
+def build_canonical_clusters(raw_path: Path, sim_threshold: float = 0.80) -> Dict[str, str]:
+    """Build canonical mapping from fine frame string to unified cluster ID."""
+    with open(raw_path, "r", encoding="utf-8") as f:
+        raw_samples = [json.loads(line) for line in f if line.strip()]
+
+    sample_frames = [extract_fine_semantic_frame(s) for s in raw_samples]
+    unique_frames = sorted(list(set(sample_frames)))
+
+    by_tool = defaultdict(list)
+    for f in unique_frames:
+        tool_sig, skel = f.split(" || ")
+        by_tool[tool_sig].append(skel)
+
+    parent = {f: f for f in unique_frames}
+
+    def find(x: str) -> str:
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+        return parent[x]
+
+    def union(x: str, y: str) -> None:
+        rx, ry = find(x), find(y)
+        if rx != ry:
+            parent[rx] = ry
+
+    for tool_sig, skels in by_tool.items():
+        n = len(skels)
+        for i in range(n):
+            for j in range(i + 1, n):
+                if token_edit_sim(skels[i], skels[j]) >= sim_threshold:
+                    union(f"{tool_sig} || {skels[i]}", f"{tool_sig} || {skels[j]}")
+
+    return {f: find(f) for f in unique_frames}
+
+
 def make_group_disjoint_splits(
     samples: List[Dict[str, Any]],
     val_ratio: float = 0.10,

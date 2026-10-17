@@ -37,8 +37,7 @@ from arn import (
     IDX_TO_TAG,
     IDX_TO_TOOL,
 )
-from scripts.make_splits import extract_fine_semantic_frame, token_edit_sim
-from scripts.tune_lambda_cv import build_canonical_clusters
+from scripts.make_splits import extract_fine_semantic_frame, token_edit_sim, build_canonical_clusters
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("arn.evaluate")
@@ -449,12 +448,18 @@ def main():
     parser.add_argument("--device", type=str, default=None, help="Compute device (cuda/cpu)")
     args = parser.parse_args()
 
+    arn_root = Path(__file__).resolve().parent.parent
+
     ckpt_path = Path(args.checkpoint)
+    if not ckpt_path.exists():
+        ckpt_path = arn_root / args.checkpoint
     if not ckpt_path.exists():
         logger.error("Checkpoint not found: %s", ckpt_path)
         return
 
     data_path = Path(args.data)
+    if not data_path.exists():
+        data_path = arn_root / args.data
     if not data_path.exists():
         logger.error("Evaluation dataset not found: %s", data_path)
         return
@@ -490,9 +495,13 @@ def main():
         test_samples = [json.loads(line) for line in f if line.strip()]
 
     raw_path = Path(args.raw_data)
+    if not raw_path.exists():
+        raw_path = arn_root / args.raw_data
     frame_to_cluster = build_canonical_clusters(raw_path) if raw_path.exists() else None
 
     train_path = Path(args.train_data)
+    if not train_path.exists():
+        train_path = arn_root / args.train_data
     train_samples = None
     if train_path.exists():
         with open(train_path, "r", encoding="utf-8") as f:

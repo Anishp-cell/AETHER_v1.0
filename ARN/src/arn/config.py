@@ -66,6 +66,10 @@ class ARNConfig:
         filtered = {k: v for k, v in data.items() if k in valid_fields}
         return cls(**filtered)
 
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert configuration to a plain dictionary."""
+        return dict(self.__dict__)
+
     def to_yaml(self, yaml_path: str) -> None:
         """Save configuration to a YAML file."""
         path = Path(yaml_path)

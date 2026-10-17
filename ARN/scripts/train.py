@@ -142,14 +142,19 @@ def main():
 
     set_seed(args.seed)
 
+    arn_root = Path(__file__).resolve().parent.parent
+
     config_path = Path(args.config)
+    if not config_path.exists():
+        config_path = arn_root / args.config
+
     if config_path.exists():
         config = ARNConfig.from_yaml(config_path)
     else:
         config = ARNConfig()
 
     if args.epochs is not None:
-        config.num_epochs = args.epochs
+        config.epochs = args.epochs
     if args.batch_size is not None:
         config.batch_size = args.batch_size
     if args.lr is not None:
@@ -159,12 +164,18 @@ def main():
 
     device = torch.device(args.device if args.device else ("cuda" if torch.cuda.is_available() else "cpu"))
     logger.info("Initializing %s training on %s (epochs=%d, bs=%d, lr=%.2e, lambda_slot=%.2f)",
-                args.model_type, device, config.num_epochs, config.batch_size, config.learning_rate, config.lambda_slot)
+                args.model_type, device, config.epochs, config.batch_size, config.learning_rate, config.lambda_slot)
 
     model = get_model(args.model_type, config).to(device)
 
     train_path = Path(args.train_data)
+    if not train_path.exists():
+        train_path = arn_root / args.train_data
+
     val_path = Path(args.val_data)
+    if not val_path.exists():
+        val_path = arn_root / args.val_data
+
     if not train_path.exists() or not val_path.exists():
         logger.error("Dataset not found: train=%s, val=%s. Please generate splits first.", train_path, val_path)
         return
@@ -181,18 +192,23 @@ def main():
         weight_decay=config.weight_decay
     )
 
-    out_dir = Path(args.output_dir) / args.model_type
+    out_dir = Path(args.output_dir)
+    if not out_dir.is_absolute():
+        out_dir = arn_root / args.output_dir
+    out_dir = out_dir / args.model_type
     out_dir.mkdir(parents=True, exist_ok=True)
 
     best_val_loss = float("inf")
     best_ckpt_path = out_dir / "best_model.pt"
+    no_improve_epochs = 0
+    patience = 3
 
-    for epoch in range(1, config.num_epochs + 1):
+    for epoch in range(1, config.epochs + 1):
         train_metrics = train_one_epoch(model, train_loader, optimizer, device)
         val_metrics = evaluate_val(model, val_loader, device)
 
         logger.info("Epoch %2d/%2d | Train Loss: %.4f (Tool: %.4f, Slot: %.4f) | Val Loss: %.4f",
-                    epoch, config.num_epochs,
+                    epoch, config.epochs,
                     train_metrics["total_loss"], train_metrics["tool_loss"], train_metrics["slot_loss"],
                     val_metrics["val_loss"])
 
@@ -206,6 +222,13 @@ def main():
                 "config": config.to_dict(),
             }, best_ckpt_path)
             logger.info("  [*] Saved new best checkpoint to %s (Val Loss: %.4f)", best_ckpt_path, best_val_loss)
+            no_improve_epochs = 0
+        else:
+            no_improve_epochs += 1
+
+        if no_improve_epochs >= patience:
+            logger.info("Early stopping triggered after %d epochs without improvement (patience=%d).", no_improve_epochs, patience)
+            break
 
     logger.info("Training complete for %s. Best Val Loss: %.4f", args.model_type, best_val_loss)
 

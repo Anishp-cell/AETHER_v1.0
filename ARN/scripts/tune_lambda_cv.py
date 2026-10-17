@@ -29,7 +29,7 @@ from arn import (
     TOKENIZER,
     IDX_TO_TAG,
 )
-from scripts.make_splits import extract_fine_semantic_frame, token_edit_sim
+from scripts.make_splits import extract_fine_semantic_frame, token_edit_sim, build_canonical_clusters
 from scripts.evaluate import extract_spans_from_bio
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -42,41 +42,6 @@ def set_seed(seed: int) -> None:
     torch.manual_seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
-
-
-def build_canonical_clusters(raw_path: Path) -> Dict[str, str]:
-    """Build canonical mapping from fine frame to cluster ID."""
-    with open(raw_path, "r", encoding="utf-8") as f:
-        raw_samples = [json.loads(line) for line in f if line.strip()]
-
-    sample_frames = [extract_fine_semantic_frame(s) for s in raw_samples]
-    unique_frames = sorted(list(set(sample_frames)))
-
-    by_tool = defaultdict(list)
-    for f in unique_frames:
-        tool_sig, skel = f.split(" || ")
-        by_tool[tool_sig].append(skel)
-
-    parent = {f: f for f in unique_frames}
-
-    def find(x: str) -> str:
-        if parent[x] != x:
-            parent[x] = find(parent[x])
-        return parent[x]
-
-    def union(x: str, y: str) -> None:
-        rx, ry = find(x), find(y)
-        if rx != ry:
-            parent[rx] = ry
-
-    for tool_sig, skels in by_tool.items():
-        n = len(skels)
-        for i in range(n):
-            for j in range(i + 1, n):
-                if token_edit_sim(skels[i], skels[j]) >= 0.80:
-                    union(f"{tool_sig} || {skels[i]}", f"{tool_sig} || {skels[j]}")
-
-    return {f: find(f) for f in unique_frames}
 
 
 def partition_clusters_into_5_folds(
@@ -367,9 +332,18 @@ def main():
     parser.add_argument("--batch-size", type=int, default=64)
     args = parser.parse_args()
 
+    arn_root = Path(__file__).resolve().parent.parent
     train_path = Path(args.train_data)
+    if not train_path.exists():
+        train_path = arn_root / args.train_data
+
     raw_path = Path(args.raw_data)
+    if not raw_path.exists():
+        raw_path = arn_root / args.raw_data
+
     out_path = Path(args.output_json)
+    if not out_path.is_absolute():
+        out_path = arn_root / args.output_json
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     summary = run_cv(train_path, raw_path, device_str=args.device, batch_size=args.batch_size)

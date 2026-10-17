@@ -85,15 +85,27 @@ def test_zero_group_overlap_across_splits():
         return tools
 
     all_expected_tools = set(TOOL_TO_IDX.keys())
+    assert len(all_expected_tools) == 18, f"Expected 18 tools, got {len(all_expected_tools)}"
+
     train_tools = get_tools_in_split(train_data)
     val_tools = get_tools_in_split(val_data)
     test_tools = get_tools_in_split(test_data)
 
+    # All 18 tools must appear in training
     assert train_tools == all_expected_tools, f"Missing in train: {all_expected_tools - train_tools}"
-    # open_url only has 1 cluster in the entire dataset, so it cannot appear in val/test without leakage
-    tools_with_sufficient_clusters = all_expected_tools - {"open_url"}
-    assert tools_with_sufficient_clusters.issubset(val_tools), f"Missing in val: {tools_with_sufficient_clusters - val_tools}"
-    assert tools_with_sufficient_clusters.issubset(test_tools), f"Missing in test: {tools_with_sufficient_clusters - test_tools}"
+
+    # Explicit documented exception list:
+    # 'open_url' has only 1 single template cluster in the entire dataset ("open <URL> in the browser").
+    # Under strict group-disjoint partitioning (to prevent near-duplicate leakage), that single cluster
+    # must reside entirely in train. Therefore, exactly 17 of 18 tools are evaluable in val and test.
+    DOCUMENTED_EXCEPTIONS = {"open_url"}
+    evaluable_tools = all_expected_tools - DOCUMENTED_EXCEPTIONS
+    assert len(evaluable_tools) == 17, "Expected exactly 17 evaluable tools"
+
+    assert evaluable_tools.issubset(val_tools), f"Missing evaluable tools in val: {evaluable_tools - val_tools}"
+    assert evaluable_tools.issubset(test_tools), f"Missing evaluable tools in test: {evaluable_tools - test_tools}"
+    assert "open_url" not in val_tools, "open_url unexpectedly leaked into validation split!"
+    assert "open_url" not in test_tools, "open_url unexpectedly leaked into test split!"
 
 
 def test_all_dataset_gold_tags_are_valid_under_bio_mask():

@@ -873,8 +873,29 @@ def generate_fill(target_count=1500):
 
 
 if __name__ == "__main__":
-    dataset_file = os.path.join(os.path.dirname(__file__), "aether_orchestrator_dataset.jsonl")
-    if os.path.exists(dataset_file):
-        print(f"Removing old dataset file {dataset_file} to ensure a fresh, balanced generation.")
+    import argparse
+    from pathlib import Path
+
+    parser = argparse.ArgumentParser(description="ARN Synthetic Template Dataset Generator")
+    parser.add_argument("--output", type=str, default=None,
+                        help="Path to output jsonl file (default: ARN/data/raw/aether_orchestrator_dataset.jsonl)")
+    parser.add_argument("--target-count", type=int, default=5000,
+                        help="Target number of samples (default: 5000)")
+    parser.add_argument("--seed", type=int, default=42,
+                        help="Random seed for deterministic generation (default: 42)")
+    parser.add_argument("--overwrite", action="store_true",
+                        help="Overwrite existing output file")
+    args = parser.parse_args()
+
+    random.seed(args.seed)
+
+    if args.output:
+        dataset_file = args.output
+    else:
+        dataset_file = str(Path(__file__).resolve().parent.parent / "data" / "raw" / "aether_orchestrator_dataset.jsonl")
+
+    if args.overwrite and os.path.exists(dataset_file):
+        print(f"Overwriting {dataset_file}...")
         os.remove(dataset_file)
-    generate_fill(target_count=5000)
+
+    generate_fill(target_count=args.target_count)

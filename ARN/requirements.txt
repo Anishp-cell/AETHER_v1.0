@@ -1,0 +1,11 @@
+# Verified dependencies for ARN (Aether Routing Network)
+torch>=2.0.0
+transformers>=4.35.0
+scikit-learn>=1.2.0
+numpy>=1.24.0
+pyyaml>=6.0
+psutil>=5.9.0
+onnx>=1.14.0
+onnxruntime>=1.16.0
+pytest>=7.0.0
+python-dateutil>=2.8.2

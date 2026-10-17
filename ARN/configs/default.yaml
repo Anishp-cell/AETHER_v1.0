@@ -1,0 +1,32 @@
+# Default Architecture & Training Configuration for ARN (18-Tool Schema)
+
+# Trunk Encoder Architecture
+model_name_or_path: "google/bert_uncased_L-2_H-128_A-2"
+vocab_size: 30522
+hidden_dim: 128
+num_layers: 2
+num_heads: 2
+ffn_dim: 512
+max_seq_len: 64
+dropout: 0.1
+freeze_trunk: true
+
+# Schema Registry
+num_tools: 18
+num_tags: 26
+
+# CRF Configuration
+hard_bio_mask: true
+use_crf: true
+
+# Optimization Hyperparameters
+learning_rate: 0.0003
+weight_decay: 0.01
+batch_size: 32
+epochs: 30
+lambda_slot: 1.0
+seed: 42
+
+# Decision Thresholds
+activation_threshold: 0.5
+cloud_fallback_threshold: 0.85

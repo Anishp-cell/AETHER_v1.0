@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use ARN or this codebase in your research, please cite it as below."
+title: "ARN: A Sub-18MB Non-Generative Joint Encoder-CRF Model for Real-Time On-Device Tool Orchestration"
+abstract: "A non-generative joint neural architecture reformulating edge tool orchestration as multi-label Factored Attention Routing (FAR) and Linear-Chain Conditional Random Field (CRF) token tagging atop a frozen BERT-tiny encoder trunk."
+type: software
+authors:
+  - name: "AETHER Research Team"
+license: MIT
+repository-code: "https://github.com/Anishp-cell/AETHER_v1.0"
+keywords:
+  - "spoken language understanding"
+  - "edge machine learning"
+  - "tool orchestration"
+  - "conditional random fields"
+  - "cross-attention routing"
+  - "efficient NLP"
+version: 0.2.0
+date-released: 2026-10-17

@@ -1,0 +1,35 @@
+# Python byte-code and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Build and packaging artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Environments
+.venv/
+env/
+venv/
+ENV/
+
+# Large runtime checkpoints and binary ONNX graphs (keep archived ones)
+checkpoints/
+results/checkpoints/
+*.bin
+
+# Allow archived artifacts
+!_archive/
+!_archive/**
+
+# Data caches
+.cache/
+*.log
+
+# OS artifacts
+.DS_Store
+Thumbs.db

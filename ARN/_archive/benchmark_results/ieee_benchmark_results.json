@@ -1,0 +1,852 @@
+{
+  "cross_validation": {
+    "tool_subset_accuracy": {
+      "mean": 90.2,
+      "std": 0.48,
+      "ci_95_lower": 89.98,
+      "ci_95_upper": 90.46,
+      "n_folds": 15
+    },
+    "tool_f1_micro": {
+      "mean": 95.99,
+      "std": 0.2,
+      "ci_95_lower": 95.89,
+      "ci_95_upper": 96.1,
+      "n_folds": 15
+    },
+    "tool_f1_macro": {
+      "mean": 94.44,
+      "std": 0.31,
+      "ci_95_lower": 94.29,
+      "ci_95_upper": 94.6,
+      "n_folds": 15
+    },
+    "active_slot_accuracy": {
+      "mean": 74.49,
+      "std": 0.69,
+      "ci_95_lower": 74.14,
+      "ci_95_upper": 74.83,
+      "n_folds": 15
+    },
+    "active_slot_f1_macro": {
+      "mean": 79.24,
+      "std": 1.73,
+      "ci_95_lower": 78.43,
+      "ci_95_upper": 80.19,
+      "n_folds": 15
+    },
+    "entity_f1": {
+      "mean": 63.11,
+      "std": 0.55,
+      "ci_95_lower": 62.82,
+      "ci_95_upper": 63.37,
+      "n_folds": 15
+    },
+    "entity_precision": {
+      "mean": 68.28,
+      "std": 0.51,
+      "ci_95_lower": 68.02,
+      "ci_95_upper": 68.52,
+      "n_folds": 15
+    },
+    "entity_recall": {
+      "mean": 58.66,
+      "std": 0.61,
+      "ci_95_lower": 58.34,
+      "ci_95_upper": 58.96,
+      "n_folds": 15
+    },
+    "joint_exact_match": {
+      "mean": 39.29,
+      "std": 0.38,
+      "ci_95_lower": 39.08,
+      "ci_95_upper": 39.47,
+      "n_folds": 15
+    }
+  },
+  "held_out_test": {
+    "tool_subset_accuracy": 90.25,
+    "tool_hamming_loss": 0.6368,
+    "tool_f1_micro": 95.99,
+    "tool_f1_macro": 94.53,
+    "per_tool_f1": {
+      "get_current_time": {
+        "f1": 97.73462783171522,
+        "support": 156
+      },
+      "handle_smart_home": {
+        "f1": 97.93510324483776,
+        "support": 171
+      },
+      "route_to_deepseek": {
+        "f1": 96.20253164556962,
+        "support": 79
+      },
+      "open_app_and_type": {
+        "f1": 93.39622641509435,
+        "support": 111
+      },
+      "open_url": {
+        "f1": 100.0,
+        "support": 22
+      },
+      "search_web": {
+        "f1": 94.50222882615155,
+        "support": 353
+      },
+      "run_computer_command": {
+        "f1": 76.07361963190185,
+        "support": 101
+      },
+      "analyze_screen_with_llava": {
+        "f1": 96.55172413793103,
+        "support": 58
+      },
+      "search_and_read_web": {
+        "f1": 88.50574712643679,
+        "support": 91
+      },
+      "read_specific_url": {
+        "f1": 90.1639344262295,
+        "support": 63
+      },
+      "write_and_run_script": {
+        "f1": 98.17232375979113,
+        "support": 188
+      },
+      "get_system_diagnostics": {
+        "f1": 96.26168224299066,
+        "support": 221
+      },
+      "media_control": {
+        "f1": 89.51612903225806,
+        "support": 134
+      },
+      "send_whatsapp_message": {
+        "f1": 99.21507064364206,
+        "support": 637
+      },
+      "set_timer": {
+        "f1": 98.93842887473461,
+        "support": 233
+      },
+      "teach_new_skill": {
+        "f1": 99.3103448275862,
+        "support": 72
+      }
+    },
+    "active_slot_accuracy": 75.26,
+    "active_slot_f1_macro": 78.45,
+    "entity_precision": 67.75,
+    "entity_recall": 57.58,
+    "entity_f1": 62.25,
+    "entity_per_type": {
+      "action": {
+        "precision": 98.71,
+        "recall": 75.41,
+        "f1": 85.5,
+        "support": 305
+      },
+      "query": {
+        "precision": 45.06,
+        "recall": 36.14,
+        "f1": 40.11,
+        "support": 581
+      },
+      "contact": {
+        "precision": 64.32,
+        "recall": 63.11,
+        "f1": 63.71,
+        "support": 637
+      },
+      "message": {
+        "precision": 51.66,
+        "recall": 39.68,
+        "f1": 44.88,
+        "support": 1061
+      },
+      "url": {
+        "precision": 82.35,
+        "recall": 82.35,
+        "f1": 82.35,
+        "support": 85
+      },
+      "target": {
+        "precision": 76.0,
+        "recall": 43.93,
+        "f1": 55.68,
+        "support": 173
+      },
+      "value": {
+        "precision": 91.63,
+        "recall": 98.71,
+        "f1": 95.04,
+        "support": 233
+      },
+      "reminder": {
+        "precision": 83.26,
+        "recall": 81.12,
+        "f1": 82.17,
+        "support": 233
+      },
+      "app": {
+        "precision": 92.31,
+        "recall": 64.86,
+        "f1": 76.19,
+        "support": 111
+      },
+      "device": {
+        "precision": 97.66,
+        "recall": 97.66,
+        "f1": 97.66,
+        "support": 171
+      }
+    },
+    "joint_exact_match": 38.68,
+    "confidence": {
+      "correct_mean_conf": 96.41668200492859,
+      "incorrect_mean_conf": 33.39744806289673,
+      "separation_gap": 63.01923394203186,
+      "n_correct": 1869,
+      "n_incorrect": 202
+    },
+    "total_samples": 2071
+  },
+  "ablation": {
+    "Full_ARN": {
+      "tool_subset_accuracy": 90.29,
+      "tool_hamming_loss": 0.6454,
+      "tool_f1_micro": 95.96,
+      "tool_f1_macro": 94.52,
+      "active_slot_accuracy": 74.6,
+      "active_slot_f1_macro": 78.28,
+      "entity_precision": 67.82,
+      "entity_recall": 57.73,
+      "entity_f1": 62.37,
+      "entity_per_type": {
+        "url": {
+          "precision": 84.48,
+          "recall": 86.73,
+          "f1": 85.59,
+          "support": 113
+        },
+        "contact": {
+          "precision": 63.48,
+          "recall": 62.66,
+          "f1": 63.07,
+          "support": 857
+        },
+        "message": {
+          "precision": 52.35,
+          "recall": 40.21,
+          "f1": 45.49,
+          "support": 1410
+        },
+        "action": {
+          "precision": 98.8,
+          "recall": 75.81,
+          "f1": 85.79,
+          "support": 434
+        },
+        "device": {
+          "precision": 97.95,
+          "recall": 97.55,
+          "f1": 97.75,
+          "support": 245
+        },
+        "query": {
+          "precision": 44.63,
+          "recall": 35.58,
+          "f1": 39.6,
+          "support": 770
+        },
+        "value": {
+          "precision": 90.09,
+          "recall": 98.68,
+          "f1": 94.19,
+          "support": 304
+        },
+        "reminder": {
+          "precision": 83.45,
+          "recall": 81.25,
+          "f1": 82.33,
+          "support": 304
+        },
+        "app": {
+          "precision": 92.0,
+          "recall": 63.45,
+          "f1": 75.1,
+          "support": 145
+        },
+        "target": {
+          "precision": 71.92,
+          "recall": 42.51,
+          "f1": 53.44,
+          "support": 247
+        }
+      },
+      "joint_exact_match": 38.88,
+      "confidence": {
+        "correct_mean_conf": 96.37242555618286,
+        "incorrect_mean_conf": 32.76590704917908,
+        "separation_gap": 63.606518507003784,
+        "n_correct": 2492,
+        "n_incorrect": 268
+      },
+      "total_samples": 2760
+    },
+    "JointBERT": {
+      "tool_subset_accuracy": 66.34,
+      "tool_hamming_loss": 2.3256,
+      "tool_f1_micro": 84.19,
+      "tool_f1_macro": 76.97,
+      "active_slot_accuracy": 60.39,
+      "active_slot_f1_macro": 75.9,
+      "entity_precision": 26.04,
+      "entity_recall": 38.89,
+      "entity_f1": 31.2,
+      "entity_per_type": {
+        "message": {
+          "precision": 3.96,
+          "recall": 8.79,
+          "f1": 5.46,
+          "support": 1410
+        },
+        "url": {
+          "precision": 50.75,
+          "recall": 60.18,
+          "f1": 55.06,
+          "support": 113
+        },
+        "target": {
+          "precision": 14.51,
+          "recall": 11.34,
+          "f1": 12.73,
+          "support": 247
+        },
+        "contact": {
+          "precision": 58.36,
+          "recall": 62.31,
+          "f1": 60.27,
+          "support": 857
+        },
+        "action": {
+          "precision": 89.17,
+          "recall": 72.12,
+          "f1": 79.75,
+          "support": 434
+        },
+        "device": {
+          "precision": 98.35,
+          "recall": 97.55,
+          "f1": 97.95,
+          "support": 245
+        },
+        "query": {
+          "precision": 2.31,
+          "recall": 4.16,
+          "f1": 2.97,
+          "support": 770
+        },
+        "value": {
+          "precision": 89.29,
+          "recall": 98.68,
+          "f1": 93.75,
+          "support": 304
+        },
+        "reminder": {
+          "precision": 38.44,
+          "recall": 50.33,
+          "f1": 43.59,
+          "support": 304
+        },
+        "app": {
+          "precision": 73.11,
+          "recall": 60.0,
+          "f1": 65.91,
+          "support": 145
+        }
+      },
+      "joint_exact_match": 16.2,
+      "confidence": {
+        "correct_mean_conf": 84.67183709144592,
+        "incorrect_mean_conf": 41.534990072250366,
+        "separation_gap": 43.13684701919556,
+        "n_correct": 1831,
+        "n_incorrect": 929
+      },
+      "total_samples": 2760
+    },
+    "ARN_NoCRF": {
+      "tool_subset_accuracy": 88.12,
+      "tool_hamming_loss": 0.7835,
+      "tool_f1_micro": 95.06,
+      "tool_f1_macro": 91.69,
+      "active_slot_accuracy": 60.4,
+      "active_slot_f1_macro": 76.8,
+      "entity_precision": 26.25,
+      "entity_recall": 38.93,
+      "entity_f1": 31.36,
+      "entity_per_type": {
+        "target": {
+          "precision": 14.72,
+          "recall": 11.74,
+          "f1": 13.06,
+          "support": 247
+        },
+        "url": {
+          "precision": 50.74,
+          "recall": 61.06,
+          "f1": 55.42,
+          "support": 113
+        },
+        "contact": {
+          "precision": 57.89,
+          "recall": 61.61,
+          "f1": 59.69,
+          "support": 857
+        },
+        "message": {
+          "precision": 3.95,
+          "recall": 8.65,
+          "f1": 5.43,
+          "support": 1410
+        },
+        "action": {
+          "precision": 89.55,
+          "recall": 73.04,
+          "f1": 80.46,
+          "support": 434
+        },
+        "device": {
+          "precision": 97.95,
+          "recall": 97.55,
+          "f1": 97.75,
+          "support": 245
+        },
+        "query": {
+          "precision": 2.24,
+          "recall": 4.03,
+          "f1": 2.88,
+          "support": 770
+        },
+        "value": {
+          "precision": 90.09,
+          "recall": 98.68,
+          "f1": 94.19,
+          "support": 304
+        },
+        "reminder": {
+          "precision": 38.79,
+          "recall": 50.66,
+          "f1": 43.94,
+          "support": 304
+        },
+        "app": {
+          "precision": 74.59,
+          "recall": 62.76,
+          "f1": 68.16,
+          "support": 145
+        }
+      },
+      "joint_exact_match": 18.7,
+      "confidence": {
+        "correct_mean_conf": 96.29898071289062,
+        "incorrect_mean_conf": 34.96151566505432,
+        "separation_gap": 61.337465047836304,
+        "n_correct": 2432,
+        "n_incorrect": 328
+      },
+      "total_samples": 2760
+    },
+    "ARN_NoFAR": {
+      "tool_subset_accuracy": 64.78,
+      "tool_hamming_loss": 2.4321,
+      "tool_f1_micro": 83.43,
+      "tool_f1_macro": 74.93,
+      "active_slot_accuracy": 71.22,
+      "active_slot_f1_macro": 81.53,
+      "entity_precision": 67.87,
+      "entity_recall": 57.26,
+      "entity_f1": 62.11,
+      "entity_per_type": {
+        "url": {
+          "precision": 72.03,
+          "recall": 75.22,
+          "f1": 73.59,
+          "support": 113
+        },
+        "contact": {
+          "precision": 79.37,
+          "recall": 70.95,
+          "f1": 74.92,
+          "support": 857
+        },
+        "message": {
+          "precision": 48.66,
+          "recall": 38.51,
+          "f1": 42.99,
+          "support": 1410
+        },
+        "action": {
+          "precision": 99.41,
+          "recall": 77.42,
+          "f1": 87.05,
+          "support": 434
+        },
+        "device": {
+          "precision": 99.58,
+          "recall": 97.55,
+          "f1": 98.56,
+          "support": 245
+        },
+        "query": {
+          "precision": 34.59,
+          "recall": 28.57,
+          "f1": 31.29,
+          "support": 770
+        },
+        "value": {
+          "precision": 91.74,
+          "recall": 98.68,
+          "f1": 95.09,
+          "support": 304
+        },
+        "reminder": {
+          "precision": 84.8,
+          "recall": 82.57,
+          "f1": 83.67,
+          "support": 304
+        },
+        "app": {
+          "precision": 85.86,
+          "recall": 58.62,
+          "f1": 69.67,
+          "support": 145
+        },
+        "target": {
+          "precision": 71.01,
+          "recall": 39.68,
+          "f1": 50.91,
+          "support": 247
+        }
+      },
+      "joint_exact_match": 30.14,
+      "confidence": {
+        "correct_mean_conf": 84.01815891265869,
+        "incorrect_mean_conf": 41.4219856262207,
+        "separation_gap": 42.59617328643799,
+        "n_correct": 1788,
+        "n_incorrect": 972
+      },
+      "total_samples": 2760
+    }
+  },
+  "hardware": {
+    "disk_footprint_mb": 16.96,
+    "peak_ram_load_mb": 0.31,
+    "peak_ram_inference_mb": 0.25,
+    "latency_mean_ms": 10.19,
+    "latency_median_ms": 10.11,
+    "latency_p95_ms": 10.7,
+    "latency_p99_ms": 10.92,
+    "latency_std_ms": 0.27,
+    "latency_min_ms": 9.71,
+    "latency_max_ms": 10.99,
+    "total_parameters": 4440614,
+    "trainable_parameters": 54694,
+    "frozen_parameters": 4385920,
+    "far_parameters": 51328,
+    "crf_parameters": 528,
+    "slot_tagger_parameters": 2838,
+    "encoder_parameters": 4385920,
+    "n_iterations": 500,
+    "n_warmup": 50
+  },
+  "false_positive_rejection": {
+    "total_prompts": 200,
+    "correctly_rejected": 170,
+    "rejection_rate": 85.0,
+    "false_positives": 30,
+    "mean_ood_confidence": 18.1,
+    "failures": [
+      {
+        "idx": 22,
+        "prompt": "What is the capital of France?",
+        "triggered": [
+          "media_control"
+        ],
+        "conf": 52.8
+      },
+      {
+        "idx": 56,
+        "prompt": "How does the immune system fight infections?",
+        "triggered": [
+          "get_system_diagnostics"
+        ],
+        "conf": 64.7
+      },
+      {
+        "idx": 60,
+        "prompt": "I really enjoy listening to classical music in the evening.",
+        "triggered": [
+          "media_control"
+        ],
+        "conf": 90.5
+      },
+      {
+        "idx": 68,
+        "prompt": "Exercise is essential for maintaining good physical health.",
+        "triggered": [
+          "get_system_diagnostics"
+        ],
+        "conf": 62.6
+      },
+      {
+        "idx": 69,
+        "prompt": "Automated testing saves a lot of time in software developmen",
+        "triggered": [
+          "get_current_time"
+        ],
+        "conf": 99.5
+      },
+      {
+        "idx": 74,
+        "prompt": "Open source software powers most of the internet infrastruct",
+        "triggered": [
+          "search_and_read_web"
+        ],
+        "conf": 69.9
+      },
+      {
+        "idx": 87,
+        "prompt": "Sometimes I just stare at the ceiling and think about nothin",
+        "triggered": [
+          "handle_smart_home"
+        ],
+        "conf": 83.0
+      },
+      {
+        "idx": 99,
+        "prompt": "Sometimes the simplest solution is the most elegant one.",
+        "triggered": [
+          "handle_smart_home"
+        ],
+        "conf": 73.4
+      },
+      {
+        "idx": 100,
+        "prompt": "What is the formula for calculating the area of a circle?",
+        "triggered": [
+          "route_to_deepseek"
+        ],
+        "conf": 54.8
+      },
+      {
+        "idx": 101,
+        "prompt": "How does a binary search algorithm work?",
+        "triggered": [
+          "search_web"
+        ],
+        "conf": 99.8
+      },
+      {
+        "idx": 106,
+        "prompt": "What is the Pythagorean theorem?",
+        "triggered": [
+          "route_to_deepseek"
+        ],
+        "conf": 85.5
+      },
+      {
+        "idx": 108,
+        "prompt": "What is the purpose of Docker containers in DevOps?",
+        "triggered": [
+          "route_to_deepseek"
+        ],
+        "conf": 63.8
+      },
+      {
+        "idx": 111,
+        "prompt": "What is the difference between process and thread in OS?",
+        "triggered": [
+          "open_app_and_type"
+        ],
+        "conf": 76.2
+      },
+      {
+        "idx": 113,
+        "prompt": "What is the derivative of x squared?",
+        "triggered": [
+          "route_to_deepseek"
+        ],
+        "conf": 51.7
+      },
+      {
+        "idx": 121,
+        "prompt": "How do neural networks learn through backpropagation?",
+        "triggered": [
+          "route_to_deepseek"
+        ],
+        "conf": 96.5
+      },
+      {
+        "idx": 125,
+        "prompt": "How does a convolutional neural network process images?",
+        "triggered": [
+          "route_to_deepseek"
+        ],
+        "conf": 64.1
+      },
+      {
+        "idx": 134,
+        "prompt": "What is the purpose of normalization in databases?",
+        "triggered": [
+          "route_to_deepseek"
+        ],
+        "conf": 53.9
+      },
+      {
+        "idx": 140,
+        "prompt": "Be quiet for a second.",
+        "triggered": [
+          "run_computer_command"
+        ],
+        "conf": 73.7
+      },
+      {
+        "idx": 147,
+        "prompt": "Take your time.",
+        "triggered": [
+          "get_current_time"
+        ],
+        "conf": 98.1
+      },
+      {
+        "idx": 157,
+        "prompt": "Can you repeat that one more time please?",
+        "triggered": [
+          "get_current_time"
+        ],
+        "conf": 98.9
+      },
+      {
+        "idx": 160,
+        "prompt": "I am not sure I understand the question fully.",
+        "triggered": [
+          "analyze_screen_with_llava"
+        ],
+        "conf": 86.2
+      },
+      {
+        "idx": 161,
+        "prompt": "Could you elaborate on that particular point?",
+        "triggered": [
+          "get_current_time"
+        ],
+        "conf": 57.7
+      },
+      {
+        "idx": 170,
+        "prompt": "I wish I could message my friend right now but my phone is b",
+        "triggered": [
+          "send_whatsapp_message"
+        ],
+        "conf": 99.9
+      },
+      {
+        "idx": 172,
+        "prompt": "I was just thinking about what time it is in Tokyo.",
+        "triggered": [
+          "get_current_time"
+        ],
+        "conf": 99.5
+      },
+      {
+        "idx": 179,
+        "prompt": "I need to type up a report for my boss by end of day.",
+        "triggered": [
+          "open_app_and_type",
+          "send_whatsapp_message"
+        ],
+        "conf": 99.5
+      },
+      {
+        "idx": 180,
+        "prompt": "App development has become much more accessible to beginners",
+        "triggered": [
+          "teach_new_skill"
+        ],
+        "conf": 62.6
+      },
+      {
+        "idx": 186,
+        "prompt": "WhatsApp has over two billion users worldwide now.",
+        "triggered": [
+          "send_whatsapp_message"
+        ],
+        "conf": 88.8
+      },
+      {
+        "idx": 189,
+        "prompt": "The search engine market is dominated by just a few companie",
+        "triggered": [
+          "search_web"
+        ],
+        "conf": 99.8
+      },
+      {
+        "idx": 195,
+        "prompt": "I prefer typing over voice commands most of the time.",
+        "triggered": [
+          "get_current_time"
+        ],
+        "conf": 100.0
+      },
+      {
+        "idx": 198,
+        "prompt": "I find it hard to focus when there is background noise.",
+        "triggered": [
+          "search_web"
+        ],
+        "conf": 84.3
+      }
+    ]
+  },
+  "latency_distribution": {
+    "0-5ms": {
+      "count": 0,
+      "pct": 0.0
+    },
+    "5-10ms": {
+      "count": 127,
+      "pct": 25.4
+    },
+    "10-15ms": {
+      "count": 373,
+      "pct": 74.6
+    },
+    "15-20ms": {
+      "count": 0,
+      "pct": 0.0
+    },
+    "20-30ms": {
+      "count": 0,
+      "pct": 0.0
+    },
+    "30-50ms": {
+      "count": 0,
+      "pct": 0.0
+    },
+    "50-100ms": {
+      "count": 0,
+      "pct": 0.0
+    }
+  },
+  "json_safety": {
+    "total_tested": 219,
+    "valid_structured_outputs": 219,
+    "structural_safety_rate": 100.0,
+    "json_syntax_error_rate": 0.0
+  }
+}

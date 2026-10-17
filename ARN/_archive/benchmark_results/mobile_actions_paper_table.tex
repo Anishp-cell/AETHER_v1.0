@@ -1,0 +1,17 @@
+% === Auto-generated Mobile-Actions Comparison Table ===
+\begin{table}[t]
+\centering
+\caption{Head-to-Head Comparison on Google Mobile-Actions ($N$=961 Eval Split)}
+\label{tab:mobile_actions_comparison}
+\begin{tabular}{lccccc}
+\hline
+\textbf{Model} & \textbf{Params} & \textbf{Quant} & \textbf{RAM} & \textbf{Exact Match} & \textbf{Routing Acc} \\
+\hline
+LFM2.5 (Liquid AI) & 230M & f16 & >400 MB & 69.1\% & 93.0\% \\
+FunctionGemma (Google) & 270M & f16 & >500 MB & 64.0\% & 87.3\% \\
+Needle 2 (Cactus) & 45M & CQ2-bit & 28 MB & 63.7\% & 98.3\% \\
+Apple FM (Apple) & ~3B & Native & >1 GB & 57.6\% & 94.2\% \\
+\textbf{ARN-Mobile (Ours)} & \textbf{4.4M} & \textbf{FP32 / INT8} & \textbf{5.5 MB} & \textbf{49.7\%} & \textbf{95.0\%} \\
+\hline
+\end{tabular}
+\end{table}

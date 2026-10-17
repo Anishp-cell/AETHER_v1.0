@@ -34,14 +34,15 @@ class ARNDataset(Dataset):
         self,
         jsonl_path: str,
         tokenizer: Optional[BertTokenizerFast] = None,
-        max_seq_len: int = 64
+        max_seq_len: int = 64,
+        max_length: Optional[int] = None
     ) -> None:
         self.path = Path(jsonl_path)
         if not self.path.exists():
             raise FileNotFoundError(f"Dataset file not found at: {jsonl_path}")
 
         self.tokenizer = tokenizer if tokenizer is not None else TOKENIZER
-        self.max_seq_len = max_seq_len
+        self.max_seq_len = max_length if max_length is not None else max_seq_len
         self.samples: List[Dict[str, Any]] = []
 
         with open(self.path, "r", encoding="utf-8") as f:
@@ -159,6 +160,7 @@ class ARNDataset(Dataset):
         return {
             "input_ids": torch.tensor(input_ids, dtype=torch.long),
             "attention_mask": torch.tensor(attention_mask, dtype=torch.long),
+            "tags": torch.tensor(aligned_tag_ids, dtype=torch.long),
             "tag_ids": torch.tensor(aligned_tag_ids, dtype=torch.long),
             "tool_labels": tool_labels
         }

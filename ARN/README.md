@@ -78,9 +78,9 @@ Sample output:
     }
   },
   "tool_confidences": {
-    "send_whatsapp_message": 0.9984
+    "send_whatsapp_message": "TODO(verify: to be populated by retrained checkpoint)"
   },
-  "latency_ms": 11.2,
+  "latency_ms": "TODO(verify: measured on host CPU under benchmark protocol)",
   "fallback_to_llm": false
 }
 ```

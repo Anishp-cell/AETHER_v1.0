@@ -235,6 +235,15 @@ class CRF(nn.Module):
         gold_score = self.score_sentence(emissions, tags, mask)
         return forward_score - gold_score
 
+    def forward(
+        self,
+        emissions: torch.Tensor,
+        tags: torch.Tensor,
+        mask: torch.Tensor
+    ) -> torch.Tensor:
+        """Forward pass computes sentence negative log-likelihood."""
+        return self.sentence_nll(emissions, tags, mask)
+
     def viterbi_decode(
         self,
         emissions: torch.Tensor,

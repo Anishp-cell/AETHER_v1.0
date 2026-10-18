@@ -19,7 +19,7 @@ Status: IN_PROGRESS
 | **8** | Deployment Protocol | DONE | `02a2693` | Fast NumPy Viterbi (10k test verified), ONNX FP32 (16.75MB), Dynamic INT8 (4.28MB), 1.39ms (1T) / 0.75ms (4T) latency, 4.21MB RSS |
 | **9** | Human Evaluation | DONE | `591b3d5` | Sealed holdout at data/human_eval_template.jsonl; docs/HUMAN_EVAL_PENDING.md; scripts/run_human_eval.py verified |
 | **10** | Repo Finalization | DONE | `af4ceba` | Upgraded CLI, truthful README with verified numbers, MODEL_CARD.md, DATA_STATEMENT.md, CHANGELOG.md |
-| **11** | Paper Compilation | DONE | Pending commit | Compiled LaTeX tables 1-4, generated numbers.tex, rewritten manuscripts, audit passed |
-| **12** | Release Staging | IN_PROGRESS | - | Stage ../ARN-public; prepare release checklist |
-| **13** | Launch Drafts | PENDING | - | Write verified-numbers launch drafts |
+| **11** | Paper Compilation | DONE | `2bf9607` | Compiled LaTeX tables 1-4, generated numbers.tex, rewritten manuscripts, audit passed |
+| **12** | Release Staging | DONE | Pending commit | Staged ../ARN-public clean git repo on main (7b28cc8); verified RELEASE_CHECKLIST.md |
+| **13** | Launch Drafts | IN_PROGRESS | - | Write verified-numbers launch drafts |
 | **14** | Self-Audit & Final Report | PENDING | - | Full test sweep, banned claims grep, FINAL_REPORT.md |

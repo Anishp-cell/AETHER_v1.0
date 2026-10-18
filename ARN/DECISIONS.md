@@ -91,6 +91,17 @@ This document records all non-trivial decisions made during the ARN project revi
   4. Implemented `scripts/audit_paper_numbers.py` and unit test `tests/test_paper_integrity.py` to enforce zero banned claims, macro consistency, and balanced LaTeX syntax in CI.
 - **Alternative Rejected:** Manually editing LaTeX numbers or retaining superseded narrative claims.
 
+### D-010: Release Staging in Standalone Public Directory (Phase 12)
+- **Date:** 2026-10-18
+- **Context:** Hard Rule 2 strictly prohibits pushing or modifying remote repositories without user instruction. The repository must be staged cleanly in `../ARN-public` as an independent Git repository ready for release.
+- **Decision:**
+  1. Built `scripts/stage_release.py` to copy verified modules, final models, datasets, tests, scripts, and documentation into `../ARN-public`.
+  2. Initialized a fresh standalone Git repository in `../ARN-public` on branch `main` with a clean initial commit (`7b28cc8`).
+  3. Authored `RELEASE_CHECKLIST.md` providing step-by-step commands for GitHub, Hugging Face, and PyPI publication.
+  4. Verified test execution inside `../ARN-public`, confirming all 9 standalone tests pass cleanly.
+- **Alternative Rejected:** Pushing directly to remote GitHub repositories or publishing wheels to PyPI without user consent.
+
+
 
 
 

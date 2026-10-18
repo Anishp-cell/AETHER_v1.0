@@ -45,4 +45,20 @@ This document records all non-trivial decisions made during the ARN project revi
   3. Formalized the 8 reconciliation verdicts in `ARN/docs/RECONCILIATION.md`, including exact ICC recomputation ($MS_W = 0.01183, \rho = 0.8778$), tool-pair count verification (114 confirmed), and CI cluster-bootstrap methodology.
 - **Alternative Rejected:** Silently overwriting or deleting old files without reconciliation (violates Hard Rule 3).
 
+### D-006: Root Cause Diagnosis and Resolution for TF-IDF Baselines (Phase 3)
+- **Date:** 2026-10-18
+- **Context:** In early Stage 2b, TF-IDF kNN achieved 53.0% and LogReg achieved 34.5%, but in Stage 2d they collapsed to 2.55% and 0.00%. kNN also failed to improve with data size.
+- **Root Cause Identified:**
+  1. `stop_words="english"`: English stop words stripped essential imperative trigger words ("what", "is", "it", "on", "off", "to", "and", "me", "a", "the") from command utterances like "tell me the time" or "turn on lights", leaving empty or single-word vectors.
+  2. Fixed 0.50 threshold on uncalibrated/unbalanced multi-label probabilities: rare tools (0.5% support) produced probabilities below 0.50, causing LogReg to predict all-zero vectors.
+  3. Hard multi-label predict in kNN: required $>50\%$ votes simultaneously for multiple tools, which collapsed on multi-tool samples.
+  4. Global vectorizer fit: vocabulary and IDF weights leaked across fold splits.
+- **Decision:**
+  1. Enforced strictly fold-isolated vectorizer fitting (`fit_transform` on `train_idx` only; `transform` on `val_idx`).
+  2. Removed `stop_words="english"`.
+  3. Introduced soft probability averaging for kNN and class-balanced OvR for LogReg, tuning decision threshold $\tau \in [0.20, 0.70]$ strictly on inner validation.
+  4. Added unit tests verifying 100-sample overfit ($\ge 95\%$), random split sanity ($\ge 65\%$), and monotonic scaling with training data.
+- **Alternative Rejected:** Reporting artificially collapsed 0.0% numbers or using global vectorizer fits.
+
+
 

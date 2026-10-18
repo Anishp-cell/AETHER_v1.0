@@ -11,7 +11,2260 @@
     "shuffles": 3,
     "k_folds": 5,
     "evaluable_tools": 17,
-    "train_only_tools": ["open_url"]
+    "train_only_tools": [
+      "open_url"
+    ]
   },
-  "runs": []
+  "runs": [
+    {
+      "experiment_id": "p3_most_frequent_shuffle_1_fold_1",
+      "model": "most_frequent",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_1",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 103,
+          "N": 989,
+          "rate": 0.10414560161779575
+        },
+        "tool_micro_f1": 0.251105216622458,
+        "tool_macro_f1": 0.024788339006720783,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 103,
+          "N": 989,
+          "rate": 0.10414560161779575
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_first_token_prior_shuffle_1_fold_1",
+      "model": "first_token_prior",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_1",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "tool_micro_f1": 0.01393188854489164,
+        "tool_macro_f1": 0.006875557654962473,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_knn_shuffle_1_fold_1",
+      "model": "tfidf_knn",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_1",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 551,
+          "N": 989,
+          "rate": 0.5571284125379171
+        },
+        "tool_micro_f1": 0.7825403067243414,
+        "tool_macro_f1": 0.5289149800098295,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 551,
+          "N": 989,
+          "rate": 0.5571284125379171
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "best_tau": 0.25
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_logistic_shuffle_1_fold_1",
+      "model": "tfidf_logistic",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_1",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 779,
+          "N": 989,
+          "rate": 0.7876643073811931
+        },
+        "tool_micro_f1": 0.9111531190926276,
+        "tool_macro_f1": 0.5916125504873718,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 779,
+          "N": 989,
+          "rate": 0.7876643073811931
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "best_tau": 0.3
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_most_frequent_shuffle_1_fold_2",
+      "model": "most_frequent",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_2",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 110,
+          "N": 988,
+          "rate": 0.11133603238866396
+        },
+        "tool_micro_f1": 0.2809765085214187,
+        "tool_macro_f1": 0.02620950416774083,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 988,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 110,
+          "N": 988,
+          "rate": 0.11133603238866396
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 988,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_first_token_prior_shuffle_1_fold_2",
+      "model": "first_token_prior",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_2",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 13,
+          "N": 988,
+          "rate": 0.013157894736842105
+        },
+        "tool_micro_f1": 0.03742880390561432,
+        "tool_macro_f1": 0.031554418236661226,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 988,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 13,
+          "N": 988,
+          "rate": 0.013157894736842105
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 988,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_knn_shuffle_1_fold_2",
+      "model": "tfidf_knn",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_2",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 691,
+          "N": 988,
+          "rate": 0.6993927125506073
+        },
+        "tool_micro_f1": 0.8441098317094774,
+        "tool_macro_f1": 0.6286908352013076,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 988,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 691,
+          "N": 988,
+          "rate": 0.6993927125506073
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 988,
+          "rate": 0.0
+        },
+        "best_tau": 0.45
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_logistic_shuffle_1_fold_2",
+      "model": "tfidf_logistic",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_2",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 747,
+          "N": 988,
+          "rate": 0.7560728744939271
+        },
+        "tool_micro_f1": 0.8857677902621723,
+        "tool_macro_f1": 0.6382966370559964,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 988,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 747,
+          "N": 988,
+          "rate": 0.7560728744939271
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 988,
+          "rate": 0.0
+        },
+        "best_tau": 0.45
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_most_frequent_shuffle_1_fold_3",
+      "model": "most_frequent",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_3",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 61,
+          "N": 992,
+          "rate": 0.06149193548387097
+        },
+        "tool_micro_f1": 0.21280353200883,
+        "tool_macro_f1": 0.021717581328286925,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 61,
+          "N": 992,
+          "rate": 0.06149193548387097
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_first_token_prior_shuffle_1_fold_3",
+      "model": "first_token_prior",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_3",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 22,
+          "N": 992,
+          "rate": 0.02217741935483871
+        },
+        "tool_micro_f1": 0.04480955937266617,
+        "tool_macro_f1": 0.03661469169569317,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 22,
+          "N": 992,
+          "rate": 0.02217741935483871
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_knn_shuffle_1_fold_3",
+      "model": "tfidf_knn",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_3",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 580,
+          "N": 992,
+          "rate": 0.5846774193548387
+        },
+        "tool_micro_f1": 0.7583262169086251,
+        "tool_macro_f1": 0.6226908360146093,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 580,
+          "N": 992,
+          "rate": 0.5846774193548387
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        },
+        "best_tau": 0.45
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_logistic_shuffle_1_fold_3",
+      "model": "tfidf_logistic",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_3",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 678,
+          "N": 992,
+          "rate": 0.6834677419354839
+        },
+        "tool_micro_f1": 0.845502218636547,
+        "tool_macro_f1": 0.7124054624372562,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 678,
+          "N": 992,
+          "rate": 0.6834677419354839
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        },
+        "best_tau": 0.35
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_most_frequent_shuffle_1_fold_4",
+      "model": "most_frequent",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_4",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 112,
+          "N": 992,
+          "rate": 0.11290322580645161
+        },
+        "tool_micro_f1": 0.14031890660592256,
+        "tool_macro_f1": 0.014931161528020166,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 112,
+          "N": 992,
+          "rate": 0.11290322580645161
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_first_token_prior_shuffle_1_fold_4",
+      "model": "first_token_prior",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_4",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 1,
+          "N": 992,
+          "rate": 0.0010080645161290322
+        },
+        "tool_micro_f1": 0.008183306055646482,
+        "tool_macro_f1": 0.0040896358543417366,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 1,
+          "N": 992,
+          "rate": 0.0010080645161290322
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_knn_shuffle_1_fold_4",
+      "model": "tfidf_knn",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_4",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 672,
+          "N": 992,
+          "rate": 0.6774193548387096
+        },
+        "tool_micro_f1": 0.8012704174228675,
+        "tool_macro_f1": 0.6682048792430453,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 672,
+          "N": 992,
+          "rate": 0.6774193548387096
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        },
+        "best_tau": 0.45
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_logistic_shuffle_1_fold_4",
+      "model": "tfidf_logistic",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_4",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 717,
+          "N": 992,
+          "rate": 0.7227822580645161
+        },
+        "tool_micro_f1": 0.8234786361674579,
+        "tool_macro_f1": 0.7193329477720394,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 717,
+          "N": 992,
+          "rate": 0.7227822580645161
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        },
+        "best_tau": 0.4
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_most_frequent_shuffle_1_fold_5",
+      "model": "most_frequent",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_5",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 74,
+          "N": 1002,
+          "rate": 0.07385229540918163
+        },
+        "tool_micro_f1": 0.06836027713625865,
+        "tool_macro_f1": 0.007641470466749277,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 1002,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 74,
+          "N": 1002,
+          "rate": 0.07385229540918163
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 1002,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_first_token_prior_shuffle_1_fold_5",
+      "model": "first_token_prior",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_5",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 17,
+          "N": 1002,
+          "rate": 0.016966067864271458
+        },
+        "tool_micro_f1": 0.03842940685045948,
+        "tool_macro_f1": 0.03816934687895676,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 1002,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 17,
+          "N": 1002,
+          "rate": 0.016966067864271458
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 1002,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_knn_shuffle_1_fold_5",
+      "model": "tfidf_knn",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_5",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 669,
+          "N": 1002,
+          "rate": 0.6676646706586826
+        },
+        "tool_micro_f1": 0.8047229791099001,
+        "tool_macro_f1": 0.674441757423346,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 1002,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 669,
+          "N": 1002,
+          "rate": 0.6676646706586826
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 1002,
+          "rate": 0.0
+        },
+        "best_tau": 0.45
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_logistic_shuffle_1_fold_5",
+      "model": "tfidf_logistic",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_1",
+      "fold": "fold_5",
+      "seed": 42,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 810,
+          "N": 1002,
+          "rate": 0.8083832335329342
+        },
+        "tool_micro_f1": 0.8880139982502188,
+        "tool_macro_f1": 0.7045656646474312,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 1002,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 810,
+          "N": 1002,
+          "rate": 0.8083832335329342
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 1002,
+          "rate": 0.0
+        },
+        "best_tau": 0.35
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_most_frequent_shuffle_2_fold_1",
+      "model": "most_frequent",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_1",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 61,
+          "N": 998,
+          "rate": 0.061122244488977955
+        },
+        "tool_micro_f1": 0.22721026110856618,
+        "tool_macro_f1": 0.022115213126449082,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 998,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 61,
+          "N": 998,
+          "rate": 0.061122244488977955
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 998,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_first_token_prior_shuffle_2_fold_1",
+      "model": "first_token_prior",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_1",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 15,
+          "N": 998,
+          "rate": 0.01503006012024048
+        },
+        "tool_micro_f1": 0.03758169934640523,
+        "tool_macro_f1": 0.024289526958113195,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 998,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 15,
+          "N": 998,
+          "rate": 0.01503006012024048
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 998,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_knn_shuffle_2_fold_1",
+      "model": "tfidf_knn",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_1",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 655,
+          "N": 998,
+          "rate": 0.656312625250501
+        },
+        "tool_micro_f1": 0.7952961672473867,
+        "tool_macro_f1": 0.6082309770257965,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 998,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 655,
+          "N": 998,
+          "rate": 0.656312625250501
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 998,
+          "rate": 0.0
+        },
+        "best_tau": 0.45
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_logistic_shuffle_2_fold_1",
+      "model": "tfidf_logistic",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_1",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 711,
+          "N": 998,
+          "rate": 0.7124248496993988
+        },
+        "tool_micro_f1": 0.8353658536585366,
+        "tool_macro_f1": 0.6191648034329886,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 998,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 711,
+          "N": 998,
+          "rate": 0.7124248496993988
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 998,
+          "rate": 0.0
+        },
+        "best_tau": 0.35
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_most_frequent_shuffle_2_fold_2",
+      "model": "most_frequent",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_2",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 102,
+          "N": 999,
+          "rate": 0.1021021021021021
+        },
+        "tool_micro_f1": 0.15059445178335534,
+        "tool_macro_f1": 0.01623931623931624,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 999,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 102,
+          "N": 999,
+          "rate": 0.1021021021021021
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 999,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_first_token_prior_shuffle_2_fold_2",
+      "model": "first_token_prior",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_2",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 7,
+          "N": 999,
+          "rate": 0.007007007007007007
+        },
+        "tool_micro_f1": 0.020155038759689922,
+        "tool_macro_f1": 0.008904685469693495,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 999,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 7,
+          "N": 999,
+          "rate": 0.007007007007007007
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 999,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_knn_shuffle_2_fold_2",
+      "model": "tfidf_knn",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_2",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 624,
+          "N": 999,
+          "rate": 0.6246246246246246
+        },
+        "tool_micro_f1": 0.7988410596026491,
+        "tool_macro_f1": 0.6610122641242465,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 999,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 624,
+          "N": 999,
+          "rate": 0.6246246246246246
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 999,
+          "rate": 0.0
+        },
+        "best_tau": 0.25
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_logistic_shuffle_2_fold_2",
+      "model": "tfidf_logistic",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_2",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 792,
+          "N": 999,
+          "rate": 0.7927927927927928
+        },
+        "tool_micro_f1": 0.898921294446664,
+        "tool_macro_f1": 0.7253699587273538,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 999,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 792,
+          "N": 999,
+          "rate": 0.7927927927927928
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 999,
+          "rate": 0.0
+        },
+        "best_tau": 0.35
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_most_frequent_shuffle_2_fold_3",
+      "model": "most_frequent",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_3",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 65,
+          "N": 987,
+          "rate": 0.06585612968591692
+        },
+        "tool_micro_f1": 0.21253890618052468,
+        "tool_macro_f1": 0.02166032263911546,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 987,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 65,
+          "N": 987,
+          "rate": 0.06585612968591692
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 987,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_first_token_prior_shuffle_2_fold_3",
+      "model": "first_token_prior",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_3",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 1,
+          "N": 987,
+          "rate": 0.0010131712259371835
+        },
+        "tool_micro_f1": 0.01092896174863388,
+        "tool_macro_f1": 0.005084946990492102,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 987,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 1,
+          "N": 987,
+          "rate": 0.0010131712259371835
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 987,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_knn_shuffle_2_fold_3",
+      "model": "tfidf_knn",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_3",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 664,
+          "N": 987,
+          "rate": 0.6727456940222898
+        },
+        "tool_micro_f1": 0.8201556739041377,
+        "tool_macro_f1": 0.5588801966160016,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 987,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 664,
+          "N": 987,
+          "rate": 0.6727456940222898
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 987,
+          "rate": 0.0
+        },
+        "best_tau": 0.25
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_logistic_shuffle_2_fold_3",
+      "model": "tfidf_logistic",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_3",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 750,
+          "N": 987,
+          "rate": 0.7598784194528876
+        },
+        "tool_micro_f1": 0.8987612131567706,
+        "tool_macro_f1": 0.5993797133296472,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 987,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 750,
+          "N": 987,
+          "rate": 0.7598784194528876
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 987,
+          "rate": 0.0
+        },
+        "best_tau": 0.4
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_most_frequent_shuffle_2_fold_4",
+      "model": "most_frequent",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_4",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 103,
+          "N": 990,
+          "rate": 0.10404040404040404
+        },
+        "tool_micro_f1": 0.26364477335800185,
+        "tool_macro_f1": 0.024836601307189544,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 990,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 103,
+          "N": 990,
+          "rate": 0.10404040404040404
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 990,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_first_token_prior_shuffle_2_fold_4",
+      "model": "first_token_prior",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_4",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 34,
+          "N": 990,
+          "rate": 0.03434343434343434
+        },
+        "tool_micro_f1": 0.07034372501998401,
+        "tool_macro_f1": 0.043750918879167836,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 990,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 34,
+          "N": 990,
+          "rate": 0.03434343434343434
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 990,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_knn_shuffle_2_fold_4",
+      "model": "tfidf_knn",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_4",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 625,
+          "N": 990,
+          "rate": 0.6313131313131313
+        },
+        "tool_micro_f1": 0.74,
+        "tool_macro_f1": 0.5883928966585719,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 990,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 625,
+          "N": 990,
+          "rate": 0.6313131313131313
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 990,
+          "rate": 0.0
+        },
+        "best_tau": 0.45
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_logistic_shuffle_2_fold_4",
+      "model": "tfidf_logistic",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_4",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 650,
+          "N": 990,
+          "rate": 0.6565656565656566
+        },
+        "tool_micro_f1": 0.8242368177613321,
+        "tool_macro_f1": 0.645265677449555,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 990,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 650,
+          "N": 990,
+          "rate": 0.6565656565656566
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 990,
+          "rate": 0.0
+        },
+        "best_tau": 0.4
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_most_frequent_shuffle_2_fold_5",
+      "model": "most_frequent",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_5",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 4,
+          "N": 989,
+          "rate": 0.004044489383215369
+        },
+        "tool_micro_f1": 0.00364797081623347,
+        "tool_macro_f1": 0.0004475774868524113,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 4,
+          "N": 989,
+          "rate": 0.004044489383215369
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_first_token_prior_shuffle_2_fold_5",
+      "model": "first_token_prior",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_5",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 6,
+          "N": 989,
+          "rate": 0.006066734074823054
+        },
+        "tool_micro_f1": 0.022727272727272728,
+        "tool_macro_f1": 0.029822557749387017,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 6,
+          "N": 989,
+          "rate": 0.006066734074823054
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_knn_shuffle_2_fold_5",
+      "model": "tfidf_knn",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_5",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 550,
+          "N": 989,
+          "rate": 0.5561172901921132
+        },
+        "tool_micro_f1": 0.7723960565795114,
+        "tool_macro_f1": 0.6098341920600733,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 550,
+          "N": 989,
+          "rate": 0.5561172901921132
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "best_tau": 0.45
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_logistic_shuffle_2_fold_5",
+      "model": "tfidf_logistic",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_2",
+      "fold": "fold_5",
+      "seed": 100,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 759,
+          "N": 989,
+          "rate": 0.7674418604651163
+        },
+        "tool_micro_f1": 0.869382612347753,
+        "tool_macro_f1": 0.6617580276187897,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 759,
+          "N": 989,
+          "rate": 0.7674418604651163
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "best_tau": 0.45
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_most_frequent_shuffle_3_fold_1",
+      "model": "most_frequent",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_1",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 65,
+          "N": 986,
+          "rate": 0.06592292089249494
+        },
+        "tool_micro_f1": 0.07484769364664925,
+        "tool_macro_f1": 0.008913764510779435,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 986,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 65,
+          "N": 986,
+          "rate": 0.06592292089249494
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 986,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_first_token_prior_shuffle_3_fold_1",
+      "model": "first_token_prior",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_1",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 6,
+          "N": 986,
+          "rate": 0.006085192697768763
+        },
+        "tool_micro_f1": 0.016296296296296295,
+        "tool_macro_f1": 0.007470013232594868,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 986,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 6,
+          "N": 986,
+          "rate": 0.006085192697768763
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 986,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_knn_shuffle_3_fold_1",
+      "model": "tfidf_knn",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_1",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 569,
+          "N": 986,
+          "rate": 0.577079107505071
+        },
+        "tool_micro_f1": 0.8008016032064128,
+        "tool_macro_f1": 0.5486780540274073,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 986,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 569,
+          "N": 986,
+          "rate": 0.577079107505071
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 986,
+          "rate": 0.0
+        },
+        "best_tau": 0.25
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_logistic_shuffle_3_fold_1",
+      "model": "tfidf_logistic",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_1",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 816,
+          "N": 986,
+          "rate": 0.8275862068965517
+        },
+        "tool_micro_f1": 0.9168627450980392,
+        "tool_macro_f1": 0.6244731558480391,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 986,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 816,
+          "N": 986,
+          "rate": 0.8275862068965517
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 986,
+          "rate": 0.0
+        },
+        "best_tau": 0.4
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_most_frequent_shuffle_3_fold_2",
+      "model": "most_frequent",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_2",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 57,
+          "N": 984,
+          "rate": 0.057926829268292686
+        },
+        "tool_micro_f1": 0.08995502248875563,
+        "tool_macro_f1": 0.009310986964618248,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 57,
+          "N": 984,
+          "rate": 0.057926829268292686
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_first_token_prior_shuffle_3_fold_2",
+      "model": "first_token_prior",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_2",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 15,
+          "N": 984,
+          "rate": 0.01524390243902439
+        },
+        "tool_micro_f1": 0.02938475665748393,
+        "tool_macro_f1": 0.020085289138497275,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 15,
+          "N": 984,
+          "rate": 0.01524390243902439
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_knn_shuffle_3_fold_2",
+      "model": "tfidf_knn",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_2",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 805,
+          "N": 984,
+          "rate": 0.818089430894309
+        },
+        "tool_micro_f1": 0.8958534233365477,
+        "tool_macro_f1": 0.6956111585126731,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 805,
+          "N": 984,
+          "rate": 0.818089430894309
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        },
+        "best_tau": 0.45
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_logistic_shuffle_3_fold_2",
+      "model": "tfidf_logistic",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_2",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 842,
+          "N": 984,
+          "rate": 0.8556910569105691
+        },
+        "tool_micro_f1": 0.9254498714652957,
+        "tool_macro_f1": 0.7192038402978694,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 842,
+          "N": 984,
+          "rate": 0.8556910569105691
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        },
+        "best_tau": 0.4
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_most_frequent_shuffle_3_fold_3",
+      "model": "most_frequent",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_3",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 45,
+          "N": 1020,
+          "rate": 0.04411764705882353
+        },
+        "tool_micro_f1": 0.04076086956521739,
+        "tool_macro_f1": 0.004694835680751174,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 1020,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 45,
+          "N": 1020,
+          "rate": 0.04411764705882353
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 1020,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_first_token_prior_shuffle_3_fold_3",
+      "model": "first_token_prior",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_3",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 21,
+          "N": 1020,
+          "rate": 0.020588235294117647
+        },
+        "tool_micro_f1": 0.03940886699507389,
+        "tool_macro_f1": 0.03892551952342303,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 1020,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 21,
+          "N": 1020,
+          "rate": 0.020588235294117647
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 1020,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_knn_shuffle_3_fold_3",
+      "model": "tfidf_knn",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_3",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 764,
+          "N": 1020,
+          "rate": 0.7490196078431373
+        },
+        "tool_micro_f1": 0.8557692307692307,
+        "tool_macro_f1": 0.7102521778610148,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 1020,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 764,
+          "N": 1020,
+          "rate": 0.7490196078431373
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 1020,
+          "rate": 0.0
+        },
+        "best_tau": 0.45
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_logistic_shuffle_3_fold_3",
+      "model": "tfidf_logistic",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_3",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 891,
+          "N": 1020,
+          "rate": 0.8735294117647059
+        },
+        "tool_micro_f1": 0.9282417121275703,
+        "tool_macro_f1": 0.739571134677621,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 1020,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 891,
+          "N": 1020,
+          "rate": 0.8735294117647059
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 1020,
+          "rate": 0.0
+        },
+        "best_tau": 0.35
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_most_frequent_shuffle_3_fold_4",
+      "model": "most_frequent",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_4",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 108,
+          "N": 984,
+          "rate": 0.10975609756097561
+        },
+        "tool_micro_f1": 0.31978319783197834,
+        "tool_macro_f1": 0.029397110114598904,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 108,
+          "N": 984,
+          "rate": 0.10975609756097561
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_first_token_prior_shuffle_3_fold_4",
+      "model": "first_token_prior",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_4",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 26,
+          "N": 984,
+          "rate": 0.026422764227642278
+        },
+        "tool_micro_f1": 0.05341712490180676,
+        "tool_macro_f1": 0.032037570572143646,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 26,
+          "N": 984,
+          "rate": 0.026422764227642278
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_knn_shuffle_3_fold_4",
+      "model": "tfidf_knn",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_4",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 545,
+          "N": 984,
+          "rate": 0.5538617886178862
+        },
+        "tool_micro_f1": 0.7436918990703851,
+        "tool_macro_f1": 0.5140676488360136,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 545,
+          "N": 984,
+          "rate": 0.5538617886178862
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        },
+        "best_tau": 0.45
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_logistic_shuffle_3_fold_4",
+      "model": "tfidf_logistic",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_4",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 576,
+          "N": 984,
+          "rate": 0.5853658536585366
+        },
+        "tool_micro_f1": 0.8032242769084874,
+        "tool_macro_f1": 0.5068649974484697,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 576,
+          "N": 984,
+          "rate": 0.5853658536585366
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        },
+        "best_tau": 0.45
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_most_frequent_shuffle_3_fold_5",
+      "model": "most_frequent",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_5",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 111,
+          "N": 989,
+          "rate": 0.1122345803842265
+        },
+        "tool_micro_f1": 0.3346170303808301,
+        "tool_macro_f1": 0.03148148148148148,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 111,
+          "N": 989,
+          "rate": 0.1122345803842265
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_first_token_prior_shuffle_3_fold_5",
+      "model": "first_token_prior",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_5",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 2,
+          "N": 989,
+          "rate": 0.0020222446916076846
+        },
+        "tool_micro_f1": 0.013062409288824383,
+        "tool_macro_f1": 0.0025,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 2,
+          "N": 989,
+          "rate": 0.0020222446916076846
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        }
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_knn_shuffle_3_fold_5",
+      "model": "tfidf_knn",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_5",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 497,
+          "N": 989,
+          "rate": 0.5025278058645096
+        },
+        "tool_micro_f1": 0.7197258187357197,
+        "tool_macro_f1": 0.4842072017159437,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 497,
+          "N": 989,
+          "rate": 0.5025278058645096
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "best_tau": 0.25
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p3_tfidf_logistic_shuffle_3_fold_5",
+      "model": "tfidf_logistic",
+      "protocol": "phase3_baselines",
+      "shuffle": "shuffle_3",
+      "fold": "fold_5",
+      "seed": 2024,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 540,
+          "N": 989,
+          "rate": 0.5460060667340748
+        },
+        "tool_micro_f1": 0.783210731285158,
+        "tool_macro_f1": 0.45478941223986613,
+        "strict_span_f1": 0.0,
+        "lenient_span_f1": 0.0,
+        "joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 540,
+          "N": 989,
+          "rate": 0.5460060667340748
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "best_tau": 0.45
+      },
+      "git_hash": "2d1bf25",
+      "command": "python scripts/run_phase3_baselines.py",
+      "timestamp": "2026-10-18T12:35:11.644464Z"
+    }
+  ]
 }

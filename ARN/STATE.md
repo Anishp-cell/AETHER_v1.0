@@ -10,9 +10,9 @@ Status: IN_PROGRESS
 | :---: | :--- | :---: | :---: | :--- |
 | **0** | Orient & Environment Recording | DONE | `3b46e1b` | Recorded environment.json; created tracking docs |
 | **1** | Split Redesign (Coverage Fix) | DONE | `0204f95` | Generated cv_manifest.json, audits, tests, PROTOCOL.md |
-| **2** | Results Ledger & Reconciliation | DONE | pending | Initialized ledger.json; reconciled 8 historical discrepancies |
-| **3** | Baseline Debugging | IN_PROGRESS | - | Debug TF-IDF kNN/LogReg, softmax baselines, overfit tests |
-| **4** | Master Protocol (Main Experiment) | PENDING | - | Run 15 folds nested CV across models |
+| **2** | Results Ledger & Reconciliation | DONE | `2d1bf25` | Initialized ledger.json; reconciled 8 historical discrepancies |
+| **3** | Baseline Debugging | DONE | pending | Debugged TF-IDF kNN/LogReg, tested decoders & grad flow, recorded 60 ledger runs |
+| **4** | Master Protocol (Main Experiment) | IN_PROGRESS | - | Train and evaluate all models across 15 folds with nested inner CV |
 | **5** | Ablations & Curves | PENDING | - | CRF decomposition, supervision ablation, learning curves |
 | **6** | Error Analysis | PENDING | - | Per-tool/cluster failures, slot error breakdown |
 | **7** | Final Model Training | PENDING | - | Train on all 5k samples; package artifact & hashes |

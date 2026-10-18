@@ -18,7 +18,14 @@ venv/
 ENV/
 
 # Large runtime checkpoints and binary ONNX graphs (keep archived ones)
-checkpoints/
+checkpoints/*
+!checkpoints/arn_final_model/
+checkpoints/arn_final_model/*.pt
+checkpoints/arn_final_model/tokenizer/
+!checkpoints/arn_final_model/manifest.json
+!checkpoints/arn_final_model/config.json
+!checkpoints/arn_final_model/tools.json
+!checkpoints/arn_final_model/slots.json
 results/checkpoints/
 *.bin
 

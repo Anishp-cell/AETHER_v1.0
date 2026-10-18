@@ -8117,6 +8117,63 @@
       },
       "git_hash": "8a94a69",
       "timestamp": "2026-10-18T16:19:51.416711Z"
+    },
+    {
+      "experiment_id": "p7_final_model_training",
+      "protocol": "phase7_final_model",
+      "model": "unfrozen_cls_crf",
+      "hyperparameters": {
+        "architecture": "CLSCRFModel",
+        "backbone": "google/bert_uncased_L-2_H-128_A-2",
+        "num_tools": 18,
+        "num_tags": 26,
+        "hidden_size": 128,
+        "max_seq_len": 64,
+        "optimal_threshold": 0.3,
+        "decision_rule": "pre_registered_p2_joint_em",
+        "training_samples": 5000,
+        "training_epochs": 10,
+        "trunk_lr": 3e-05,
+        "head_lr": 0.001,
+        "loss_weight_slot": 0.3,
+        "timestamp": "2026-10-18T16:29:35.760948Z",
+        "git_hash": "1f41def"
+      },
+      "artifact_dir": "D:\\python\\AETHER_V1.0\\ARN\\checkpoints\\arn_final_model",
+      "manifest": {
+        "model_name": "arn_final_model",
+        "version": "1.0.0",
+        "architecture": "CLSCRFModel (BERT-tiny backbone + joint multi-label tool classifier + linear-chain CRF slot tagger)",
+        "selection_outcome": "Outcome A (Fine-tuning superiority supported)",
+        "created_at": "2026-10-18T16:29:35.884955Z",
+        "files": {
+          "config.json": {
+            "sha256": "a3e0537850e7a0958c2d694aa2e7047c83d6d46064e25427ca7a1a41f99bcf66",
+            "size_bytes": 451
+          },
+          "model.pt": {
+            "sha256": "985feb4dfa185c0844f188a93486396288141cc827161ad8c5d39402d0bbdb5f",
+            "size_bytes": 17585201
+          },
+          "slots.json": {
+            "sha256": "2d28c50f98170cb4c63544414589592d67dd6d5db136101ae9f76996620c0e46",
+            "size_bytes": 1155
+          },
+          "tokenizer/tokenizer.json": {
+            "sha256": "41b9d12a4c559e4098f30173bc0f76d092c43d7b1f873e7027da45a256f30f87",
+            "size_bytes": 711659
+          },
+          "tokenizer/tokenizer_config.json": {
+            "sha256": "3321471a4131cb5897aa9b49949383f6d5077758ea5f558a2a21aff15ed140cf",
+            "size_bytes": 364
+          },
+          "tools.json": {
+            "sha256": "6c7f9d7b5dd07762d24b30a310cec1852f810ce1fa6ee203c5ebc7ff69eca291",
+            "size_bytes": 1143
+          }
+        }
+      },
+      "timestamp": "2026-10-18T16:29:35.889315Z"
     }
   ]
 }

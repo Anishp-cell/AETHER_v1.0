@@ -1,0 +1,17 @@
+{
+  "architecture": "CLSCRFModel",
+  "backbone": "google/bert_uncased_L-2_H-128_A-2",
+  "num_tools": 18,
+  "num_tags": 26,
+  "hidden_size": 128,
+  "max_seq_len": 64,
+  "optimal_threshold": 0.3,
+  "decision_rule": "pre_registered_p2_joint_em",
+  "training_samples": 5000,
+  "training_epochs": 10,
+  "trunk_lr": 3e-05,
+  "head_lr": 0.001,
+  "loss_weight_slot": 0.3,
+  "timestamp": "2026-10-18T16:29:35.760948Z",
+  "git_hash": "1f41def"
+}

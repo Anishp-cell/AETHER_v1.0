@@ -1,0 +1,19 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Fine-grained error taxonomy of 8,506 argument slot spans evaluated across all 5,000 samples. Boundary shifts (42.71\%) represent the dominant error mode, whereas entity label confusions (1.52\%) are rare.}
+\label{tab:error_taxonomy}
+\begin{tabular}{lccl}
+\toprule
+\textbf{Error Category} & \textbf{Count} & \textbf{Share (\%)} & \textbf{Description} \\
+\midrule
+Exact Span Match & 3,241 & 38.10\% & Predicted span and entity category match gold boundaries exactly \\
+Boundary Shift & 3,633 & 42.71\% & Correct entity category but partial token boundary shift (articles, prepositions) \\
+False Negative & 1,100 & 12.93\% & Gold entity omitted from prediction (tagged as \texttt{O}) \\
+False Positive & 403 & 4.74\% & Spurious entity predicted over non-argument tokens \\
+Label Mismatch & 129 & 1.52\% & Span detected but misclassified to incorrect entity slot type \\
+\midrule
+\textbf{Total Evaluated Spans} & \textbf{8,506} & \textbf{100.00\%} & Evaluated across all 5,000 validation utterances \\
+\bottomrule
+\end{tabular}
+\end{table*}

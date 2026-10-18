@@ -1,0 +1,48 @@
+# Python byte-code and caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Build and packaging artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Environments
+.venv/
+env/
+venv/
+ENV/
+
+# Large runtime checkpoints and binary ONNX graphs (keep archived ones)
+checkpoints/*
+!checkpoints/arn_final_model/
+checkpoints/arn_final_model/*.pt
+checkpoints/arn_final_model/tokenizer/
+!checkpoints/arn_final_model/manifest.json
+!checkpoints/arn_final_model/config.json
+!checkpoints/arn_final_model/tools.json
+!checkpoints/arn_final_model/slots.json
+results/checkpoints/
+*.bin
+
+# Allow archived artifacts
+!_archive/
+!_archive/**
+_archive/**/__pycache__/
+
+# Data caches
+.cache/
+*.log
+
+# Allow paper manuscripts and tables
+!docs/paper/*.tex
+!docs/paper/**/*.tex
+!docs/paper/*.bib
+
+# OS artifacts
+.DS_Store
+Thumbs.db

@@ -1,0 +1,161 @@
+{
+  "gradient_flow_independence": {
+    "arn": {
+      "tool_loss_flows_to_tool": true,
+      "tool_loss_zero_to_slot": true,
+      "tool_loss_zero_to_trunk": true,
+      "slot_loss_flows_to_slot": true,
+      "slot_loss_zero_to_tool": true,
+      "slot_loss_zero_to_trunk": true,
+      "parameters_strictly_disjoint": true
+    },
+    "cls_crf": {
+      "tool_loss_flows_to_tool": true,
+      "tool_loss_zero_to_slot": true,
+      "tool_loss_zero_to_trunk": true,
+      "slot_loss_flows_to_slot": true,
+      "slot_loss_zero_to_tool": true,
+      "slot_loss_zero_to_trunk": true,
+      "parameters_strictly_disjoint": true
+    },
+    "joint_bert": {
+      "tool_loss_flows_to_tool": true,
+      "tool_loss_zero_to_slot": true,
+      "tool_loss_zero_to_trunk": true,
+      "slot_loss_flows_to_slot": true,
+      "slot_loss_zero_to_tool": true,
+      "slot_loss_zero_to_trunk": true,
+      "parameters_strictly_disjoint": true
+    },
+    "far_no_crf": {
+      "tool_loss_flows_to_tool": true,
+      "tool_loss_zero_to_slot": true,
+      "tool_loss_zero_to_trunk": true,
+      "slot_loss_flows_to_slot": true,
+      "slot_loss_zero_to_tool": true,
+      "slot_loss_zero_to_trunk": true,
+      "parameters_strictly_disjoint": true
+    }
+  },
+  "decoupled_training_results": {
+    "arn": {
+      "mean_tool_acc": 0.2546827442018768,
+      "sd_tool_acc": 0.1448575243878964,
+      "mean_tool_f1": 0.5256288437756844,
+      "mean_span_f1": 0.2919040245096283,
+      "sd_span_f1": 0.08876598948412125,
+      "span_f1_per_fold": [
+        0.293713163064833,
+        0.19869848156182213,
+        0.3815028901734104,
+        0.3788187372708757,
+        0.20678685047720044
+      ],
+      "tool_acc_per_fold": [
+        0.3702290076335878,
+        0.2802547770700637,
+        0.15796178343949044,
+        0.4050955414012739,
+        0.05987261146496815
+      ]
+    },
+    "cls_crf": {
+      "mean_tool_acc": 0.22259088183335765,
+      "sd_tool_acc": 0.1333608316341942,
+      "mean_tool_f1": 0.47980871075822573,
+      "mean_span_f1": 0.2707453900414885,
+      "sd_span_f1": 0.1041812263015354,
+      "span_f1_per_fold": [
+        0.27187500000000003,
+        0.1611459265890779,
+        0.38188976377952755,
+        0.3669912865197335,
+        0.1718249733191035
+      ],
+      "tool_acc_per_fold": [
+        0.33078880407124683,
+        0.18980891719745224,
+        0.14777070063694267,
+        0.38471337579617837,
+        0.05987261146496815
+      ]
+    },
+    "joint_bert": {
+      "mean_tool_acc": 0.22284695547884148,
+      "sd_tool_acc": 0.1302221806899933,
+      "mean_tool_f1": 0.4806325820091638,
+      "mean_span_f1": 0.08574973970127046,
+      "sd_span_f1": 0.035472540549104245,
+      "span_f1_per_fold": [
+        0.0545085532038272,
+        0.08686605981794539,
+        0.09993792675356922,
+        0.13689013689013688,
+        0.05054602184087364
+      ],
+      "tool_acc_per_fold": [
+        0.3256997455470738,
+        0.1961783439490446,
+        0.1464968152866242,
+        0.3821656050955414,
+        0.06369426751592357
+      ]
+    },
+    "far_no_crf": {
+      "mean_tool_acc": 0.20399247986256297,
+      "sd_tool_acc": 0.14853439599115303,
+      "mean_tool_f1": 0.4546409363463734,
+      "mean_span_f1": 0.08701513092008954,
+      "sd_span_f1": 0.030184008504692713,
+      "span_f1_per_fold": [
+        0.05402231356429829,
+        0.09417398244213887,
+        0.10179823224626638,
+        0.1258941344778255,
+        0.0591869918699187
+      ],
+      "tool_acc_per_fold": [
+        0.32951653944020354,
+        0.2878980891719745,
+        0.025477707006369428,
+        0.31719745222929935,
+        0.05987261146496815
+      ]
+    }
+  },
+  "lambda_slot_decoupled_ablation": {
+    "lambda_0.0": {
+      "mean_tool_acc": 0.19664316623717606,
+      "sd_tool_acc": 0.13053904078742112,
+      "per_fold": [
+        0.17557251908396945,
+        0.3630573248407643,
+        0.2267515923566879,
+        0.2178343949044586,
+        0.0
+      ]
+    },
+    "lambda_0.1": {
+      "mean_tool_acc": 0.19664316623717606,
+      "sd_tool_acc": 0.13053904078742112,
+      "per_fold": [
+        0.17557251908396945,
+        0.3630573248407643,
+        0.2267515923566879,
+        0.2178343949044586,
+        0.0
+      ]
+    },
+    "lambda_1.0": {
+      "mean_tool_acc": 0.19664316623717606,
+      "sd_tool_acc": 0.13053904078742112,
+      "per_fold": [
+        0.17557251908396945,
+        0.3630573248407643,
+        0.2267515923566879,
+        0.2178343949044586,
+        0.0
+      ]
+    }
+  }
+}

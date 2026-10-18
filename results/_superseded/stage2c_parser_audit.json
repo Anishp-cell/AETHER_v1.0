@@ -1,0 +1,104 @@
+{
+  "affected_files": [
+    {
+      "file": "ARN/results/stage1_train_metrics.json",
+      "pipeline": "Stage 1 Train Baseline",
+      "issue": "Pre-fix parser: multi-label thresholding dropped second tool activations; TP=3275, FN=1758 (Recall 65.09%); only 3,371 gold spans counted instead of 6,567.",
+      "status": "SUPERSEDED by stage1c_fixed_train_metrics.json"
+    },
+    {
+      "file": "ARN/results/stage1_test_evaluation.json",
+      "pipeline": "Stage 1 Test Split Evaluation",
+      "issue": "Pre-fix parser on 573 test samples; only evaluated primary tool label per sample; test set subsequently contaminated and permanently burned.",
+      "status": "BURNED & INVALIDATED"
+    },
+    {
+      "file": "ARN/results/stage1b_repeated_grouped_cv.json",
+      "pipeline": "Stage 1b 15-Fold Repeated Grouped CV",
+      "issue": "Trained across full 5,000 corpus (including test split); flat dict argument parsing overwrote 114 multi-tool action spans; span_gold_total was truncated to ~800/fold instead of ~1300-1600.",
+      "status": "DOCUMENTED & RECONCILED in STAGE1_TEST_STATUS.md"
+    },
+    {
+      "file": "ARN/results/stage2_comparative_results.json",
+      "pipeline": "Stage 2 15-Fold Nested Cross-Validation",
+      "issue": "Clean post-fix multi-label parser used. Verified 5,033 positive tool labels accounted for; 142 span drops isolated to schema collisions (114) and text overlaps (28).",
+      "status": "VALID & CALIBRATED"
+    }
+  ],
+  "comparison_table": {
+    "Tool Subset Accuracy": {
+      "pre_fix": "2187/3926 (55.71%)",
+      "post_fix": "3600/3926 (91.70%)",
+      "net_change": "++35.99%"
+    },
+    "True Positives (TP)": {
+      "pre_fix": "3276",
+      "post_fix": "4853",
+      "net_change": "+1577"
+    },
+    "False Positives (FP)": {
+      "pre_fix": "245",
+      "post_fix": "174",
+      "net_change": "-71"
+    },
+    "False Negatives (FN)": {
+      "pre_fix": "1757",
+      "post_fix": "180",
+      "net_change": "-1577"
+    },
+    "Total Gold Positive Labels": {
+      "pre_fix": "5033",
+      "post_fix": "5033",
+      "net_change": "0 (exact match)"
+    },
+    "Tool Micro Precision": {
+      "pre_fix": "93.04%",
+      "post_fix": "96.54%",
+      "net_change": "++3.50%"
+    },
+    "Tool Micro Recall": {
+      "pre_fix": "65.09%",
+      "post_fix": "96.42%",
+      "net_change": "++31.33%"
+    },
+    "Tool Micro F1": {
+      "pre_fix": "76.60%",
+      "post_fix": "96.53%",
+      "net_change": "++19.93%"
+    },
+    "Gold Argument Spans Evaluated": {
+      "pre_fix": "3371",
+      "post_fix": "6567",
+      "net_change": "+3196"
+    },
+    "Correct Spans Extracted": {
+      "pre_fix": "343",
+      "post_fix": "5001",
+      "net_change": "+4658"
+    },
+    "Span Extraction F1": {
+      "pre_fix": "16.39%",
+      "post_fix": "79.35%",
+      "net_change": "++62.96%"
+    },
+    "Joint Exact Match (EM)": {
+      "pre_fix": "686/3926 (17.47%)",
+      "post_fix": "2390/3926 (60.88%)",
+      "net_change": "++43.40%"
+    }
+  },
+  "exact_counts": {
+    "pre_fix": {
+      "tp": 3276,
+      "fp": 245,
+      "fn": 1757,
+      "total_gold": 5033
+    },
+    "post_fix": {
+      "tp": 4853,
+      "fp": 174,
+      "fn": 180,
+      "total_gold": 5033
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "group_disjoint_train.jsonl": {
+    "path": "ARN\\data\\splits\\group_disjoint_train.jsonl",
+    "sha256": "5735820978d19860cc8f12a30be58ad6d5fe7c0112e13c2df9e51e5db1429dd9",
+    "num_samples": 3926,
+    "size_bytes": 1779143
+  },
+  "group_disjoint_val.jsonl": {
+    "path": "ARN\\data\\splits\\group_disjoint_val.jsonl",
+    "sha256": "218fa14388aaf0cd5b7cb94a11cf4cf560afb05656d1b8009804ef2ab72e3dc4",
+    "num_samples": 501,
+    "size_bytes": 210953
+  },
+  "group_disjoint_test.jsonl": {
+    "path": "ARN\\data\\splits\\group_disjoint_test.jsonl",
+    "sha256": "a976c86e25df96be38250e713f3e64caaf9737b516d3b64a1f8f522e2b091045",
+    "num_samples": 573,
+    "size_bytes": 245251
+  }
+}

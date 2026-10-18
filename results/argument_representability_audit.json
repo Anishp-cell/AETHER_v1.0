@@ -1,0 +1,157 @@
+{
+  "timestamp": "2026-10-18T16:19:51.369375Z",
+  "total_arguments": 8748,
+  "verbatim_count": 8292,
+  "verbatim_share": 0.9478737997256516,
+  "non_verbatim_count": 456,
+  "non_verbatim_share": 0.05212620027434842,
+  "categories": {
+    "implied_or_paraphrased": 456
+  },
+  "category_shares": {
+    "implied_or_paraphrased": 1.0
+  },
+  "sample_dropped_examples": [
+    {
+      "sample_idx": 3,
+      "text": "real quick search the web for latest iPhone price in India then run a shell ctrl+z yaar",
+      "key": "action_type",
+      "value": "press_key",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 48,
+      "text": "do me a favor and set the volume to 100 right now",
+      "key": "action",
+      "value": "set_volume",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 58,
+      "text": "volume 70 asap",
+      "key": "action",
+      "value": "set_volume",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 60,
+      "text": "can you google the latest stock price of NVIDIA and execute command Calculator na",
+      "key": "action_type",
+      "value": "open_app",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 64,
+      "text": "check on our local k8s cluster health status chalao asap",
+      "key": "action_type",
+      "value": "shell",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 71,
+      "text": "alright google how to remove dark circles and execute command Task Manager quickly",
+      "key": "action_type",
+      "value": "open_app",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 99,
+      "text": "aether volume 30 will you",
+      "key": "action",
+      "value": "set_volume",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 105,
+      "text": "bro open alt+tab ok?",
+      "key": "action_type",
+      "value": "press_key",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 106,
+      "text": "volume 70 kar do dude",
+      "key": "action",
+      "value": "set_volume",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 137,
+      "text": "plz change volume to 50 ty",
+      "key": "action",
+      "value": "set_volume",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 142,
+      "text": "volume 20 kar do quickly",
+      "key": "action",
+      "value": "set_volume",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 143,
+      "text": "can you google how to remove dark circles and execute command ctrl+z will you",
+      "key": "action_type",
+      "value": "press_key",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 144,
+      "text": "alright google symptoms of vitamin D deficiency and execute command ping google.com thx",
+      "key": "action_type",
+      "value": "shell",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 146,
+      "text": "bro search the web for how to make cold coffee at home then run a shell ctrl+s ok?",
+      "key": "action_type",
+      "value": "press_key",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 159,
+      "text": "please change volume to 30 ty",
+      "key": "action",
+      "value": "set_volume",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 165,
+      "text": "aether search the web for symptoms of vitamin D deficiency then run a shell alt+tab yaar",
+      "key": "action_type",
+      "value": "press_key",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 176,
+      "text": "do me a favor and run dir please",
+      "key": "action_type",
+      "value": "shell",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 185,
+      "text": "can you set the volume to 20 thx",
+      "key": "action",
+      "value": "set_volume",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 192,
+      "text": "plzzz run win+d",
+      "key": "action_type",
+      "value": "press_key",
+      "category": "implied_or_paraphrased"
+    },
+    {
+      "sample_idx": 208,
+      "text": "please run ping google.com quickly",
+      "key": "action_type",
+      "value": "shell",
+      "category": "implied_or_paraphrased"
+    }
+  ],
+  "implications": "Extractive token tagging (BIO) captures verbatim surface forms natively (94.79% of arguments). The remaining 5.21% represent normalized temporal expressions, boolean flags, or implied slots, which inherently require downstream value normalization rather than raw sequence labelling."
+}

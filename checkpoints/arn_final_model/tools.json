@@ -1,0 +1,42 @@
+{
+  "tool_to_idx": {
+    "get_current_time": 0,
+    "handle_smart_home": 1,
+    "route_to_deepseek": 2,
+    "open_app_and_type": 3,
+    "open_url": 4,
+    "search_web": 5,
+    "run_computer_command": 6,
+    "analyze_screen_with_llava": 7,
+    "search_and_read_web": 8,
+    "read_specific_url": 9,
+    "write_and_run_script": 10,
+    "get_system_diagnostics": 11,
+    "media_control": 12,
+    "send_whatsapp_message": 13,
+    "set_timer": 14,
+    "teach_new_skill": 15,
+    "browser_task": 16,
+    "browser_open_and_interact": 17
+  },
+  "idx_to_tool": {
+    "0": "get_current_time",
+    "1": "handle_smart_home",
+    "2": "route_to_deepseek",
+    "3": "open_app_and_type",
+    "4": "open_url",
+    "5": "search_web",
+    "6": "run_computer_command",
+    "7": "analyze_screen_with_llava",
+    "8": "search_and_read_web",
+    "9": "read_specific_url",
+    "10": "write_and_run_script",
+    "11": "get_system_diagnostics",
+    "12": "media_control",
+    "13": "send_whatsapp_message",
+    "14": "set_timer",
+    "15": "teach_new_skill",
+    "16": "browser_task",
+    "17": "browser_open_and_interact"
+  }
+}

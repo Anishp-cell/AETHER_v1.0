@@ -1,0 +1,538 @@
+{
+  "num_samples": 573,
+  "tool_routing": {
+    "exact_match_count": 188,
+    "exact_match_total": 573,
+    "exact_match_accuracy": 0.32809773123909247,
+    "micro": {
+      "tp": 203,
+      "fp": 50,
+      "fn": 372,
+      "precision": 0.8023715415019763,
+      "recall": 0.35304347826086957,
+      "f1": 0.4903381642512077
+    },
+    "macro": {
+      "precision": 0.5062183901338313,
+      "recall": 0.3136993631382501,
+      "f1": 0.3004794491634783
+    },
+    "calibration_ece": 0.008955337832446519,
+    "per_tool": {
+      "get_current_time": {
+        "support": 6,
+        "tp": 6,
+        "fp": 2,
+        "fn": 0,
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571,
+        "status": "insufficient support"
+      },
+      "handle_smart_home": {
+        "support": 4,
+        "tp": 4,
+        "fp": 12,
+        "fn": 0,
+        "precision": 0.25,
+        "recall": 1.0,
+        "f1": 0.4,
+        "status": "insufficient support"
+      },
+      "route_to_deepseek": {
+        "support": 32,
+        "tp": 5,
+        "fp": 0,
+        "fn": 27,
+        "precision": 1.0,
+        "recall": 0.15625,
+        "f1": 0.2702702702702703,
+        "status": "sufficient"
+      },
+      "open_app_and_type": {
+        "support": 50,
+        "tp": 2,
+        "fp": 0,
+        "fn": 48,
+        "precision": 1.0,
+        "recall": 0.04,
+        "f1": 0.07692307692307693,
+        "status": "sufficient"
+      },
+      "open_url": {
+        "support": 0,
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "status": "insufficient support"
+      },
+      "search_web": {
+        "support": 23,
+        "tp": 4,
+        "fp": 13,
+        "fn": 19,
+        "precision": 0.23529411764705882,
+        "recall": 0.17391304347826086,
+        "f1": 0.19999999999999998,
+        "status": "sufficient"
+      },
+      "run_computer_command": {
+        "support": 53,
+        "tp": 1,
+        "fp": 0,
+        "fn": 52,
+        "precision": 1.0,
+        "recall": 0.018867924528301886,
+        "f1": 0.037037037037037035,
+        "status": "sufficient"
+      },
+      "analyze_screen_with_llava": {
+        "support": 26,
+        "tp": 0,
+        "fp": 0,
+        "fn": 26,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "status": "sufficient"
+      },
+      "search_and_read_web": {
+        "support": 39,
+        "tp": 0,
+        "fp": 0,
+        "fn": 39,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "status": "sufficient"
+      },
+      "read_specific_url": {
+        "support": 21,
+        "tp": 0,
+        "fp": 0,
+        "fn": 21,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "status": "sufficient"
+      },
+      "write_and_run_script": {
+        "support": 34,
+        "tp": 8,
+        "fp": 0,
+        "fn": 26,
+        "precision": 1.0,
+        "recall": 0.23529411764705882,
+        "f1": 0.38095238095238093,
+        "status": "sufficient"
+      },
+      "get_system_diagnostics": {
+        "support": 2,
+        "tp": 1,
+        "fp": 2,
+        "fn": 1,
+        "precision": 0.3333333333333333,
+        "recall": 0.5,
+        "f1": 0.4,
+        "status": "insufficient support"
+      },
+      "media_control": {
+        "support": 5,
+        "tp": 0,
+        "fp": 7,
+        "fn": 5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "status": "insufficient support"
+      },
+      "send_whatsapp_message": {
+        "support": 63,
+        "tp": 63,
+        "fp": 1,
+        "fn": 0,
+        "precision": 0.984375,
+        "recall": 1.0,
+        "f1": 0.9921259842519685,
+        "status": "sufficient"
+      },
+      "set_timer": {
+        "support": 44,
+        "tp": 14,
+        "fp": 0,
+        "fn": 30,
+        "precision": 1.0,
+        "recall": 0.3181818181818182,
+        "f1": 0.4827586206896552,
+        "status": "sufficient"
+      },
+      "teach_new_skill": {
+        "support": 2,
+        "tp": 0,
+        "fp": 0,
+        "fn": 2,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "status": "insufficient support"
+      },
+      "browser_task": {
+        "support": 24,
+        "tp": 16,
+        "fp": 12,
+        "fn": 8,
+        "precision": 0.5714285714285714,
+        "recall": 0.6666666666666666,
+        "f1": 0.6153846153846153,
+        "status": "sufficient"
+      },
+      "browser_open_and_interact": {
+        "support": 147,
+        "tp": 79,
+        "fp": 1,
+        "fn": 68,
+        "precision": 0.9875,
+        "recall": 0.5374149659863946,
+        "f1": 0.6960352422907489,
+        "status": "sufficient"
+      }
+    }
+  },
+  "slot_tagging": {
+    "correct_spans": 13,
+    "total_pred_spans": 49,
+    "total_gold_spans": 391,
+    "span_precision": 0.2653061224489796,
+    "span_recall": 0.03324808184143223,
+    "span_f1": 0.0590909090909091
+  },
+  "joint_frame": {
+    "exact_match_count": 48,
+    "exact_match_total": 573,
+    "exact_match_accuracy": 0.08376963350785341
+  },
+  "cluster_bootstrap_95ci": {
+    "n_resamples": 1000,
+    "tool_subset_accuracy": {
+      "p2_5": 0.1482331849801334,
+      "median": 0.3120817399617591,
+      "p97_5": 0.5257765720205798
+    },
+    "tool_micro_f1": {
+      "p2_5": 0.26240525863750375,
+      "median": 0.475023426674942,
+      "p97_5": 0.6826103557037864
+    },
+    "tool_macro_f1": {
+      "p2_5": 0.1373800555353796,
+      "median": 0.227993440940517,
+      "p97_5": 0.30915764762621817
+    },
+    "slot_span_f1": {
+      "p2_5": 0.005374210616146099,
+      "median": 0.05566622399291722,
+      "p97_5": 0.13450636102479918
+    },
+    "joint_exact_match": {
+      "p2_5": 0.026964177842213364,
+      "median": 0.08024837447995814,
+      "p97_5": 0.1555882352941176
+    }
+  },
+  "per_cluster_results": [
+    {
+      "cluster_id": "analyze_screen_with_llava || describe what you see on my display",
+      "num_samples": 17,
+      "tool_subset_accuracy_count": 0,
+      "tool_subset_accuracy_total": 17,
+      "tool_subset_accuracy": 0.0,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 17,
+      "joint_exact_match_accuracy": 0.0
+    },
+    {
+      "cluster_id": "analyze_screen_with_llava || what app am i using",
+      "num_samples": 9,
+      "tool_subset_accuracy_count": 0,
+      "tool_subset_accuracy_total": 9,
+      "tool_subset_accuracy": 0.0,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 9,
+      "joint_exact_match_accuracy": 0.0
+    },
+    {
+      "cluster_id": "browser_open_and_interact || browser <SITE> kholo aur <INTERACT_TASK>",
+      "num_samples": 85,
+      "tool_subset_accuracy_count": 31,
+      "tool_subset_accuracy_total": 85,
+      "tool_subset_accuracy": 0.36470588235294116,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 85,
+      "joint_exact_match_accuracy": 0.0
+    },
+    {
+      "cluster_id": "browser_open_and_interact || launch browser go to <SITE> then <INTERACT_TASK>",
+      "num_samples": 62,
+      "tool_subset_accuracy_count": 44,
+      "tool_subset_accuracy_total": 62,
+      "tool_subset_accuracy": 0.7096774193548387,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 62,
+      "joint_exact_match_accuracy": 0.0
+    },
+    {
+      "cluster_id": "browser_task || open browser and go to twitter com",
+      "num_samples": 22,
+      "tool_subset_accuracy_count": 14,
+      "tool_subset_accuracy_total": 22,
+      "tool_subset_accuracy": 0.6363636363636364,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 14,
+      "joint_exact_match_total": 22,
+      "joint_exact_match_accuracy": 0.6363636363636364
+    },
+    {
+      "cluster_id": "browser_task || open youtube and play lofi hip hop",
+      "num_samples": 1,
+      "tool_subset_accuracy_count": 0,
+      "tool_subset_accuracy_total": 1,
+      "tool_subset_accuracy": 0.0,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 1,
+      "joint_exact_match_accuracy": 0.0
+    },
+    {
+      "cluster_id": "browser_task || put on workout music on youtube",
+      "num_samples": 1,
+      "tool_subset_accuracy_count": 1,
+      "tool_subset_accuracy_total": 1,
+      "tool_subset_accuracy": 1.0,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 1,
+      "joint_exact_match_total": 1,
+      "joint_exact_match_accuracy": 1.0
+    },
+    {
+      "cluster_id": "get_current_time || tell me the current time",
+      "num_samples": 6,
+      "tool_subset_accuracy_count": 5,
+      "tool_subset_accuracy_total": 6,
+      "tool_subset_accuracy": 0.8333333333333334,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 5,
+      "joint_exact_match_total": 6,
+      "joint_exact_match_accuracy": 0.8333333333333334
+    },
+    {
+      "cluster_id": "get_system_diagnostics+send_whatsapp_message || how much battery do i have left and then send a whatsapp to <CONTACT_NAME> saying <MESSAGE>",
+      "num_samples": 2,
+      "tool_subset_accuracy_count": 1,
+      "tool_subset_accuracy_total": 2,
+      "tool_subset_accuracy": 0.5,
+      "slot_span_f1": 0.5,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 2,
+      "joint_exact_match_accuracy": 0.0
+    },
+    {
+      "cluster_id": "handle_smart_home || bulb <ACTION> in <DEVICE>",
+      "num_samples": 4,
+      "tool_subset_accuracy_count": 4,
+      "tool_subset_accuracy_total": 4,
+      "tool_subset_accuracy": 1.0,
+      "slot_span_f1": 0.2222222222222222,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 4,
+      "joint_exact_match_accuracy": 0.0
+    },
+    {
+      "cluster_id": "media_control || <ACTION> <ACTION>back",
+      "num_samples": 5,
+      "tool_subset_accuracy_count": 0,
+      "tool_subset_accuracy_total": 5,
+      "tool_subset_accuracy": 0.0,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 5,
+      "joint_exact_match_accuracy": 0.0
+    },
+    {
+      "cluster_id": "open_app_and_type || launch <APP_NAME> and type in <TEXT_TO_TYPE>",
+      "num_samples": 50,
+      "tool_subset_accuracy_count": 1,
+      "tool_subset_accuracy_total": 50,
+      "tool_subset_accuracy": 0.02,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 1,
+      "joint_exact_match_total": 50,
+      "joint_exact_match_accuracy": 0.02
+    },
+    {
+      "cluster_id": "read_specific_url || fetch the text from <URL>",
+      "num_samples": 21,
+      "tool_subset_accuracy_count": 0,
+      "tool_subset_accuracy_total": 21,
+      "tool_subset_accuracy": 0.0,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 21,
+      "joint_exact_match_accuracy": 0.0
+    },
+    {
+      "cluster_id": "route_to_deepseek || <QUERY>",
+      "num_samples": 32,
+      "tool_subset_accuracy_count": 5,
+      "tool_subset_accuracy_total": 32,
+      "tool_subset_accuracy": 0.15625,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 32,
+      "joint_exact_match_accuracy": 0.0
+    },
+    {
+      "cluster_id": "run_computer_command || <TARGET> chalao",
+      "num_samples": 45,
+      "tool_subset_accuracy_count": 1,
+      "tool_subset_accuracy_total": 45,
+      "tool_subset_accuracy": 0.022222222222222223,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 45,
+      "joint_exact_match_accuracy": 0.0
+    },
+    {
+      "cluster_id": "run_computer_command || press <TARGET>",
+      "num_samples": 8,
+      "tool_subset_accuracy_count": 0,
+      "tool_subset_accuracy_total": 8,
+      "tool_subset_accuracy": 0.0,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 8,
+      "joint_exact_match_accuracy": 0.0
+    },
+    {
+      "cluster_id": "search_and_read_web || research <QUERY> and give me a summary",
+      "num_samples": 39,
+      "tool_subset_accuracy_count": 0,
+      "tool_subset_accuracy_total": 39,
+      "tool_subset_accuracy": 0.0,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 39,
+      "joint_exact_match_accuracy": 0.0
+    },
+    {
+      "cluster_id": "search_web || search for <QUERY>",
+      "num_samples": 23,
+      "tool_subset_accuracy_count": 3,
+      "tool_subset_accuracy_total": 23,
+      "tool_subset_accuracy": 0.13043478260869565,
+      "slot_span_f1": 0.16,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 23,
+      "joint_exact_match_accuracy": 0.0
+    },
+    {
+      "cluster_id": "send_whatsapp_message || whatsapp <CONTACT_NAME> and say <MESSAGE>",
+      "num_samples": 61,
+      "tool_subset_accuracy_count": 60,
+      "tool_subset_accuracy_total": 61,
+      "tool_subset_accuracy": 0.9836065573770492,
+      "slot_span_f1": 0.20689655172413793,
+      "joint_exact_match_count": 9,
+      "joint_exact_match_total": 61,
+      "joint_exact_match_accuracy": 0.14754098360655737
+    },
+    {
+      "cluster_id": "set_timer || set an alarm for <MINUTES> minutes and remind me to <REMINDER_MESSAGE>",
+      "num_samples": 44,
+      "tool_subset_accuracy_count": 14,
+      "tool_subset_accuracy_total": 44,
+      "tool_subset_accuracy": 0.3181818181818182,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 14,
+      "joint_exact_match_total": 44,
+      "joint_exact_match_accuracy": 0.3181818181818182
+    },
+    {
+      "cluster_id": "teach_new_skill || teach me a new skill called <SKILL_NAME> where you <DESCRIPTION>",
+      "num_samples": 2,
+      "tool_subset_accuracy_count": 0,
+      "tool_subset_accuracy_total": 2,
+      "tool_subset_accuracy": 0.0,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 2,
+      "joint_exact_match_accuracy": 0.0
+    },
+    {
+      "cluster_id": "write_and_run_script || write <INSTRUCTION>",
+      "num_samples": 34,
+      "tool_subset_accuracy_count": 4,
+      "tool_subset_accuracy_total": 34,
+      "tool_subset_accuracy": 0.11764705882352941,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 4,
+      "joint_exact_match_total": 34,
+      "joint_exact_match_accuracy": 0.11764705882352941
+    }
+  ],
+  "similarity_stratification": {
+    "[0.0, 0.4)": {
+      "num_skeletons": 4,
+      "num_samples": 201,
+      "tool_subset_accuracy_count": 37,
+      "tool_subset_accuracy_total": 201,
+      "tool_subset_accuracy": 0.18407960199004975,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 0,
+      "joint_exact_match_total": 201,
+      "joint_exact_match_accuracy": 0.0
+    },
+    "[0.4, 0.6)": {
+      "num_skeletons": 13,
+      "num_samples": 293,
+      "tool_subset_accuracy_count": 130,
+      "tool_subset_accuracy_total": 293,
+      "tool_subset_accuracy": 0.44368600682593856,
+      "slot_span_f1": 0.10328638497652581,
+      "joint_exact_match_count": 32,
+      "joint_exact_match_total": 293,
+      "joint_exact_match_accuracy": 0.10921501706484642
+    },
+    "[0.6, 0.7)": {
+      "num_skeletons": 2,
+      "num_samples": 51,
+      "tool_subset_accuracy_count": 2,
+      "tool_subset_accuracy_total": 51,
+      "tool_subset_accuracy": 0.0392156862745098,
+      "slot_span_f1": 0.0,
+      "joint_exact_match_count": 2,
+      "joint_exact_match_total": 51,
+      "joint_exact_match_accuracy": 0.0392156862745098
+    },
+    "[0.7, 0.8)": {
+      "num_skeletons": 11,
+      "num_samples": 28,
+      "tool_subset_accuracy_count": 19,
+      "tool_subset_accuracy_total": 28,
+      "tool_subset_accuracy": 0.6785714285714286,
+      "slot_span_f1": 0.30769230769230765,
+      "joint_exact_match_count": 14,
+      "joint_exact_match_total": 28,
+      "joint_exact_match_accuracy": 0.5
+    }
+  },
+  "checkpoint": "ARN\\results\\checkpoints\\arn\\best_model.pt",
+  "dataset": "ARN\\data\\splits\\group_disjoint_test.jsonl",
+  "model_type": "arn"
+}

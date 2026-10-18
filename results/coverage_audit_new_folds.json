@@ -1,0 +1,1778 @@
+{
+  "shuffle_1": {
+    "fold_1": {
+      "train_sample_count": 4011,
+      "val_sample_count": 989,
+      "train_cluster_count": 198,
+      "val_cluster_count": 55,
+      "max_token_edit_sim": 0.75,
+      "tools_absent_from_train": [],
+      "tool_coverage": {
+        "analyze_screen_with_llava": {
+          "train_samples": 132,
+          "train_clusters": 8,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "browser_open_and_interact": {
+          "train_samples": 288,
+          "train_clusters": 4,
+          "val_samples": 159,
+          "val_clusters": 1
+        },
+        "browser_task": {
+          "train_samples": 402,
+          "train_clusters": 82,
+          "val_samples": 91,
+          "val_clusters": 29
+        },
+        "get_current_time": {
+          "train_samples": 132,
+          "train_clusters": 8,
+          "val_samples": 124,
+          "val_clusters": 1
+        },
+        "get_system_diagnostics": {
+          "train_samples": 256,
+          "train_clusters": 28,
+          "val_samples": 110,
+          "val_clusters": 12
+        },
+        "handle_smart_home": {
+          "train_samples": 300,
+          "train_clusters": 13,
+          "val_samples": 28,
+          "val_clusters": 4
+        },
+        "media_control": {
+          "train_samples": 303,
+          "train_clusters": 10,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "open_app_and_type": {
+          "train_samples": 171,
+          "train_clusters": 2,
+          "val_samples": 58,
+          "val_clusters": 1
+        },
+        "open_url": {
+          "train_samples": 37,
+          "train_clusters": 1,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "read_specific_url": {
+          "train_samples": 111,
+          "train_clusters": 4,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "route_to_deepseek": {
+          "train_samples": 124,
+          "train_clusters": 3,
+          "val_samples": 46,
+          "val_clusters": 1
+        },
+        "run_computer_command": {
+          "train_samples": 306,
+          "train_clusters": 6,
+          "val_samples": 86,
+          "val_clusters": 1
+        },
+        "search_and_read_web": {
+          "train_samples": 130,
+          "train_clusters": 3,
+          "val_samples": 40,
+          "val_clusters": 1
+        },
+        "search_web": {
+          "train_samples": 574,
+          "train_clusters": 9,
+          "val_samples": 144,
+          "val_clusters": 2
+        },
+        "send_whatsapp_message": {
+          "train_samples": 893,
+          "train_clusters": 29,
+          "val_samples": 284,
+          "val_clusters": 11
+        },
+        "set_timer": {
+          "train_samples": 346,
+          "train_clusters": 5,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "teach_new_skill": {
+          "train_samples": 113,
+          "train_clusters": 5,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "write_and_run_script": {
+          "train_samples": 241,
+          "train_clusters": 5,
+          "val_samples": 103,
+          "val_clusters": 1
+        }
+      }
+    },
+    "fold_2": {
+      "train_sample_count": 4012,
+      "val_sample_count": 988,
+      "train_cluster_count": 196,
+      "val_cluster_count": 57,
+      "max_token_edit_sim": 0.7857,
+      "tools_absent_from_train": [],
+      "tool_coverage": {
+        "analyze_screen_with_llava": {
+          "train_samples": 89,
+          "train_clusters": 5,
+          "val_samples": 43,
+          "val_clusters": 3
+        },
+        "browser_open_and_interact": {
+          "train_samples": 362,
+          "train_clusters": 4,
+          "val_samples": 85,
+          "val_clusters": 1
+        },
+        "browser_task": {
+          "train_samples": 400,
+          "train_clusters": 84,
+          "val_samples": 93,
+          "val_clusters": 27
+        },
+        "get_current_time": {
+          "train_samples": 216,
+          "train_clusters": 7,
+          "val_samples": 40,
+          "val_clusters": 2
+        },
+        "get_system_diagnostics": {
+          "train_samples": 273,
+          "train_clusters": 32,
+          "val_samples": 93,
+          "val_clusters": 8
+        },
+        "handle_smart_home": {
+          "train_samples": 282,
+          "train_clusters": 12,
+          "val_samples": 46,
+          "val_clusters": 5
+        },
+        "media_control": {
+          "train_samples": 248,
+          "train_clusters": 8,
+          "val_samples": 55,
+          "val_clusters": 2
+        },
+        "open_app_and_type": {
+          "train_samples": 108,
+          "train_clusters": 2,
+          "val_samples": 121,
+          "val_clusters": 1
+        },
+        "open_url": {
+          "train_samples": 37,
+          "train_clusters": 1,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "read_specific_url": {
+          "train_samples": 111,
+          "train_clusters": 4,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "route_to_deepseek": {
+          "train_samples": 170,
+          "train_clusters": 4,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "run_computer_command": {
+          "train_samples": 345,
+          "train_clusters": 5,
+          "val_samples": 47,
+          "val_clusters": 2
+        },
+        "search_and_read_web": {
+          "train_samples": 170,
+          "train_clusters": 4,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "search_web": {
+          "train_samples": 657,
+          "train_clusters": 9,
+          "val_samples": 61,
+          "val_clusters": 2
+        },
+        "send_whatsapp_message": {
+          "train_samples": 872,
+          "train_clusters": 32,
+          "val_samples": 305,
+          "val_clusters": 8
+        },
+        "set_timer": {
+          "train_samples": 190,
+          "train_clusters": 4,
+          "val_samples": 156,
+          "val_clusters": 1
+        },
+        "teach_new_skill": {
+          "train_samples": 113,
+          "train_clusters": 5,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "write_and_run_script": {
+          "train_samples": 306,
+          "train_clusters": 5,
+          "val_samples": 38,
+          "val_clusters": 1
+        }
+      }
+    },
+    "fold_3": {
+      "train_sample_count": 4008,
+      "val_sample_count": 992,
+      "train_cluster_count": 196,
+      "val_cluster_count": 57,
+      "max_token_edit_sim": 0.7692,
+      "tools_absent_from_train": [],
+      "tool_coverage": {
+        "analyze_screen_with_llava": {
+          "train_samples": 100,
+          "train_clusters": 6,
+          "val_samples": 32,
+          "val_clusters": 2
+        },
+        "browser_open_and_interact": {
+          "train_samples": 374,
+          "train_clusters": 4,
+          "val_samples": 73,
+          "val_clusters": 1
+        },
+        "browser_task": {
+          "train_samples": 358,
+          "train_clusters": 75,
+          "val_samples": 135,
+          "val_clusters": 36
+        },
+        "get_current_time": {
+          "train_samples": 229,
+          "train_clusters": 7,
+          "val_samples": 27,
+          "val_clusters": 2
+        },
+        "get_system_diagnostics": {
+          "train_samples": 342,
+          "train_clusters": 38,
+          "val_samples": 24,
+          "val_clusters": 2
+        },
+        "handle_smart_home": {
+          "train_samples": 328,
+          "train_clusters": 17,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "media_control": {
+          "train_samples": 232,
+          "train_clusters": 7,
+          "val_samples": 71,
+          "val_clusters": 3
+        },
+        "open_app_and_type": {
+          "train_samples": 179,
+          "train_clusters": 2,
+          "val_samples": 50,
+          "val_clusters": 1
+        },
+        "open_url": {
+          "train_samples": 37,
+          "train_clusters": 1,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "read_specific_url": {
+          "train_samples": 111,
+          "train_clusters": 4,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "route_to_deepseek": {
+          "train_samples": 138,
+          "train_clusters": 3,
+          "val_samples": 32,
+          "val_clusters": 1
+        },
+        "run_computer_command": {
+          "train_samples": 291,
+          "train_clusters": 6,
+          "val_samples": 101,
+          "val_clusters": 1
+        },
+        "search_and_read_web": {
+          "train_samples": 130,
+          "train_clusters": 3,
+          "val_samples": 40,
+          "val_clusters": 1
+        },
+        "search_web": {
+          "train_samples": 438,
+          "train_clusters": 8,
+          "val_samples": 280,
+          "val_clusters": 3
+        },
+        "send_whatsapp_message": {
+          "train_samples": 936,
+          "train_clusters": 36,
+          "val_samples": 241,
+          "val_clusters": 4
+        },
+        "set_timer": {
+          "train_samples": 249,
+          "train_clusters": 3,
+          "val_samples": 97,
+          "val_clusters": 2
+        },
+        "teach_new_skill": {
+          "train_samples": 87,
+          "train_clusters": 4,
+          "val_samples": 26,
+          "val_clusters": 1
+        },
+        "write_and_run_script": {
+          "train_samples": 300,
+          "train_clusters": 5,
+          "val_samples": 44,
+          "val_clusters": 1
+        }
+      }
+    },
+    "fold_4": {
+      "train_sample_count": 4008,
+      "val_sample_count": 992,
+      "train_cluster_count": 208,
+      "val_cluster_count": 45,
+      "max_token_edit_sim": 0.7857,
+      "tools_absent_from_train": [],
+      "tool_coverage": {
+        "analyze_screen_with_llava": {
+          "train_samples": 111,
+          "train_clusters": 7,
+          "val_samples": 21,
+          "val_clusters": 1
+        },
+        "browser_open_and_interact": {
+          "train_samples": 385,
+          "train_clusters": 4,
+          "val_samples": 62,
+          "val_clusters": 1
+        },
+        "browser_task": {
+          "train_samples": 393,
+          "train_clusters": 99,
+          "val_samples": 100,
+          "val_clusters": 12
+        },
+        "get_current_time": {
+          "train_samples": 231,
+          "train_clusters": 7,
+          "val_samples": 25,
+          "val_clusters": 2
+        },
+        "get_system_diagnostics": {
+          "train_samples": 314,
+          "train_clusters": 32,
+          "val_samples": 52,
+          "val_clusters": 8
+        },
+        "handle_smart_home": {
+          "train_samples": 244,
+          "train_clusters": 13,
+          "val_samples": 84,
+          "val_clusters": 4
+        },
+        "media_control": {
+          "train_samples": 240,
+          "train_clusters": 6,
+          "val_samples": 63,
+          "val_clusters": 4
+        },
+        "open_app_and_type": {
+          "train_samples": 229,
+          "train_clusters": 3,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "open_url": {
+          "train_samples": 37,
+          "train_clusters": 1,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "read_specific_url": {
+          "train_samples": 52,
+          "train_clusters": 2,
+          "val_samples": 59,
+          "val_clusters": 2
+        },
+        "route_to_deepseek": {
+          "train_samples": 118,
+          "train_clusters": 3,
+          "val_samples": 52,
+          "val_clusters": 1
+        },
+        "run_computer_command": {
+          "train_samples": 313,
+          "train_clusters": 6,
+          "val_samples": 79,
+          "val_clusters": 1
+        },
+        "search_and_read_web": {
+          "train_samples": 131,
+          "train_clusters": 3,
+          "val_samples": 39,
+          "val_clusters": 1
+        },
+        "search_web": {
+          "train_samples": 485,
+          "train_clusters": 7,
+          "val_samples": 233,
+          "val_clusters": 4
+        },
+        "send_whatsapp_message": {
+          "train_samples": 1023,
+          "train_clusters": 31,
+          "val_samples": 154,
+          "val_clusters": 9
+        },
+        "set_timer": {
+          "train_samples": 297,
+          "train_clusters": 4,
+          "val_samples": 49,
+          "val_clusters": 1
+        },
+        "teach_new_skill": {
+          "train_samples": 72,
+          "train_clusters": 3,
+          "val_samples": 41,
+          "val_clusters": 2
+        },
+        "write_and_run_script": {
+          "train_samples": 254,
+          "train_clusters": 5,
+          "val_samples": 90,
+          "val_clusters": 1
+        }
+      }
+    },
+    "fold_5": {
+      "train_sample_count": 3998,
+      "val_sample_count": 1002,
+      "train_cluster_count": 215,
+      "val_cluster_count": 38,
+      "max_token_edit_sim": 0.7857,
+      "tools_absent_from_train": [],
+      "tool_coverage": {
+        "analyze_screen_with_llava": {
+          "train_samples": 96,
+          "train_clusters": 6,
+          "val_samples": 36,
+          "val_clusters": 2
+        },
+        "browser_open_and_interact": {
+          "train_samples": 379,
+          "train_clusters": 4,
+          "val_samples": 68,
+          "val_clusters": 1
+        },
+        "browser_task": {
+          "train_samples": 419,
+          "train_clusters": 104,
+          "val_samples": 74,
+          "val_clusters": 7
+        },
+        "get_current_time": {
+          "train_samples": 216,
+          "train_clusters": 7,
+          "val_samples": 40,
+          "val_clusters": 2
+        },
+        "get_system_diagnostics": {
+          "train_samples": 279,
+          "train_clusters": 30,
+          "val_samples": 87,
+          "val_clusters": 10
+        },
+        "handle_smart_home": {
+          "train_samples": 158,
+          "train_clusters": 13,
+          "val_samples": 170,
+          "val_clusters": 4
+        },
+        "media_control": {
+          "train_samples": 189,
+          "train_clusters": 9,
+          "val_samples": 114,
+          "val_clusters": 1
+        },
+        "open_app_and_type": {
+          "train_samples": 229,
+          "train_clusters": 3,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "open_url": {
+          "train_samples": 37,
+          "train_clusters": 1,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "read_specific_url": {
+          "train_samples": 59,
+          "train_clusters": 2,
+          "val_samples": 52,
+          "val_clusters": 2
+        },
+        "route_to_deepseek": {
+          "train_samples": 130,
+          "train_clusters": 3,
+          "val_samples": 40,
+          "val_clusters": 1
+        },
+        "run_computer_command": {
+          "train_samples": 313,
+          "train_clusters": 5,
+          "val_samples": 79,
+          "val_clusters": 2
+        },
+        "search_and_read_web": {
+          "train_samples": 119,
+          "train_clusters": 3,
+          "val_samples": 51,
+          "val_clusters": 1
+        },
+        "search_web": {
+          "train_samples": 718,
+          "train_clusters": 11,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "send_whatsapp_message": {
+          "train_samples": 984,
+          "train_clusters": 32,
+          "val_samples": 193,
+          "val_clusters": 8
+        },
+        "set_timer": {
+          "train_samples": 302,
+          "train_clusters": 4,
+          "val_samples": 44,
+          "val_clusters": 1
+        },
+        "teach_new_skill": {
+          "train_samples": 67,
+          "train_clusters": 3,
+          "val_samples": 46,
+          "val_clusters": 2
+        },
+        "write_and_run_script": {
+          "train_samples": 275,
+          "train_clusters": 4,
+          "val_samples": 69,
+          "val_clusters": 2
+        }
+      }
+    }
+  },
+  "shuffle_2": {
+    "fold_1": {
+      "train_sample_count": 4002,
+      "val_sample_count": 998,
+      "train_cluster_count": 200,
+      "val_cluster_count": 53,
+      "max_token_edit_sim": 0.7857,
+      "tools_absent_from_train": [],
+      "tool_coverage": {
+        "analyze_screen_with_llava": {
+          "train_samples": 77,
+          "train_clusters": 5,
+          "val_samples": 55,
+          "val_clusters": 3
+        },
+        "browser_open_and_interact": {
+          "train_samples": 385,
+          "train_clusters": 4,
+          "val_samples": 62,
+          "val_clusters": 1
+        },
+        "browser_task": {
+          "train_samples": 349,
+          "train_clusters": 84,
+          "val_samples": 144,
+          "val_clusters": 27
+        },
+        "get_current_time": {
+          "train_samples": 223,
+          "train_clusters": 7,
+          "val_samples": 33,
+          "val_clusters": 2
+        },
+        "get_system_diagnostics": {
+          "train_samples": 276,
+          "train_clusters": 32,
+          "val_samples": 90,
+          "val_clusters": 8
+        },
+        "handle_smart_home": {
+          "train_samples": 268,
+          "train_clusters": 16,
+          "val_samples": 60,
+          "val_clusters": 1
+        },
+        "media_control": {
+          "train_samples": 265,
+          "train_clusters": 8,
+          "val_samples": 38,
+          "val_clusters": 2
+        },
+        "open_app_and_type": {
+          "train_samples": 179,
+          "train_clusters": 2,
+          "val_samples": 50,
+          "val_clusters": 1
+        },
+        "open_url": {
+          "train_samples": 37,
+          "train_clusters": 1,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "read_specific_url": {
+          "train_samples": 111,
+          "train_clusters": 4,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "route_to_deepseek": {
+          "train_samples": 124,
+          "train_clusters": 3,
+          "val_samples": 46,
+          "val_clusters": 1
+        },
+        "run_computer_command": {
+          "train_samples": 347,
+          "train_clusters": 6,
+          "val_samples": 45,
+          "val_clusters": 1
+        },
+        "search_and_read_web": {
+          "train_samples": 130,
+          "train_clusters": 3,
+          "val_samples": 40,
+          "val_clusters": 1
+        },
+        "search_web": {
+          "train_samples": 644,
+          "train_clusters": 9,
+          "val_samples": 74,
+          "val_clusters": 2
+        },
+        "send_whatsapp_message": {
+          "train_samples": 929,
+          "train_clusters": 34,
+          "val_samples": 248,
+          "val_clusters": 6
+        },
+        "set_timer": {
+          "train_samples": 146,
+          "train_clusters": 3,
+          "val_samples": 200,
+          "val_clusters": 2
+        },
+        "teach_new_skill": {
+          "train_samples": 113,
+          "train_clusters": 5,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "write_and_run_script": {
+          "train_samples": 344,
+          "train_clusters": 6,
+          "val_samples": 0,
+          "val_clusters": 0
+        }
+      }
+    },
+    "fold_2": {
+      "train_sample_count": 4001,
+      "val_sample_count": 999,
+      "train_cluster_count": 191,
+      "val_cluster_count": 62,
+      "max_token_edit_sim": 0.7857,
+      "tools_absent_from_train": [],
+      "tool_coverage": {
+        "analyze_screen_with_llava": {
+          "train_samples": 132,
+          "train_clusters": 8,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "browser_open_and_interact": {
+          "train_samples": 379,
+          "train_clusters": 4,
+          "val_samples": 68,
+          "val_clusters": 1
+        },
+        "browser_task": {
+          "train_samples": 383,
+          "train_clusters": 79,
+          "val_samples": 110,
+          "val_clusters": 32
+        },
+        "get_current_time": {
+          "train_samples": 216,
+          "train_clusters": 7,
+          "val_samples": 40,
+          "val_clusters": 2
+        },
+        "get_system_diagnostics": {
+          "train_samples": 287,
+          "train_clusters": 30,
+          "val_samples": 79,
+          "val_clusters": 10
+        },
+        "handle_smart_home": {
+          "train_samples": 187,
+          "train_clusters": 12,
+          "val_samples": 141,
+          "val_clusters": 5
+        },
+        "media_control": {
+          "train_samples": 144,
+          "train_clusters": 7,
+          "val_samples": 159,
+          "val_clusters": 3
+        },
+        "open_app_and_type": {
+          "train_samples": 171,
+          "train_clusters": 2,
+          "val_samples": 58,
+          "val_clusters": 1
+        },
+        "open_url": {
+          "train_samples": 37,
+          "train_clusters": 1,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "read_specific_url": {
+          "train_samples": 111,
+          "train_clusters": 4,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "route_to_deepseek": {
+          "train_samples": 118,
+          "train_clusters": 3,
+          "val_samples": 52,
+          "val_clusters": 1
+        },
+        "run_computer_command": {
+          "train_samples": 298,
+          "train_clusters": 5,
+          "val_samples": 94,
+          "val_clusters": 2
+        },
+        "search_and_read_web": {
+          "train_samples": 131,
+          "train_clusters": 3,
+          "val_samples": 39,
+          "val_clusters": 1
+        },
+        "search_web": {
+          "train_samples": 628,
+          "train_clusters": 10,
+          "val_samples": 90,
+          "val_clusters": 1
+        },
+        "send_whatsapp_message": {
+          "train_samples": 1006,
+          "train_clusters": 29,
+          "val_samples": 171,
+          "val_clusters": 11
+        },
+        "set_timer": {
+          "train_samples": 298,
+          "train_clusters": 4,
+          "val_samples": 48,
+          "val_clusters": 1
+        },
+        "teach_new_skill": {
+          "train_samples": 80,
+          "train_clusters": 4,
+          "val_samples": 33,
+          "val_clusters": 1
+        },
+        "write_and_run_script": {
+          "train_samples": 254,
+          "train_clusters": 5,
+          "val_samples": 90,
+          "val_clusters": 1
+        }
+      }
+    },
+    "fold_3": {
+      "train_sample_count": 4013,
+      "val_sample_count": 987,
+      "train_cluster_count": 194,
+      "val_cluster_count": 59,
+      "max_token_edit_sim": 0.7857,
+      "tools_absent_from_train": [],
+      "tool_coverage": {
+        "analyze_screen_with_llava": {
+          "train_samples": 132,
+          "train_clusters": 8,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "browser_open_and_interact": {
+          "train_samples": 362,
+          "train_clusters": 4,
+          "val_samples": 85,
+          "val_clusters": 1
+        },
+        "browser_task": {
+          "train_samples": 353,
+          "train_clusters": 82,
+          "val_samples": 140,
+          "val_clusters": 29
+        },
+        "get_current_time": {
+          "train_samples": 126,
+          "train_clusters": 7,
+          "val_samples": 130,
+          "val_clusters": 2
+        },
+        "get_system_diagnostics": {
+          "train_samples": 286,
+          "train_clusters": 30,
+          "val_samples": 80,
+          "val_clusters": 10
+        },
+        "handle_smart_home": {
+          "train_samples": 272,
+          "train_clusters": 10,
+          "val_samples": 56,
+          "val_clusters": 7
+        },
+        "media_control": {
+          "train_samples": 303,
+          "train_clusters": 10,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "open_app_and_type": {
+          "train_samples": 108,
+          "train_clusters": 2,
+          "val_samples": 121,
+          "val_clusters": 1
+        },
+        "open_url": {
+          "train_samples": 37,
+          "train_clusters": 1,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "read_specific_url": {
+          "train_samples": 111,
+          "train_clusters": 4,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "route_to_deepseek": {
+          "train_samples": 170,
+          "train_clusters": 4,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "run_computer_command": {
+          "train_samples": 257,
+          "train_clusters": 5,
+          "val_samples": 135,
+          "val_clusters": 2
+        },
+        "search_and_read_web": {
+          "train_samples": 170,
+          "train_clusters": 4,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "search_web": {
+          "train_samples": 594,
+          "train_clusters": 9,
+          "val_samples": 124,
+          "val_clusters": 2
+        },
+        "send_whatsapp_message": {
+          "train_samples": 938,
+          "train_clusters": 30,
+          "val_samples": 239,
+          "val_clusters": 10
+        },
+        "set_timer": {
+          "train_samples": 297,
+          "train_clusters": 4,
+          "val_samples": 49,
+          "val_clusters": 1
+        },
+        "teach_new_skill": {
+          "train_samples": 79,
+          "train_clusters": 3,
+          "val_samples": 34,
+          "val_clusters": 2
+        },
+        "write_and_run_script": {
+          "train_samples": 275,
+          "train_clusters": 4,
+          "val_samples": 69,
+          "val_clusters": 2
+        }
+      }
+    },
+    "fold_4": {
+      "train_sample_count": 4010,
+      "val_sample_count": 990,
+      "train_cluster_count": 206,
+      "val_cluster_count": 47,
+      "max_token_edit_sim": 0.7692,
+      "tools_absent_from_train": [],
+      "tool_coverage": {
+        "analyze_screen_with_llava": {
+          "train_samples": 72,
+          "train_clusters": 4,
+          "val_samples": 60,
+          "val_clusters": 4
+        },
+        "browser_open_and_interact": {
+          "train_samples": 374,
+          "train_clusters": 4,
+          "val_samples": 73,
+          "val_clusters": 1
+        },
+        "browser_task": {
+          "train_samples": 398,
+          "train_clusters": 89,
+          "val_samples": 95,
+          "val_clusters": 22
+        },
+        "get_current_time": {
+          "train_samples": 243,
+          "train_clusters": 8,
+          "val_samples": 13,
+          "val_clusters": 1
+        },
+        "get_system_diagnostics": {
+          "train_samples": 333,
+          "train_clusters": 37,
+          "val_samples": 33,
+          "val_clusters": 3
+        },
+        "handle_smart_home": {
+          "train_samples": 328,
+          "train_clusters": 17,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "media_control": {
+          "train_samples": 247,
+          "train_clusters": 7,
+          "val_samples": 56,
+          "val_clusters": 3
+        },
+        "open_app_and_type": {
+          "train_samples": 229,
+          "train_clusters": 3,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "open_url": {
+          "train_samples": 37,
+          "train_clusters": 1,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "read_specific_url": {
+          "train_samples": 49,
+          "train_clusters": 2,
+          "val_samples": 62,
+          "val_clusters": 2
+        },
+        "route_to_deepseek": {
+          "train_samples": 130,
+          "train_clusters": 3,
+          "val_samples": 40,
+          "val_clusters": 1
+        },
+        "run_computer_command": {
+          "train_samples": 353,
+          "train_clusters": 6,
+          "val_samples": 39,
+          "val_clusters": 1
+        },
+        "search_and_read_web": {
+          "train_samples": 119,
+          "train_clusters": 3,
+          "val_samples": 51,
+          "val_clusters": 1
+        },
+        "search_web": {
+          "train_samples": 528,
+          "train_clusters": 9,
+          "val_samples": 190,
+          "val_clusters": 2
+        },
+        "send_whatsapp_message": {
+          "train_samples": 892,
+          "train_clusters": 35,
+          "val_samples": 285,
+          "val_clusters": 5
+        },
+        "set_timer": {
+          "train_samples": 297,
+          "train_clusters": 4,
+          "val_samples": 49,
+          "val_clusters": 1
+        },
+        "teach_new_skill": {
+          "train_samples": 69,
+          "train_clusters": 4,
+          "val_samples": 44,
+          "val_clusters": 1
+        },
+        "write_and_run_script": {
+          "train_samples": 262,
+          "train_clusters": 4,
+          "val_samples": 82,
+          "val_clusters": 2
+        }
+      }
+    },
+    "fold_5": {
+      "train_sample_count": 4011,
+      "val_sample_count": 989,
+      "train_cluster_count": 222,
+      "val_cluster_count": 31,
+      "max_token_edit_sim": 0.7333,
+      "tools_absent_from_train": [],
+      "tool_coverage": {
+        "analyze_screen_with_llava": {
+          "train_samples": 115,
+          "train_clusters": 7,
+          "val_samples": 17,
+          "val_clusters": 1
+        },
+        "browser_open_and_interact": {
+          "train_samples": 288,
+          "train_clusters": 4,
+          "val_samples": 159,
+          "val_clusters": 1
+        },
+        "browser_task": {
+          "train_samples": 489,
+          "train_clusters": 110,
+          "val_samples": 4,
+          "val_clusters": 1
+        },
+        "get_current_time": {
+          "train_samples": 216,
+          "train_clusters": 7,
+          "val_samples": 40,
+          "val_clusters": 2
+        },
+        "get_system_diagnostics": {
+          "train_samples": 282,
+          "train_clusters": 31,
+          "val_samples": 84,
+          "val_clusters": 9
+        },
+        "handle_smart_home": {
+          "train_samples": 257,
+          "train_clusters": 13,
+          "val_samples": 71,
+          "val_clusters": 4
+        },
+        "media_control": {
+          "train_samples": 253,
+          "train_clusters": 8,
+          "val_samples": 50,
+          "val_clusters": 2
+        },
+        "open_app_and_type": {
+          "train_samples": 229,
+          "train_clusters": 3,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "open_url": {
+          "train_samples": 37,
+          "train_clusters": 1,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "read_specific_url": {
+          "train_samples": 62,
+          "train_clusters": 2,
+          "val_samples": 49,
+          "val_clusters": 2
+        },
+        "route_to_deepseek": {
+          "train_samples": 138,
+          "train_clusters": 3,
+          "val_samples": 32,
+          "val_clusters": 1
+        },
+        "run_computer_command": {
+          "train_samples": 313,
+          "train_clusters": 6,
+          "val_samples": 79,
+          "val_clusters": 1
+        },
+        "search_and_read_web": {
+          "train_samples": 130,
+          "train_clusters": 3,
+          "val_samples": 40,
+          "val_clusters": 1
+        },
+        "search_web": {
+          "train_samples": 478,
+          "train_clusters": 7,
+          "val_samples": 240,
+          "val_clusters": 4
+        },
+        "send_whatsapp_message": {
+          "train_samples": 943,
+          "train_clusters": 32,
+          "val_samples": 234,
+          "val_clusters": 8
+        },
+        "set_timer": {
+          "train_samples": 346,
+          "train_clusters": 5,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "teach_new_skill": {
+          "train_samples": 111,
+          "train_clusters": 4,
+          "val_samples": 2,
+          "val_clusters": 1
+        },
+        "write_and_run_script": {
+          "train_samples": 241,
+          "train_clusters": 5,
+          "val_samples": 103,
+          "val_clusters": 1
+        }
+      }
+    }
+  },
+  "shuffle_3": {
+    "fold_1": {
+      "train_sample_count": 4014,
+      "val_sample_count": 986,
+      "train_cluster_count": 197,
+      "val_cluster_count": 56,
+      "max_token_edit_sim": 0.7692,
+      "tools_absent_from_train": [],
+      "tool_coverage": {
+        "analyze_screen_with_llava": {
+          "train_samples": 132,
+          "train_clusters": 8,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "browser_open_and_interact": {
+          "train_samples": 288,
+          "train_clusters": 4,
+          "val_samples": 159,
+          "val_clusters": 1
+        },
+        "browser_task": {
+          "train_samples": 360,
+          "train_clusters": 75,
+          "val_samples": 133,
+          "val_clusters": 36
+        },
+        "get_current_time": {
+          "train_samples": 229,
+          "train_clusters": 7,
+          "val_samples": 27,
+          "val_clusters": 2
+        },
+        "get_system_diagnostics": {
+          "train_samples": 273,
+          "train_clusters": 32,
+          "val_samples": 93,
+          "val_clusters": 8
+        },
+        "handle_smart_home": {
+          "train_samples": 166,
+          "train_clusters": 15,
+          "val_samples": 162,
+          "val_clusters": 2
+        },
+        "media_control": {
+          "train_samples": 169,
+          "train_clusters": 8,
+          "val_samples": 134,
+          "val_clusters": 2
+        },
+        "open_app_and_type": {
+          "train_samples": 179,
+          "train_clusters": 2,
+          "val_samples": 50,
+          "val_clusters": 1
+        },
+        "open_url": {
+          "train_samples": 37,
+          "train_clusters": 1,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "read_specific_url": {
+          "train_samples": 111,
+          "train_clusters": 4,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "route_to_deepseek": {
+          "train_samples": 124,
+          "train_clusters": 3,
+          "val_samples": 46,
+          "val_clusters": 1
+        },
+        "run_computer_command": {
+          "train_samples": 291,
+          "train_clusters": 6,
+          "val_samples": 101,
+          "val_clusters": 1
+        },
+        "search_and_read_web": {
+          "train_samples": 130,
+          "train_clusters": 3,
+          "val_samples": 40,
+          "val_clusters": 1
+        },
+        "search_web": {
+          "train_samples": 527,
+          "train_clusters": 9,
+          "val_samples": 191,
+          "val_clusters": 2
+        },
+        "send_whatsapp_message": {
+          "train_samples": 1091,
+          "train_clusters": 35,
+          "val_samples": 86,
+          "val_clusters": 5
+        },
+        "set_timer": {
+          "train_samples": 346,
+          "train_clusters": 5,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "teach_new_skill": {
+          "train_samples": 113,
+          "train_clusters": 5,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "write_and_run_script": {
+          "train_samples": 254,
+          "train_clusters": 5,
+          "val_samples": 90,
+          "val_clusters": 1
+        }
+      }
+    },
+    "fold_2": {
+      "train_sample_count": 4016,
+      "val_sample_count": 984,
+      "train_cluster_count": 181,
+      "val_cluster_count": 72,
+      "max_token_edit_sim": 0.7857,
+      "tools_absent_from_train": [],
+      "tool_coverage": {
+        "analyze_screen_with_llava": {
+          "train_samples": 51,
+          "train_clusters": 3,
+          "val_samples": 81,
+          "val_clusters": 5
+        },
+        "browser_open_and_interact": {
+          "train_samples": 379,
+          "train_clusters": 4,
+          "val_samples": 68,
+          "val_clusters": 1
+        },
+        "browser_task": {
+          "train_samples": 362,
+          "train_clusters": 72,
+          "val_samples": 131,
+          "val_clusters": 39
+        },
+        "get_current_time": {
+          "train_samples": 230,
+          "train_clusters": 7,
+          "val_samples": 26,
+          "val_clusters": 2
+        },
+        "get_system_diagnostics": {
+          "train_samples": 290,
+          "train_clusters": 32,
+          "val_samples": 76,
+          "val_clusters": 8
+        },
+        "handle_smart_home": {
+          "train_samples": 254,
+          "train_clusters": 14,
+          "val_samples": 74,
+          "val_clusters": 3
+        },
+        "media_control": {
+          "train_samples": 251,
+          "train_clusters": 7,
+          "val_samples": 52,
+          "val_clusters": 3
+        },
+        "open_app_and_type": {
+          "train_samples": 108,
+          "train_clusters": 2,
+          "val_samples": 121,
+          "val_clusters": 1
+        },
+        "open_url": {
+          "train_samples": 37,
+          "train_clusters": 1,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "read_specific_url": {
+          "train_samples": 111,
+          "train_clusters": 4,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "route_to_deepseek": {
+          "train_samples": 170,
+          "train_clusters": 4,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "run_computer_command": {
+          "train_samples": 339,
+          "train_clusters": 5,
+          "val_samples": 53,
+          "val_clusters": 2
+        },
+        "search_and_read_web": {
+          "train_samples": 170,
+          "train_clusters": 4,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "search_web": {
+          "train_samples": 651,
+          "train_clusters": 9,
+          "val_samples": 67,
+          "val_clusters": 2
+        },
+        "send_whatsapp_message": {
+          "train_samples": 1087,
+          "train_clusters": 34,
+          "val_samples": 90,
+          "val_clusters": 6
+        },
+        "set_timer": {
+          "train_samples": 253,
+          "train_clusters": 3,
+          "val_samples": 93,
+          "val_clusters": 2
+        },
+        "teach_new_skill": {
+          "train_samples": 72,
+          "train_clusters": 3,
+          "val_samples": 41,
+          "val_clusters": 2
+        },
+        "write_and_run_script": {
+          "train_samples": 300,
+          "train_clusters": 5,
+          "val_samples": 44,
+          "val_clusters": 1
+        }
+      }
+    },
+    "fold_3": {
+      "train_sample_count": 3980,
+      "val_sample_count": 1020,
+      "train_cluster_count": 213,
+      "val_cluster_count": 40,
+      "max_token_edit_sim": 0.7857,
+      "tools_absent_from_train": [],
+      "tool_coverage": {
+        "analyze_screen_with_llava": {
+          "train_samples": 81,
+          "train_clusters": 5,
+          "val_samples": 51,
+          "val_clusters": 3
+        },
+        "browser_open_and_interact": {
+          "train_samples": 374,
+          "train_clusters": 4,
+          "val_samples": 73,
+          "val_clusters": 1
+        },
+        "browser_task": {
+          "train_samples": 448,
+          "train_clusters": 110,
+          "val_samples": 45,
+          "val_clusters": 1
+        },
+        "get_current_time": {
+          "train_samples": 217,
+          "train_clusters": 7,
+          "val_samples": 39,
+          "val_clusters": 2
+        },
+        "get_system_diagnostics": {
+          "train_samples": 273,
+          "train_clusters": 29,
+          "val_samples": 93,
+          "val_clusters": 11
+        },
+        "handle_smart_home": {
+          "train_samples": 269,
+          "train_clusters": 9,
+          "val_samples": 59,
+          "val_clusters": 8
+        },
+        "media_control": {
+          "train_samples": 248,
+          "train_clusters": 8,
+          "val_samples": 55,
+          "val_clusters": 2
+        },
+        "open_app_and_type": {
+          "train_samples": 171,
+          "train_clusters": 2,
+          "val_samples": 58,
+          "val_clusters": 1
+        },
+        "open_url": {
+          "train_samples": 37,
+          "train_clusters": 1,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "read_specific_url": {
+          "train_samples": 111,
+          "train_clusters": 4,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "route_to_deepseek": {
+          "train_samples": 138,
+          "train_clusters": 3,
+          "val_samples": 32,
+          "val_clusters": 1
+        },
+        "run_computer_command": {
+          "train_samples": 392,
+          "train_clusters": 7,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "search_and_read_web": {
+          "train_samples": 131,
+          "train_clusters": 3,
+          "val_samples": 39,
+          "val_clusters": 1
+        },
+        "search_web": {
+          "train_samples": 565,
+          "train_clusters": 8,
+          "val_samples": 153,
+          "val_clusters": 3
+        },
+        "send_whatsapp_message": {
+          "train_samples": 921,
+          "train_clusters": 30,
+          "val_samples": 256,
+          "val_clusters": 10
+        },
+        "set_timer": {
+          "train_samples": 298,
+          "train_clusters": 4,
+          "val_samples": 48,
+          "val_clusters": 1
+        },
+        "teach_new_skill": {
+          "train_samples": 67,
+          "train_clusters": 3,
+          "val_samples": 46,
+          "val_clusters": 2
+        },
+        "write_and_run_script": {
+          "train_samples": 203,
+          "train_clusters": 4,
+          "val_samples": 141,
+          "val_clusters": 2
+        }
+      }
+    },
+    "fold_4": {
+      "train_sample_count": 4016,
+      "val_sample_count": 984,
+      "train_cluster_count": 203,
+      "val_cluster_count": 50,
+      "max_token_edit_sim": 0.7857,
+      "tools_absent_from_train": [],
+      "tool_coverage": {
+        "analyze_screen_with_llava": {
+          "train_samples": 132,
+          "train_clusters": 8,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "browser_open_and_interact": {
+          "train_samples": 385,
+          "train_clusters": 4,
+          "val_samples": 62,
+          "val_clusters": 1
+        },
+        "browser_task": {
+          "train_samples": 405,
+          "train_clusters": 94,
+          "val_samples": 88,
+          "val_clusters": 17
+        },
+        "get_current_time": {
+          "train_samples": 235,
+          "train_clusters": 8,
+          "val_samples": 21,
+          "val_clusters": 1
+        },
+        "get_system_diagnostics": {
+          "train_samples": 262,
+          "train_clusters": 27,
+          "val_samples": 104,
+          "val_clusters": 13
+        },
+        "handle_smart_home": {
+          "train_samples": 295,
+          "train_clusters": 13,
+          "val_samples": 33,
+          "val_clusters": 4
+        },
+        "media_control": {
+          "train_samples": 241,
+          "train_clusters": 7,
+          "val_samples": 62,
+          "val_clusters": 3
+        },
+        "open_app_and_type": {
+          "train_samples": 229,
+          "train_clusters": 3,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "open_url": {
+          "train_samples": 37,
+          "train_clusters": 1,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "read_specific_url": {
+          "train_samples": 49,
+          "train_clusters": 2,
+          "val_samples": 62,
+          "val_clusters": 2
+        },
+        "route_to_deepseek": {
+          "train_samples": 130,
+          "train_clusters": 3,
+          "val_samples": 40,
+          "val_clusters": 1
+        },
+        "run_computer_command": {
+          "train_samples": 267,
+          "train_clusters": 5,
+          "val_samples": 125,
+          "val_clusters": 2
+        },
+        "search_and_read_web": {
+          "train_samples": 119,
+          "train_clusters": 3,
+          "val_samples": 51,
+          "val_clusters": 1
+        },
+        "search_web": {
+          "train_samples": 646,
+          "train_clusters": 9,
+          "val_samples": 72,
+          "val_clusters": 2
+        },
+        "send_whatsapp_message": {
+          "train_samples": 823,
+          "train_clusters": 25,
+          "val_samples": 354,
+          "val_clusters": 15
+        },
+        "set_timer": {
+          "train_samples": 190,
+          "train_clusters": 4,
+          "val_samples": 156,
+          "val_clusters": 1
+        },
+        "teach_new_skill": {
+          "train_samples": 113,
+          "train_clusters": 5,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "write_and_run_script": {
+          "train_samples": 344,
+          "train_clusters": 6,
+          "val_samples": 0,
+          "val_clusters": 0
+        }
+      }
+    },
+    "fold_5": {
+      "train_sample_count": 4011,
+      "val_sample_count": 989,
+      "train_cluster_count": 219,
+      "val_cluster_count": 34,
+      "max_token_edit_sim": 0.7143,
+      "tools_absent_from_train": [],
+      "tool_coverage": {
+        "analyze_screen_with_llava": {
+          "train_samples": 132,
+          "train_clusters": 8,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "browser_open_and_interact": {
+          "train_samples": 362,
+          "train_clusters": 4,
+          "val_samples": 85,
+          "val_clusters": 1
+        },
+        "browser_task": {
+          "train_samples": 397,
+          "train_clusters": 93,
+          "val_samples": 96,
+          "val_clusters": 18
+        },
+        "get_current_time": {
+          "train_samples": 113,
+          "train_clusters": 7,
+          "val_samples": 143,
+          "val_clusters": 2
+        },
+        "get_system_diagnostics": {
+          "train_samples": 366,
+          "train_clusters": 40,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "handle_smart_home": {
+          "train_samples": 328,
+          "train_clusters": 17,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "media_control": {
+          "train_samples": 303,
+          "train_clusters": 10,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "open_app_and_type": {
+          "train_samples": 229,
+          "train_clusters": 3,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "open_url": {
+          "train_samples": 37,
+          "train_clusters": 1,
+          "val_samples": 0,
+          "val_clusters": 0
+        },
+        "read_specific_url": {
+          "train_samples": 62,
+          "train_clusters": 2,
+          "val_samples": 49,
+          "val_clusters": 2
+        },
+        "route_to_deepseek": {
+          "train_samples": 118,
+          "train_clusters": 3,
+          "val_samples": 52,
+          "val_clusters": 1
+        },
+        "run_computer_command": {
+          "train_samples": 279,
+          "train_clusters": 5,
+          "val_samples": 113,
+          "val_clusters": 2
+        },
+        "search_and_read_web": {
+          "train_samples": 130,
+          "train_clusters": 3,
+          "val_samples": 40,
+          "val_clusters": 1
+        },
+        "search_web": {
+          "train_samples": 483,
+          "train_clusters": 9,
+          "val_samples": 235,
+          "val_clusters": 2
+        },
+        "send_whatsapp_message": {
+          "train_samples": 786,
+          "train_clusters": 36,
+          "val_samples": 391,
+          "val_clusters": 4
+        },
+        "set_timer": {
+          "train_samples": 297,
+          "train_clusters": 4,
+          "val_samples": 49,
+          "val_clusters": 1
+        },
+        "teach_new_skill": {
+          "train_samples": 87,
+          "train_clusters": 4,
+          "val_samples": 26,
+          "val_clusters": 1
+        },
+        "write_and_run_script": {
+          "train_samples": 275,
+          "train_clusters": 4,
+          "val_samples": 69,
+          "val_clusters": 2
+        }
+      }
+    }
+  }
+}

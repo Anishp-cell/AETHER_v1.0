@@ -1,0 +1,13 @@
+{
+  "tool_subset_acc": 0.9169638308711157,
+  "tool_subset_acc_count": 3600,
+  "total_samples": 3926,
+  "tool_micro_f1": 0.9652909000497265,
+  "span_precision": 0.828254388870487,
+  "span_recall": 0.7615349474645957,
+  "span_f1": 0.7934946449821499,
+  "span_correct": 5001,
+  "span_gold_total": 6567,
+  "joint_em": 0.608762098828324,
+  "joint_em_count": 2390
+}

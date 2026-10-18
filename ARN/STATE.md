@@ -9,9 +9,9 @@ Status: IN_PROGRESS
 | Phase | Description | Status | Commit Hash | Next Action |
 | :---: | :--- | :---: | :---: | :--- |
 | **0** | Orient & Environment Recording | DONE | `3b46e1b` | Recorded environment.json; created tracking docs |
-| **1** | Split Redesign (Coverage Fix) | DONE | pending | Generated cv_manifest.json, audits, tests, PROTOCOL.md |
-| **2** | Results Ledger & Reconciliation | IN_PROGRESS | - | Initialize ledger.json; write docs/RECONCILIATION.md |
-| **3** | Baseline Debugging | PENDING | - | Fix TF-IDF kNN/LogReg; verify Softmax + masked Viterbi |
+| **1** | Split Redesign (Coverage Fix) | DONE | `0204f95` | Generated cv_manifest.json, audits, tests, PROTOCOL.md |
+| **2** | Results Ledger & Reconciliation | DONE | pending | Initialized ledger.json; reconciled 8 historical discrepancies |
+| **3** | Baseline Debugging | IN_PROGRESS | - | Debug TF-IDF kNN/LogReg, softmax baselines, overfit tests |
 | **4** | Master Protocol (Main Experiment) | PENDING | - | Run 15 folds nested CV across models |
 | **5** | Ablations & Curves | PENDING | - | CRF decomposition, supervision ablation, learning curves |
 | **6** | Error Analysis | PENDING | - | Per-tool/cluster failures, slot error breakdown |

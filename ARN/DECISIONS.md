@@ -60,5 +60,17 @@ This document records all non-trivial decisions made during the ARN project revi
   4. Added unit tests verifying 100-sample overfit ($\ge 95\%$), random split sanity ($\ge 65\%$), and monotonic scaling with training data.
 - **Alternative Rejected:** Reporting artificially collapsed 0.0% numbers or using global vectorizer fits.
 
+### D-007: Human Evaluation Benchmark Integrity & Deferred Protocol (Phase 9)
+- **Date:** 2026-10-18
+- **Context:** The repository contains a 250-utterance benchmark template (`ARN/data/human_eval_template.jsonl`) designed across 18 tools and compositions, but no external filled human ratings currently exist.
+- **Decision:**
+  1. Adhered strictly to Hard Rule 1 (Zero Fabrication) and pre-registration guidelines: synthetic LLM auto-filling of the human evaluation test set is strictly prohibited to avoid LLM stylistic leakage.
+  2. Sealed the 250-sample template at `data/human_eval_template.jsonl`.
+  3. Authored `docs/HUMAN_EVAL_PENDING.md` documenting the benchmark structure, annotation instructions, and deferred evaluation protocol.
+  4. Built and unit-tested `scripts/run_human_eval.py` equipped with exact scoring metrics, Cohen's kappa calculation for inter-annotator agreement, and a `--mock` validation mode.
+  5. Recorded the status as PENDING in `results/ledger.json` and deferred empirical claims to future multi-rater user studies.
+- **Alternative Rejected:** Populating "human" evaluation entries using LLM synthetic generations or reporting fictitious user ratings.
+
+
 
 

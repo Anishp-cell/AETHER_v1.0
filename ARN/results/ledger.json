@@ -8270,5 +8270,13 @@
       },
       "timestamp": "2026-10-18T16:38:26.666875Z"
     }
-  ]
+  ],
+  "human_evaluation": {
+    "status": "PENDING",
+    "benchmark_size": 250,
+    "template_path": "data/human_eval_template.jsonl",
+    "harness_script": "scripts/run_human_eval.py",
+    "documentation": "docs/HUMAN_EVAL_PENDING.md",
+    "notes": "Sealed template unannotated. No synthetic LLM annotations allowed per pre-registration. Pending independent external human rating."
+  }
 }

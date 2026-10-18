@@ -101,6 +101,18 @@ This document records all non-trivial decisions made during the ARN project revi
   4. Verified test execution inside `../ARN-public`, confirming all 9 standalone tests pass cleanly.
 - **Alternative Rejected:** Pushing directly to remote GitHub repositories or publishing wheels to PyPI without user consent.
 
+### D-011: Public Launch Materials and Communication Strategy (Phase 13)
+- **Date:** 2026-10-18
+- **Context:** Communicating the release of ARN v1.0.0 requires technical precision, zero marketing exaggeration, and complete adherence to verified numbers.
+- **Decision:**
+  1. Authored `docs/launch/LINKEDIN.md` as an in-depth technical announcement post highlighting the non-generative paradigm, master protocol results, edge CPU benchmarks, and open-source availability.
+  2. Authored `docs/launch/X_THREAD.md` as an 8-part technical thread detailing the motivation, architecture, protocol rigor, Outcome A selection, CRF sequence modeling guarantees, and INT8 benchmarks.
+  3. Authored `docs/launch/MEDIUM_OUTLINE.md` as an exhaustive article outline for technical publications (Towards Data Science / Substack) breaking down the edge dilemma, mathematical formulation, ablation insights, error taxonomy (42.71% boundary shifts vs 1.52% label mismatches), and CPU profiling.
+  4. Authored `docs/launch/FAQ.md` addressing critical questions regarding non-generative vs LLM trade-offs, Outcome A selection rationale, CRF ablation results, sealed human evaluation status, and verified metric provenance.
+  5. Enforced zero banned claims, zero unverified statistics, and strict citation of `results/ledger.json` across all public-facing drafts.
+- **Alternative Rejected:** Publishing sensationalized or unverified claims regarding latency, memory, or model rankings.
+
+
 
 
 

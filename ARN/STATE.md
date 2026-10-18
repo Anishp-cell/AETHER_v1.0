@@ -20,6 +20,7 @@ Status: IN_PROGRESS
 | **9** | Human Evaluation | DONE | `591b3d5` | Sealed holdout at data/human_eval_template.jsonl; docs/HUMAN_EVAL_PENDING.md; scripts/run_human_eval.py verified |
 | **10** | Repo Finalization | DONE | `af4ceba` | Upgraded CLI, truthful README with verified numbers, MODEL_CARD.md, DATA_STATEMENT.md, CHANGELOG.md |
 | **11** | Paper Compilation | DONE | `2bf9607` | Compiled LaTeX tables 1-4, generated numbers.tex, rewritten manuscripts, audit passed |
-| **12** | Release Staging | DONE | Pending commit | Staged ../ARN-public clean git repo on main (7b28cc8); verified RELEASE_CHECKLIST.md |
-| **13** | Launch Drafts | IN_PROGRESS | - | Write verified-numbers launch drafts |
-| **14** | Self-Audit & Final Report | PENDING | - | Full test sweep, banned claims grep, FINAL_REPORT.md |
+| **12** | Release Staging | DONE | `40b812c` | Staged ../ARN-public clean git repo on main (7b28cc8); verified RELEASE_CHECKLIST.md |
+| **13** | Launch Drafts | DONE | `pending` | LinkedIn, X thread, Medium outline, FAQ authored with verified metrics |
+| **14** | Self-Audit & Final Report | IN_PROGRESS | - | Full test sweep, banned claims grep, FINAL_REPORT.md |
+

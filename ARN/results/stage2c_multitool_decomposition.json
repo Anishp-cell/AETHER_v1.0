@@ -1,0 +1,139 @@
+{
+  "sample_split": {
+    "total_samples": 3926,
+    "single_tool_samples": 2819,
+    "multi_tool_samples": 1107,
+    "total_positive_tool_labels": 5033,
+    "total_raw_arguments": 7061
+  },
+  "tool_pair_distribution": {
+    "send_whatsapp_message + set_timer": 156,
+    "search_web + write_and_run_script": 193,
+    "run_computer_command + search_web": 180,
+    "get_current_time + send_whatsapp_message": 124,
+    "handle_smart_home + media_control": 114,
+    "get_system_diagnostics + send_whatsapp_message": 184,
+    "search_web + send_whatsapp_message": 156
+  },
+  "slot_collisions_by_pair": [
+    {
+      "tool1": "handle_smart_home",
+      "tool2": "media_control",
+      "colliding_slot": "action",
+      "count": 114,
+      "example": {
+        "sample_idx": 1000,
+        "tool1": "handle_smart_home",
+        "tool1_arg": [
+          "action",
+          "switch off"
+        ],
+        "tool2": "media_control",
+        "tool2_arg": [
+          "action",
+          "set_volume"
+        ]
+      }
+    }
+  ],
+  "representability_audit": {
+    "raw_matched_spans": 6709,
+    "encoded_bio_spans": 6567,
+    "dropped_spans_total": 142,
+    "unrepresentable_share_pct": 2.1165598449843492,
+    "multi_tool_dictionary_collisions": 114,
+    "text_overlap_spans": 28
+  },
+  "model_performance_by_tool_count": {
+    "arn": {
+      "single_tool": {
+        "n_samples": 2819,
+        "tool_subset_acc": 0.617949627527492,
+        "tool_subset_acc_count": 1742,
+        "tool_micro_f1": 0.7629768605378361,
+        "tool_tp": 1830,
+        "tool_fp": 148,
+        "tool_fn": 989,
+        "span_f1": 0.6772098277322789,
+        "span_correct": 2398,
+        "span_gold_total": 3856,
+        "joint_em": 0.3706988293721178,
+        "joint_em_count": 1045
+      },
+      "multi_tool": {
+        "n_samples": 1107,
+        "tool_subset_acc": 0.8771454381210478,
+        "tool_subset_acc_count": 971,
+        "tool_micro_f1": 0.9620370370370371,
+        "tool_tp": 2078,
+        "tool_fp": 28,
+        "tool_fn": 136,
+        "span_f1": 0.7267303102625298,
+        "span_correct": 1827,
+        "span_gold_total": 2711,
+        "joint_em": 0.3721770551038844,
+        "joint_em_count": 412
+      }
+    },
+    "cls_crf": {
+      "single_tool": {
+        "n_samples": 2819,
+        "tool_subset_acc": 0.2018446257538134,
+        "tool_subset_acc_count": 569,
+        "tool_micro_f1": 0.32885330283099806,
+        "tool_tp": 575,
+        "tool_fp": 103,
+        "tool_fn": 2244,
+        "span_f1": 0.6558487371243121,
+        "span_correct": 2324,
+        "span_gold_total": 3856,
+        "joint_em": 0.08691025186236254,
+        "joint_em_count": 245
+      },
+      "multi_tool": {
+        "n_samples": 1107,
+        "tool_subset_acc": 0.05420054200542006,
+        "tool_subset_acc_count": 60,
+        "tool_micro_f1": 0.513595166163142,
+        "tool_tp": 765,
+        "tool_fp": 0,
+        "tool_fn": 1449,
+        "span_f1": 0.6744232698094283,
+        "span_correct": 1681,
+        "span_gold_total": 2711,
+        "joint_em": 0.004516711833785004,
+        "joint_em_count": 5
+      }
+    },
+    "joint_bert": {
+      "single_tool": {
+        "n_samples": 2819,
+        "tool_subset_acc": 0.20468251152891095,
+        "tool_subset_acc_count": 577,
+        "tool_micro_f1": 0.33069082672706684,
+        "tool_tp": 584,
+        "tool_fp": 129,
+        "tool_fn": 2235,
+        "span_f1": 0.18317929759704252,
+        "span_correct": 991,
+        "span_gold_total": 3856,
+        "joint_em": 0.01489890031926215,
+        "joint_em_count": 42
+      },
+      "multi_tool": {
+        "n_samples": 1107,
+        "tool_subset_acc": 0.057813911472448055,
+        "tool_subset_acc_count": 64,
+        "tool_micro_f1": 0.5040540540540541,
+        "tool_tp": 746,
+        "tool_fp": 0,
+        "tool_fn": 1468,
+        "span_f1": 0.2765307477752689,
+        "span_correct": 1041,
+        "span_gold_total": 2711,
+        "joint_em": 0.0,
+        "joint_em_count": 0
+      }
+    }
+  }
+}

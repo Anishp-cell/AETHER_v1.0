@@ -104,7 +104,37 @@ TAG_REGISTRY: List[str] = [
 TAG_TO_IDX: Dict[str, int] = {tag: idx for idx, tag in enumerate(TAG_REGISTRY)}
 IDX_TO_TAG: Dict[int, str] = {idx: tag for tag, idx in TAG_TO_IDX.items()}
 
-# ── 3. Tokenizer Instance ───────────────────────────────────────────────────
+# ── 3. Canonical Argument to Slot Mapping ────────────────────────────────────
+ARG_TO_SLOT_BASE: Dict[str, str] = {
+    # Standard tool arguments -> canonical slot base
+    "contact_name": "contact",
+    "contact": "contact",
+    "message": "message",
+    "text_to_type": "message",
+    "url": "url",
+    "app_name": "app",
+    "app": "app",
+    "device": "device",
+    "action": "action",
+    "action_type": "action",
+    "target": "target",
+    "query": "query",
+    "task_query": "query",
+    "minutes": "value",
+    "value": "value",
+    "reminder_message": "reminder",
+    "reminder": "reminder",
+    "instruction": "message",
+    "skill_name": "target",
+    "description": "message",
+    # Browser automation tool arguments
+    "task": "browser_task",
+    "site": "site",
+    "interact_task": "browser_task",
+    "browser_task": "browser_task",
+}
+
+# ── 4. Tokenizer Instance ───────────────────────────────────────────────────
 def get_tokenizer(model_name: str = "google/bert_uncased_L-2_H-128_A-2") -> BertTokenizerFast:
     """Load and return the fast WordPiece tokenizer."""
     try:

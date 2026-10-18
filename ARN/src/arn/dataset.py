@@ -13,7 +13,7 @@ import torch
 from torch.utils.data import Dataset
 from transformers import BertTokenizerFast
 
-from .tokenizer import TOKENIZER, TAG_TO_IDX, TOOL_TO_IDX, align_tags_to_tokens
+from .tokenizer import TOKENIZER, TAG_TO_IDX, TOOL_TO_IDX, ARG_TO_SLOT_BASE, align_tags_to_tokens
 
 
 class ARNDataset(Dataset):
@@ -45,6 +45,8 @@ class ARNDataset(Dataset):
         self.max_seq_len = max_length if max_length is not None else max_seq_len
         self.samples: List[Dict[str, Any]] = []
 
+        self.encoded: List[Dict[str, torch.Tensor]] = []
+        num_tools = len(TOOL_TO_IDX)
         with open(self.path, "r", encoding="utf-8") as f:
             for line_idx, line in enumerate(f):
                 line = line.strip()
@@ -55,8 +57,27 @@ class ARNDataset(Dataset):
                     parsed = self._parse_entry(obj)
                     if parsed is not None:
                         self.samples.append(parsed)
+                        input_ids, attention_mask, aligned_tag_ids = align_tags_to_tokens(
+                            parsed["words"],
+                            parsed["word_tags"],
+                            self.tokenizer,
+                            max_seq_len=self.max_seq_len
+                        )
+                        tool_labels = torch.zeros(num_tools, dtype=torch.float32)
+                        for tool_name in parsed["active_tools"]:
+                            if tool_name in TOOL_TO_IDX:
+                                tool_labels[TOOL_TO_IDX[tool_name]] = 1.0
+
+                        self.encoded.append({
+                            "input_ids": torch.tensor(input_ids, dtype=torch.long),
+                            "attention_mask": torch.tensor(attention_mask, dtype=torch.long),
+                            "tags": torch.tensor(aligned_tag_ids, dtype=torch.long),
+                            "tag_ids": torch.tensor(aligned_tag_ids, dtype=torch.long),
+                            "tool_labels": tool_labels
+                        })
                 except Exception:
                     continue
+
 
     def _parse_entry(self, obj: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         """Parse raw JSONL entry into user text and expected tools/slots."""
@@ -110,6 +131,7 @@ class ARNDataset(Dataset):
 
         # Match argument values to word spans
         for slot_name, slot_val in arguments.items():
+            base_slot = ARG_TO_SLOT_BASE.get(slot_name, slot_name)
             val_words = slot_val.split()
             if not val_words:
                 continue
@@ -120,8 +142,8 @@ class ARNDataset(Dataset):
             for i in range(len(words) - val_len + 1):
                 window_words = [words[i + k].lower().strip("',.\"?;:") for k in range(val_len)]
                 if window_words == val_lower:
-                    b_tag = f"B-{slot_name}"
-                    i_tag = f"I-{slot_name}"
+                    b_tag = f"B-{base_slot}"
+                    i_tag = f"I-{base_slot}"
                     if b_tag in TAG_TO_IDX:
                         word_tags[i] = b_tag
                         for k in range(1, val_len):
@@ -140,27 +162,5 @@ class ARNDataset(Dataset):
         return len(self.samples)
 
     def __getitem__(self, idx: int) -> Dict[str, torch.Tensor]:
-        sample = self.samples[idx]
+        return self.encoded[idx]
 
-        # Align word tags to subtoken IDs
-        input_ids, attention_mask, aligned_tag_ids = align_tags_to_tokens(
-            sample["words"],
-            sample["word_tags"],
-            self.tokenizer,
-            max_seq_len=self.max_seq_len
-        )
-
-        # Binary multi-label tool vector
-        num_tools = len(TOOL_TO_IDX)
-        tool_labels = torch.zeros(num_tools, dtype=torch.float32)
-        for tool_name in sample["active_tools"]:
-            if tool_name in TOOL_TO_IDX:
-                tool_labels[TOOL_TO_IDX[tool_name]] = 1.0
-
-        return {
-            "input_ids": torch.tensor(input_ids, dtype=torch.long),
-            "attention_mask": torch.tensor(attention_mask, dtype=torch.long),
-            "tags": torch.tensor(aligned_tag_ids, dtype=torch.long),
-            "tag_ids": torch.tensor(aligned_tag_ids, dtype=torch.long),
-            "tool_labels": tool_labels
-        }

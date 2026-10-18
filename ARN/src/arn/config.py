@@ -33,6 +33,7 @@ class ARNConfig:
     # Registries
     num_tools: int = 18
     num_tags: int = 26
+    pad_tag_idx: int = 25
     tools: List[str] = field(default_factory=lambda: list(TOOL_REGISTRY))
     tags: List[str] = field(default_factory=lambda: list(TAG_REGISTRY))
 
@@ -44,7 +45,8 @@ class ARNConfig:
     learning_rate: float = 3e-4
     weight_decay: float = 0.01
     batch_size: int = 32
-    epochs: int = 30
+    epochs: int = 100
+    patience: int = 10
     lambda_slot: float = 1.0
     seed: int = 42
 

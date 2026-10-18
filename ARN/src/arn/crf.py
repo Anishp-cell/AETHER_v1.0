@@ -108,13 +108,15 @@ class CRF(nn.Module):
         if hard_bio_mask:
             mapping = tag_to_idx if tag_to_idx is not None else TAG_TO_IDX
             t_mask, s_mask, e_mask = build_bio_transition_mask(mapping)
-            self.register_buffer("valid_trans_mask", t_mask)
-            self.register_buffer("valid_start_mask", s_mask)
-            self.register_buffer("valid_end_mask", e_mask)
+            self.register_buffer("valid_trans_mask", t_mask, persistent=False)
+            self.register_buffer("valid_start_mask", s_mask, persistent=False)
+            self.register_buffer("valid_end_mask", e_mask, persistent=False)
+            self.register_buffer("large_neg", torch.tensor(-10000.0), persistent=False)
         else:
             self.valid_trans_mask = None
             self.valid_start_mask = None
             self.valid_end_mask = None
+            self.large_neg = None
 
     def _get_effective_transitions(
         self
@@ -123,16 +125,9 @@ class CRF(nn.Module):
         if not self.hard_bio_mask or self.valid_trans_mask is None:
             return self.transitions, self.start_transitions, self.end_transitions
 
-        large_neg = -10000.0
-        masked_trans = torch.where(
-            self.valid_trans_mask, self.transitions, torch.tensor(large_neg, device=self.transitions.device)
-        )
-        masked_start = torch.where(
-            self.valid_start_mask, self.start_transitions, torch.tensor(large_neg, device=self.start_transitions.device)
-        )
-        masked_end = torch.where(
-            self.valid_end_mask, self.end_transitions, torch.tensor(large_neg, device=self.end_transitions.device)
-        )
+        masked_trans = torch.where(self.valid_trans_mask, self.transitions, self.large_neg)
+        masked_start = torch.where(self.valid_start_mask, self.start_transitions, self.large_neg)
+        masked_end = torch.where(self.valid_end_mask, self.end_transitions, self.large_neg)
         return masked_trans, masked_start, masked_end
 
     def forward_algorithm(self, emissions: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
@@ -159,12 +154,7 @@ class CRF(nn.Module):
 
         for t in range(1, seq_len):
             active = mask[:, t].bool().unsqueeze(1)         # (B, 1)
-            alpha_expanded = alpha.unsqueeze(2)             # (B, M, 1)
-            trans_expanded = trans.unsqueeze(0)             # (1, M, M)
-            emit_expanded = emissions[:, t, :].unsqueeze(1) # (B, 1, M)
-
-            scores = alpha_expanded + trans_expanded + emit_expanded  # (B, M, M)
-            alpha_next = torch.logsumexp(scores, dim=1)               # (B, M)
+            alpha_next = torch.logsumexp(alpha.unsqueeze(2) + trans, dim=1) + emissions[:, t, :]
             alpha = torch.where(active, alpha_next, alpha)
 
         terminal_scores = alpha + end_t.unsqueeze(0)
@@ -196,26 +186,21 @@ class CRF(nn.Module):
         batch_size, seq_len, _ = emissions.shape
         trans, start_t, end_t = self._get_effective_transitions()
 
-        # Start score
-        score = start_t[tags[:, 0]] + emissions[torch.arange(batch_size), 0, tags[:, 0]] * mask[:, 0]
+        b_idx = torch.arange(batch_size, device=emissions.device)
+        start_score = start_t[tags[:, 0]] + emissions[b_idx, 0, tags[:, 0]] * mask[:, 0]
 
-        for t in range(1, seq_len):
-            active = mask[:, t].bool()
-            from_tag = tags[:, t - 1]
-            to_tag = tags[:, t]
+        if seq_len > 1:
+            trans_steps = trans[tags[:, :-1], tags[:, 1:]]
+            emit_steps = torch.gather(emissions[:, 1:], 2, tags[:, 1:].unsqueeze(-1)).squeeze(-1)
+            active = mask[:, 1:]
+            step_scores = (trans_steps + emit_steps) * active
+            mid_score = step_scores.sum(dim=1)
+        else:
+            mid_score = 0.0
 
-            trans_step = trans[from_tag, to_tag]
-            emit_step = emissions[torch.arange(batch_size), t, to_tag]
-            step_score = trans_step + emit_step
-
-            score = score + torch.where(active, step_score, torch.zeros_like(score))
-
-        # Terminal end score at last active token
         last_indices = (mask.sum(dim=1).long() - 1).clamp(min=0)
-        last_tags = tags[torch.arange(batch_size), last_indices]
-        score = score + end_t[last_tags]
-
-        return score
+        last_tags = tags[b_idx, last_indices]
+        return start_score + mid_score + end_t[last_tags]
 
     def sentence_nll(
         self,

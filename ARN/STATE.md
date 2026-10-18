@@ -22,6 +22,7 @@ Status: DONE
 | **11** | Paper Compilation | DONE | `2bf9607` | Compiled LaTeX tables 1-4, generated numbers.tex, rewritten manuscripts, audit passed |
 | **12** | Release Staging | DONE | `40b812c` | Staged ../ARN-public clean git repo on main (7b28cc8); verified RELEASE_CHECKLIST.md |
 | **13** | Launch Drafts | DONE | `492a71a` | LinkedIn, X thread, Medium outline, FAQ authored with verified metrics |
-| **14** | Self-Audit & Final Report | DONE | `pending` | Full test sweep passed, banned claims grep 0 violations, FINAL_REPORT.md authored |
+| **14** | Self-Audit & Final Report | DONE | `67fba8f` | Full test sweep passed, banned claims grep 0 violations, FINAL_REPORT.md authored |
+
 
 

@@ -8005,6 +8005,118 @@
       "git_hash": "d327d74",
       "command": "python scripts/run_master_protocol.py",
       "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p5_crf_decomposition",
+      "protocol": "phase5_ablations",
+      "type": "crf_decomposition",
+      "metrics": {
+        "greedy": {
+          "strict_f1_mean": 0.014471418388778948,
+          "strict_f1_std": 0.006035742199932756,
+          "lenient_f1_mean": 0.26473993844550003,
+          "token_acc_mean": 0.2345840217988669,
+          "violation_rate_mean": 0.5867511181336613
+        },
+        "masked_viterbi": {
+          "strict_f1_mean": 0.08886890154291796,
+          "strict_f1_std": 0.03673010455524927,
+          "lenient_f1_mean": 0.428126904464815,
+          "token_acc_mean": 0.33775743725241913,
+          "violation_rate_mean": 0.0
+        },
+        "crf": {
+          "strict_f1_mean": 0.36577790807678445,
+          "strict_f1_std": 0.08721976782598814,
+          "lenient_f1_mean": 0.6200633214817939,
+          "token_acc_mean": 0.7286413266194114,
+          "violation_rate_mean": 0.0
+        }
+      },
+      "git_hash": "8a94a69",
+      "timestamp": "2026-10-18T16:19:51.416711Z"
+    },
+    {
+      "experiment_id": "p5_supervision_ablation",
+      "protocol": "phase5_ablations",
+      "type": "supervision_ablation",
+      "metrics": {
+        "tool_only": {
+          "tool_acc_mean": 0.4705942215348868,
+          "tool_acc_std": 0.057731995713922665,
+          "strict_f1_mean": 0.001975823070546295,
+          "strict_f1_std": 0.0025397927837339297,
+          "joint_em_mean": 0.0,
+          "joint_em_std": 0.0
+        },
+        "slot_only": {
+          "tool_acc_mean": 0.0,
+          "tool_acc_std": 0.0,
+          "strict_f1_mean": 0.6180200845301002,
+          "strict_f1_std": 0.042794552464079615,
+          "joint_em_mean": 0.0,
+          "joint_em_std": 0.0
+        },
+        "joint": {
+          "tool_acc_mean": 0.4556347551823074,
+          "tool_acc_std": 0.07400017644184356,
+          "strict_f1_mean": 0.5527060912690966,
+          "strict_f1_std": 0.05245389070099407,
+          "joint_em_mean": 0.247148308057892,
+          "joint_em_std": 0.07509037544129946
+        }
+      },
+      "git_hash": "8a94a69",
+      "timestamp": "2026-10-18T16:19:51.416711Z"
+    },
+    {
+      "experiment_id": "p5_learning_curves",
+      "protocol": "phase5_ablations",
+      "type": "learning_curves",
+      "metrics": {
+        "20%": {
+          "fraction": 0.2,
+          "n_clusters": 33,
+          "n_samples": 776,
+          "tool_subset_acc": 0.016177957532861477,
+          "strict_span_f1": 0.23701942132382084,
+          "joint_em": 0.0010111223458038423
+        },
+        "40%": {
+          "fraction": 0.4,
+          "n_clusters": 67,
+          "n_samples": 1328,
+          "tool_subset_acc": 0.11526794742163801,
+          "strict_span_f1": 0.33484162895927605,
+          "joint_em": 0.05864509605662285
+        },
+        "60%": {
+          "fraction": 0.6,
+          "n_clusters": 100,
+          "n_samples": 1964,
+          "tool_subset_acc": 0.1820020222446916,
+          "strict_span_f1": 0.39383070301291245,
+          "joint_em": 0.08190091001011122
+        },
+        "80%": {
+          "fraction": 0.8,
+          "n_clusters": 134,
+          "n_samples": 2576,
+          "tool_subset_acc": 0.17290192113245703,
+          "strict_span_f1": 0.3574593796159527,
+          "joint_em": 0.06673407482305359
+        },
+        "100%": {
+          "fraction": 1.0,
+          "n_clusters": 168,
+          "n_samples": 3198,
+          "tool_subset_acc": 0.28816986855409504,
+          "strict_span_f1": 0.4034030485643389,
+          "joint_em": 0.0839231547017189
+        }
+      },
+      "git_hash": "8a94a69",
+      "timestamp": "2026-10-18T16:19:51.416711Z"
     }
   ]
 }

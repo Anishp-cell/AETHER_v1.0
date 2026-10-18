@@ -12,9 +12,9 @@ Status: IN_PROGRESS
 | **1** | Split Redesign (Coverage Fix) | DONE | `0204f95` | Generated cv_manifest.json, audits, tests, PROTOCOL.md |
 | **2** | Results Ledger & Reconciliation | DONE | `2d1bf25` | Initialized ledger.json; reconciled 8 historical discrepancies |
 | **3** | Baseline Debugging | DONE | `d327d74` | Debugged TF-IDF kNN/LogReg, tested decoders & grad flow, recorded 60 ledger runs |
-| **4** | Master Protocol (Main Experiment) | DONE | Pending commit | 105 runs across 15 folds completed; unfrozen_cls_crf leads with 16.91% Joint EM (Outcome A) |
-| **5** | Ablations & Curves | IN_PROGRESS | - | CRF decomposition, supervision ablation, learning curves |
-| **6** | Error Analysis | PENDING | - | Per-tool/cluster failures, slot error breakdown |
+| **4** | Master Protocol (Main Experiment) | DONE | `8a94a69` | 105 runs across 15 folds completed; unfrozen_cls_crf leads with 16.91% Joint EM (Outcome A) |
+| **5** | Ablations & Curves | DONE | Pending commit | CRF decomp, supervision ablation, learning curves, multi-tool 114 count, argument audit |
+| **6** | Error Analysis | IN_PROGRESS | - | Per-tool/cluster failures, slot error breakdown |
 | **7** | Final Model Training | PENDING | - | Train on all 5k samples; package artifact & hashes |
 | **8** | Deployment Protocol | PENDING | - | Vectorized Viterbi, Fast tokenizer, ONNX INT8, latency/RAM |
 | **9** | Human Evaluation | PENDING | - | Check human_eval_filled.jsonl (run or park) |

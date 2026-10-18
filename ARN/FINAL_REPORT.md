@@ -60,7 +60,7 @@ Every phase from Phase 0 to Phase 14 was executed autonomously, systematically c
   - If frozen trunk matches or outperforms fine-tuning within 1.0%, select **Outcome B** (Frozen Trunk).
 
 ### 3.2 Master Protocol Results (Table 1 Summary)
-The fine-tuned `CLSCRFModel` decisively won under Decision Rule P-2:
+The fine-tuned `CLSCRFModel` was selected under Decision Rule P-2:
 
 | Model Architecture | Encoder Trunk | Joint EM (%) | Tool Subset Acc (%) | Strict Span F1 (%) | Lenient Span F1 (%) |
 | :--- | :--- | :---: | :---: | :---: | :---: |
@@ -110,7 +110,7 @@ Total Test Spans Analyzed: 8,506
 ```
 
 ### Key Takeaways:
-1. **Semantic Type Confusion is Minimal:** Label mismatches account for only 1.52% of all errors. When ARN identifies an argument, it selects the correct parameter slot type 98.48% of the time.
+1. **Semantic Type Confusion is Minimal:** Label mismatches account for only 1.52% of all 8,506 evaluated spans.
 2. **Boundary Shifts Dominate:** 42.71% of errors stem from minor boundary variations (such as extracting "the front door" instead of "front door"). Simple deterministic post-processing rules (e.g., stripping leading determiners) can recover substantial exact-match performance in production.
 
 ---
@@ -121,16 +121,19 @@ Benchmarked on host CPU hardware (**Intel Core i7-13700HX**, Windows 11, **ONNX 
 
 ### Latency Benchmarks (Engine & Pipeline)
 - **ONNX INT8 Engine Latency (1 Thread):**
-  - Mean: **1.39 ms** (p50: 1.25 ms, p90: 1.62 ms, p95: 1.83 ms, p99: 2.21 ms)
+  - Mean: **1.39 ms** (p50: 1.27 ms)
 - **ONNX INT8 Engine Latency (4 Threads):**
-  - Mean: **0.75 ms** (p50: 0.69 ms, p90: 0.98 ms, p95: 1.09 ms, p99: 1.45 ms)
+  - Mean: **0.75 ms** (p50: 0.70 ms)
 - **End-to-End Python Pipeline Latency:**
   - Tokenization + INT8 Forward Pass + Vectorized NumPy Viterbi + JSON Slot Extraction:
-  - 1 Thread: **3.10 ms** mean
-  - 4 Threads: **2.34 ms** mean
+  - 1 Thread: **3.10 ms** mean (p50: 2.98 ms)
+  - 4 Threads: **2.34 ms** mean (p50: 2.27 ms)
 
 ### Memory & Storage Footprints
-- **Isolated Peak RAM Footprint:** **4.21 MB RSS** (measured via clean isolated subprocess profiling).
+- **Subprocess-Isolated RAM Profiling (Accounting for Base Imports):**
+  - **Peak Process RSS:** **58.69 MB** (vs 70.75 MB for FP32 and 760.69 MB for PyTorch CPU).
+  - **Incremental Engine Overhead:** **12.37 MB** above runtime baseline.
+  - In a standalone lightweight micro-environment, isolated peak engine RSS is **4.21 MB**.
 - **Disk Storage:**
   - PyTorch Checkpoint (`model.pt`): 17.58 MB
   - ONNX FP32 Model: 16.75 MB
@@ -151,7 +154,7 @@ To maintain complete scientific integrity:
 ## 8. Release Staging & Open-Source Artifacts
 
 ### 8.1 Standalone Public Repository (`../ARN-public`)
-- Staged an immaculate, standalone Git repository at `d:\python\AETHER_V1.0\ARN-public` on branch `main` (`7b28cc8`).
+- Staged a clean, standalone Git repository at `d:\python\AETHER_V1.0\ARN-public` on branch `main` (`7b28cc8`).
 - Contains all verified modules, checkpoints, tests, datasets, and documentation.
 - All 9 standalone tests pass cleanly inside `ARN-public` in 24 seconds.
 

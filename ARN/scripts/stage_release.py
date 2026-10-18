@@ -1,7 +1,7 @@
 """
 Release Staging Script for ARN Public Repository (Phase 12).
 
-Stages a pristine, standalone public repository at `../ARN-public` for public GitHub release:
+Stages a clean, standalone public repository at `../ARN-public` for public GitHub release:
 1. Copies core modules, models, datasets, documentation, scripts, and tests.
 2. Excludes dirty history, scratch logs, temporary files, and __pycache__.
 3. Initializes a clean standalone Git repository on branch `main`.

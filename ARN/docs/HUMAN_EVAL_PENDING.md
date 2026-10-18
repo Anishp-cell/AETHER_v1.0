@@ -1,72 +1,44 @@
-# Human Evaluation Benchmark: Status & Deferred Execution
+# Human Evaluation Benchmark: Status & Protocol
 
-**Benchmark Identifier:** `ARN-HumanEval-250`  
+**Benchmark Identifier:** `ARN-HumanEval-Pending`  
 **Template Specification:** `ARN/data/human_eval_template.jsonl`  
-**Status:** **SEALED & PENDING EXTERNAL RATING** (Unannotated)  
-**Date Logged:** 2026-10-18  
+**Status:** **HUMAN-WRITTEN EVALUATION PENDING** (Awaiting User/Author Test Set)  
+**Date Updated:** 2026-10-18  
 
 ---
 
-## 1. Executive Summary
+## 1. Executive Summary & Provenance Disclosure
 
-In accordance with Hard Rule 1 (Zero Fabrication), Hard Rule 3 (Full Discrepancy Reconciliation), and the pre-registered protocol in `docs/PREREGISTRATION.md`, **no synthetic or LLM-generated human evaluation results are included in this repository or the research paper.**
-
-The benchmark template consisting of 250 balanced conversational test cases remains sealed and unannotated at `ARN/data/human_eval_template.jsonl`. It is strictly reserved for independent human evaluators.
-
----
-
-## 2. Benchmark Design & Composition
-
-The `ARN-HumanEval-250` benchmark was structured using `scripts/make_human_eval_template.py` to test out-of-distribution generalization across all 18 canonical agent tools:
-
-1. **Single-Tool Requests (180 instances):**
-   - Exactly 10 distinct scenario prompts per tool across all 18 canonical tools.
-   - Spans diverse functional domains: operating system execution (`run_computer_command`, `open_app_and_type`), web navigation (`browser_task`, `open_url`, `read_specific_url`, `search_web`, `search_and_read_web`), communication (`send_whatsapp_message`), home automation (`handle_smart_home`), media playback (`media_control`), system utilities (`get_current_time`, `get_system_diagnostics`, `set_timer`), computer vision (`analyze_screen_with_llava`), complex reasoning (`route_to_deepseek`), and automation authoring (`teach_new_skill`, `write_and_run_script`).
-
-2. **Multi-Tool Compositional Requests (70 instances):**
-   - Balanced pairs representing natural chained user workflows (e.g., `handle_smart_home` + `media_control`, `search_web` + `send_whatsapp_message`, `get_current_time` + `set_timer`).
-   - Requires simultaneous multi-label tool activation and disjoint argument extraction.
+In accordance with strict scientific integrity rules:
+1. **Agent-Generated Notice:** The 250 prompt structures generated in `ARN/data/human_eval_template.jsonl` were synthesized by an automated AI agent. They were **NOT written by the human author/user** and **must not be used as empirical evidence of human performance or generalization.**
+2. **Pending Human Benchmark:** The human evaluation test suite will be independently authored directly by the human user/author, consisting of **200–300 original utterances** with verbatim gold tools and slot argument boundaries.
+3. **Evaluation Protocol:** Evaluation will consist strictly of transparent classification accuracy against those human-authored gold labels:
+   - Tool Subset Exact Match
+   - Argument Slot Strict Span F1 & Lenient F1
+   - Joint Exact Match (both tools and arguments correct)
+4. **No Cohen's Kappa:** Since evaluation is measured directly against authoritative ground-truth gold labels written by the user rather than between subjective multi-annotator crowd workers, Cohen's kappa inter-rater agreement is unnecessary and removed.
+5. **Manuscript Statement:** All paper drafts, documentation, and model cards explicitly report:
+   > *"Human-written evaluation pending."*
 
 ---
 
-## 3. Strict Integrity Rules (Why Synthetic Annotations Are Prohibited)
+## 2. Benchmark Specification for Human Authoring
 
-1. **No LLM Auto-Filling:**
-   - Populating "human" evaluation test sets using frontier LLMs (e.g. GPT-4, Claude, DeepSeek) introduces severe stylistic leakage. Synthetic generation mirrors synthetic training biases, masking real out-of-distribution failure modes such as colloquial speech, typos, fragmented grammar, and implicit phrasing.
-   - Per `docs/HUMAN_EVAL_GUIDE.md`, all utterances and slot values must be hand-authored by human subjects.
-
-2. **Verbatim Substring Constraint:**
-   - Every extracted argument value assigned to `gold_slots` must appear verbatim in the utterance text. Non-verbatim or inferred arguments are disallowed or left blank.
-
-3. **Sealed Holdout:**
-   - Neither the model weights, tokenizer, nor hyperparameter selection may access or optimize against this benchmark prior to final evaluation.
+When authoring the 200–300 test utterances, the following rules apply:
+1. **Natural Vocabulary & Phrasing:** The author should write colloquial, natural, and complex instructions reflecting real-world usage (e.g. multi-intent requests, typos, conversational phrasing).
+2. **Verbatim Gold Arguments:** All gold argument values specified for a tool must appear verbatim as exact character substrings in the utterance. If an argument is implicit or non-verbatim, it should not be assigned to slot span extraction.
+3. **Gold Tool Ground Truth:** Annotate the exact set of active tools required to fulfill the user's intent from the 18 canonical agent tools.
 
 ---
 
-## 4. Evaluation Harness & Execution Instructions
+## 3. Evaluation Execution
 
-The evaluation harness has been implemented and unit-tested in `scripts/run_human_eval.py`.
+When the user-authored test set `ARN/data/human_eval_gold.jsonl` is ready:
+```bash
+.venv/Scripts/python ARN/scripts/run_human_eval.py \
+    --input ARN/data/human_eval_gold.jsonl \
+    --model-dir ARN/checkpoints/arn_final_model/ \
+    --output ARN/results/human_eval_results.json
+```
+Metrics will be appended to `ARN/results/ledger.json`.
 
-### When external annotator ratings become available:
-1. Save the filled and verified file to `ARN/data/human_eval_filled.jsonl`.
-2. Run integrity validation:
-   ```bash
-   .venv/Scripts/python ARN/scripts/make_human_eval_template.py --verify ARN/data/human_eval_filled.jsonl
-   ```
-3. Execute the automated evaluation harness against the final trained model:
-   ```bash
-   .venv/Scripts/python ARN/scripts/run_human_eval.py \
-       --input ARN/data/human_eval_filled.jsonl \
-       --model-dir ARN/checkpoints/arn_final_model/ \
-       --output ARN/results/human_eval_results.json
-   ```
-4. Update `ARN/results/ledger.json` with the empirical scores and publish the final report addendum.
-
----
-
-## 5. Paper & Public Disclosure Statement
-
-In all paper manuscripts, model cards, and documentation:
-- Cross-validation results across the 15 tool-stratified cluster folds (105 runs) represent the primary empirical evaluation.
-- The Human Evaluation section is explicitly reported as:
-  > *"The 250-utterance human evaluation benchmark is sealed and deferred to an independent multi-annotator user study to prevent synthetic artifact leakage. The complete evaluation protocol, template, and harness are published open-source to enable third-party reproduction."*

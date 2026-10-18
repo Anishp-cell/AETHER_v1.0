@@ -164,13 +164,15 @@ Statistical significance is established using 2,000-iteration cluster bootstrap 
 
 \input{tables/table1_main_results.tex}
 
-\subsection{Master Protocol Performance (Outcome A)}
+\subsection{Master Protocol Performance (Outcome A \& FAR Assessment)}
 
-Table~\ref{tab:main_results} summarizes the performance of all evaluated architectures across the 15 cluster-stratified folds.
+Table~\ref{tab:main_results} summarizes the performance of all ten evaluated architectures across the 15 cluster-stratified folds.
 
 Under the pre-registered decision rules, \textbf{Fine-Tuned CLS+CRF} achieves the top performance with a mean Joint Exact Match of \textbf{\PrimaryJointEM} (95\% bootstrap CI: [\PrimaryJointEMCILow, \PrimaryJointEMCIHigh]), a Tool Subset Accuracy of \textbf{\PrimaryToolAcc}, and a Strict Span F1 of \textbf{\PrimaryStrictFOne}.
 
 Comparing the fine-tuned CLS+CRF against the frozen trunk baseline establishes a paired delta of \textbf{\FineTuningJointEMDelta} in Joint Exact Match (bootstrap 95\% CI: [10.27\%, 16.68\%]) and a \textbf{\FineTuningToolAccDelta} improvement in Tool Subset Accuracy. Because the paired 95\% confidence interval strictly excludes zero, these results confirm \textbf{Outcome A} (fine-tuning superiority over a frozen backbone).
+
+\paragraph{Neutral Evaluation of FAR:} We explicitly evaluated the Feature-Attention-Routing (FAR) mechanism hypothesized to enhance multi-tool dispatch. Across all 15 cluster folds, FAR did not outperform the simpler pooled [CLS] head (frozen trunk: 3.44\% Joint EM with FAR vs 6.03\% with CLS; fine-tuned trunk: 5.90\% with FAR vs 16.91\% with CLS). Under our pre-registered decision rules, the simpler CLS+CRF architecture was therefore selected as the primary deployable model. This empirical negative result demonstrates that for compact encoder representations, simple linear projections over fine-tuned contextual embeddings are more sample-efficient than multi-head attention routing over frozen representations.
 
 \subsection{Ablation Analysis}
 
@@ -198,20 +200,21 @@ Table~\ref{tab:hardware_bench} details runtime latency and memory profiling cond
 
 When quantized to Dynamic INT8, the ONNX engine executes in \textbf{\ONNXINTOnetTLatencyMean} on a single thread and \textbf{\ONNXINTFourTLatencyMean} across 4 threads, representing a $10.9\times$ latency speedup over PyTorch CPU execution. The complete end-to-end Python inference pipeline---including tokenization, graph forward pass, vectorized NumPy Viterbi decoding, and slot extraction---executes in \textbf{\PipelineFourTLatencyMean} on 4 threads.
 
-The dynamic INT8 quantized model occupies \textbf{\ModelSizeONNXINT} on disk (a \INTCompressionRatio\ compression ratio relative to FP32). In subprocess-isolated memory profiling, peak process RSS is measured at \textbf{\IsolatedPeakRSS}, satisfying strict constraints for always-on edge background execution.
+The dynamic INT8 quantized model occupies \textbf{\ModelSizeONNXINT} on disk (a \INTCompressionRatio\ compression ratio relative to FP32). In subprocess-isolated memory profiling (measuring model footprint above runtime imports), the ONNX INT8 engine incurs an incremental overhead of \textbf{\IsolatedIncrRSS} (peak process RSS: \textbf{\IsolatedPeakRSS}, compared to \textbf{\PyTorchPeakRSS} for PyTorch CPU), satisfying strict constraints for always-on edge background execution.
 
 \section{Limitations}
 
-While ARN provides ultra-fast deterministic edge routing, several operational limitations should be noted:
+While ARN provides ultra-fast deterministic edge routing, several empirical limitations should be noted:
 \begin{enumerate}
-    \item \textbf{Boundary Shift Sensitivity:} As established in our error audit, 42.71\% of slot errors are boundary shifts. While lenient F1 reaches \PrimaryLenientFOne, applications requiring exact verbatim strings may benefit from token-level post-processing heuristics.
-    \item \textbf{Single-Cluster Tool Cold Start:} Rare tools with limited paraphrase cluster diversity (e.g., \texttt{open\_url}) cannot be evaluated under zero-shot cluster holdout splits and require continued template expansion.
-    \item \textbf{Sealed Human Evaluation Holdout:} To prevent synthetic bias leakage, our 250-utterance human evaluation benchmark remains sealed and unannotated, awaiting independent external multi-annotator user studies.
+    \item \textbf{Unseen-Template Generalization:} When evaluated across out-of-distribution semantic clusters with unseen phrasing templates, performance drops to \PrimaryToolAcc\ tool subset accuracy and \PrimaryJointEM\ Joint Exact Match (compared to $>85\%$ on random i.i.d. splits), demonstrating that template diversity in training remains essential for general-purpose deployment.
+    \item \textbf{Synthetic Training Distribution:} The \TotalDatasetSamples\ training samples were synthesized via structured template generation rather than collected from unconstrained human conversational interactions.
+    \item \textbf{Human Evaluation Status:} Human-written evaluation is pending. The preliminary 250 prompt structures published in the repository were agent-generated templates and are not used as empirical evidence; an independent evaluation suite authored directly by human users (200--300 utterances) is currently in progress.
+    \item \textbf{Boundary Shift Sensitivity:} As established in our error audit, \ErrorBoundaryShiftPct\ of slot errors are boundary shifts (e.g., inclusion or omission of leading determiners). While lenient F1 reaches \PrimaryLenientFOne, applications requiring exact character boundaries benefit from token-level post-processing heuristics.
 \end{enumerate}
 
 \section{Conclusion}
 
-We introduced the Aether Routing Network (ARN), an ultra-compact non-generative joint encoder-CRF architecture for real-time edge tool orchestration. By reformulating tool selection as multi-label classification and slot extraction as constrained CRF sequence tagging over a fine-tuned 4.39M parameter encoder, ARN achieves \PrimaryJointEM\ Joint Exact Match across 15 cluster-stratified folds while executing in \ONNXINTFourTLatencyMean\ with a \IsolatedPeakRSS\ peak memory footprint. The complete code, protocol manifests, and verified models are available at \url{https://github.com/Anishp-cell/ARN}.
+We presented an empirical study of compact non-generative edge tool orchestration. By reformulating tool selection as multi-label classification and slot extraction as constrained CRF sequence tagging over a fine-tuned 4.39M parameter encoder, the resulting CLS+CRF architecture achieves \PrimaryJointEM\ Joint Exact Match across 15 cluster-stratified folds while executing in \ONNXINTFourTLatencyMean\ with a \IsolatedIncrRSS\ incremental memory footprint. We also report an empirical negative result: the hypothesized Feature-Attention-Routing (FAR) head did not beat simpler pooled CLS representations. All code, data splits, and model checkpoints are available at \url{https://github.com/Anishp-cell/ARN}.
 
 \bibliography{aaai2027}
 

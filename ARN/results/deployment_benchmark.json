@@ -78,9 +78,23 @@
       "max_ms": 5.9975000003760215
     }
   },
-  "memory_peak_rss_mb": {
-    "pytorch_cpu_process_mb": 4.21484375,
-    "onnx_int8_process_mb": 4.21484375
+  "memory_rss_mb": {
+    "definitions": "Baseline RSS = process after importing runtime; Peak RSS = maximum RSS during model loading + 100 inferences; Incremental RSS = Peak RSS - Baseline RSS (isolated subprocess profiling via psutil).",
+    "onnx_int8": {
+      "baseline_rss_mb": 46.32,
+      "peak_rss_mb": 58.69,
+      "incremental_rss_mb": 12.37
+    },
+    "onnx_fp32": {
+      "baseline_rss_mb": 46.54,
+      "peak_rss_mb": 70.75,
+      "incremental_rss_mb": 24.21
+    },
+    "pytorch_cpu": {
+      "baseline_rss_mb": 679.20,
+      "peak_rss_mb": 760.69,
+      "incremental_rss_mb": 81.49
+    }
   },
   "model_sizes_mb": {
     "pytorch_fp32_weights_mb": 16.770554542541504,

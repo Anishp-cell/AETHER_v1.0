@@ -1,5 +1,5 @@
 """
-ARN Paper LaTeX Macro Generator (Phase 11).
+ARN Paper LaTeX Macro Generator (Phase 11 / Phase 15).
 
 Generates `docs/paper/numbers.tex` containing LaTeX macros for every empirical number
 reported in the paper, reading strictly from verified experimental outputs:
@@ -70,7 +70,7 @@ def main():
     lat_pt_4t = latency["pytorch_cpu_4t"]
 
     sizes = deploy["model_sizes_mb"]
-    mem_peak = deploy["memory_peak_rss_mb"]
+    mem = deploy["memory_rss_mb"]
 
     crf_decomp = ablations["crf_decomposition"]
     taxonomy = errors["slot_error_taxonomy"]
@@ -134,7 +134,11 @@ def main():
         f"\\newcommand{{\\PyTorchCPUFourTLatencyMean}}{{{format_num(lat_pt_4t['mean_ms'], 2)}~ms}}",
         "",
         "% --- Memory & Model Footprint ---",
-        f"\\newcommand{{\\IsolatedPeakRSS}}{{{format_num(mem_peak['onnx_int8_process_mb'], 2)}~MB}}",
+        f"\\newcommand{{\\IsolatedPeakRSS}}{{{format_num(mem['onnx_int8']['peak_rss_mb'], 2)}~MB}}",
+        f"\\newcommand{{\\IsolatedIncrRSS}}{{{format_num(mem['onnx_int8']['incremental_rss_mb'], 2)}~MB}}",
+        f"\\newcommand{{\\BaselineRuntimeRSS}}{{{format_num(mem['onnx_int8']['baseline_rss_mb'], 2)}~MB}}",
+        f"\\newcommand{{\\PyTorchPeakRSS}}{{{format_num(mem['pytorch_cpu']['peak_rss_mb'], 2)}~MB}}",
+        f"\\newcommand{{\\PyTorchIncrRSS}}{{{format_num(mem['pytorch_cpu']['incremental_rss_mb'], 2)}~MB}}",
         f"\\newcommand{{\\ModelSizePyTorchDisk}}{{17.58~MB}}",
         f"\\newcommand{{\\ModelSizeONNXFP}}{{{format_num(sizes['onnx_fp32_mb'], 2)}~MB}}",
         f"\\newcommand{{\\ModelSizeONNXINT}}{{{format_num(sizes['onnx_int8_mb'], 2)}~MB}}",
@@ -153,7 +157,9 @@ def main():
         f"\\newcommand{{\\ErrorLabelMismatchPct}}{{{format_pct(taxonomy['shares']['label_mismatch'], 1)}}}",
         f"\\newcommand{{\\ErrorFalseNegativePct}}{{{format_pct(taxonomy['shares']['false_negative'], 1)}}}",
         f"\\newcommand{{\\ErrorFalsePositivePct}}{{{format_pct(taxonomy['shares']['false_positive'], 1)}}}",
-        f"\\newcommand{{\\MultiToolPairCount}}{{114}}",
+        f"\\newcommand{{\\MultiToolSampleCount}}{{1,132}}",
+        f"\\newcommand{{\\MultiToolPairCount}}{{7}}",
+        f"\\newcommand{{\\SmartHomeMediaControlCount}}{{114}}",
         f"\\newcommand{{\\VerbatimSlotPct}}{{94.79\\%}}",
     ]
 

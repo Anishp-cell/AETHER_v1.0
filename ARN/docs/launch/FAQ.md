@@ -35,7 +35,7 @@ The CRF ensures that extracted argument spans strictly obey BIO sequence grammar
 - **Under-Extraction:** 6.44% (548 spans)
 - **Label Mismatches:** Only 1.52% (129 spans)
 
-The dominant source of error is minor boundary variation (e.g., including or omitting leading determiners like "the" or trailing prepositions). Semantically, the model identifies the correct entity type 98.48% of the time, explaining the high Lenient Span F1 (67.88%).
+The dominant source of error is minor boundary variation (e.g., including or omitting leading determiners like "the" or trailing prepositions). Severe entity label confusion is rare (only 1.52% of all 8,506 evaluated spans), explaining why Lenient Span F1 reaches 67.88%.
 
 ---
 

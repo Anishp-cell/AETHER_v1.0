@@ -42,8 +42,9 @@ if backend == "onnx":
 elif backend == "torch":
     import sys
     from pathlib import Path
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+    sys.path.insert(0, str(Path.cwd() / "src"))
     import torch
+    from arn.baselines import CLSCRFModel
     from arn import AetherRoutingNetwork, ARNConfig
 
 baseline_rss = proc.memory_info().rss
@@ -57,20 +58,31 @@ if backend == "onnx":
         "input_ids": np.ones((1, seq_len), dtype=np.int64),
         "attention_mask": np.ones((1, seq_len), dtype=np.int64)
     }
-    # Warmup and active inference
-    for _ in range(10):
+    # Warmup and active inference (100 runs)
+    for _ in range(100):
         session.run(None, inputs)
 elif backend == "torch":
     ckpt = torch.load(model_path, map_location="cpu")
-    config = ARNConfig()
-    model = AetherRoutingNetwork(config)
-    model.load_state_dict(ckpt["model_state_dict"])
+    if "model_state_dict" in ckpt:
+        state = ckpt["model_state_dict"]
+    else:
+        state = ckpt
+    num_tags = state["crf.transitions"].shape[0] if "crf.transitions" in state else 26
+    num_tools = state["tool_classifier.weight"].shape[0] if "tool_classifier.weight" in state else 18
+    try:
+        model = CLSCRFModel(num_tools=num_tools, num_tags=num_tags)
+        model.load_state_dict(state)
+    except Exception:
+        config = ARNConfig()
+        model = AetherRoutingNetwork(config)
+        model.load_state_dict(state)
     model.eval()
     inp = torch.ones((1, seq_len), dtype=torch.long)
     mask = torch.ones((1, seq_len), dtype=torch.long)
     with torch.no_grad():
-        for _ in range(10):
+        for _ in range(100):
             model(inp, mask)
+
 
 peak_rss = proc.memory_info().rss
 incremental_rss = peak_rss - baseline_rss

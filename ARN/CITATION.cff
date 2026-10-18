@@ -14,5 +14,5 @@ keywords:
   - "conditional random fields"
   - "cross-attention routing"
   - "efficient NLP"
-version: 0.2.0
-date-released: 2026-10-17
+version: 1.0.0
+date-released: 2026-10-19

@@ -124,6 +124,18 @@ This document records all non-trivial decisions made during the ARN project revi
   6. Verified that all 26 tests in the test suite pass cleanly (`pytest tests/`).
 - **Alternative Rejected:** Marking the goal complete without automated verification of paper macros or without full repository grep scans.
 
+### D-013: Paper Narrative, Hardware Metrics Dual-Reporting, and Public Staging Harmonization
+- **Date:** 2026-10-18
+- **Context:** Following completion of the 14-phase workflow, a post-audit harmonization was required to: (1) include all 10 evaluated models in Table 1 with clear distinction between master protocol and baseline/variants, (2) provide dual memory reporting (Peak Process RSS vs Incremental Overhead) in Table 2, (3) neutrally frame the FAR architectural hypothesis as an empirical negative result, (4) remove all potential promotional/puffery language across all documents, and (5) clearly state the operational limits (39.9% tool / 16.9% joint EM unseen-template generalization, synthetic training data, pending human evaluation, 42.71% boundary shift errors).
+- **Decision:**
+  1. Updated `scripts/make_tables.py` and `docs/paper/tables/table1_main_results.tex` to present all 10 models with paired bootstrap 95% CIs against the frozen trunk baseline.
+  2. Updated `docs/paper/tables/table2_hardware.tex` and `docs/paper/numbers.tex` to report both Peak Process RSS (58.69 MB INT8 / 760.69 MB PyTorch) and Incremental Runtime Overhead (12.37 MB INT8 / 81.49 MB PyTorch).
+  3. Formally named the deployable artifact `Fine-Tuned CLS+CRF` in the paper and framed FAR neutrally as an empirical negative result under the pre-registered decision rules.
+  4. Explicitly stated the four empirical limitations in Section 7 of both `AnonymousSubmission2027.tex` and `CameraReady2027.tex`.
+  5. Purged all promotional tone ("decisively", "pristine", "98.48%") across `FINAL_REPORT.md`, `FAQ.md`, and `X_THREAD.md`.
+  6. Re-staged the clean public release tree in `../ARN-public`.
+- **Alternative Rejected:** Omitting baseline/variant models from Table 1 or conflating peak subprocess memory with model-only incremental overhead.
+
 
 
 

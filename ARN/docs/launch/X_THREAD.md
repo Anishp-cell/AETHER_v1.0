@@ -48,7 +48,7 @@ We executed a pre-registered Master Protocol across 15 tool-stratified cluster f
 ---
 
 ### Tweet 5 (Outcome A Confirmed)
-The results? End-to-end fine-tuning decisively outperforms frozen trunk representations:
+The results? End-to-end fine-tuning statistically outperforms frozen trunk representations:
 
 - **Joint Exact Match:** 16.91% [95% CI: 13.51%, 20.59%]
 - **Tool Subset Accuracy:** 39.91% [95% CI: 34.78%, 45.45%]

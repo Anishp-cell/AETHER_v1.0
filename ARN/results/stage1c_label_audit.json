@@ -1,0 +1,381 @@
+{
+  "train": {
+    "total_samples": 3926,
+    "total_raw_args": 7061,
+    "total_matched_spans": 6709,
+    "tool_sample_count": {
+      "open_url": 37,
+      "open_app_and_type": 121,
+      "route_to_deepseek": 98,
+      "read_specific_url": 62,
+      "search_and_read_web": 91,
+      "send_whatsapp_message": 1091,
+      "set_timer": 254,
+      "browser_open_and_interact": 232,
+      "teach_new_skill": 103,
+      "write_and_run_script": 275,
+      "search_web": 668,
+      "run_computer_command": 305,
+      "analyze_screen_with_llava": 74,
+      "get_current_time": 237,
+      "handle_smart_home": 310,
+      "media_control": 281,
+      "get_system_diagnostics": 330,
+      "browser_task": 464
+    },
+    "tool_samples_with_gold_spans": {
+      "open_url": 37,
+      "open_app_and_type": 121,
+      "route_to_deepseek": 98,
+      "read_specific_url": 62,
+      "search_and_read_web": 91,
+      "send_whatsapp_message": 1091,
+      "set_timer": 254,
+      "browser_open_and_interact": 232,
+      "teach_new_skill": 103,
+      "write_and_run_script": 275,
+      "search_web": 668,
+      "run_computer_command": 305,
+      "analyze_screen_with_llava": 74,
+      "handle_smart_home": 310,
+      "media_control": 281,
+      "browser_task": 464
+    },
+    "tool_total_gold_spans": {
+      "open_url": 37,
+      "open_app_and_type": 242,
+      "route_to_deepseek": 98,
+      "read_specific_url": 62,
+      "search_and_read_web": 91,
+      "send_whatsapp_message": 2182,
+      "set_timer": 508,
+      "browser_open_and_interact": 464,
+      "teach_new_skill": 309,
+      "write_and_run_script": 275,
+      "search_web": 668,
+      "run_computer_command": 334,
+      "analyze_screen_with_llava": 74,
+      "get_current_time": 0,
+      "handle_smart_home": 620,
+      "media_control": 281,
+      "get_system_diagnostics": 0,
+      "browser_task": 464
+    },
+    "tool_raw_args": {
+      "open_url": {
+        "url": 37
+      },
+      "open_app_and_type": {
+        "app_name": 121,
+        "text_to_type": 121
+      },
+      "route_to_deepseek": {
+        "query": 98
+      },
+      "read_specific_url": {
+        "url": 62
+      },
+      "search_and_read_web": {
+        "query": 91
+      },
+      "send_whatsapp_message": {
+        "contact_name": 1091,
+        "message": 1091
+      },
+      "set_timer": {
+        "minutes": 254,
+        "reminder_message": 254
+      },
+      "browser_open_and_interact": {
+        "site": 232,
+        "interact_task": 232
+      },
+      "teach_new_skill": {
+        "skill_name": 103,
+        "description": 103,
+        "instruction": 103
+      },
+      "write_and_run_script": {
+        "instruction": 275
+      },
+      "search_web": {
+        "query": 668
+      },
+      "run_computer_command": {
+        "action_type": 305,
+        "target": 305
+      },
+      "analyze_screen_with_llava": {
+        "task_query": 74
+      },
+      "handle_smart_home": {
+        "device": 310,
+        "action": 310
+      },
+      "media_control": {
+        "action": 281,
+        "value": 76
+      },
+      "browser_task": {
+        "task": 464
+      }
+    },
+    "tool_arg_matched": {
+      "open_url": {
+        "url": 37
+      },
+      "open_app_and_type": {
+        "app_name": 121,
+        "text_to_type": 121
+      },
+      "route_to_deepseek": {
+        "query": 98
+      },
+      "read_specific_url": {
+        "url": 62
+      },
+      "search_and_read_web": {
+        "query": 91
+      },
+      "send_whatsapp_message": {
+        "contact_name": 1091,
+        "message": 1091
+      },
+      "set_timer": {
+        "minutes": 254,
+        "reminder_message": 254
+      },
+      "browser_open_and_interact": {
+        "site": 232,
+        "interact_task": 232
+      },
+      "teach_new_skill": {
+        "skill_name": 103,
+        "description": 103,
+        "instruction": 103
+      },
+      "write_and_run_script": {
+        "instruction": 275
+      },
+      "search_web": {
+        "query": 668
+      },
+      "run_computer_command": {
+        "target": 305,
+        "action_type": 29
+      },
+      "analyze_screen_with_llava": {
+        "task_query": 74
+      },
+      "handle_smart_home": {
+        "device": 310,
+        "action": 310
+      },
+      "media_control": {
+        "action": 205,
+        "value": 76
+      },
+      "browser_task": {
+        "task": 464
+      }
+    },
+    "slot_type_counts": {
+      "url": 99,
+      "app": 121,
+      "message": 1693,
+      "query": 931,
+      "contact": 1091,
+      "value": 330,
+      "reminder": 254,
+      "site": 232,
+      "browser_task": 696,
+      "target": 408,
+      "device": 310,
+      "action": 544
+    }
+  },
+  "val": {
+    "total_samples": 501,
+    "total_raw_args": 755,
+    "total_matched_spans": 704,
+    "tool_sample_count": {
+      "open_app_and_type": 58,
+      "route_to_deepseek": 40,
+      "read_specific_url": 28,
+      "search_and_read_web": 40,
+      "set_timer": 48,
+      "browser_open_and_interact": 68,
+      "teach_new_skill": 8,
+      "write_and_run_script": 35,
+      "run_computer_command": 34,
+      "analyze_screen_with_llava": 32,
+      "get_current_time": 13,
+      "media_control": 17,
+      "search_web": 27,
+      "handle_smart_home": 14,
+      "get_system_diagnostics": 34,
+      "send_whatsapp_message": 23,
+      "browser_task": 5
+    },
+    "tool_samples_with_gold_spans": {
+      "open_app_and_type": 58,
+      "route_to_deepseek": 40,
+      "read_specific_url": 28,
+      "search_and_read_web": 40,
+      "set_timer": 48,
+      "browser_open_and_interact": 68,
+      "teach_new_skill": 8,
+      "write_and_run_script": 35,
+      "run_computer_command": 34,
+      "analyze_screen_with_llava": 32,
+      "media_control": 17,
+      "search_web": 27,
+      "handle_smart_home": 14,
+      "send_whatsapp_message": 23,
+      "browser_task": 5
+    },
+    "tool_total_gold_spans": {
+      "open_app_and_type": 116,
+      "route_to_deepseek": 40,
+      "read_specific_url": 28,
+      "search_and_read_web": 40,
+      "set_timer": 96,
+      "browser_open_and_interact": 136,
+      "teach_new_skill": 24,
+      "write_and_run_script": 35,
+      "run_computer_command": 34,
+      "analyze_screen_with_llava": 32,
+      "get_current_time": 0,
+      "media_control": 17,
+      "search_web": 27,
+      "handle_smart_home": 28,
+      "get_system_diagnostics": 0,
+      "send_whatsapp_message": 46,
+      "browser_task": 5
+    },
+    "tool_raw_args": {
+      "open_app_and_type": {
+        "app_name": 58,
+        "text_to_type": 58
+      },
+      "route_to_deepseek": {
+        "query": 40
+      },
+      "read_specific_url": {
+        "url": 28
+      },
+      "search_and_read_web": {
+        "query": 40
+      },
+      "set_timer": {
+        "minutes": 48,
+        "reminder_message": 48
+      },
+      "browser_open_and_interact": {
+        "site": 68,
+        "interact_task": 68
+      },
+      "teach_new_skill": {
+        "skill_name": 8,
+        "description": 8,
+        "instruction": 8
+      },
+      "write_and_run_script": {
+        "instruction": 35
+      },
+      "run_computer_command": {
+        "action_type": 34,
+        "target": 34
+      },
+      "analyze_screen_with_llava": {
+        "task_query": 32
+      },
+      "media_control": {
+        "action": 17,
+        "value": 17
+      },
+      "search_web": {
+        "query": 27
+      },
+      "handle_smart_home": {
+        "device": 14,
+        "action": 14
+      },
+      "send_whatsapp_message": {
+        "contact_name": 23,
+        "message": 23
+      },
+      "browser_task": {
+        "task": 5
+      }
+    },
+    "tool_arg_matched": {
+      "open_app_and_type": {
+        "app_name": 58,
+        "text_to_type": 58
+      },
+      "route_to_deepseek": {
+        "query": 40
+      },
+      "read_specific_url": {
+        "url": 28
+      },
+      "search_and_read_web": {
+        "query": 40
+      },
+      "set_timer": {
+        "minutes": 48,
+        "reminder_message": 48
+      },
+      "browser_open_and_interact": {
+        "site": 68,
+        "interact_task": 68
+      },
+      "teach_new_skill": {
+        "skill_name": 8,
+        "description": 8,
+        "instruction": 8
+      },
+      "write_and_run_script": {
+        "instruction": 35
+      },
+      "run_computer_command": {
+        "target": 34
+      },
+      "analyze_screen_with_llava": {
+        "task_query": 32
+      },
+      "media_control": {
+        "value": 17
+      },
+      "search_web": {
+        "query": 27
+      },
+      "handle_smart_home": {
+        "device": 14,
+        "action": 14
+      },
+      "send_whatsapp_message": {
+        "contact_name": 23,
+        "message": 23
+      },
+      "browser_task": {
+        "task": 5
+      }
+    },
+    "slot_type_counts": {
+      "app": 58,
+      "message": 132,
+      "query": 139,
+      "url": 28,
+      "value": 65,
+      "reminder": 48,
+      "site": 68,
+      "browser_task": 73,
+      "target": 42,
+      "device": 14,
+      "action": 14,
+      "contact": 23
+    }
+  }
+}

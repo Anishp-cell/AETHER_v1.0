@@ -1,0 +1,42 @@
+{
+  "start_train": {
+    "num_samples": 3926,
+    "avg_active_tokens_per_sample": 19.196128374936322,
+    "tool_bce": 0.7035901261663413,
+    "raw_slot_nll": 74.24690098113936,
+    "slot_loss_per_token": 3.894175874901498,
+    "lambda_slot": 1.0,
+    "lambda_times_slot": 3.894175874901498,
+    "total_loss": 4.597766001067839
+  },
+  "start_val": {
+    "num_samples": 501,
+    "avg_active_tokens_per_sample": 16.64870259481038,
+    "tool_bce": 0.7031440976375115,
+    "raw_slot_nll": 66.03566548543537,
+    "slot_loss_per_token": 3.973116876598366,
+    "lambda_slot": 1.0,
+    "lambda_times_slot": 3.973116876598366,
+    "total_loss": 4.676260974235878
+  },
+  "end_train": {
+    "num_samples": 3926,
+    "avg_active_tokens_per_sample": 19.196128374936322,
+    "tool_bce": 0.07805874122005911,
+    "raw_slot_nll": 6.641962466286083,
+    "slot_loss_per_token": 0.41760673100281537,
+    "lambda_slot": 1.0,
+    "lambda_times_slot": 0.41760673100281537,
+    "total_loss": 0.4956654722228745
+  },
+  "end_val": {
+    "num_samples": 501,
+    "avg_active_tokens_per_sample": 16.64870259481038,
+    "tool_bce": 0.17621680427930075,
+    "raw_slot_nll": 6.256811511254834,
+    "slot_loss_per_token": 0.4092991233109952,
+    "lambda_slot": 1.0,
+    "lambda_times_slot": 0.4092991233109952,
+    "total_loss": 0.5855159275902959
+  }
+}

@@ -38,6 +38,11 @@ _archive/**/__pycache__/
 .cache/
 *.log
 
+# Allow paper manuscripts and tables
+!docs/paper/*.tex
+!docs/paper/**/*.tex
+!docs/paper/*.bib
+
 # OS artifacts
 .DS_Store
 Thumbs.db

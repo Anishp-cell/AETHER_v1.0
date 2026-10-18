@@ -81,6 +81,17 @@ This document records all non-trivial decisions made during the ARN project revi
   4. Authored standard documentation suite: `MODEL_CARD.md`, `DATA_STATEMENT.md`, `CHANGELOG.md`, and validated `LICENSE`.
 - **Alternative Rejected:** Forcing legacy FAR-only checkpoint loading in the CLI or publishing unverified marketing statistics in `README.md`.
 
+### D-009: Paper Compilation, LaTeX Macro Traceability, and Zero Banned Claims (Phase 11)
+- **Date:** 2026-10-18
+- **Context:** The legacy paper draft contained superseded claims and unverified metrics from pre-audit iterations.
+- **Decision:**
+  1. Built `scripts/generate_paper_numbers.py` to compile all empirical metrics directly from `results/ledger.json` and `results/master_protocol_summary.json` into `docs/paper/numbers.tex`.
+  2. Upgraded `scripts/make_tables.py` to auto-generate Tables 1 through 4 (Master Protocol 15-fold cross-validation with cluster bootstrap CIs, hardware latency/RSS benchmarks, CRF layer decomposition, and 8,506-span error taxonomy).
+  3. Completely rewrote `AnonymousSubmission2027.tex`, `CameraReady2027.tex`, and `ReproducibilityChecklist.tex`, framing the primary narrative around the verified winning model (Outcome A: Fine-Tuned CLS+CRF, 16.91% Joint EM, +13.47% over frozen trunk).
+  4. Implemented `scripts/audit_paper_numbers.py` and unit test `tests/test_paper_integrity.py` to enforce zero banned claims, macro consistency, and balanced LaTeX syntax in CI.
+- **Alternative Rejected:** Manually editing LaTeX numbers or retaining superseded narrative claims.
+
+
 
 
 

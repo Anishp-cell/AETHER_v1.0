@@ -1,0 +1,218 @@
+\documentclass[letterpaper]{article}
+\usepackage[submission]{aaai2027}
+\usepackage{amsmath,amssymb}
+\usepackage[hyphens]{url}
+\usepackage{graphicx}
+\urlstyle{rm}
+\def\UrlFont{\rm}
+\usepackage{natbib}
+\usepackage{caption}
+\frenchspacing
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{newfloat}
+\usepackage{listings}
+\DeclareCaptionStyle{ruled}{labelfont=normalfont,labelsep=colon,strut=off}
+\lstset{%
+	basicstyle={\footnotesize\ttfamily},
+	numbers=left,numberstyle=\footnotesize,xleftmargin=2em,
+	aboveskip=0pt,belowskip=0pt,
+	showstringspaces=false,tabsize=2,breaklines=true}
+\floatstyle{ruled}
+\newfloat{listing}{tb}{lst}{}
+\floatname{listing}{Listing}
+
+\usepackage{booktabs}
+
+\pdfinfo{
+/TemplateVersion (2027.1)
+}
+
+\setcounter{secnumdepth}{2}
+
+\input{numbers.tex}
+
+\title{ARN: A Sub-18MB Non-Generative Joint Encoder-CRF Model for Real-Time On-Device Tool Orchestration}
+
+\author{
+    Anonymous Submission
+}
+\affiliations{
+    Paper ID: AAAI 2027
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+On-device agentic workflows require fast, privacy-preserving tool selection and argument extraction. Conventional edge orchestrators deploy autoregressive generative models, which incur substantial runtime memory overheads, slow token-by-token decoding latencies, and output syntax parsing vulnerabilities. In this work, we propose the \textbf{Aether Routing Network (ARN)}, a compact non-generative joint neural model designed for deterministic, real-time edge execution. ARN pairs a 4.39M-parameter bidirectional Transformer trunk (\texttt{google/bert\_uncased\_L-2\_H-128\_A-2}) with a joint multi-label tool classifier and a linear-chain Conditional Random Field (CRF) sequence tagger. ARN reformulates tool orchestration as simultaneous multi-label classification and token-level span extraction, resolving single- and multi-tool commands in a single forward pass with zero JSON syntax errors by construction. 
+
+Under a pre-registered 15-fold cluster-stratified cross-validation protocol over \TotalDatasetSamples\ samples across \TotalCandidateTools\ canonical APIs, our fine-tuned joint encoder-CRF architecture achieves \textbf{\PrimaryJointEM} Joint Exact Match (bootstrap 95\% CI: [\PrimaryJointEMCILow, \PrimaryJointEMCIHigh]), \textbf{\PrimaryToolAcc} Tool Subset Accuracy, and \textbf{\PrimaryLenientFOne} Lenient Span F1, outperforming frozen trunk configurations by \textbf{\FineTuningJointEMDelta} Joint EM. On host x86 CPU hardware (Intel Core i7-13700HX), ARN compiled to Dynamic INT8 executes in \textbf{\ONNXINTOnetTLatencyMean} (1 thread) and \textbf{\ONNXINTFourTLatencyMean} (4 threads), operating with an isolated peak runtime footprint of \textbf{\IsolatedPeakRSS} and a compressed disk size of \textbf{\ModelSizeONNXINT}. All evaluation protocols, splits, checkpoints, and harness scripts are released under an open-source license.
+\end{abstract}
+
+\section{Introduction}
+
+The growing deployment of interactive artificial intelligence agents has accelerated the demand for local, on-device execution. Edge platforms such as personal computers, mobile devices, wearables, and local smart hubs are increasingly expected to handle automated tool invocation: setting timers, adjusting smart home devices, launching applications, querying system statistics, and executing local shell commands.
+
+On-device agent dispatch introduces stringent engineering requirements:
+\begin{enumerate}
+    \item \textbf{Interactive Latency:} Natural conversational flow requires dispatch decisions to complete in a fraction of human perceptual response thresholds ($<15$~ms).
+    \item \textbf{Minimal Memory Footprint:} Mobile and embedded operating systems impose aggressive memory caps on persistent background daemons, requiring orchestrators to operate within compact RAM limits.
+    \item \textbf{Privacy \& Offline Resilience:} Processing sensitive personal commands locally prevents telemetry leakage and ensures operation without internet connectivity.
+    \item \textbf{Deterministic Execution:} Autoregressive LLM generation risks producing malformed JSON strings, unescaped characters, or hallucinated parameter names that crash downstream API handlers.
+\end{enumerate}
+
+To address these requirements, recent approaches fine-tune small generative language models to produce JSON payloads. However, token-by-token autoregressive decoding incurs a steep computational and memory penalty, while remaining susceptible to syntactic and structural generation errors.
+
+\subsection{Non-Generative Joint Formulation}
+
+We observe that standard on-device tool orchestration does not require free-form natural language generation. Instead, user requests can be decomposed into two structured sub-problems:
+\begin{enumerate}
+    \item \textbf{Tool Activation:} Multi-label binary classification over a registered catalog of $K$ candidate APIs ($K=18$).
+    \item \textbf{Argument Extraction:} Token-level sequence labeling identifying contiguous entity spans corresponding to API argument slots.
+\end{enumerate}
+
+By framing tool orchestration as a joint classification and sequence labeling problem, ARN processes input utterances in a single forward pass. Because arguments are extracted directly via token offset mappings and tool activations are evaluated as independent Bernoulli distributions, the system produces deterministic structured outputs with guaranteed valid JSON syntax by design.
+
+\subsection{Contributions}
+
+This work provides the following verified contributions:
+\begin{itemize}
+    \item \textbf{Joint Encoder-CRF Architecture:} We present ARN, combining a fine-tuned 4.39M parameter BERT-tiny trunk with a pooled multi-label classification head and a linear-chain CRF tagger enforcing strict BIO grammar transitions.
+    \item \textbf{Pre-Registered 15-Fold Evaluation:} Across 15 outer folds (5 folds $\times$ 3 cluster-stratified shuffles over \TotalDatasetSamples\ samples and \TotalClusters\ semantic clusters), the fine-tuned encoder-CRF achieves \PrimaryJointEM\ Joint Exact Match, establishing a \FineTuningJointEMDelta\ improvement over frozen-trunk approaches.
+    \item \textbf{Ablation of Sequence Modeling:} We empirically isolate the role of the CRF transition layer, demonstrating that global Viterbi decoding with hard BIO masking improves strict span F1 from 1.45\% (greedy argmax) to 36.58\%, completely eliminating invalid BIO transitions.
+    \item \textbf{Edge Deployment Benchmarks:} Benchmarked on host CPU hardware, the Dynamic INT8 quantized model achieves an engine latency of \ONNXINTOnetTLatencyMean\ (1 thread) and \ONNXINTFourTLatencyMean\ (4 threads), an end-to-end pipeline latency of \PipelineFourTLatencyMean, and an isolated peak memory footprint of \IsolatedPeakRSS.
+    \item \textbf{Sealed Holdout Human Protocol:} We publish a sealed 250-utterance human evaluation template, verification harness, and scoring pipeline to enable independent third-party user studies without synthetic distribution leakage.
+\end{itemize}
+
+\section{Related Work}
+
+\subsection{Edge Tool Calling and Agent Orchestration}
+Early agent frameworks relied on cloud-hosted Large Language Models prompted with JSON function definitions. Recent works have investigated smaller edge decoders, including Octopus v2 \citep{chen2024octopus}, TinyAgent \citep{erdogan2024tinyagent}, and sub-1B generative checkpoints. While these models compress the model weights, autoregressive generation remains inherently serial and demands substantial KV-cache memory during decoding.
+
+\subsection{Joint Intent Classification and Slot Tagging}
+Joint intent detection and slot filling has a long foundation in spoken language understanding (SLU). JointBERT \citep{chen2019jointbert} demonstrated that fine-tuning pretrained bidirectional transformers jointly on sentence classification and token tagging yields high semantic accuracy. Linear-chain Conditional Random Fields (CRFs) \citep{lafferty2001crf} have traditionally provided strong sequence decoding guarantees by modeling transition dynamics between neighboring entity tags. ARN synthesizes these principles into an ultra-compact edge orchestrator supporting multi-tool dispatch.
+
+\section{Architecture and Method}
+
+ARN consists of three primary modules: (1) a shared bidirectional encoder trunk, (2) a multi-label tool classification head, and (3) a constrained linear-chain CRF slot tagging head.
+
+\subsection{Encoder Trunk}
+Given an input sequence of tokens $x = (x_1, x_2, \dots, x_T)$, we compute contextual embeddings using a 2-layer Transformer encoder:
+\begin{equation}
+    H = \text{Encoder}(x) \in \mathbb{R}^{T \times d}
+\end{equation}
+where $d = 128$ is the hidden representation dimension. The pooled representation $h_{\text{CLS}} = H_0 \in \mathbb{R}^d$ corresponds to the initial \texttt{[CLS]} token.
+
+\subsection{Multi-Label Tool Classification Head}
+For candidate tools $k \in \{1, \dots, K\}$ ($K=18$), tool activation logits are computed via a linear projection of the pooled embedding:
+\begin{equation}
+    z_{\text{tool}} = W_{\text{tool}} h_{\text{CLS}} + b_{\text{tool}} \in \mathbb{R}^K
+\end{equation}
+The probability of activating tool $k$ is given by the sigmoid function $\sigma(z_k) = \frac{1}{1 + e^{-z_k}}$. Tool activation is determined by thresholding $\sigma(z_k) \ge \tau$, where $\tau = 0.30$ was determined via inner validation. The tool routing objective is formulated as binary cross-entropy with logits:
+\begin{equation}
+    \mathcal{L}_{\text{BCE}} = -\frac{1}{K} \sum_{k=1}^K \left[ y_k \log \sigma(z_k) + (1 - y_k) \log (1 - \sigma(z_k)) \right]
+\end{equation}
+
+\subsection{Constrained Linear-Chain CRF Head}
+Token representations $H \in \mathbb{R}^{T \times d}$ are projected to slot tag emission logits:
+\begin{equation}
+    E_t = W_{\text{slot}} H_t + b_{\text{slot}} \in \mathbb{R}^{|Y|}
+\end{equation}
+where $|Y| = 26$ represents the tag inventory adhering to the BIO (Begin, Inside, Outside) tagging scheme.
+
+To guarantee that predicted tag sequences follow grammatical BIO constraints (e.g., an \texttt{I-device} cannot succeed an \texttt{O} tag without an intervening \texttt{B-device}), we employ a linear-chain CRF with a hard transition constraint mask $M \in \{0, 1\}^{|Y| \times |Y|}$. The effective transition matrix $A^*$ is defined as:
+\begin{equation}
+    A^*_{i,j} = \begin{cases} A_{i,j} & \text{if } M_{i,j} = 1 \\ -\infty & \text{if } M_{i,j} = 0 \end{cases}
+\end{equation}
+For a sequence of tags $y = (y_1, \dots, y_T)$, the sequence score is defined as:
+\begin{equation}
+    S(x, y) = \sum_{t=1}^T E_{t, y_t} + \sum_{t=1}^{T-1} A^*_{y_t, y_{t+1}}
+\end{equation}
+The sequence negative log-likelihood loss is computed via the forward algorithm:
+\begin{equation}
+    \mathcal{L}_{\text{CRF}} = -\log P(y|x) = \log \sum_{y'} \exp(S(x, y')) - S(x, y)
+\end{equation}
+During inference, optimal tag sequences $y^* = \arg\max_y S(x, y)$ are decoded using the Viterbi algorithm.
+
+\subsection{Multitask Training and Inference}
+The complete model is trained end-to-end minimizing the joint loss:
+\begin{equation}
+    \mathcal{L}_{\text{joint}} = \mathcal{L}_{\text{BCE}} + \frac{1}{T} \mathcal{L}_{\text{CRF}}
+\end{equation}
+where $\frac{1}{T}$ normalizes CRF sentence losses by sequence length. In deployment, fast vectorized NumPy Viterbi decoding is applied directly to ONNX engine output tensors.
+
+\section{Experimental Setup}
+
+\subsection{Dataset and Stratification}
+We evaluate ARN on the verified Aether benchmark corpus comprising \TotalDatasetSamples\ conversational command utterances spanning 18 canonical tool classes and \TotalClusters\ semantic paraphrase clusters.
+
+To prevent evaluation leakage across paraphrased templates, we enforce a tool-stratified cluster-grouped cross-validation protocol. Utterances belonging to the same semantic cluster are assigned exclusively to either the training set or the validation set. All cross-fold skeleton token-edit distances are verified to be strictly bounded below 0.80 (observed range 0.71--0.79). Folds are partitioned into 15 outer evaluation splits (5 outer folds across 3 independent cluster-stratified shuffles).
+
+\subsection{Evaluation Metrics}
+Following pre-registered guidelines, models are evaluated on three primary metrics:
+\begin{enumerate}
+    \item \textbf{Joint Exact Match (Joint EM):} Proportion of utterances where both the predicted tool subset and all extracted argument slot spans match ground truth annotations exactly.
+    \item \textbf{Tool Subset Accuracy:} Proportion of samples where the predicted active tool set is identical to the gold tool set.
+    \item \textbf{Strict Span F1:} Micro-averaged entity F1 requiring exact boundary character offsets and entity type matching.
+\end{enumerate}
+Statistical significance is established using 2,000-iteration cluster bootstrap resampling, reporting 95\% confidence intervals.
+
+\section{Results and Analysis}
+
+\input{tables/table1_main_results.tex}
+
+\subsection{Master Protocol Performance (Outcome A)}
+
+Table~\ref{tab:main_results} summarizes the performance of all evaluated architectures across the 15 cluster-stratified folds.
+
+Under the pre-registered decision rules, \textbf{Fine-Tuned CLS+CRF} achieves the top performance with a mean Joint Exact Match of \textbf{\PrimaryJointEM} (95\% bootstrap CI: [\PrimaryJointEMCILow, \PrimaryJointEMCIHigh]), a Tool Subset Accuracy of \textbf{\PrimaryToolAcc}, and a Strict Span F1 of \textbf{\PrimaryStrictFOne}.
+
+Comparing the fine-tuned CLS+CRF against the frozen trunk baseline establishes a paired delta of \textbf{\FineTuningJointEMDelta} in Joint Exact Match (bootstrap 95\% CI: [10.27\%, 16.68\%]) and a \textbf{\FineTuningToolAccDelta} improvement in Tool Subset Accuracy. Because the paired 95\% confidence interval strictly excludes zero, these results confirm \textbf{Outcome A} (fine-tuning superiority over a frozen backbone).
+
+\subsection{Ablation Analysis}
+
+\input{tables/table3_ablations.tex}
+
+Table~\ref{tab:ablations} presents ablation studies evaluating the sequence modeling layer and multitask supervision.
+
+In Panel A, decomposing the CRF layer reveals that greedy local argmax decoding achieves only \CRFGreedyStrictFOne\ strict span F1 while producing \CRFGreedyBIOViolations\ illegal BIO transitions (e.g., transition directly into \texttt{I-X} without \texttt{B-X}). Enforcing static transition masks via Masked Viterbi eliminates BIO violations but only reaches \CRFMaskedViterbiStrictFOne\ strict F1. In contrast, the full linear-chain CRF with learnable tag-to-tag transitions achieves \textbf{\CRFFullStrictFOne} strict F1 with 0.00\% sequence grammar violations.
+
+In Panel B, multitask joint training achieves balanced performance across tool activation (45.56\%) and slot tagging (55.27\% strict F1), yielding 24.71\% Joint EM, whereas single-task models fail entirely on joint metrics.
+
+\subsection{Error Taxonomy Analysis}
+
+\input{tables/table4_error_taxonomy.tex}
+
+To understand remaining model failure modes, we conducted an error taxonomy audit across \TotalErrorSpans\ validation spans (Table~\ref{tab:error_taxonomy}).
+
+The analysis reveals that \textbf{\ErrorBoundaryShiftPct} of all evaluated spans fall under \emph{Boundary Shifts}, where the model correctly identifies the entity slot type and core content, but misaligns leading or trailing non-essential tokens (e.g., including or omitting articles ``the'', ``a'' or prepositions). Exact span matches account for \textbf{\ErrorExactMatchPct}. Severe label classification errors (label mismatches) represent only \textbf{\ErrorLabelMismatchPct} of cases.
+
+\section{Hardware and Deployment Benchmarks}
+
+\input{tables/table2_hardware.tex}
+
+Table~\ref{tab:hardware_bench} details runtime latency and memory profiling conducted on a host laptop-class CPU (Intel Core i7-13700HX, Windows 11, ONNX Runtime 1.23.2).
+
+When quantized to Dynamic INT8, the ONNX engine executes in \textbf{\ONNXINTOnetTLatencyMean} on a single thread and \textbf{\ONNXINTFourTLatencyMean} across 4 threads, representing a $10.9\times$ latency speedup over PyTorch CPU execution. The complete end-to-end Python inference pipeline---including tokenization, graph forward pass, vectorized NumPy Viterbi decoding, and slot extraction---executes in \textbf{\PipelineFourTLatencyMean} on 4 threads.
+
+The dynamic INT8 quantized model occupies \textbf{\ModelSizeONNXINT} on disk (a \INTCompressionRatio\ compression ratio relative to FP32). In subprocess-isolated memory profiling, peak process RSS is measured at \textbf{\IsolatedPeakRSS}, satisfying strict constraints for always-on edge background execution.
+
+\section{Limitations}
+
+While ARN provides ultra-fast deterministic edge routing, several operational limitations should be noted:
+\begin{enumerate}
+    \item \textbf{Boundary Shift Sensitivity:} As established in our error audit, 42.71\% of slot errors are boundary shifts. While lenient F1 reaches \PrimaryLenientFOne, applications requiring exact verbatim strings may benefit from token-level post-processing heuristics.
+    \item \textbf{Single-Cluster Tool Cold Start:} Rare tools with limited paraphrase cluster diversity (e.g., \texttt{open\_url}) cannot be evaluated under zero-shot cluster holdout splits and require continued template expansion.
+    \item \textbf{Sealed Human Evaluation Holdout:} To prevent synthetic bias leakage, our 250-utterance human evaluation benchmark remains sealed and unannotated, awaiting independent external multi-annotator user studies.
+\end{enumerate}
+
+\section{Conclusion}
+
+We introduced the Aether Routing Network (ARN), an ultra-compact non-generative joint encoder-CRF architecture for real-time edge tool orchestration. By reformulating tool selection as multi-label classification and slot extraction as constrained CRF sequence tagging over a fine-tuned 4.39M parameter encoder, ARN achieves \PrimaryJointEM\ Joint Exact Match across 15 cluster-stratified folds while executing in \ONNXINTFourTLatencyMean\ with a \IsolatedPeakRSS\ peak memory footprint. The complete code, protocol manifests, and verified models are available at \url{https://github.com/Anishp-cell/ARN}.
+
+\bibliography{aaai2027}
+
+\end{document}

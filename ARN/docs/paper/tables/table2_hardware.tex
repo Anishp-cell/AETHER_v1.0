@@ -1,0 +1,23 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Runtime latency and memory footprint profiled on host laptop-class CPU (Intel Core i7-13700HX, Windows 11, ONNX Runtime 1.23.2). Peak RSS is measured strictly in isolated subprocess environments. $^\dagger$Full pipeline latency includes WordPiece tokenization, ONNX graph execution, vectorized NumPy Viterbi decoding, and slot span extraction.}
+\label{tab:hardware_bench}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Configuration} & \textbf{Disk (MB)} & \textbf{p50 (ms)} & \textbf{p95 (ms)} & \textbf{Mean (ms)} & \textbf{Peak RSS (MB)} & \textbf{Compression} \\
+\midrule
+PyTorch CPU (1 Thread) & 17.58 & 11.72 & 15.97 & 11.70 & 4.21 & 1.00\times \\
+PyTorch CPU (4 Threads) & 17.58 & 8.05 & 9.10 & 8.15 & 4.21 & 1.00\times \\
+\midrule
+ONNX FP32 (1 Thread) & 16.75 & 1.83 & 2.63 & 1.90 & 4.21 & 1.05\times \\
+ONNX FP32 (4 Threads) & 16.75 & 0.79 & 1.29 & 0.86 & 4.21 & 1.05\times \\
+\midrule
+\textbf{ONNX INT8 (1 Thread)} & \textbf{4.28} & \textbf{1.27} & \textbf{2.06} & \textbf{1.39} & \textbf{4.21} & \textbf{3.92\times} \\
+\textbf{ONNX INT8 (4 Threads)} & \textbf{4.28} & \textbf{0.70} & \textbf{1.00} & \textbf{0.75} & \textbf{4.21} & \textbf{3.92\times} \\
+\midrule
+Full Pipeline (1 Thread)$^\dagger$ & 4.28 & 2.98 & 3.97 & 3.10 & 4.21 & 3.92\times \\
+Full Pipeline (4 Threads)$^\dagger$ & 4.28 & 2.27 & 2.79 & 2.34 & 4.21 & 3.92\times \\
+\bottomrule
+\end{tabular}
+\end{table*}

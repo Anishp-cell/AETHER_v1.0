@@ -25,6 +25,7 @@ results/checkpoints/
 # Allow archived artifacts
 !_archive/
 !_archive/**
+_archive/**/__pycache__/
 
 # Data caches
 .cache/

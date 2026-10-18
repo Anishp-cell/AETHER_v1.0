@@ -45,3 +45,10 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["_archive", "results", ".venv", "build", "dist"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]

@@ -2265,6 +2265,5746 @@
       "git_hash": "2d1bf25",
       "command": "python scripts/run_phase3_baselines.py",
       "timestamp": "2026-10-18T12:35:11.644464Z"
+    },
+    {
+      "experiment_id": "p4_frozen_arn_shuffle_1_fold_1",
+      "model": "frozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_1",
+      "seed": 421,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 123,
+          "N": 989,
+          "rate": 0.1243680485338726
+        },
+        "tool_micro_f1": 0.4027777777777778,
+        "tool_macro_f1": 0.1417320883588904,
+        "strict_span_f1": 0.2715953307392996,
+        "lenient_span_f1": 0.6552529182879377,
+        "token_acc": 0.6973800847040283,
+        "tag_macro_f1": 0.37174316460587675,
+        "joint_em": {
+          "k": 36,
+          "N": 989,
+          "rate": 0.03640040444893832
+        },
+        "seen_tool_subset_acc": {
+          "k": 123,
+          "N": 989,
+          "rate": 0.1243680485338726
+        },
+        "seen_joint_em": {
+          "k": 36,
+          "N": 989,
+          "rate": 0.03640040444893832
+        },
+        "best_tau": 0.45,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 57,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.10679611650485436,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_cls_crf_shuffle_1_fold_1",
+      "model": "frozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_1",
+      "seed": 421,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 249,
+          "N": 989,
+          "rate": 0.2517694641051567
+        },
+        "tool_micro_f1": 0.5533435426237876,
+        "tool_macro_f1": 0.22901474189987153,
+        "strict_span_f1": 0.4054343939935645,
+        "lenient_span_f1": 0.7300679299249196,
+        "token_acc": 0.779868019304639,
+        "tag_macro_f1": 0.43514273263301695,
+        "joint_em": {
+          "k": 48,
+          "N": 989,
+          "rate": 0.04853387259858443
+        },
+        "seen_tool_subset_acc": {
+          "k": 249,
+          "N": 989,
+          "rate": 0.2517694641051567
+        },
+        "seen_joint_em": {
+          "k": 48,
+          "N": 989,
+          "rate": 0.04853387259858443
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 57,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.8252427184466019,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_far_no_crf_shuffle_1_fold_1",
+      "model": "frozen_far_no_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_1",
+      "seed": 421,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 63,
+          "N": 989,
+          "rate": 0.06370070778564206
+        },
+        "tool_micro_f1": 0.3082191780821918,
+        "tool_macro_f1": 0.07670100391233459,
+        "strict_span_f1": 0.13524590163934427,
+        "lenient_span_f1": 0.559016393442623,
+        "token_acc": 0.6507928691027283,
+        "tag_macro_f1": 0.2198996058592998,
+        "joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 63,
+          "N": 989,
+          "rate": 0.06370070778564206
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "best_tau": 0.45,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 57,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_joint_bert_shuffle_1_fold_1",
+      "model": "frozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_1",
+      "seed": 421,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 109,
+          "N": 989,
+          "rate": 0.1102123356926188
+        },
+        "tool_micro_f1": 0.4350282485875706,
+        "tool_macro_f1": 0.09502667795142575,
+        "strict_span_f1": 0.23758986648408081,
+        "lenient_span_f1": 0.6990756590208833,
+        "token_acc": 0.7364325815030041,
+        "tag_macro_f1": 0.34927431923139435,
+        "joint_em": {
+          "k": 10,
+          "N": 989,
+          "rate": 0.010111223458038422
+        },
+        "seen_tool_subset_acc": {
+          "k": 109,
+          "N": 989,
+          "rate": 0.1102123356926188
+        },
+        "seen_joint_em": {
+          "k": 10,
+          "N": 989,
+          "rate": 0.010111223458038422
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 57,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.038834951456310676,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_cls_crf_shuffle_1_fold_1",
+      "model": "unfrozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_1",
+      "seed": 421,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 425,
+          "N": 989,
+          "rate": 0.42972699696663297
+        },
+        "tool_micro_f1": 0.6852343059239611,
+        "tool_macro_f1": 0.35480541959805617,
+        "strict_span_f1": 0.5311258278145695,
+        "lenient_span_f1": 0.809271523178808,
+        "token_acc": 0.8456121343445288,
+        "tag_macro_f1": 0.5163460296603187,
+        "joint_em": {
+          "k": 178,
+          "N": 989,
+          "rate": 0.17997977755308392
+        },
+        "seen_tool_subset_acc": {
+          "k": 425,
+          "N": 989,
+          "rate": 0.42972699696663297
+        },
+        "seen_joint_em": {
+          "k": 178,
+          "N": 989,
+          "rate": 0.17997977755308392
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 57,
+            "tool_subset_acc": 0.2631578947368421,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.970873786407767,
+            "joint_em": 0.009708737864077669
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_arn_shuffle_1_fold_1",
+      "model": "unfrozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_1",
+      "seed": 421,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 194,
+          "N": 989,
+          "rate": 0.1961577350859454
+        },
+        "tool_micro_f1": 0.46145887221934817,
+        "tool_macro_f1": 0.18509249125005636,
+        "strict_span_f1": 0.2591155934833204,
+        "lenient_span_f1": 0.6113266097750193,
+        "token_acc": 0.7035851472471191,
+        "tag_macro_f1": 0.34757040201940653,
+        "joint_em": {
+          "k": 66,
+          "N": 989,
+          "rate": 0.06673407482305359
+        },
+        "seen_tool_subset_acc": {
+          "k": 194,
+          "N": 989,
+          "rate": 0.1961577350859454
+        },
+        "seen_joint_em": {
+          "k": 66,
+          "N": 989,
+          "rate": 0.06673407482305359
+        },
+        "best_tau": 0.45,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 57,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.038834951456310676,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_joint_bert_shuffle_1_fold_1",
+      "model": "unfrozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_1",
+      "seed": 421,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 432,
+          "N": 989,
+          "rate": 0.4368048533872599
+        },
+        "tool_micro_f1": 0.674645390070922,
+        "tool_macro_f1": 0.3357633069944444,
+        "strict_span_f1": 0.4279661016949153,
+        "lenient_span_f1": 0.7512106537530266,
+        "token_acc": 0.8224662661282379,
+        "tag_macro_f1": 0.43956961763178276,
+        "joint_em": {
+          "k": 138,
+          "N": 989,
+          "rate": 0.13953488372093023
+        },
+        "seen_tool_subset_acc": {
+          "k": 432,
+          "N": 989,
+          "rate": 0.4368048533872599
+        },
+        "seen_joint_em": {
+          "k": 138,
+          "N": 989,
+          "rate": 0.13953488372093023
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 57,
+            "tool_subset_acc": 0.017543859649122806,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 1.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_arn_shuffle_1_fold_2",
+      "model": "frozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_2",
+      "seed": 422,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 182,
+          "N": 988,
+          "rate": 0.18421052631578946
+        },
+        "tool_micro_f1": 0.45561871447310887,
+        "tool_macro_f1": 0.24209629946496125,
+        "strict_span_f1": 0.27591188154568436,
+        "lenient_span_f1": 0.5243770314192849,
+        "token_acc": 0.6809269162210339,
+        "tag_macro_f1": 0.3805932693981744,
+        "joint_em": {
+          "k": 54,
+          "N": 988,
+          "rate": 0.05465587044534413
+        },
+        "seen_tool_subset_acc": {
+          "k": 182,
+          "N": 988,
+          "rate": 0.18421052631578946
+        },
+        "seen_joint_em": {
+          "k": 54,
+          "N": 988,
+          "rate": 0.05465587044534413
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.00641025641025641,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 39,
+            "tool_subset_acc": 0.07692307692307693,
+            "joint_em": 0.05128205128205128
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_cls_crf_shuffle_1_fold_2",
+      "model": "frozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_2",
+      "seed": 422,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 262,
+          "N": 988,
+          "rate": 0.2651821862348178
+        },
+        "tool_micro_f1": 0.508598228243877,
+        "tool_macro_f1": 0.23751162601231426,
+        "strict_span_f1": 0.3173277661795407,
+        "lenient_span_f1": 0.5539318023660403,
+        "token_acc": 0.7018159536541889,
+        "tag_macro_f1": 0.41230703468906166,
+        "joint_em": {
+          "k": 45,
+          "N": 988,
+          "rate": 0.04554655870445344
+        },
+        "seen_tool_subset_acc": {
+          "k": 262,
+          "N": 988,
+          "rate": 0.2651821862348178
+        },
+        "seen_joint_em": {
+          "k": 45,
+          "N": 988,
+          "rate": 0.04554655870445344
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.23076923076923078,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 39,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_far_no_crf_shuffle_1_fold_2",
+      "model": "frozen_far_no_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_2",
+      "seed": 422,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 75,
+          "N": 988,
+          "rate": 0.07591093117408906
+        },
+        "tool_micro_f1": 0.3458823529411765,
+        "tool_macro_f1": 0.06551030324938029,
+        "strict_span_f1": 0.08300907911802854,
+        "lenient_span_f1": 0.3009079118028534,
+        "token_acc": 0.6316844919786097,
+        "tag_macro_f1": 0.1319363514479724,
+        "joint_em": {
+          "k": 0,
+          "N": 988,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 75,
+          "N": 988,
+          "rate": 0.07591093117408906
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 988,
+          "rate": 0.0
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 39,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_joint_bert_shuffle_1_fold_2",
+      "model": "frozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_2",
+      "seed": 422,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 98,
+          "N": 988,
+          "rate": 0.09919028340080972
+        },
+        "tool_micro_f1": 0.3575063613231552,
+        "tool_macro_f1": 0.06015760503471081,
+        "strict_span_f1": 0.09815436241610738,
+        "lenient_span_f1": 0.3162751677852349,
+        "token_acc": 0.6412098930481284,
+        "tag_macro_f1": 0.14149517521401347,
+        "joint_em": {
+          "k": 0,
+          "N": 988,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 98,
+          "N": 988,
+          "rate": 0.09919028340080972
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 988,
+          "rate": 0.0
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 39,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_cls_crf_shuffle_1_fold_2",
+      "model": "unfrozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_2",
+      "seed": 422,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 329,
+          "N": 988,
+          "rate": 0.33299595141700405
+        },
+        "tool_micro_f1": 0.5793927327028372,
+        "tool_macro_f1": 0.2974563695101612,
+        "strict_span_f1": 0.2875862068965517,
+        "lenient_span_f1": 0.5620689655172414,
+        "token_acc": 0.6719585561497327,
+        "tag_macro_f1": 0.3547301244500335,
+        "joint_em": {
+          "k": 75,
+          "N": 988,
+          "rate": 0.07591093117408906
+        },
+        "seen_tool_subset_acc": {
+          "k": 329,
+          "N": 988,
+          "rate": 0.33299595141700405
+        },
+        "seen_joint_em": {
+          "k": 75,
+          "N": 988,
+          "rate": 0.07591093117408906
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 39,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_arn_shuffle_1_fold_2",
+      "model": "unfrozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_2",
+      "seed": 422,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 194,
+          "N": 988,
+          "rate": 0.19635627530364372
+        },
+        "tool_micro_f1": 0.4570466030320045,
+        "tool_macro_f1": 0.2074890387378412,
+        "strict_span_f1": 0.3217993079584775,
+        "lenient_span_f1": 0.5577854671280277,
+        "token_acc": 0.7091131907308378,
+        "tag_macro_f1": 0.3980621251186639,
+        "joint_em": {
+          "k": 53,
+          "N": 988,
+          "rate": 0.053643724696356275
+        },
+        "seen_tool_subset_acc": {
+          "k": 194,
+          "N": 988,
+          "rate": 0.19635627530364372
+        },
+        "seen_joint_em": {
+          "k": 53,
+          "N": 988,
+          "rate": 0.053643724696356275
+        },
+        "best_tau": 0.5,
+        "pair_metrics": {
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.01282051282051282,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 39,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_joint_bert_shuffle_1_fold_2",
+      "model": "unfrozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_2",
+      "seed": 422,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 237,
+          "N": 988,
+          "rate": 0.23987854251012145
+        },
+        "tool_micro_f1": 0.5095541401273885,
+        "tool_macro_f1": 0.21411187619857816,
+        "strict_span_f1": 0.21327529923830252,
+        "lenient_span_f1": 0.5027203482045701,
+        "token_acc": 0.6984180035650623,
+        "tag_macro_f1": 0.22466389617458368,
+        "joint_em": {
+          "k": 14,
+          "N": 988,
+          "rate": 0.01417004048582996
+        },
+        "seen_tool_subset_acc": {
+          "k": 237,
+          "N": 988,
+          "rate": 0.23987854251012145
+        },
+        "seen_joint_em": {
+          "k": 14,
+          "N": 988,
+          "rate": 0.01417004048582996
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.019230769230769232,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 39,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_arn_shuffle_1_fold_3",
+      "model": "frozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_3",
+      "seed": 423,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 222,
+          "N": 992,
+          "rate": 0.22379032258064516
+        },
+        "tool_micro_f1": 0.45423057892132607,
+        "tool_macro_f1": 0.22328111157733194,
+        "strict_span_f1": 0.3537165873306481,
+        "lenient_span_f1": 0.5990479677773709,
+        "token_acc": 0.6864935205769126,
+        "tag_macro_f1": 0.3224007419095807,
+        "joint_em": {
+          "k": 66,
+          "N": 992,
+          "rate": 0.06653225806451613
+        },
+        "seen_tool_subset_acc": {
+          "k": 222,
+          "N": 992,
+          "rate": 0.22379032258064516
+        },
+        "seen_joint_em": {
+          "k": 66,
+          "N": 992,
+          "rate": 0.06653225806451613
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.07920792079207921,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.0641025641025641,
+            "joint_em": 0.00641025641025641
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 24,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_cls_crf_shuffle_1_fold_3",
+      "model": "frozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_3",
+      "seed": 423,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 76,
+          "N": 992,
+          "rate": 0.07661290322580645
+        },
+        "tool_micro_f1": 0.26424546023794615,
+        "tool_macro_f1": 0.07418184369388708,
+        "strict_span_f1": 0.4050811573747353,
+        "lenient_span_f1": 0.6570218772053634,
+        "token_acc": 0.7133329718592419,
+        "tag_macro_f1": 0.38440944654655934,
+        "joint_em": {
+          "k": 28,
+          "N": 992,
+          "rate": 0.028225806451612902
+        },
+        "seen_tool_subset_acc": {
+          "k": 76,
+          "N": 992,
+          "rate": 0.07661290322580645
+        },
+        "seen_joint_em": {
+          "k": 28,
+          "N": 992,
+          "rate": 0.028225806451612902
+        },
+        "best_tau": 0.35,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 24,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_far_no_crf_shuffle_1_fold_3",
+      "model": "frozen_far_no_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_3",
+      "seed": 423,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 187,
+          "N": 992,
+          "rate": 0.18850806451612903
+        },
+        "tool_micro_f1": 0.41956631366616237,
+        "tool_macro_f1": 0.18433972802397058,
+        "strict_span_f1": 0.2157006603081438,
+        "lenient_span_f1": 0.5847395451210565,
+        "token_acc": 0.6636122105948056,
+        "tag_macro_f1": 0.2805726900855122,
+        "joint_em": {
+          "k": 25,
+          "N": 992,
+          "rate": 0.025201612903225805
+        },
+        "seen_tool_subset_acc": {
+          "k": 187,
+          "N": 992,
+          "rate": 0.18850806451612903
+        },
+        "seen_joint_em": {
+          "k": 25,
+          "N": 992,
+          "rate": 0.025201612903225805
+        },
+        "best_tau": 0.35,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0297029702970297,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.24358974358974358,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 24,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_joint_bert_shuffle_1_fold_3",
+      "model": "frozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_3",
+      "seed": 423,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 57,
+          "N": 992,
+          "rate": 0.057459677419354836
+        },
+        "tool_micro_f1": 0.22730080296479308,
+        "tool_macro_f1": 0.03815853482165161,
+        "strict_span_f1": 0.19167904903417535,
+        "lenient_span_f1": 0.5832095096582467,
+        "token_acc": 0.655533264653256,
+        "tag_macro_f1": 0.26700437960104273,
+        "joint_em": {
+          "k": 6,
+          "N": 992,
+          "rate": 0.006048387096774193
+        },
+        "seen_tool_subset_acc": {
+          "k": 57,
+          "N": 992,
+          "rate": 0.057459677419354836
+        },
+        "seen_joint_em": {
+          "k": 6,
+          "N": 992,
+          "rate": 0.006048387096774193
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 24,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_cls_crf_shuffle_1_fold_3",
+      "model": "unfrozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_3",
+      "seed": 423,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 245,
+          "N": 992,
+          "rate": 0.2469758064516129
+        },
+        "tool_micro_f1": 0.4481641468682505,
+        "tool_macro_f1": 0.31334272414854786,
+        "strict_span_f1": 0.5144339928640934,
+        "lenient_span_f1": 0.7259163152773273,
+        "token_acc": 0.7864772542428021,
+        "tag_macro_f1": 0.43193353185078964,
+        "joint_em": {
+          "k": 141,
+          "N": 992,
+          "rate": 0.14213709677419356
+        },
+        "seen_tool_subset_acc": {
+          "k": 245,
+          "N": 992,
+          "rate": 0.2469758064516129
+        },
+        "seen_joint_em": {
+          "k": 141,
+          "N": 992,
+          "rate": 0.14213709677419356
+        },
+        "best_tau": 0.45,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.019801980198019802,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 24,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_arn_shuffle_1_fold_3",
+      "model": "unfrozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_3",
+      "seed": 423,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 185,
+          "N": 992,
+          "rate": 0.18649193548387097
+        },
+        "tool_micro_f1": 0.4293294741919923,
+        "tool_macro_f1": 0.21372458402156047,
+        "strict_span_f1": 0.36593059936908523,
+        "lenient_span_f1": 0.61198738170347,
+        "token_acc": 0.6991270400694031,
+        "tag_macro_f1": 0.3247447544851029,
+        "joint_em": {
+          "k": 77,
+          "N": 992,
+          "rate": 0.07762096774193548
+        },
+        "seen_tool_subset_acc": {
+          "k": 185,
+          "N": 992,
+          "rate": 0.18649193548387097
+        },
+        "seen_joint_em": {
+          "k": 77,
+          "N": 992,
+          "rate": 0.07762096774193548
+        },
+        "best_tau": 0.45,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.19230769230769232,
+            "joint_em": 0.038461538461538464
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 24,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_joint_bert_shuffle_1_fold_3",
+      "model": "unfrozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_3",
+      "seed": 423,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 185,
+          "N": 992,
+          "rate": 0.18649193548387097
+        },
+        "tool_micro_f1": 0.3747870528109029,
+        "tool_macro_f1": 0.2363684841413309,
+        "strict_span_f1": 0.3270588235294118,
+        "lenient_span_f1": 0.631764705882353,
+        "token_acc": 0.7440221222143902,
+        "tag_macro_f1": 0.3556399198588432,
+        "joint_em": {
+          "k": 60,
+          "N": 992,
+          "rate": 0.06048387096774194
+        },
+        "seen_tool_subset_acc": {
+          "k": 185,
+          "N": 992,
+          "rate": 0.18649193548387097
+        },
+        "seen_joint_em": {
+          "k": 60,
+          "N": 992,
+          "rate": 0.06048387096774194
+        },
+        "best_tau": 0.45,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 24,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_arn_shuffle_1_fold_4",
+      "model": "frozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_4",
+      "seed": 424,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 331,
+          "N": 992,
+          "rate": 0.3336693548387097
+        },
+        "tool_micro_f1": 0.5164457535591557,
+        "tool_macro_f1": 0.3715562072616902,
+        "strict_span_f1": 0.34898816342115313,
+        "lenient_span_f1": 0.6659030164184804,
+        "token_acc": 0.7563586265366681,
+        "tag_macro_f1": 0.45918063541042575,
+        "joint_em": {
+          "k": 106,
+          "N": 992,
+          "rate": 0.10685483870967742
+        },
+        "seen_tool_subset_acc": {
+          "k": 331,
+          "N": 992,
+          "rate": 0.3336693548387097
+        },
+        "seen_joint_em": {
+          "k": 106,
+          "N": 992,
+          "rate": 0.10685483870967742
+        },
+        "best_tau": 0.35,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 42,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.5666666666666667,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_cls_crf_shuffle_1_fold_4",
+      "model": "frozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_4",
+      "seed": 424,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 265,
+          "N": 992,
+          "rate": 0.26713709677419356
+        },
+        "tool_micro_f1": 0.47335423197492166,
+        "tool_macro_f1": 0.24016589178780703,
+        "strict_span_f1": 0.3701741105223316,
+        "lenient_span_f1": 0.6805450416351249,
+        "token_acc": 0.763830012717253,
+        "tag_macro_f1": 0.4668012300997437,
+        "joint_em": {
+          "k": 72,
+          "N": 992,
+          "rate": 0.07258064516129033
+        },
+        "seen_tool_subset_acc": {
+          "k": 265,
+          "N": 992,
+          "rate": 0.26713709677419356
+        },
+        "seen_joint_em": {
+          "k": 72,
+          "N": 992,
+          "rate": 0.07258064516129033
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 42,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.5555555555555556,
+            "joint_em": 0.011111111111111112
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_far_no_crf_shuffle_1_fold_4",
+      "model": "frozen_far_no_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_4",
+      "seed": 424,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 96,
+          "N": 992,
+          "rate": 0.0967741935483871
+        },
+        "tool_micro_f1": 0.20684632192279678,
+        "tool_macro_f1": 0.05392316079202788,
+        "strict_span_f1": 0.1371326803205699,
+        "lenient_span_f1": 0.46215494211932323,
+        "token_acc": 0.6602903772785078,
+        "tag_macro_f1": 0.21240608740312616,
+        "joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 96,
+          "N": 992,
+          "rate": 0.0967741935483871
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 992,
+          "rate": 0.0
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 42,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_joint_bert_shuffle_1_fold_4",
+      "model": "frozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_4",
+      "seed": 424,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 105,
+          "N": 992,
+          "rate": 0.10584677419354839
+        },
+        "tool_micro_f1": 0.22036082474226804,
+        "tool_macro_f1": 0.04590333815426067,
+        "strict_span_f1": 0.1669964384645825,
+        "lenient_span_f1": 0.5635140482785912,
+        "token_acc": 0.7003497244595167,
+        "tag_macro_f1": 0.29433777030742236,
+        "joint_em": {
+          "k": 2,
+          "N": 992,
+          "rate": 0.0020161290322580645
+        },
+        "seen_tool_subset_acc": {
+          "k": 105,
+          "N": 992,
+          "rate": 0.10584677419354839
+        },
+        "seen_joint_em": {
+          "k": 2,
+          "N": 992,
+          "rate": 0.0020161290322580645
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 42,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_cls_crf_shuffle_1_fold_4",
+      "model": "unfrozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_4",
+      "seed": 424,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 514,
+          "N": 992,
+          "rate": 0.5181451612903226
+        },
+        "tool_micro_f1": 0.6968864468864469,
+        "tool_macro_f1": 0.49100950198791554,
+        "strict_span_f1": 0.41551049448594807,
+        "lenient_span_f1": 0.6837424404126645,
+        "token_acc": 0.8058499364137346,
+        "tag_macro_f1": 0.48495517452241726,
+        "joint_em": {
+          "k": 185,
+          "N": 992,
+          "rate": 0.18649193548387097
+        },
+        "seen_tool_subset_acc": {
+          "k": 514,
+          "N": 992,
+          "rate": 0.5181451612903226
+        },
+        "seen_joint_em": {
+          "k": 185,
+          "N": 992,
+          "rate": 0.18649193548387097
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.012658227848101266,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 42,
+            "tool_subset_acc": 0.09523809523809523,
+            "joint_em": 0.07142857142857142
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 1.0,
+            "joint_em": 0.07777777777777778
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_arn_shuffle_1_fold_4",
+      "model": "unfrozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_4",
+      "seed": 424,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 278,
+          "N": 992,
+          "rate": 0.28024193548387094
+        },
+        "tool_micro_f1": 0.47362514029180697,
+        "tool_macro_f1": 0.3082286795883998,
+        "strict_span_f1": 0.38625678119349005,
+        "lenient_span_f1": 0.681374321880651,
+        "token_acc": 0.7974777448071216,
+        "tag_macro_f1": 0.4948813858144289,
+        "joint_em": {
+          "k": 105,
+          "N": 992,
+          "rate": 0.10584677419354839
+        },
+        "seen_tool_subset_acc": {
+          "k": 278,
+          "N": 992,
+          "rate": 0.28024193548387094
+        },
+        "seen_joint_em": {
+          "k": 105,
+          "N": 992,
+          "rate": 0.10584677419354839
+        },
+        "best_tau": 0.6,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 42,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.2111111111111111,
+            "joint_em": 0.022222222222222223
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_joint_bert_shuffle_1_fold_4",
+      "model": "unfrozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_4",
+      "seed": 424,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 343,
+          "N": 992,
+          "rate": 0.34576612903225806
+        },
+        "tool_micro_f1": 0.5273250239693192,
+        "tool_macro_f1": 0.2753541020324255,
+        "strict_span_f1": 0.20842572062084258,
+        "lenient_span_f1": 0.62379896526238,
+        "token_acc": 0.7465027554048326,
+        "tag_macro_f1": 0.3085509014932048,
+        "joint_em": {
+          "k": 27,
+          "N": 992,
+          "rate": 0.02721774193548387
+        },
+        "seen_tool_subset_acc": {
+          "k": 343,
+          "N": 992,
+          "rate": 0.34576612903225806
+        },
+        "seen_joint_em": {
+          "k": 27,
+          "N": 992,
+          "rate": 0.02721774193548387
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 42,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.9555555555555556,
+            "joint_em": 0.05555555555555555
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_arn_shuffle_1_fold_5",
+      "model": "frozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_5",
+      "seed": 425,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 144,
+          "N": 1002,
+          "rate": 0.1437125748502994
+        },
+        "tool_micro_f1": 0.2868937048503612,
+        "tool_macro_f1": 0.13902585109620827,
+        "strict_span_f1": 0.37329931972789115,
+        "lenient_span_f1": 0.5790816326530612,
+        "token_acc": 0.7338728060177798,
+        "tag_macro_f1": 0.4984356667368705,
+        "joint_em": {
+          "k": 55,
+          "N": 1002,
+          "rate": 0.054890219560878244
+        },
+        "seen_tool_subset_acc": {
+          "k": 144,
+          "N": 1002,
+          "rate": 0.1437125748502994
+        },
+        "seen_joint_em": {
+          "k": 55,
+          "N": 1002,
+          "rate": 0.054890219560878244
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 47,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_cls_crf_shuffle_1_fold_5",
+      "model": "frozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_5",
+      "seed": 425,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 199,
+          "N": 1002,
+          "rate": 0.19860279441117765
+        },
+        "tool_micro_f1": 0.3528754885538805,
+        "tool_macro_f1": 0.18782856003900777,
+        "strict_span_f1": 0.45222178529296103,
+        "lenient_span_f1": 0.6228863546991742,
+        "token_acc": 0.7485183496694781,
+        "tag_macro_f1": 0.5206509075353962,
+        "joint_em": {
+          "k": 77,
+          "N": 1002,
+          "rate": 0.07684630738522955
+        },
+        "seen_tool_subset_acc": {
+          "k": 199,
+          "N": 1002,
+          "rate": 0.19860279441117765
+        },
+        "seen_joint_em": {
+          "k": 77,
+          "N": 1002,
+          "rate": 0.07684630738522955
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 47,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_far_no_crf_shuffle_1_fold_5",
+      "model": "frozen_far_no_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_5",
+      "seed": 425,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 70,
+          "N": 1002,
+          "rate": 0.06986027944111776
+        },
+        "tool_micro_f1": 0.22432262129804661,
+        "tool_macro_f1": 0.07702149881311882,
+        "strict_span_f1": 0.18580192813321647,
+        "lenient_span_f1": 0.5179666958808063,
+        "token_acc": 0.7058924093913836,
+        "tag_macro_f1": 0.32410648142313975,
+        "joint_em": {
+          "k": 0,
+          "N": 1002,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 70,
+          "N": 1002,
+          "rate": 0.06986027944111776
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 1002,
+          "rate": 0.0
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 47,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_joint_bert_shuffle_1_fold_5",
+      "model": "frozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_5",
+      "seed": 425,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 141,
+          "N": 1002,
+          "rate": 0.1407185628742515
+        },
+        "tool_micro_f1": 0.21558289396602226,
+        "tool_macro_f1": 0.03476946334089191,
+        "strict_span_f1": 0.17641764176417643,
+        "lenient_span_f1": 0.5022502250225022,
+        "token_acc": 0.7054365169819923,
+        "tag_macro_f1": 0.3028769833414006,
+        "joint_em": {
+          "k": 0,
+          "N": 1002,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 141,
+          "N": 1002,
+          "rate": 0.1407185628742515
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 1002,
+          "rate": 0.0
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 47,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_cls_crf_shuffle_1_fold_5",
+      "model": "unfrozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_5",
+      "seed": 425,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 511,
+          "N": 1002,
+          "rate": 0.5099800399201597
+        },
+        "tool_micro_f1": 0.620980495519241,
+        "tool_macro_f1": 0.468919648203405,
+        "strict_span_f1": 0.4994219653179191,
+        "lenient_span_f1": 0.6535645472061656,
+        "token_acc": 0.8052199680875314,
+        "tag_macro_f1": 0.5096284411961218,
+        "joint_em": {
+          "k": 313,
+          "N": 1002,
+          "rate": 0.312375249500998
+        },
+        "seen_tool_subset_acc": {
+          "k": 511,
+          "N": 1002,
+          "rate": 0.5099800399201597
+        },
+        "seen_joint_em": {
+          "k": 313,
+          "N": 1002,
+          "rate": 0.312375249500998
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 47,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_arn_shuffle_1_fold_5",
+      "model": "unfrozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_5",
+      "seed": 425,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 242,
+          "N": 1002,
+          "rate": 0.24151696606786427
+        },
+        "tool_micro_f1": 0.36363636363636365,
+        "tool_macro_f1": 0.19373869735531232,
+        "strict_span_f1": 0.33530405405405406,
+        "lenient_span_f1": 0.5591216216216216,
+        "token_acc": 0.7636767722817415,
+        "tag_macro_f1": 0.4160561431500872,
+        "joint_em": {
+          "k": 73,
+          "N": 1002,
+          "rate": 0.07285429141716566
+        },
+        "seen_tool_subset_acc": {
+          "k": 242,
+          "N": 1002,
+          "rate": 0.24151696606786427
+        },
+        "seen_joint_em": {
+          "k": 73,
+          "N": 1002,
+          "rate": 0.07285429141716566
+        },
+        "best_tau": 0.4,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 47,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_joint_bert_shuffle_1_fold_5",
+      "model": "unfrozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_1",
+      "fold": "fold_5",
+      "seed": 425,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 306,
+          "N": 1002,
+          "rate": 0.30538922155688625
+        },
+        "tool_micro_f1": 0.4524512699350266,
+        "tool_macro_f1": 0.24744367228792782,
+        "strict_span_f1": 0.29923664122137406,
+        "lenient_span_f1": 0.6190839694656488,
+        "token_acc": 0.8080123090950536,
+        "tag_macro_f1": 0.40626357681065073,
+        "joint_em": {
+          "k": 103,
+          "N": 1002,
+          "rate": 0.1027944111776447
+        },
+        "seen_tool_subset_acc": {
+          "k": 306,
+          "N": 1002,
+          "rate": 0.30538922155688625
+        },
+        "seen_joint_em": {
+          "k": 103,
+          "N": 1002,
+          "rate": 0.1027944111776447
+        },
+        "best_tau": 0.4,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 47,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_arn_shuffle_2_fold_1",
+      "model": "frozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_1",
+      "seed": 1001,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 63,
+          "N": 998,
+          "rate": 0.06312625250501001
+        },
+        "tool_micro_f1": 0.34360027378507874,
+        "tool_macro_f1": 0.06370441365050206,
+        "strict_span_f1": 0.07164436771687528,
+        "lenient_span_f1": 0.42382391022874405,
+        "token_acc": 0.5846542614288996,
+        "tag_macro_f1": 0.1770477035571172,
+        "joint_em": {
+          "k": 3,
+          "N": 998,
+          "rate": 0.003006012024048096
+        },
+        "seen_tool_subset_acc": {
+          "k": 63,
+          "N": 998,
+          "rate": 0.06312625250501001
+        },
+        "seen_joint_em": {
+          "k": 3,
+          "N": 998,
+          "rate": 0.003006012024048096
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 31,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_cls_crf_shuffle_2_fold_1",
+      "model": "frozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_1",
+      "seed": 1001,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 154,
+          "N": 998,
+          "rate": 0.15430861723446893
+        },
+        "tool_micro_f1": 0.40450588837685614,
+        "tool_macro_f1": 0.17549846651305132,
+        "strict_span_f1": 0.3343239227340267,
+        "lenient_span_f1": 0.5965824665676077,
+        "token_acc": 0.7088215024121296,
+        "tag_macro_f1": 0.3789666271798547,
+        "joint_em": {
+          "k": 80,
+          "N": 998,
+          "rate": 0.08016032064128256
+        },
+        "seen_tool_subset_acc": {
+          "k": 154,
+          "N": 998,
+          "rate": 0.15430861723446893
+        },
+        "seen_joint_em": {
+          "k": 80,
+          "N": 998,
+          "rate": 0.08016032064128256
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.07692307692307693,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 31,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_far_no_crf_shuffle_2_fold_1",
+      "model": "frozen_far_no_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_1",
+      "seed": 1001,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 69,
+          "N": 998,
+          "rate": 0.06913827655310621
+        },
+        "tool_micro_f1": 0.34948805460750854,
+        "tool_macro_f1": 0.0712387004868082,
+        "strict_span_f1": 0.08166811468288446,
+        "lenient_span_f1": 0.3822762814943528,
+        "token_acc": 0.6135423845623708,
+        "tag_macro_f1": 0.17280724933306105,
+        "joint_em": {
+          "k": 0,
+          "N": 998,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 69,
+          "N": 998,
+          "rate": 0.06913827655310621
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 998,
+          "rate": 0.0
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 31,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_joint_bert_shuffle_2_fold_1",
+      "model": "frozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_1",
+      "seed": 1001,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 82,
+          "N": 998,
+          "rate": 0.08216432865731463
+        },
+        "tool_micro_f1": 0.3289548829240434,
+        "tool_macro_f1": 0.09906909107753635,
+        "strict_span_f1": 0.227681660899654,
+        "lenient_span_f1": 0.5847750865051903,
+        "token_acc": 0.7039972432804962,
+        "tag_macro_f1": 0.29032236289957497,
+        "joint_em": {
+          "k": 13,
+          "N": 998,
+          "rate": 0.013026052104208416
+        },
+        "seen_tool_subset_acc": {
+          "k": 82,
+          "N": 998,
+          "rate": 0.08216432865731463
+        },
+        "seen_joint_em": {
+          "k": 13,
+          "N": 998,
+          "rate": 0.013026052104208416
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 31,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_cls_crf_shuffle_2_fold_1",
+      "model": "unfrozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_1",
+      "seed": 1001,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 223,
+          "N": 998,
+          "rate": 0.22344689378757515
+        },
+        "tool_micro_f1": 0.4833574529667149,
+        "tool_macro_f1": 0.26677964981867963,
+        "strict_span_f1": 0.3322307975009188,
+        "lenient_span_f1": 0.5931642778390297,
+        "token_acc": 0.7182977257064094,
+        "tag_macro_f1": 0.4213517664675521,
+        "joint_em": {
+          "k": 124,
+          "N": 998,
+          "rate": 0.12424849699398798
+        },
+        "seen_tool_subset_acc": {
+          "k": 223,
+          "N": 998,
+          "rate": 0.22344689378757515
+        },
+        "seen_joint_em": {
+          "k": 124,
+          "N": 998,
+          "rate": 0.12424849699398798
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 31,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_arn_shuffle_2_fold_1",
+      "model": "unfrozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_1",
+      "seed": 1001,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 94,
+          "N": 998,
+          "rate": 0.09418837675350701
+        },
+        "tool_micro_f1": 0.32524271844660196,
+        "tool_macro_f1": 0.11036708587999028,
+        "strict_span_f1": 0.1545271629778672,
+        "lenient_span_f1": 0.4877263581488934,
+        "token_acc": 0.6348495290604181,
+        "tag_macro_f1": 0.21273163067907755,
+        "joint_em": {
+          "k": 10,
+          "N": 998,
+          "rate": 0.01002004008016032
+        },
+        "seen_tool_subset_acc": {
+          "k": 94,
+          "N": 998,
+          "rate": 0.09418837675350701
+        },
+        "seen_joint_em": {
+          "k": 10,
+          "N": 998,
+          "rate": 0.01002004008016032
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.03205128205128205,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 31,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_joint_bert_shuffle_2_fold_1",
+      "model": "unfrozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_1",
+      "seed": 1001,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 182,
+          "N": 998,
+          "rate": 0.18236472945891782
+        },
+        "tool_micro_f1": 0.4276543209876543,
+        "tool_macro_f1": 0.19637867019385663,
+        "strict_span_f1": 0.2961741424802111,
+        "lenient_span_f1": 0.6048812664907651,
+        "token_acc": 0.7451757408683667,
+        "tag_macro_f1": 0.3064313664453281,
+        "joint_em": {
+          "k": 53,
+          "N": 998,
+          "rate": 0.0531062124248497
+        },
+        "seen_tool_subset_acc": {
+          "k": 182,
+          "N": 998,
+          "rate": 0.18236472945891782
+        },
+        "seen_joint_em": {
+          "k": 53,
+          "N": 998,
+          "rate": 0.0531062124248497
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.00641025641025641,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 31,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_arn_shuffle_2_fold_2",
+      "model": "frozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_2",
+      "seed": 1002,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 120,
+          "N": 999,
+          "rate": 0.12012012012012012
+        },
+        "tool_micro_f1": 0.2518987341772152,
+        "tool_macro_f1": 0.10965281269987846,
+        "strict_span_f1": 0.20490367775831875,
+        "lenient_span_f1": 0.42469352014010514,
+        "token_acc": 0.6743657314111507,
+        "tag_macro_f1": 0.29462353564694,
+        "joint_em": {
+          "k": 6,
+          "N": 999,
+          "rate": 0.006006006006006006
+        },
+        "seen_tool_subset_acc": {
+          "k": 120,
+          "N": 999,
+          "rate": 0.12012012012012012
+        },
+        "seen_joint_em": {
+          "k": 6,
+          "N": 999,
+          "rate": 0.006006006006006006
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 69,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_cls_crf_shuffle_2_fold_2",
+      "model": "frozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_2",
+      "seed": 1002,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 313,
+          "N": 999,
+          "rate": 0.3133133133133133
+        },
+        "tool_micro_f1": 0.4720738222438077,
+        "tool_macro_f1": 0.2671302923239947,
+        "strict_span_f1": 0.42791310072416067,
+        "lenient_span_f1": 0.597761685319289,
+        "token_acc": 0.7417971373947192,
+        "tag_macro_f1": 0.47110712100194957,
+        "joint_em": {
+          "k": 84,
+          "N": 999,
+          "rate": 0.08408408408408409
+        },
+        "seen_tool_subset_acc": {
+          "k": 313,
+          "N": 999,
+          "rate": 0.3133133133133133
+        },
+        "seen_joint_em": {
+          "k": 84,
+          "N": 999,
+          "rate": 0.08408408408408409
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 69,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.7777777777777778,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_far_no_crf_shuffle_2_fold_2",
+      "model": "frozen_far_no_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_2",
+      "seed": 1002,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 100,
+          "N": 999,
+          "rate": 0.1001001001001001
+        },
+        "tool_micro_f1": 0.16954022988505746,
+        "tool_macro_f1": 0.04536716647443291,
+        "strict_span_f1": 0.09555345316934723,
+        "lenient_span_f1": 0.33207190160832545,
+        "token_acc": 0.6690952307135845,
+        "tag_macro_f1": 0.16259356010521622,
+        "joint_em": {
+          "k": 0,
+          "N": 999,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 100,
+          "N": 999,
+          "rate": 0.1001001001001001
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 999,
+          "rate": 0.0
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 69,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_joint_bert_shuffle_2_fold_2",
+      "model": "frozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_2",
+      "seed": 1002,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 116,
+          "N": 999,
+          "rate": 0.11611611611611612
+        },
+        "tool_micro_f1": 0.2984384037015616,
+        "tool_macro_f1": 0.09551285610354965,
+        "strict_span_f1": 0.2707516921980762,
+        "lenient_span_f1": 0.5757035981474885,
+        "token_acc": 0.7518730946106547,
+        "tag_macro_f1": 0.3591547172029901,
+        "joint_em": {
+          "k": 5,
+          "N": 999,
+          "rate": 0.005005005005005005
+        },
+        "seen_tool_subset_acc": {
+          "k": 116,
+          "N": 999,
+          "rate": 0.11611611611611612
+        },
+        "seen_joint_em": {
+          "k": 5,
+          "N": 999,
+          "rate": 0.005005005005005005
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 69,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.07777777777777778,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_cls_crf_shuffle_2_fold_2",
+      "model": "unfrozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_2",
+      "seed": 1002,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 463,
+          "N": 999,
+          "rate": 0.46346346346346345
+        },
+        "tool_micro_f1": 0.6487424111014745,
+        "tool_macro_f1": 0.4354515151352854,
+        "strict_span_f1": 0.4138169257340242,
+        "lenient_span_f1": 0.594818652849741,
+        "token_acc": 0.7832894124941869,
+        "tag_macro_f1": 0.4723304749814822,
+        "joint_em": {
+          "k": 119,
+          "N": 999,
+          "rate": 0.11911911911911911
+        },
+        "seen_tool_subset_acc": {
+          "k": 463,
+          "N": 999,
+          "rate": 0.46346346346346345
+        },
+        "seen_joint_em": {
+          "k": 119,
+          "N": 999,
+          "rate": 0.11911911911911911
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 69,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 1.0,
+            "joint_em": 0.022222222222222223
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_arn_shuffle_2_fold_2",
+      "model": "unfrozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_2",
+      "seed": 1002,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 166,
+          "N": 999,
+          "rate": 0.16616616616616617
+        },
+        "tool_micro_f1": 0.30499468650371947,
+        "tool_macro_f1": 0.17144430401650299,
+        "strict_span_f1": 0.25903853794199444,
+        "lenient_span_f1": 0.5299960270162892,
+        "token_acc": 0.7083656280679997,
+        "tag_macro_f1": 0.35241151350097794,
+        "joint_em": {
+          "k": 47,
+          "N": 999,
+          "rate": 0.04704704704704705
+        },
+        "seen_tool_subset_acc": {
+          "k": 166,
+          "N": 999,
+          "rate": 0.16616616616616617
+        },
+        "seen_joint_em": {
+          "k": 47,
+          "N": 999,
+          "rate": 0.04704704704704705
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 69,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.05555555555555555,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_joint_bert_shuffle_2_fold_2",
+      "model": "unfrozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_2",
+      "seed": 1002,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 436,
+          "N": 999,
+          "rate": 0.4364364364364364
+        },
+        "tool_micro_f1": 0.6259085079093629,
+        "tool_macro_f1": 0.4228169139550537,
+        "strict_span_f1": 0.36894449791466155,
+        "lenient_span_f1": 0.6191851138915623,
+        "token_acc": 0.8024595669921976,
+        "tag_macro_f1": 0.4387404461293521,
+        "joint_em": {
+          "k": 96,
+          "N": 999,
+          "rate": 0.0960960960960961
+        },
+        "seen_tool_subset_acc": {
+          "k": 436,
+          "N": 999,
+          "rate": 0.4364364364364364
+        },
+        "seen_joint_em": {
+          "k": 96,
+          "N": 999,
+          "rate": 0.0960960960960961
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 69,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 1.0,
+            "joint_em": 0.011111111111111112
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_arn_shuffle_2_fold_3",
+      "model": "frozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_3",
+      "seed": 1003,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 122,
+          "N": 987,
+          "rate": 0.12360688956433637
+        },
+        "tool_micro_f1": 0.3559214692843572,
+        "tool_macro_f1": 0.12788299773678738,
+        "strict_span_f1": 0.15269086357947434,
+        "lenient_span_f1": 0.45974134334584893,
+        "token_acc": 0.6342572062084257,
+        "tag_macro_f1": 0.3156391058200175,
+        "joint_em": {
+          "k": 21,
+          "N": 987,
+          "rate": 0.02127659574468085
+        },
+        "seen_tool_subset_acc": {
+          "k": 122,
+          "N": 987,
+          "rate": 0.12360688956433637
+        },
+        "seen_joint_em": {
+          "k": 21,
+          "N": 987,
+          "rate": 0.02127659574468085
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 50,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_cls_crf_shuffle_2_fold_3",
+      "model": "frozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_3",
+      "seed": 1003,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 82,
+          "N": 987,
+          "rate": 0.08308004052684904
+        },
+        "tool_micro_f1": 0.3642311886586696,
+        "tool_macro_f1": 0.11794745873565265,
+        "strict_span_f1": 0.31802392898494786,
+        "lenient_span_f1": 0.5627170976456967,
+        "token_acc": 0.6838137472283814,
+        "tag_macro_f1": 0.41362498966840944,
+        "joint_em": {
+          "k": 10,
+          "N": 987,
+          "rate": 0.010131712259371834
+        },
+        "seen_tool_subset_acc": {
+          "k": 82,
+          "N": 987,
+          "rate": 0.08308004052684904
+        },
+        "seen_joint_em": {
+          "k": 10,
+          "N": 987,
+          "rate": 0.010131712259371834
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 50,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_far_no_crf_shuffle_2_fold_3",
+      "model": "frozen_far_no_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_3",
+      "seed": 1003,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 119,
+          "N": 987,
+          "rate": 0.12056737588652482
+        },
+        "tool_micro_f1": 0.35286624203821654,
+        "tool_macro_f1": 0.12431549797491827,
+        "strict_span_f1": 0.14085865894838398,
+        "lenient_span_f1": 0.33671008200675356,
+        "token_acc": 0.6032150776053216,
+        "tag_macro_f1": 0.18610589003315245,
+        "joint_em": {
+          "k": 0,
+          "N": 987,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 119,
+          "N": 987,
+          "rate": 0.12056737588652482
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 987,
+          "rate": 0.0
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 50,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_frozen_joint_bert_shuffle_2_fold_3",
+      "model": "frozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_3",
+      "seed": 1003,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 68,
+          "N": 987,
+          "rate": 0.06889564336372847
+        },
+        "tool_micro_f1": 0.32344386271087844,
+        "tool_macro_f1": 0.08522836693568402,
+        "strict_span_f1": 0.22501011736139215,
+        "lenient_span_f1": 0.5220558478348847,
+        "token_acc": 0.6674611973392461,
+        "tag_macro_f1": 0.33381353410168607,
+        "joint_em": {
+          "k": 1,
+          "N": 987,
+          "rate": 0.0010131712259371835
+        },
+        "seen_tool_subset_acc": {
+          "k": 68,
+          "N": 987,
+          "rate": 0.06889564336372847
+        },
+        "seen_joint_em": {
+          "k": 1,
+          "N": 987,
+          "rate": 0.0010131712259371835
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 50,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T12:47:21.141068Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_cls_crf_shuffle_2_fold_3",
+      "model": "unfrozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_3",
+      "seed": 1003,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 339,
+          "N": 987,
+          "rate": 0.3434650455927052
+        },
+        "tool_micro_f1": 0.5897196261682243,
+        "tool_macro_f1": 0.3252761010678798,
+        "strict_span_f1": 0.4075471698113207,
+        "lenient_span_f1": 0.6641509433962264,
+        "token_acc": 0.7505543237250555,
+        "tag_macro_f1": 0.4888576097190378,
+        "joint_em": {
+          "k": 147,
+          "N": 987,
+          "rate": 0.14893617021276595
+        },
+        "seen_tool_subset_acc": {
+          "k": 339,
+          "N": 987,
+          "rate": 0.3434650455927052
+        },
+        "seen_joint_em": {
+          "k": 147,
+          "N": 987,
+          "rate": 0.14893617021276595
+        },
+        "best_tau": 0.35,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 50,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.09900990099009901,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_arn_shuffle_2_fold_3",
+      "model": "unfrozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_3",
+      "seed": 1003,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 343,
+          "N": 987,
+          "rate": 0.3475177304964539
+        },
+        "tool_micro_f1": 0.5682916117698726,
+        "tool_macro_f1": 0.3586208212435062,
+        "strict_span_f1": 0.4049382716049383,
+        "lenient_span_f1": 0.6476190476190476,
+        "token_acc": 0.7618625277161862,
+        "tag_macro_f1": 0.4819968671971139,
+        "joint_em": {
+          "k": 141,
+          "N": 987,
+          "rate": 0.14285714285714285
+        },
+        "seen_tool_subset_acc": {
+          "k": 343,
+          "N": 987,
+          "rate": 0.3475177304964539
+        },
+        "seen_joint_em": {
+          "k": 141,
+          "N": 987,
+          "rate": 0.14285714285714285
+        },
+        "best_tau": 0.35,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.9596774193548387,
+            "joint_em": 0.4112903225806452
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 50,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.009900990099009901,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_joint_bert_shuffle_2_fold_3",
+      "model": "unfrozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_3",
+      "seed": 1003,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 172,
+          "N": 987,
+          "rate": 0.17426545086119555
+        },
+        "tool_micro_f1": 0.4782010096374484,
+        "tool_macro_f1": 0.21324765408267016,
+        "strict_span_f1": 0.20093457943925233,
+        "lenient_span_f1": 0.5311526479750779,
+        "token_acc": 0.6988359201773836,
+        "tag_macro_f1": 0.2604560480695229,
+        "joint_em": {
+          "k": 22,
+          "N": 987,
+          "rate": 0.022289766970618033
+        },
+        "seen_tool_subset_acc": {
+          "k": 172,
+          "N": 987,
+          "rate": 0.17426545086119555
+        },
+        "seen_joint_em": {
+          "k": 22,
+          "N": 987,
+          "rate": 0.022289766970618033
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 50,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_arn_shuffle_2_fold_4",
+      "model": "frozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_4",
+      "seed": 1004,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 254,
+          "N": 990,
+          "rate": 0.25656565656565655
+        },
+        "tool_micro_f1": 0.4884488448844885,
+        "tool_macro_f1": 0.33096151860016065,
+        "strict_span_f1": 0.43197158081705145,
+        "lenient_span_f1": 0.6962699822380106,
+        "token_acc": 0.7406537282941777,
+        "tag_macro_f1": 0.3588266533264065,
+        "joint_em": {
+          "k": 76,
+          "N": 990,
+          "rate": 0.07676767676767676
+        },
+        "seen_tool_subset_acc": {
+          "k": 254,
+          "N": 990,
+          "rate": 0.25656565656565655
+        },
+        "seen_joint_em": {
+          "k": 76,
+          "N": 990,
+          "rate": 0.07676767676767676
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 26,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.038461538461538464,
+            "joint_em": 0.01282051282051282
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_cls_crf_shuffle_2_fold_4",
+      "model": "frozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_4",
+      "seed": 1004,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 213,
+          "N": 990,
+          "rate": 0.21515151515151515
+        },
+        "tool_micro_f1": 0.4763881681370005,
+        "tool_macro_f1": 0.22213805786841007,
+        "strict_span_f1": 0.48214285714285715,
+        "lenient_span_f1": 0.7403846153846153,
+        "token_acc": 0.7731358529111338,
+        "tag_macro_f1": 0.43156824576484676,
+        "joint_em": {
+          "k": 80,
+          "N": 990,
+          "rate": 0.08080808080808081
+        },
+        "seen_tool_subset_acc": {
+          "k": 213,
+          "N": 990,
+          "rate": 0.21515151515151515
+        },
+        "seen_joint_em": {
+          "k": 80,
+          "N": 990,
+          "rate": 0.08080808080808081
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 26,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.01282051282051282,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_far_no_crf_shuffle_2_fold_4",
+      "model": "frozen_far_no_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_4",
+      "seed": 1004,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 248,
+          "N": 990,
+          "rate": 0.2505050505050505
+        },
+        "tool_micro_f1": 0.4874808380173735,
+        "tool_macro_f1": 0.18927396754175435,
+        "strict_span_f1": 0.23401264933239635,
+        "lenient_span_f1": 0.6612789880534083,
+        "token_acc": 0.6984678243105209,
+        "tag_macro_f1": 0.3238812547261995,
+        "joint_em": {
+          "k": 21,
+          "N": 990,
+          "rate": 0.021212121212121213
+        },
+        "seen_tool_subset_acc": {
+          "k": 248,
+          "N": 990,
+          "rate": 0.2505050505050505
+        },
+        "seen_joint_em": {
+          "k": 21,
+          "N": 990,
+          "rate": 0.021212121212121213
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 26,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.5384615384615384,
+            "joint_em": 0.00641025641025641
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_joint_bert_shuffle_2_fold_4",
+      "model": "frozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_4",
+      "seed": 1004,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 152,
+          "N": 990,
+          "rate": 0.15353535353535352
+        },
+        "tool_micro_f1": 0.3805620608899297,
+        "tool_macro_f1": 0.11810784635907244,
+        "strict_span_f1": 0.25937392500859996,
+        "lenient_span_f1": 0.6852425180598555,
+        "token_acc": 0.7191011235955056,
+        "tag_macro_f1": 0.35221353608773387,
+        "joint_em": {
+          "k": 34,
+          "N": 990,
+          "rate": 0.03434343434343434
+        },
+        "seen_tool_subset_acc": {
+          "k": 152,
+          "N": 990,
+          "rate": 0.15353535353535352
+        },
+        "seen_joint_em": {
+          "k": 34,
+          "N": 990,
+          "rate": 0.03434343434343434
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 26,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_cls_crf_shuffle_2_fold_4",
+      "model": "unfrozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_4",
+      "seed": 1004,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 408,
+          "N": 990,
+          "rate": 0.4121212121212121
+        },
+        "tool_micro_f1": 0.6454413892908828,
+        "tool_macro_f1": 0.4032760346143353,
+        "strict_span_f1": 0.5277591973244148,
+        "lenient_span_f1": 0.7772575250836121,
+        "token_acc": 0.8110316649642493,
+        "tag_macro_f1": 0.4819854436840171,
+        "joint_em": {
+          "k": 177,
+          "N": 990,
+          "rate": 0.1787878787878788
+        },
+        "seen_tool_subset_acc": {
+          "k": 408,
+          "N": 990,
+          "rate": 0.4121212121212121
+        },
+        "seen_joint_em": {
+          "k": 177,
+          "N": 990,
+          "rate": 0.1787878787878788
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 26,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.26282051282051283,
+            "joint_em": 0.1282051282051282
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_arn_shuffle_2_fold_4",
+      "model": "unfrozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_4",
+      "seed": 1004,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 265,
+          "N": 990,
+          "rate": 0.2676767676767677
+        },
+        "tool_micro_f1": 0.531461258450338,
+        "tool_macro_f1": 0.21123907130718758,
+        "strict_span_f1": 0.2135706340378198,
+        "lenient_span_f1": 0.564330737856878,
+        "token_acc": 0.6465270684371808,
+        "tag_macro_f1": 0.2152101465946675,
+        "joint_em": {
+          "k": 27,
+          "N": 990,
+          "rate": 0.02727272727272727
+        },
+        "seen_tool_subset_acc": {
+          "k": 265,
+          "N": 990,
+          "rate": 0.2676767676767677
+        },
+        "seen_joint_em": {
+          "k": 27,
+          "N": 990,
+          "rate": 0.02727272727272727
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 26,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.47435897435897434,
+            "joint_em": 0.04487179487179487
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_joint_bert_shuffle_2_fold_4",
+      "model": "unfrozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_4",
+      "seed": 1004,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 257,
+          "N": 990,
+          "rate": 0.2595959595959596
+        },
+        "tool_micro_f1": 0.5278188084687346,
+        "tool_macro_f1": 0.27110961438623016,
+        "strict_span_f1": 0.3277674706246135,
+        "lenient_span_f1": 0.686456400742115,
+        "token_acc": 0.7797242083758937,
+        "tag_macro_f1": 0.37642449323465293,
+        "joint_em": {
+          "k": 45,
+          "N": 990,
+          "rate": 0.045454545454545456
+        },
+        "seen_tool_subset_acc": {
+          "k": 257,
+          "N": 990,
+          "rate": 0.2595959595959596
+        },
+        "seen_joint_em": {
+          "k": 45,
+          "N": 990,
+          "rate": 0.045454545454545456
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 26,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.03205128205128205,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_arn_shuffle_2_fold_5",
+      "model": "frozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_5",
+      "seed": 1005,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 155,
+          "N": 989,
+          "rate": 0.15672396359959556
+        },
+        "tool_micro_f1": 0.4967441860465116,
+        "tool_macro_f1": 0.2423960357356634,
+        "strict_span_f1": 0.41387465510445404,
+        "lenient_span_f1": 0.6874260938115885,
+        "token_acc": 0.7260354397950469,
+        "tag_macro_f1": 0.42705094874184146,
+        "joint_em": {
+          "k": 55,
+          "N": 989,
+          "rate": 0.055611729019211326
+        },
+        "seen_tool_subset_acc": {
+          "k": 155,
+          "N": 989,
+          "rate": 0.15672396359959556
+        },
+        "seen_joint_em": {
+          "k": 55,
+          "N": 989,
+          "rate": 0.055611729019211326
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 33,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.31645569620253167,
+            "joint_em": 0.02531645569620253
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.019417475728155338,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_cls_crf_shuffle_2_fold_5",
+      "model": "frozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_5",
+      "seed": 1005,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 317,
+          "N": 989,
+          "rate": 0.320525783619818
+        },
+        "tool_micro_f1": 0.5384615384615384,
+        "tool_macro_f1": 0.21612486724647426,
+        "strict_span_f1": 0.4981440237564959,
+        "lenient_span_f1": 0.7557535263548626,
+        "token_acc": 0.7876280956447481,
+        "tag_macro_f1": 0.48266328116688473,
+        "joint_em": {
+          "k": 54,
+          "N": 989,
+          "rate": 0.054600606673407485
+        },
+        "seen_tool_subset_acc": {
+          "k": 317,
+          "N": 989,
+          "rate": 0.320525783619818
+        },
+        "seen_joint_em": {
+          "k": 54,
+          "N": 989,
+          "rate": 0.054600606673407485
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 33,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.8737864077669902,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_far_no_crf_shuffle_2_fold_5",
+      "model": "frozen_far_no_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_5",
+      "seed": 1005,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 123,
+          "N": 989,
+          "rate": 0.1243680485338726
+        },
+        "tool_micro_f1": 0.38288027761711974,
+        "tool_macro_f1": 0.14174774946035543,
+        "strict_span_f1": 0.13266162888329133,
+        "lenient_span_f1": 0.5768261964735516,
+        "token_acc": 0.6584116140051238,
+        "tag_macro_f1": 0.2706173299249123,
+        "joint_em": {
+          "k": 1,
+          "N": 989,
+          "rate": 0.0010111223458038423
+        },
+        "seen_tool_subset_acc": {
+          "k": 123,
+          "N": 989,
+          "rate": 0.1243680485338726
+        },
+        "seen_joint_em": {
+          "k": 1,
+          "N": 989,
+          "rate": 0.0010111223458038423
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 33,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.12658227848101267,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_joint_bert_shuffle_2_fold_5",
+      "model": "frozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_5",
+      "seed": 1005,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 188,
+          "N": 989,
+          "rate": 0.19009100101112233
+        },
+        "tool_micro_f1": 0.31432192648922685,
+        "tool_macro_f1": 0.05466857975173373,
+        "strict_span_f1": 0.16390858944050432,
+        "lenient_span_f1": 0.5933806146572104,
+        "token_acc": 0.6819491887275833,
+        "tag_macro_f1": 0.2810424651422419,
+        "joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 188,
+          "N": 989,
+          "rate": 0.19009100101112233
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 989,
+          "rate": 0.0
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 33,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_cls_crf_shuffle_2_fold_5",
+      "model": "unfrozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_5",
+      "seed": 1005,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 544,
+          "N": 989,
+          "rate": 0.5500505561172901
+        },
+        "tool_micro_f1": 0.7764390896921017,
+        "tool_macro_f1": 0.5199379761664885,
+        "strict_span_f1": 0.5159722222222222,
+        "lenient_span_f1": 0.7819444444444446,
+        "token_acc": 0.8173035866780529,
+        "tag_macro_f1": 0.5187273981266692,
+        "joint_em": {
+          "k": 271,
+          "N": 989,
+          "rate": 0.27401415571284127
+        },
+        "seen_tool_subset_acc": {
+          "k": 544,
+          "N": 989,
+          "rate": 0.5500505561172901
+        },
+        "seen_joint_em": {
+          "k": 271,
+          "N": 989,
+          "rate": 0.27401415571284127
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 33,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.012658227848101266,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.8446601941747572,
+            "joint_em": 0.02912621359223301
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_arn_shuffle_2_fold_5",
+      "model": "unfrozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_5",
+      "seed": 1005,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 287,
+          "N": 989,
+          "rate": 0.2901921132457027
+        },
+        "tool_micro_f1": 0.5140946010511228,
+        "tool_macro_f1": 0.24197428729355325,
+        "strict_span_f1": 0.3861538461538462,
+        "lenient_span_f1": 0.6976923076923077,
+        "token_acc": 0.7502668659265584,
+        "tag_macro_f1": 0.4259039406019103,
+        "joint_em": {
+          "k": 108,
+          "N": 989,
+          "rate": 0.10920121334681497
+        },
+        "seen_tool_subset_acc": {
+          "k": 287,
+          "N": 989,
+          "rate": 0.2901921132457027
+        },
+        "seen_joint_em": {
+          "k": 108,
+          "N": 989,
+          "rate": 0.10920121334681497
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 33,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.06796116504854369,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_joint_bert_shuffle_2_fold_5",
+      "model": "unfrozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_2",
+      "fold": "fold_5",
+      "seed": 1005,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 333,
+          "N": 989,
+          "rate": 0.3367037411526795
+        },
+        "tool_micro_f1": 0.5461756373937677,
+        "tool_macro_f1": 0.21504063347530497,
+        "strict_span_f1": 0.1904397705544933,
+        "lenient_span_f1": 0.5973231357552582,
+        "token_acc": 0.7082087959009393,
+        "tag_macro_f1": 0.2677064085677572,
+        "joint_em": {
+          "k": 7,
+          "N": 989,
+          "rate": 0.007077856420626896
+        },
+        "seen_tool_subset_acc": {
+          "k": 333,
+          "N": 989,
+          "rate": 0.3367037411526795
+        },
+        "seen_joint_em": {
+          "k": 7,
+          "N": 989,
+          "rate": 0.007077856420626896
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 33,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.7669902912621359,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_arn_shuffle_3_fold_1",
+      "model": "frozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_1",
+      "seed": 20241,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 22,
+          "N": 986,
+          "rate": 0.02231237322515213
+        },
+        "tool_micro_f1": 0.05736137667304015,
+        "tool_macro_f1": 0.014954790206237936,
+        "strict_span_f1": 0.10587707492148947,
+        "lenient_span_f1": 0.3535217586361597,
+        "token_acc": 0.6092856341818997,
+        "tag_macro_f1": 0.1828220731091961,
+        "joint_em": {
+          "k": 0,
+          "N": 986,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 22,
+          "N": 986,
+          "rate": 0.02231237322515213
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 986,
+          "rate": 0.0
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 21,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_cls_crf_shuffle_3_fold_1",
+      "model": "frozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_1",
+      "seed": 20241,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 93,
+          "N": 986,
+          "rate": 0.09432048681541583
+        },
+        "tool_micro_f1": 0.25239234449760767,
+        "tool_macro_f1": 0.09706837343162943,
+        "strict_span_f1": 0.3413103177716752,
+        "lenient_span_f1": 0.5664966653589644,
+        "token_acc": 0.7251317707749243,
+        "tag_macro_f1": 0.3681654697168843,
+        "joint_em": {
+          "k": 2,
+          "N": 986,
+          "rate": 0.002028397565922921
+        },
+        "seen_tool_subset_acc": {
+          "k": 93,
+          "N": 986,
+          "rate": 0.09432048681541583
+        },
+        "seen_joint_em": {
+          "k": 2,
+          "N": 986,
+          "rate": 0.002028397565922921
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 21,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.3333333333333333,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_far_no_crf_shuffle_3_fold_1",
+      "model": "frozen_far_no_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_1",
+      "seed": 20241,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 56,
+          "N": 986,
+          "rate": 0.056795131845841784
+        },
+        "tool_micro_f1": 0.20806545879602573,
+        "tool_macro_f1": 0.0745009508336914,
+        "strict_span_f1": 0.09818664307828394,
+        "lenient_span_f1": 0.4237063246351172,
+        "token_acc": 0.661433217449815,
+        "tag_macro_f1": 0.20734625970395448,
+        "joint_em": {
+          "k": 0,
+          "N": 986,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 56,
+          "N": 986,
+          "rate": 0.056795131845841784
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 986,
+          "rate": 0.0
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 21,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_joint_bert_shuffle_3_fold_1",
+      "model": "frozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_1",
+      "seed": 20241,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 108,
+          "N": 986,
+          "rate": 0.10953346855983773
+        },
+        "tool_micro_f1": 0.282021151586369,
+        "tool_macro_f1": 0.11336268310254341,
+        "strict_span_f1": 0.2106422018348624,
+        "lenient_span_f1": 0.5519266055045872,
+        "token_acc": 0.7271503869014242,
+        "tag_macro_f1": 0.3109447764709461,
+        "joint_em": {
+          "k": 6,
+          "N": 986,
+          "rate": 0.006085192697768763
+        },
+        "seen_tool_subset_acc": {
+          "k": 108,
+          "N": 986,
+          "rate": 0.10953346855983773
+        },
+        "seen_joint_em": {
+          "k": 6,
+          "N": 986,
+          "rate": 0.006085192697768763
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 21,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.4666666666666667,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_cls_crf_shuffle_3_fold_1",
+      "model": "unfrozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_1",
+      "seed": 20241,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 385,
+          "N": 986,
+          "rate": 0.39046653144016225
+        },
+        "tool_micro_f1": 0.5674288380774615,
+        "tool_macro_f1": 0.35437870857214526,
+        "strict_span_f1": 0.42534271952575026,
+        "lenient_span_f1": 0.6394961096702482,
+        "token_acc": 0.7759896826286867,
+        "tag_macro_f1": 0.4213421645369615,
+        "joint_em": {
+          "k": 192,
+          "N": 986,
+          "rate": 0.1947261663286004
+        },
+        "seen_tool_subset_acc": {
+          "k": 385,
+          "N": 986,
+          "rate": 0.39046653144016225
+        },
+        "seen_joint_em": {
+          "k": 192,
+          "N": 986,
+          "rate": 0.1947261663286004
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 21,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0891089108910891,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 1.0,
+            "joint_em": 0.05555555555555555
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_arn_shuffle_3_fold_1",
+      "model": "unfrozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_1",
+      "seed": 20241,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 167,
+          "N": 986,
+          "rate": 0.16937119675456389
+        },
+        "tool_micro_f1": 0.27863046044864226,
+        "tool_macro_f1": 0.13310475507941857,
+        "strict_span_f1": 0.19433882551753276,
+        "lenient_span_f1": 0.4233206590621039,
+        "token_acc": 0.6955814735897723,
+        "tag_macro_f1": 0.23169129703931113,
+        "joint_em": {
+          "k": 14,
+          "N": 986,
+          "rate": 0.014198782961460446
+        },
+        "seen_tool_subset_acc": {
+          "k": 167,
+          "N": 986,
+          "rate": 0.16937119675456389
+        },
+        "seen_joint_em": {
+          "k": 14,
+          "N": 986,
+          "rate": 0.014198782961460446
+        },
+        "best_tau": 0.6,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 21,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_joint_bert_shuffle_3_fold_1",
+      "model": "unfrozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_1",
+      "seed": 20241,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 345,
+          "N": 986,
+          "rate": 0.34989858012170383
+        },
+        "tool_micro_f1": 0.5251833740831295,
+        "tool_macro_f1": 0.2713383477990265,
+        "strict_span_f1": 0.3553404770134808,
+        "lenient_span_f1": 0.6021431040442448,
+        "token_acc": 0.7857463272401032,
+        "tag_macro_f1": 0.35147102915650735,
+        "joint_em": {
+          "k": 142,
+          "N": 986,
+          "rate": 0.1440162271805274
+        },
+        "seen_tool_subset_acc": {
+          "k": 345,
+          "N": 986,
+          "rate": 0.34989858012170383
+        },
+        "seen_joint_em": {
+          "k": 142,
+          "N": 986,
+          "rate": 0.1440162271805274
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 21,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 101,
+            "tool_subset_acc": 0.039603960396039604,
+            "joint_em": 0.0
+          },
+          "handle_smart_home + media_control": {
+            "count": 114,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 90,
+            "tool_subset_acc": 0.9888888888888889,
+            "joint_em": 0.1
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_arn_shuffle_3_fold_2",
+      "model": "frozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_2",
+      "seed": 20242,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 57,
+          "N": 984,
+          "rate": 0.057926829268292686
+        },
+        "tool_micro_f1": 0.12361623616236163,
+        "tool_macro_f1": 0.047416843595187545,
+        "strict_span_f1": 0.03797468354430379,
+        "lenient_span_f1": 0.21518987341772153,
+        "token_acc": 0.5867356364308147,
+        "tag_macro_f1": 0.13537916666037914,
+        "joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 57,
+          "N": 984,
+          "rate": 0.057926829268292686
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 984,
+          "rate": 0.0
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 33,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_cls_crf_shuffle_3_fold_2",
+      "model": "frozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_2",
+      "seed": 20242,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 202,
+          "N": 984,
+          "rate": 0.20528455284552846
+        },
+        "tool_micro_f1": 0.3801201529219006,
+        "tool_macro_f1": 0.21894544705570468,
+        "strict_span_f1": 0.42368103101087395,
+        "lenient_span_f1": 0.5670559806685461,
+        "token_acc": 0.7326190036332286,
+        "tag_macro_f1": 0.44930587535438593,
+        "joint_em": {
+          "k": 95,
+          "N": 984,
+          "rate": 0.09654471544715447
+        },
+        "seen_tool_subset_acc": {
+          "k": 202,
+          "N": 984,
+          "rate": 0.20528455284552846
+        },
+        "seen_joint_em": {
+          "k": 95,
+          "N": 984,
+          "rate": 0.09654471544715447
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 33,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_far_no_crf_shuffle_3_fold_2",
+      "model": "frozen_far_no_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_2",
+      "seed": 20242,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 100,
+          "N": 984,
+          "rate": 0.1016260162601626
+        },
+        "tool_micro_f1": 0.2202852614896989,
+        "tool_macro_f1": 0.13869177237011632,
+        "strict_span_f1": 0.16291327264015334,
+        "lenient_span_f1": 0.44465740297077144,
+        "token_acc": 0.6540427366217132,
+        "tag_macro_f1": 0.2276769488955755,
+        "joint_em": {
+          "k": 1,
+          "N": 984,
+          "rate": 0.0010162601626016261
+        },
+        "seen_tool_subset_acc": {
+          "k": 100,
+          "N": 984,
+          "rate": 0.1016260162601626
+        },
+        "seen_joint_em": {
+          "k": 1,
+          "N": 984,
+          "rate": 0.0010162601626016261
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 33,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_joint_bert_shuffle_3_fold_2",
+      "model": "frozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_2",
+      "seed": 20242,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 116,
+          "N": 984,
+          "rate": 0.11788617886178862
+        },
+        "tool_micro_f1": 0.22566646001239926,
+        "tool_macro_f1": 0.11459006611132755,
+        "strict_span_f1": 0.23119896862913622,
+        "lenient_span_f1": 0.5457670820799313,
+        "token_acc": 0.6912987252909661,
+        "tag_macro_f1": 0.3268972115217303,
+        "joint_em": {
+          "k": 15,
+          "N": 984,
+          "rate": 0.01524390243902439
+        },
+        "seen_tool_subset_acc": {
+          "k": 116,
+          "N": 984,
+          "rate": 0.11788617886178862
+        },
+        "seen_joint_em": {
+          "k": 15,
+          "N": 984,
+          "rate": 0.01524390243902439
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 33,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_cls_crf_shuffle_3_fold_2",
+      "model": "unfrozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_2",
+      "seed": 20242,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 250,
+          "N": 984,
+          "rate": 0.2540650406504065
+        },
+        "tool_micro_f1": 0.4320785597381342,
+        "tool_macro_f1": 0.2601970853543498,
+        "strict_span_f1": 0.31277533039647576,
+        "lenient_span_f1": 0.5022026431718062,
+        "token_acc": 0.7046000369480879,
+        "tag_macro_f1": 0.3407799280922847,
+        "joint_em": {
+          "k": 106,
+          "N": 984,
+          "rate": 0.10772357723577236
+        },
+        "seen_tool_subset_acc": {
+          "k": 250,
+          "N": 984,
+          "rate": 0.2540650406504065
+        },
+        "seen_joint_em": {
+          "k": 106,
+          "N": 984,
+          "rate": 0.10772357723577236
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 33,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_arn_shuffle_3_fold_2",
+      "model": "unfrozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_2",
+      "seed": 20242,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 161,
+          "N": 984,
+          "rate": 0.16361788617886178
+        },
+        "tool_micro_f1": 0.31491997934950955,
+        "tool_macro_f1": 0.20649662951132708,
+        "strict_span_f1": 0.2549194991055456,
+        "lenient_span_f1": 0.4838998211091234,
+        "token_acc": 0.7023215715253402,
+        "tag_macro_f1": 0.30866689013692505,
+        "joint_em": {
+          "k": 48,
+          "N": 984,
+          "rate": 0.04878048780487805
+        },
+        "seen_tool_subset_acc": {
+          "k": 161,
+          "N": 984,
+          "rate": 0.16361788617886178
+        },
+        "seen_joint_em": {
+          "k": 48,
+          "N": 984,
+          "rate": 0.04878048780487805
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 33,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_joint_bert_shuffle_3_fold_2",
+      "model": "unfrozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_2",
+      "seed": 20242,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 196,
+          "N": 984,
+          "rate": 0.1991869918699187
+        },
+        "tool_micro_f1": 0.386456509048453,
+        "tool_macro_f1": 0.22268109310880582,
+        "strict_span_f1": 0.1455902939804013,
+        "lenient_span_f1": 0.42650489967335514,
+        "token_acc": 0.6850175503417698,
+        "tag_macro_f1": 0.22242995312892025,
+        "joint_em": {
+          "k": 21,
+          "N": 984,
+          "rate": 0.021341463414634148
+        },
+        "seen_tool_subset_acc": {
+          "k": 196,
+          "N": 984,
+          "rate": 0.1991869918699187
+        },
+        "seen_joint_em": {
+          "k": 21,
+          "N": 984,
+          "rate": 0.021341463414634148
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 33,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_arn_shuffle_3_fold_3",
+      "model": "frozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_3",
+      "seed": 20243,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 89,
+          "N": 1020,
+          "rate": 0.08725490196078431
+        },
+        "tool_micro_f1": 0.2916404776869893,
+        "tool_macro_f1": 0.08181809152459157,
+        "strict_span_f1": 0.15929941618015012,
+        "lenient_span_f1": 0.5237698081734778,
+        "token_acc": 0.6212106152469934,
+        "tag_macro_f1": 0.24000627308698,
+        "joint_em": {
+          "k": 0,
+          "N": 1020,
+          "rate": 0.0
+        },
+        "seen_tool_subset_acc": {
+          "k": 89,
+          "N": 1020,
+          "rate": 0.08725490196078431
+        },
+        "seen_joint_em": {
+          "k": 0,
+          "N": 1020,
+          "rate": 0.0
+        },
+        "best_tau": 0.35,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 65,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_cls_crf_shuffle_3_fold_3",
+      "model": "frozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_3",
+      "seed": 20243,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 385,
+          "N": 1020,
+          "rate": 0.37745098039215685
+        },
+        "tool_micro_f1": 0.5707340787554691,
+        "tool_macro_f1": 0.2671780929485578,
+        "strict_span_f1": 0.42383160899036754,
+        "lenient_span_f1": 0.7178023546200499,
+        "token_acc": 0.7492793956863135,
+        "tag_macro_f1": 0.45781595155274957,
+        "joint_em": {
+          "k": 61,
+          "N": 1020,
+          "rate": 0.059803921568627454
+        },
+        "seen_tool_subset_acc": {
+          "k": 385,
+          "N": 1020,
+          "rate": 0.37745098039215685
+        },
+        "seen_joint_em": {
+          "k": 61,
+          "N": 1020,
+          "rate": 0.059803921568627454
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 65,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.8737864077669902,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_far_no_crf_shuffle_3_fold_3",
+      "model": "frozen_far_no_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_3",
+      "seed": 20243,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 119,
+          "N": 1020,
+          "rate": 0.11666666666666667
+        },
+        "tool_micro_f1": 0.2948467058056099,
+        "tool_macro_f1": 0.06929058110482617,
+        "strict_span_f1": 0.1688411358403684,
+        "lenient_span_f1": 0.5801995395241749,
+        "token_acc": 0.6918298379882716,
+        "tag_macro_f1": 0.30064629862386794,
+        "joint_em": {
+          "k": 2,
+          "N": 1020,
+          "rate": 0.00196078431372549
+        },
+        "seen_tool_subset_acc": {
+          "k": 119,
+          "N": 1020,
+          "rate": 0.11666666666666667
+        },
+        "seen_joint_em": {
+          "k": 2,
+          "N": 1020,
+          "rate": 0.00196078431372549
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 65,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_joint_bert_shuffle_3_fold_3",
+      "model": "frozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_3",
+      "seed": 20243,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 226,
+          "N": 1020,
+          "rate": 0.22156862745098038
+        },
+        "tool_micro_f1": 0.4294909303686366,
+        "tool_macro_f1": 0.11837415952297785,
+        "strict_span_f1": 0.2188295165394402,
+        "lenient_span_f1": 0.6135950563431479,
+        "token_acc": 0.7219958254646656,
+        "tag_macro_f1": 0.3452281238709665,
+        "joint_em": {
+          "k": 7,
+          "N": 1020,
+          "rate": 0.006862745098039216
+        },
+        "seen_tool_subset_acc": {
+          "k": 226,
+          "N": 1020,
+          "rate": 0.22156862745098038
+        },
+        "seen_joint_em": {
+          "k": 7,
+          "N": 1020,
+          "rate": 0.006862745098039216
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 65,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_cls_crf_shuffle_3_fold_3",
+      "model": "unfrozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_3",
+      "seed": 20243,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 629,
+          "N": 1020,
+          "rate": 0.6166666666666667
+        },
+        "tool_micro_f1": 0.7646270656543099,
+        "tool_macro_f1": 0.5289239528161054,
+        "strict_span_f1": 0.454017094017094,
+        "lenient_span_f1": 0.7535042735042736,
+        "token_acc": 0.7860550641089354,
+        "tag_macro_f1": 0.4862222348752855,
+        "joint_em": {
+          "k": 199,
+          "N": 1020,
+          "rate": 0.19509803921568628
+        },
+        "seen_tool_subset_acc": {
+          "k": 629,
+          "N": 1020,
+          "rate": 0.6166666666666667
+        },
+        "seen_joint_em": {
+          "k": 199,
+          "N": 1020,
+          "rate": 0.19509803921568628
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 65,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 1.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_arn_shuffle_3_fold_3",
+      "model": "unfrozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_3",
+      "seed": 20243,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 305,
+          "N": 1020,
+          "rate": 0.29901960784313725
+        },
+        "tool_micro_f1": 0.5028453181583031,
+        "tool_macro_f1": 0.2528729356371568,
+        "strict_span_f1": 0.30857966834895456,
+        "lenient_span_f1": 0.6582552271088681,
+        "token_acc": 0.7431169863830633,
+        "tag_macro_f1": 0.33223750582775324,
+        "joint_em": {
+          "k": 38,
+          "N": 1020,
+          "rate": 0.03725490196078431
+        },
+        "seen_tool_subset_acc": {
+          "k": 305,
+          "N": 1020,
+          "rate": 0.29901960784313725
+        },
+        "seen_joint_em": {
+          "k": 38,
+          "N": 1020,
+          "rate": 0.03725490196078431
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 65,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.23300970873786409,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_joint_bert_shuffle_3_fold_3",
+      "model": "unfrozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_3",
+      "seed": 20243,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 472,
+          "N": 1020,
+          "rate": 0.4627450980392157
+        },
+        "tool_micro_f1": 0.6659815005138746,
+        "tool_macro_f1": 0.31460820622084484,
+        "strict_span_f1": 0.3116219667943806,
+        "lenient_span_f1": 0.6647509578544061,
+        "token_acc": 0.7703508597554916,
+        "tag_macro_f1": 0.37340463738374113,
+        "joint_em": {
+          "k": 65,
+          "N": 1020,
+          "rate": 0.06372549019607843
+        },
+        "seen_tool_subset_acc": {
+          "k": 472,
+          "N": 1020,
+          "rate": 0.4627450980392157
+        },
+        "seen_joint_em": {
+          "k": 65,
+          "N": 1020,
+          "rate": 0.06372549019607843
+        },
+        "best_tau": 0.45,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 65,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + write_and_run_script": {
+            "count": 103,
+            "tool_subset_acc": 0.9805825242718447,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_arn_shuffle_3_fold_4",
+      "model": "frozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_4",
+      "seed": 20244,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 91,
+          "N": 984,
+          "rate": 0.09247967479674797
+        },
+        "tool_micro_f1": 0.3734793187347932,
+        "tool_macro_f1": 0.05507370766891027,
+        "strict_span_f1": 0.12446351931330471,
+        "lenient_span_f1": 0.43261802575107294,
+        "token_acc": 0.6408542549722857,
+        "tag_macro_f1": 0.24561734223612997,
+        "joint_em": {
+          "k": 3,
+          "N": 984,
+          "rate": 0.003048780487804878
+        },
+        "seen_tool_subset_acc": {
+          "k": 91,
+          "N": 984,
+          "rate": 0.09247967479674797
+        },
+        "seen_joint_em": {
+          "k": 3,
+          "N": 984,
+          "rate": 0.003048780487804878
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 90,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_cls_crf_shuffle_3_fold_4",
+      "model": "frozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_4",
+      "seed": 20244,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 212,
+          "N": 984,
+          "rate": 0.21544715447154472
+        },
+        "tool_micro_f1": 0.49129989764585463,
+        "tool_macro_f1": 0.19636037708553555,
+        "strict_span_f1": 0.34329933169187477,
+        "lenient_span_f1": 0.6359479423144566,
+        "token_acc": 0.7356809042495381,
+        "tag_macro_f1": 0.4775322184187234,
+        "joint_em": {
+          "k": 80,
+          "N": 984,
+          "rate": 0.08130081300813008
+        },
+        "seen_tool_subset_acc": {
+          "k": 212,
+          "N": 984,
+          "rate": 0.21544715447154472
+        },
+        "seen_joint_em": {
+          "k": 80,
+          "N": 984,
+          "rate": 0.08130081300813008
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 90,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.14743589743589744,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_far_no_crf_shuffle_3_fold_4",
+      "model": "frozen_far_no_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_4",
+      "seed": 20244,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 96,
+          "N": 984,
+          "rate": 0.0975609756097561
+        },
+        "tool_micro_f1": 0.39448441247002397,
+        "tool_macro_f1": 0.0856047114909764,
+        "strict_span_f1": 0.14610613370089592,
+        "lenient_span_f1": 0.5513439007580979,
+        "token_acc": 0.7027497011194436,
+        "tag_macro_f1": 0.30202053700438714,
+        "joint_em": {
+          "k": 5,
+          "N": 984,
+          "rate": 0.00508130081300813
+        },
+        "seen_tool_subset_acc": {
+          "k": 96,
+          "N": 984,
+          "rate": 0.0975609756097561
+        },
+        "seen_joint_em": {
+          "k": 5,
+          "N": 984,
+          "rate": 0.00508130081300813
+        },
+        "best_tau": 0.5,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 90,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_joint_bert_shuffle_3_fold_4",
+      "model": "frozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_4",
+      "seed": 20244,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 107,
+          "N": 984,
+          "rate": 0.10873983739837398
+        },
+        "tool_micro_f1": 0.36039360393603936,
+        "tool_macro_f1": 0.07846315334506498,
+        "strict_span_f1": 0.07523009203681473,
+        "lenient_span_f1": 0.38495398159263705,
+        "token_acc": 0.6461797630692316,
+        "tag_macro_f1": 0.177758445218582,
+        "joint_em": {
+          "k": 1,
+          "N": 984,
+          "rate": 0.0010162601626016261
+        },
+        "seen_tool_subset_acc": {
+          "k": 107,
+          "N": 984,
+          "rate": 0.10873983739837398
+        },
+        "seen_joint_em": {
+          "k": 1,
+          "N": 984,
+          "rate": 0.0010162601626016261
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 90,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_cls_crf_shuffle_3_fold_4",
+      "model": "unfrozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_4",
+      "seed": 20244,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 248,
+          "N": 984,
+          "rate": 0.25203252032520324
+        },
+        "tool_micro_f1": 0.5096056622851365,
+        "tool_macro_f1": 0.21357761631974112,
+        "strict_span_f1": 0.2680042995342171,
+        "lenient_span_f1": 0.6062343246148333,
+        "token_acc": 0.7211172698619716,
+        "tag_macro_f1": 0.38753628545220825,
+        "joint_em": {
+          "k": 84,
+          "N": 984,
+          "rate": 0.08536585365853659
+        },
+        "seen_tool_subset_acc": {
+          "k": 248,
+          "N": 984,
+          "rate": 0.25203252032520324
+        },
+        "seen_joint_em": {
+          "k": 84,
+          "N": 984,
+          "rate": 0.08536585365853659
+        },
+        "best_tau": 0.35,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 90,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_arn_shuffle_3_fold_4",
+      "model": "unfrozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_4",
+      "seed": 20244,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 160,
+          "N": 984,
+          "rate": 0.16260162601626016
+        },
+        "tool_micro_f1": 0.419234360410831,
+        "tool_macro_f1": 0.19747431183181563,
+        "strict_span_f1": 0.23871906841339158,
+        "lenient_span_f1": 0.5924308588064047,
+        "token_acc": 0.7278013259428323,
+        "tag_macro_f1": 0.3937324266799446,
+        "joint_em": {
+          "k": 50,
+          "N": 984,
+          "rate": 0.0508130081300813
+        },
+        "seen_tool_subset_acc": {
+          "k": 160,
+          "N": 984,
+          "rate": 0.16260162601626016
+        },
+        "seen_joint_em": {
+          "k": 50,
+          "N": 984,
+          "rate": 0.0508130081300813
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 90,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_joint_bert_shuffle_3_fold_4",
+      "model": "unfrozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_4",
+      "seed": 20244,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 190,
+          "N": 984,
+          "rate": 0.19308943089430894
+        },
+        "tool_micro_f1": 0.4869109947643979,
+        "tool_macro_f1": 0.18202917037493552,
+        "strict_span_f1": 0.1629730651210365,
+        "lenient_span_f1": 0.5332424139106717,
+        "token_acc": 0.7032387783936529,
+        "tag_macro_f1": 0.23714086736706588,
+        "joint_em": {
+          "k": 18,
+          "N": 984,
+          "rate": 0.018292682926829267
+        },
+        "seen_tool_subset_acc": {
+          "k": 190,
+          "N": 984,
+          "rate": 0.19308943089430894
+        },
+        "seen_joint_em": {
+          "k": 18,
+          "N": 984,
+          "rate": 0.018292682926829267
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_system_diagnostics + send_whatsapp_message": {
+            "count": 90,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "send_whatsapp_message + set_timer": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_arn_shuffle_3_fold_5",
+      "model": "frozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_5",
+      "seed": 20245,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 140,
+          "N": 989,
+          "rate": 0.14155712841253792
+        },
+        "tool_micro_f1": 0.4979287489643745,
+        "tool_macro_f1": 0.20536777190482497,
+        "strict_span_f1": 0.3876923076923077,
+        "lenient_span_f1": 0.665982905982906,
+        "token_acc": 0.7435685051646852,
+        "tag_macro_f1": 0.40957989306717335,
+        "joint_em": {
+          "k": 30,
+          "N": 989,
+          "rate": 0.030333670374115267
+        },
+        "seen_tool_subset_acc": {
+          "k": 140,
+          "N": 989,
+          "rate": 0.14155712841253792
+        },
+        "seen_joint_em": {
+          "k": 30,
+          "N": 989,
+          "rate": 0.030333670374115267
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.008064516129032258,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.05063291139240506,
+            "joint_em": 0.012658227848101266
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.0641025641025641,
+            "joint_em": 0.01282051282051282
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_cls_crf_shuffle_3_fold_5",
+      "model": "frozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_5",
+      "seed": 20245,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 193,
+          "N": 989,
+          "rate": 0.19514661274014156
+        },
+        "tool_micro_f1": 0.5646346735840899,
+        "tool_macro_f1": 0.2617390356622381,
+        "strict_span_f1": 0.5825844437558104,
+        "lenient_span_f1": 0.7852494577006508,
+        "token_acc": 0.8345839017735335,
+        "tag_macro_f1": 0.494676546246073,
+        "joint_em": {
+          "k": 82,
+          "N": 989,
+          "rate": 0.08291203235591507
+        },
+        "seen_tool_subset_acc": {
+          "k": 193,
+          "N": 989,
+          "rate": 0.19514661274014156
+        },
+        "seen_joint_em": {
+          "k": 82,
+          "N": 989,
+          "rate": 0.08291203235591507
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_far_no_crf_shuffle_3_fold_5",
+      "model": "frozen_far_no_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_5",
+      "seed": 20245,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 109,
+          "N": 989,
+          "rate": 0.1102123356926188
+        },
+        "tool_micro_f1": 0.4742063492063492,
+        "tool_macro_f1": 0.13519037810830084,
+        "strict_span_f1": 0.2525893752088206,
+        "lenient_span_f1": 0.6775810223855663,
+        "token_acc": 0.7017637887351393,
+        "tag_macro_f1": 0.3399015768364422,
+        "joint_em": {
+          "k": 9,
+          "N": 989,
+          "rate": 0.00910010111223458
+        },
+        "seen_tool_subset_acc": {
+          "k": 109,
+          "N": 989,
+          "rate": 0.1102123356926188
+        },
+        "seen_joint_em": {
+          "k": 9,
+          "N": 989,
+          "rate": 0.00910010111223458
+        },
+        "best_tau": 0.4,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.012658227848101266,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.01282051282051282,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_frozen_joint_bert_shuffle_3_fold_5",
+      "model": "frozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_5",
+      "seed": 20245,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 116,
+          "N": 989,
+          "rate": 0.1172901921132457
+        },
+        "tool_micro_f1": 0.4175152749490835,
+        "tool_macro_f1": 0.09817301987035136,
+        "strict_span_f1": 0.28382630585273755,
+        "lenient_span_f1": 0.7344241661422278,
+        "token_acc": 0.735626583511986,
+        "tag_macro_f1": 0.363205104969933,
+        "joint_em": {
+          "k": 16,
+          "N": 989,
+          "rate": 0.016177957532861477
+        },
+        "seen_tool_subset_acc": {
+          "k": 116,
+          "N": 989,
+          "rate": 0.1172901921132457
+        },
+        "seen_joint_em": {
+          "k": 16,
+          "N": 989,
+          "rate": 0.016177957532861477
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_cls_crf_shuffle_3_fold_5",
+      "model": "unfrozen_cls_crf",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_5",
+      "seed": 20245,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 438,
+          "N": 989,
+          "rate": 0.44287158746208294
+        },
+        "tool_micro_f1": 0.7084252315835906,
+        "tool_macro_f1": 0.4067997059018116,
+        "strict_span_f1": 0.6358006487761722,
+        "lenient_span_f1": 0.8339722795635505,
+        "token_acc": 0.8560709413369714,
+        "tag_macro_f1": 0.5175953025908611,
+        "joint_em": {
+          "k": 209,
+          "N": 989,
+          "rate": 0.21132457027300303
+        },
+        "seen_tool_subset_acc": {
+          "k": 438,
+          "N": 989,
+          "rate": 0.44287158746208294
+        },
+        "seen_joint_em": {
+          "k": 209,
+          "N": 989,
+          "rate": 0.21132457027300303
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.02531645569620253,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.09615384615384616,
+            "joint_em": 0.08333333333333333
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_arn_shuffle_3_fold_5",
+      "model": "unfrozen_arn",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_5",
+      "seed": 20245,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 130,
+          "N": 989,
+          "rate": 0.13144590495449948
+        },
+        "tool_micro_f1": 0.4849246231155779,
+        "tool_macro_f1": 0.18439519086584955,
+        "strict_span_f1": 0.35136042996305006,
+        "lenient_span_f1": 0.6845817937520995,
+        "token_acc": 0.7388910543753654,
+        "tag_macro_f1": 0.3921095460636279,
+        "joint_em": {
+          "k": 20,
+          "N": 989,
+          "rate": 0.020222446916076844
+        },
+        "seen_tool_subset_acc": {
+          "k": 130,
+          "N": 989,
+          "rate": 0.13144590495449948
+        },
+        "seen_joint_em": {
+          "k": 20,
+          "N": 989,
+          "rate": 0.020222446916076844
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.0379746835443038,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.00641025641025641,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
+    },
+    {
+      "experiment_id": "p4_unfrozen_joint_bert_shuffle_3_fold_5",
+      "model": "unfrozen_joint_bert",
+      "protocol": "phase4_master_protocol",
+      "shuffle": "shuffle_3",
+      "fold": "fold_5",
+      "seed": 20245,
+      "metrics": {
+        "tool_subset_acc": {
+          "k": 374,
+          "N": 989,
+          "rate": 0.378159757330637
+        },
+        "tool_micro_f1": 0.6589389210878288,
+        "tool_macro_f1": 0.3778189012532564,
+        "strict_span_f1": 0.5612974161627269,
+        "lenient_span_f1": 0.8268279274326553,
+        "token_acc": 0.8900311830052622,
+        "tag_macro_f1": 0.5262160246952692,
+        "joint_em": {
+          "k": 161,
+          "N": 989,
+          "rate": 0.16279069767441862
+        },
+        "seen_tool_subset_acc": {
+          "k": 374,
+          "N": 989,
+          "rate": 0.378159757330637
+        },
+        "seen_joint_em": {
+          "k": 161,
+          "N": 989,
+          "rate": 0.16279069767441862
+        },
+        "best_tau": 0.3,
+        "pair_metrics": {
+          "get_current_time + send_whatsapp_message": {
+            "count": 124,
+            "tool_subset_acc": 0.0,
+            "joint_em": 0.0
+          },
+          "run_computer_command + search_web": {
+            "count": 79,
+            "tool_subset_acc": 0.02531645569620253,
+            "joint_em": 0.0
+          },
+          "search_web + send_whatsapp_message": {
+            "count": 156,
+            "tool_subset_acc": 0.019230769230769232,
+            "joint_em": 0.0
+          }
+        }
+      },
+      "git_hash": "d327d74",
+      "command": "python scripts/run_master_protocol.py",
+      "timestamp": "2026-10-18T15:31:22.456710Z"
     }
   ]
 }

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
@@ -10,8 +10,9 @@ interface Props {
   status: string;
 }
 
-export default function ChatPanel({ transcript, status }: Props) {
+export default function ChatPanel({ transcript, status, onSendText }: Props & { onSendText?: (text: string) => void }) {
   const bottomRef = useRef<HTMLDivElement>(null);
+  const [inputText, setInputText] = React.useState("");
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -112,6 +113,37 @@ export default function ChatPanel({ transcript, status }: Props) {
         ))}
         <div ref={bottomRef} />
       </div>
+
+      {/* Text Input Area */}
+      {onSendText && (
+        <div className="p-4 border-t border-white/[0.04]">
+          <form 
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (inputText.trim()) {
+                onSendText(inputText);
+                setInputText("");
+              }
+            }}
+            className="flex gap-2"
+          >
+            <input
+              type="text"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              placeholder="Message Aether..."
+              className="flex-1 bg-white/[0.03] border border-white/[0.05] rounded-lg px-4 py-2 text-sm text-gray-200 font-mono focus:outline-none focus:border-cyan-500/50 focus:bg-white/[0.05] transition-colors placeholder:text-gray-600"
+            />
+            <button
+              type="submit"
+              disabled={!inputText.trim()}
+              className="px-4 py-2 bg-cyan-500/20 text-cyan-300 font-mono text-sm rounded-lg border border-cyan-500/30 hover:bg-cyan-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            >
+              Send
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

@@ -23,7 +23,7 @@ const HologramOrb = dynamic(() => import("./components/HologramOrb"), {
 });
 
 export default function Home() {
-  const { state, energy, connected, cameraFrame, systemMetrics, screenCaptureFlash, latestArtifact, clearArtifact, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode } = useAether();
+  const { state, energy, connected, cameraFrame, systemMetrics, screenCaptureFlash, latestArtifact, clearArtifact, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode, sendTextCommand } = useAether();
 
   const [gestureEnabled, setGestureEnabled] = useState(false);
   const gestureData = useHandGesture(gestureEnabled);
@@ -91,14 +91,34 @@ export default function Home() {
           {/* Mode Toggle */}
           <div className="flex items-center gap-1 bg-white/[0.03] p-1 rounded-lg border border-white/[0.05]">
             <button
+              onClick={() => setMode("Text")}
+              className={`px-3 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider transition-all duration-300 ${
+                state.mode === "Text" 
+                  ? "bg-emerald-500/20 text-emerald-300 shadow-[0_0_10px_rgba(52,211,153,0.2)]" 
+                  : "text-gray-500 hover:text-gray-400"
+              }`}
+            >
+              Text
+            </button>
+            <button
               onClick={() => setMode("Voice")}
               className={`px-3 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider transition-all duration-300 ${
-                state.mode !== "Memory" 
+                state.mode === "Voice" 
                   ? "bg-cyan-500/20 text-cyan-300 shadow-[0_0_10px_rgba(34,211,238,0.2)]" 
                   : "text-gray-500 hover:text-gray-400"
               }`}
             >
               Voice
+            </button>
+            <button
+              onClick={() => setMode("Push-to-Talk")}
+              className={`px-3 py-1 rounded-md text-[10px] font-mono uppercase tracking-wider transition-all duration-300 ${
+                state.mode === "Push-to-Talk" 
+                  ? "bg-amber-500/20 text-amber-300 shadow-[0_0_10px_rgba(251,191,36,0.2)]" 
+                  : "text-gray-500 hover:text-gray-400"
+              }`}
+            >
+              PTT
             </button>
             <button
               onClick={() => setMode("Memory")}
@@ -183,7 +203,7 @@ export default function Home() {
 
         {/* RIGHT: Chat Transcript */}
         <aside className={`w-96 flex-shrink-0 glass-panel border-l overflow-hidden transition-all duration-500 ${stateGlowClass}`}>
-          <ChatPanel transcript={state.transcript} status={state.status} />
+          <ChatPanel transcript={state.transcript} status={state.status} onSendText={sendTextCommand} />
         </aside>
       </div>
 

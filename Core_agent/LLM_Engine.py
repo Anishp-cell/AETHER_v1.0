@@ -48,6 +48,12 @@ class FrozenLLMEngine:
             session_state.set_active(True)
         except Exception:
             pass
+            
+        try:
+            from nim_key_pool import NIMKeyPool
+            self.nim_pool = NIMKeyPool()
+        except ImportError:
+            self.nim_pool = None
         
         print(f"[Logic Layer] Triple-Model LLM Engine Initialized ({base_model}, {thinking_model}, {orchestrator_model}) with 3-Tier Memory")
 
@@ -223,22 +229,66 @@ class FrozenLLMEngine:
             # 2. CLOUD / OLLAMA ORCHESTRATOR FALLBACK
             raw_content = ""
             if not tools_to_run:
-                payload = {
-                    "model": target_model,
-                    "messages": messages,
-                    "stream": False,
-                    "tools": tools_executor.OLLAMA_TOOL_DEFINITIONS,
-                    "keep_alive": 0,  # Unload model from RAM instantly
-                    "options": {"temperature": 0.1}
-                }
+                # NIM API Try
+                nim_key, _ = self.nim_pool.get_active_key() if hasattr(self, 'nim_pool') and self.nim_pool else (None, None)
+                if nim_key:
+                    nim_url = "https://integrate.api.nvidia.com/v1/chat/completions"
+                    nim_payload = {
+                        "model": os.getenv("NIM_VISION_MODEL", "meta/llama-3.1-8b-instruct"),
+                        "messages": messages,
+                        "temperature": 0.1,
+                        "max_tokens": 1024,
+                    }
+                    nim_headers = {
+                        "Authorization": f"Bearer {nim_key}",
+                        "Content-Type": "application/json"
+                    }
+                    try:
+                        response = requests.post(nim_url, json=nim_payload, headers=nim_headers, timeout=10)
+                        response.raise_for_status()
+                        data = response.json()
+                        message = data.get("choices", [{}])[0].get("message", {})
+                        
+                        # NIM OpenAI format tool calls
+                        raw_content = message.get("content") or ""
+                        tool_calls_detected = []
+                        for tc in message.get("tool_calls", []):
+                            if tc.get("type") == "function":
+                                args = tc["function"].get("arguments", "{}")
+                                if isinstance(args, str):
+                                    try: args = json.loads(args)
+                                    except: pass
+                                tool_calls_detected.append({
+                                    "name": tc["function"]["name"],
+                                    "arguments": args
+                                })
+                        
+                        if hasattr(self, 'nim_pool') and self.nim_pool:
+                            self.nim_pool.report_success(nim_key)
+                    except Exception as e:
+                        print(f"[NIM Engine Warning] Fallback to Ollama. NIM Error: {e}")
+                        nim_key = None # trigger ollama fallback
+                        if hasattr(self, 'nim_pool') and self.nim_pool:
+                            self.nim_pool.report_error(nim_key, getattr(e.response, "status_code", 500), str(e))
                 
-                response = requests.post(self.url, json=payload)
-                response.raise_for_status() 
-                data = response.json()
-                message = data.get("message", {})
-                
-                raw_content = message.get("content", "").strip()
-                tool_calls_detected = message.get("tool_calls", [])
+                # Ollama Fallback
+                if not nim_key:
+                    payload = {
+                        "model": target_model,
+                        "messages": messages,
+                        "stream": False,
+                        "tools": tools_executor.OLLAMA_TOOL_DEFINITIONS,
+                        "keep_alive": 0,  # Unload model from RAM instantly
+                        "options": {"temperature": 0.1}
+                    }
+                    
+                    response = requests.post(self.url, json=payload)
+                    response.raise_for_status() 
+                    data = response.json()
+                    message = data.get("message", {})
+                    
+                    raw_content = message.get("content", "").strip()
+                    tool_calls_detected = message.get("tool_calls", [])
                 
                 clean_content = re.sub(r'^```(?:json)?\s*', '', raw_content, flags=re.MULTILINE)
                 clean_content = re.sub(r'```\s*$', '', clean_content, flags=re.MULTILINE).strip()

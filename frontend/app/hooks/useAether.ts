@@ -141,6 +141,15 @@ export function useAether() {
     []
   );
 
+  const sendTextCommand = useCallback(
+    (text: string) => {
+      if (wsRef.current?.readyState === WebSocket.OPEN) {
+        wsRef.current.send(JSON.stringify({ action: "text_command", text }));
+      }
+    },
+    []
+  );
+
   const sendAuthResponse = useCallback(
     (allow: boolean) => {
       if (wsRef.current?.readyState === WebSocket.OPEN) {
@@ -175,6 +184,6 @@ export function useAether() {
     }
   }, []);
 
-  return { state, energy, connected, cameraFrame, screenCaptureFlash, systemMetrics, latestArtifact, clearArtifact, sendPTT, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode };
+  return { state, energy, connected, cameraFrame, screenCaptureFlash, systemMetrics, latestArtifact, clearArtifact, sendPTT, sendAuthResponse, toggleMute, interruptAudio, sendShutdown, setMode, sendTextCommand };
 }
 

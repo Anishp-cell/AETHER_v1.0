@@ -218,6 +218,8 @@ async def execute_task(task: str, headless: bool = False, max_steps: int = 25) -
             try:
                 from browser_use import Browser
                 agent_kwargs["browser"] = Browser(headless=headless)
+            except Exception:
+                pass
         # Step callback for real-time base domain tracking
         def _step_url_callback(state, output, step_idx):
             try:

@@ -152,12 +152,13 @@ app = FastAPI(title="AETHER Backend")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 audio_queue = queue.Queue()
+text_command_queue = queue.Queue()
 connected_clients: list[WebSocket] = []
 
 # Shared state dict that the frontend reads
 agent_state = {
     "status": "booting",        # booting | idle | listening | thinking | speaking
-    "mode": "Push-to-Talk",
+    "mode": "Text",             # Default to Text mode to save RAM
     "transcript": [],           # [{role: "user"/"aether", text: "...", intent: "", emotion: ""}]
     "adapters": [],             # Currently active behavioral adapters
     "agents": {                 # Sub-agent online status
@@ -335,14 +336,28 @@ def ai_loop():
 
     boot_threads = [
         threading.Thread(target=load_tts,   name="BootTTS",   daemon=True),
-        threading.Thread(target=load_stt,   name="BootSTT",   daemon=True),
-        threading.Thread(target=load_wake,  name="BootWake",  daemon=True),
         threading.Thread(target=load_micro, name="BootMicro", daemon=True),
     ]
     for t in boot_threads: t.start()
     for t in boot_threads: t.join()
 
-    tts = tts_ref[0]; stt_model = stt_ref[0]; wake_engine = wake_ref[0]; micro_expert = micro_ref[0]
+    tts = tts_ref[0]; micro_expert = micro_ref[0]
+    stt_model = None
+    wake_engine = None
+
+    def ensure_voice_models():
+        nonlocal stt_model, wake_engine
+        if not stt_model or not wake_engine:
+            print("\n[System] Loading Voice Models (STT & WakeWord)...")
+            update_state(**{"agents": {**agent_state["agents"], "voice_engine": "loading", "stt_engine": "loading"}})
+            v_threads = [
+                threading.Thread(target=load_stt,   name="BootSTT",   daemon=True),
+                threading.Thread(target=load_wake,  name="BootWake",  daemon=True)
+            ]
+            for t in v_threads: t.start()
+            for t in v_threads: t.join()
+            stt_model = stt_ref[0]
+            wake_engine = wake_ref[0]
 
     # Base Persona
     profile = exp_memory.load_profile()
@@ -442,7 +457,7 @@ Golden Rules:
         except: break
 
     # Audio loop variables
-    SAMPLE_RATE = wake_engine.get_required_sample_rate()
+    SAMPLE_RATE = 16000
     CHUNK_SIZE = 1280
     recording_buffer = []
     
@@ -473,7 +488,11 @@ Golden Rules:
                     # ─────────────────────────────────────────────────────────
                     # VAD State Machine (Always-On Hands-Free Recognition)
                     # ─────────────────────────────────────────────────────────
-                    if agent_state.get("mic_muted", False):
+                    # Ensure models are loaded if Voice mode is active
+                    if agent_state.get("mode") == "Voice" and (not stt_model or not wake_engine):
+                        ensure_voice_models()
+                    
+                    if agent_state.get("mode") == "Text" or agent_state.get("mic_muted", False):
                         recording_buffer = []
                         consecutive_loud = 0
                         consecutive_silent = 0
@@ -538,21 +557,24 @@ Golden Rules:
                             if _STREAMING_STT_AVAILABLE:
                                 STREAMING_STT.reset()
 
-                            def process_utterance(audio_array, _audio_dur=audio_duration_s):
+                            def process_utterance(audio_array=None, _audio_dur=audio_duration_s, force_text=None):
                                 import re
-                                # STT Processing with Prompt Armor & VAD
-                                segments_list, info = stt_model.transcribe(
-                                    audio_array,
-                                    language="en",
-                                    initial_prompt="AETHER assistant desktop voice command:",
-                                    vad_filter=True,
-                                    vad_parameters=dict(min_silence_duration_ms=500),
-                                    condition_on_previous_text=False
-                                )
-                                segments_materialized = list(segments_list)
-                                user_text = " ".join([s.text for s in segments_materialized]).strip()
+                                if force_text:
+                                    user_text = force_text
+                                else:
+                                    # STT Processing with Prompt Armor & VAD
+                                    segments_list, info = stt_model.transcribe(
+                                        audio_array,
+                                        language="en",
+                                        initial_prompt="AETHER assistant desktop voice command:",
+                                        vad_filter=True,
+                                        vad_parameters=dict(min_silence_duration_ms=500),
+                                        condition_on_previous_text=False
+                                    )
+                                    segments_materialized = list(segments_list)
+                                    user_text = " ".join([s.text for s in segments_materialized]).strip()
 
-                                # ── Sparrow-2 Honest Listening Gate (Intent-Aware) ──
+                                    # ── Sparrow-2 Honest Listening Gate (Intent-Aware) ──
                                 # Uses Whisper logprobs + no_speech_prob + compression_ratio
                                 # to detect low-confidence transcriptions and request domain-targeted clarification
                                 if _TURN_TAKING_AVAILABLE:
@@ -584,7 +606,7 @@ Golden Rules:
                                         "thank you for watching", "thanks for watching", "subscribe", 
                                         "amara.org", "by amara.org", "subtitles by", "okay. okay", "you're welcome"
                                     ]
-                                    if len(dirty) < 3 or any(h in dirty for h in hallucinations) or dirty == "thank you.":
+                                    if not force_text and (len(dirty) < 3 or any(h in dirty for h in hallucinations) or dirty == "thank you."):
                                         update_state(status="idle")
                                         return
 
@@ -880,6 +902,13 @@ Your job is to take the search results above and present them to the user as a s
                             threading.Thread(target=process_utterance, args=(audio_float,), daemon=True).start()
 
                 except queue.Empty:
+                    # Check for text commands
+                    try:
+                        text_cmd = text_command_queue.get_nowait()
+                        update_state(status="thinking")
+                        threading.Thread(target=process_utterance, kwargs={"force_text": text_cmd}, daemon=True).start()
+                    except queue.Empty:
+                        pass
                     continue
     except Exception as e:
         print(f"Audio stream error: {e}")
@@ -915,6 +944,10 @@ async def websocket_endpoint(ws: WebSocket):
                 if GLOBAL_TTS:
                     GLOBAL_TTS.stop()
                 update_state(status="idle", adapters=[])
+            elif msg.get("action") == "text_command":
+                text = msg.get("text", "").strip()
+                if text:
+                    text_command_queue.put(text)
             elif msg.get("action") == "shutdown":
                 print("\n[System] Shutdown requested via User Interface.")
                 if GLOBAL_TTS:

@@ -17,9 +17,9 @@ Status: IN_PROGRESS
 | **6** | Error Analysis | DONE | `1f41def` | Per-tool F1, 8,506-span error taxonomy (42.7% boundary shifts, 1.5% label errors), hardest clusters |
 | **7** | Final Model Training | DONE | `c534b28` | Trained unfrozen_cls_crf on all 5k samples (17.58MB model.pt, SHA-256 verified in manifest.json); docs/PYPI_NOTE.md |
 | **8** | Deployment Protocol | DONE | `02a2693` | Fast NumPy Viterbi (10k test verified), ONNX FP32 (16.75MB), Dynamic INT8 (4.28MB), 1.39ms (1T) / 0.75ms (4T) latency, 4.21MB RSS |
-| **9** | Human Evaluation | DONE | Pending commit | Sealed holdout at data/human_eval_template.jsonl; docs/HUMAN_EVAL_PENDING.md; scripts/run_human_eval.py verified |
-| **10** | Repo Finalization | IN_PROGRESS | - | Clean layout, CLI verification, README, model card |
-| **11** | Paper Compilation | PENDING | - | Generate LaTeX tables & numbers; compile preprint PDF |
+| **9** | Human Evaluation | DONE | `591b3d5` | Sealed holdout at data/human_eval_template.jsonl; docs/HUMAN_EVAL_PENDING.md; scripts/run_human_eval.py verified |
+| **10** | Repo Finalization | DONE | Pending commit | Upgraded CLI, truthful README with verified numbers, MODEL_CARD.md, DATA_STATEMENT.md, CHANGELOG.md |
+| **11** | Paper Compilation | IN_PROGRESS | - | Generate LaTeX tables & numbers; compile preprint PDF |
 | **12** | Release Staging | PENDING | - | Stage ../ARN-public; prepare release checklist |
 | **13** | Launch Drafts | PENDING | - | Write verified-numbers launch drafts |
 | **14** | Self-Audit & Final Report | PENDING | - | Full test sweep, banned claims grep, FINAL_REPORT.md |

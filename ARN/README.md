@@ -1,44 +1,66 @@
-# ARN: Aether Routing Network
+# ARN: Aether Routing Network (v1.0.0)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![ONNX Runtime](https://img.shields.io/badge/ONNX%20Runtime-1.23.2-brightgreen)](https://onnxruntime.ai/)
 
-**ARN (Aether Routing Network)** is an ultra-compact, non-generative neural tool orchestrator designed for deterministic, real-time, on-device edge routing. Rather than deploying multi-billion parameter autoregressive LLMs for tool selection and argument parsing, ARN uses a frozen 4.38M bidirectional Transformer trunk (BERT-tiny) paired with:
+**ARN (Aether Routing Network)** is an ultra-compact, non-generative neural tool orchestrator and argument extractor designed for real-time edge dispatch. Rather than querying multi-billion parameter autoregressive LLMs for standard on-device commands, ARN formulates tool selection and argument parsing as a joint multi-label classification and linear-chain conditional random field (CRF) sequence tagging problem over a 4.39M parameter bidirectional Transformer trunk (`google/bert_uncased_L-2_H-128_A-2`).
 
-1. **Factored Attention Routing (FAR):** Cross-attention queries for closed $K$-tool selection ($K=18$).
-2. **Constrained Linear-Chain CRF:** Token emission projections coupled with hard BIO transition masking for guaranteed valid argument span extraction.
-3. **Single Forward Pass:** Executes multi-label tool routing and argument parsing simultaneously in a single forward pass without autoregressive generation.
+In rigorous 15-fold cluster-stratified cross-validation, the fine-tuned joint encoder-CRF architecture achieves **16.91% Joint Exact Match** and **67.88% Lenient Slot F1**, with an ONNX INT8 runtime latency of **1.39 ms** (1 thread) / **0.75 ms** (4 threads) and an isolated memory footprint of **4.21 MB RSS** on host CPU.
 
 ---
 
-## Architecture Overview
+## Key Characteristics & Verified Specifications
+
+All metrics reported below trace directly to [`results/ledger.json`](results/ledger.json), [`results/master_protocol_summary.json`](results/master_protocol_summary.json), and [`results/deployment_benchmark.json`](results/deployment_benchmark.json):
+
+| Metric / Dimension | Empirical Value (Master Protocol) | Hardware & Protocol Context |
+| :--- | :---: | :--- |
+| **Joint Exact Match** | **16.91% ± 6.56%** (95% CI: [13.51%, 20.59%]) | 15-fold tool-stratified cluster CV ($N=5,000$) |
+| **Tool Subset Accuracy** | **39.91% ± 12.19%** (95% CI: [34.78%, 45.45%]) | Exact match across all $K=18$ candidate tools |
+| **Strict Span F1** | **43.61% ± 10.43%** (95% CI: [39.02%, 48.06%]) | Exact span boundary and slot category match |
+| **Lenient Span F1** | **67.88% ± 9.86%** (95% CI: [63.66%, 71.93%]) | Partial character overlap and slot category match |
+| **ONNX INT8 Latency (1T)** | **1.39 ms** mean (p50: 1.25 ms, p95: 1.83 ms) | Intel Core i7-13700HX, ONNX Runtime 1.23.2 |
+| **ONNX INT8 Latency (4T)** | **0.75 ms** mean (p50: 0.69 ms, p95: 1.09 ms) | Intel Core i7-13700HX, 4 execution threads |
+| **End-to-End Pipeline Latency** | **3.10 ms** (1 thread) / **2.34 ms** (4 threads) | Tokenize + INT8 ONNX + NumPy Viterbi + Extract |
+| **Isolated Memory Footprint** | **4.21 MB peak RSS** | Clean subprocess measurement (`results/deployment_benchmark.json`) |
+| **Model Size (PyTorch FP32)** | **17.58 MB** (`model.pt`) | 4,386,474 total parameters |
+| **Model Size (ONNX FP32)** | **16.75 MB** (`model.onnx`) | Maximum absolute tensor difference $< 5 \times 10^{-6}$ |
+| **Model Size (ONNX INT8)** | **4.28 MB** (`model_int8.onnx`) | Dynamic 8-bit quantization (3.92x compression) |
+
+---
+
+## Architectural Design
 
 ```
-                      User Prompt x (Tokens x_1 ... x_T)
-                                     │
-                        ┌────────────▼────────────┐
-                        │   Frozen BERT-tiny      │ (4.38M parameters, d = 128)
-                        └────────────┬────────────┘
-                                     │ Hidden states H in R^{T x d}
-                   ┌─────────────────┴─────────────────┐
-                   │                                   │
-        ┌──────────▼──────────┐             ┌──────────▼──────────┐
-        │  FAR Cross-Attention│             │  Linear Slot Tagger │
-        │  Query Embeddings Q │             │  Emissions E in     │
-        │  in R^{18 x 128}    │             │  R^{T x 26}         │
-        └──────────┬──────────┘             └──────────┬──────────┘
-                   │ Context vectors                   │
-        ┌──────────▼──────────┐             ┌──────────▼──────────┐
-        │  Sigmoid Classifier │             │  Linear-Chain CRF   │
-        │  (Multi-Label BCEL) │             │  w/ Hard BIO Masking│
-        └──────────┬──────────┘             └──────────┬──────────┘
-                   │                                   │
-      Predicted Active Tools                Viterbi Decoded BIO Spans
-   (e.g., send_whatsapp_message)        (contact_name, message_body)
+                       User Utterance (Tokens x_1 ... x_T)
+                                       │
+                         ┌─────────────▼─────────────┐
+                         │   Fine-Tuned BERT-tiny    │ (4.39M parameters, d = 128)
+                         └─────────────┬─────────────┘
+                                       │ Hidden states H in R^{T x 128}
+                    ┌──────────────────┴──────────────────┐
+                    │                                     │
+         ┌──────────▼──────────┐               ┌──────────▼──────────┐
+         │  [CLS] Pooling Head │               │  Linear Slot Tagger │
+         │  h_cls in R^{128}   │               │  Emissions in       │
+         └──────────┬──────────┘               │  R^{T x 26}         │
+                    │ Linear projection                └──────────┬──────────┘
+         ┌──────────▼──────────┐                          │
+         │  Sigmoid Classifier │               ┌──────────▼──────────┐
+         │  Multi-Label Tools  │               │  Linear-Chain CRF   │
+         │  (K = 18 APIs)      │               │  w/ Hard BIO Masking│
+         └──────────┬──────────┘               └──────────┬──────────┘
+                    │                                     │
+         Active Tool Set                       Viterbi-Decoded Entity Spans
+    (e.g., handle_smart_home)               (action="turn off", device="lights")
 ```
 
-For mathematical formulations, dynamic programming recurrences, and loss normalization, see [`docs/MATH.md`](docs/MATH.md).
+### Key Components:
+1. **Backbone:** 2-layer, 128-hidden dimension BERT-tiny encoder fine-tuned jointly on tool classification and slot tagging.
+2. **Tool Routing Head:** Sigmoid classification layer over pooled `[CLS]` token representation supporting multi-tool dispatch.
+3. **Slot Extraction Head:** Linear emission layer projected to 26 BIO slot tags, globally decoded via a linear-chain Conditional Random Field with hard BIO transition constraints.
+4. **Fast Inference:** Accelerated deployment via Dynamic INT8 ONNX Runtime graph execution and vectorized NumPy Viterbi decoding (`src/arn/viterbi_fast.py`).
 
 ---
 
@@ -50,131 +72,100 @@ cd ARN
 pip install -e .
 ```
 
-Verify installation:
+Verify the environment and test suite:
 ```bash
 pytest -v tests/
 ```
 
 ---
 
-## Quickstart & CLI
+## CLI & Quickstart
+
+ARN provides a command-line tool `arn-cli` for real-time inference:
 
 ```bash
-# Run real-time tool orchestration via CLI
-arn-cli "send a whatsapp message to John saying let's meet at 5pm"
+# Natural command routing
+arn-cli "turn off the living room lights"
 
-# Inspect active schema and tool registry
+# Formatted JSON output
+arn-cli "set a timer for 10 minutes labeled pasta" --json
+
+# Inspect the canonical 18-tool schema and 26 BIO tags
 arn-cli --list-tools
 ```
 
-Sample output:
+Sample JSON output:
 ```json
 {
-  "active_tools": ["send_whatsapp_message"],
-  "arguments": {
-    "send_whatsapp_message": {
-      "contact_name": "John",
-      "message": "let's meet at 5pm"
-    }
-  },
+  "tools": [
+    "handle_smart_home"
+  ],
+  "confidence": 0.9871,
   "tool_confidences": {
-    "send_whatsapp_message": "TODO(verify: to be populated by retrained checkpoint)"
+    "handle_smart_home": 0.9871
   },
-  "latency_ms": "TODO(verify: measured on host CPU under benchmark protocol)",
-  "fallback_to_llm": false
+  "arguments": {
+    "action": "turn off",
+    "device": "living room lights"
+  },
+  "cloud_fallback": false,
+  "rejected": false
 }
 ```
 
 ---
 
-## Experimental Reproducibility Pipeline
+## Reproducibility & Master Protocol
 
-All empirical results in the revision are 100% script-generated:
+All empirical claims are generated end-to-end via reproducible command scripts:
 
-### 1. Group-Disjoint Dataset Splits
+### 1. 15-Fold Master Cross-Validation Protocol
 ```bash
-python scripts/make_splits.py --input data/raw/aether_orchestrator_dataset.jsonl --output-dir data/splits
+python scripts/run_master_protocol.py
 ```
+Executes 105 total model runs across 15 tool-stratified cluster folds, storing predictions in `results/per_cluster_predictions.json` and computing 2,000-iteration cluster bootstrap confidence intervals in `results/master_protocol_summary.json`.
 
-### 2. Model Training (Ours & Baselines)
+### 2. Ablations & Learning Curves
 ```bash
-# Train ARN
-python scripts/train.py --model-type arn --output-dir results/checkpoints
-
-# Train Baselines
-python scripts/train.py --model-type jointbert --output-dir results/checkpoints
-python scripts/train.py --model-type cls_crf --output-dir results/checkpoints
-python scripts/train.py --model-type far_no_crf --output-dir results/checkpoints
+python scripts/run_phase5_ablations.py
 ```
+Performs CRF layer decomposition (CRF vs Masked-Viterbi vs Greedy), supervision ablation (Joint vs Tool-only vs Slot-only), sample efficiency scaling (20% to 100%), and multi-tool pairing counts.
 
-### 3. Model Evaluation
+### 3. Error Analysis
 ```bash
-python scripts/evaluate.py --checkpoint results/checkpoints/arn/best_model.pt --data data/splits/group_disjoint_test.jsonl --output-json results/arn_eval.json
+python scripts/run_phase6_error_analysis.py
 ```
+Generates 8,506-span error taxonomy breakdowns (exact matches, boundary shifts, label mismatches, false negatives, false positives) and cluster hardness rankings in `results/error_analysis.json`.
 
-### 4. ONNX Export & INT8 Quantization
+### 4. Deployment & Latency Benchmarks
 ```bash
-python scripts/export_onnx.py --checkpoint results/checkpoints/arn/best_model.pt --output-dir results/checkpoints
+python scripts/run_deployment_benchmark.py
 ```
-
-### 5. Hardware Latency & Memory Footprint Protocol
-Benchmarking is conducted under a strictly controlled hardware protocol on host **Intel Core i7-13700HX (Windows 11, ONNX Runtime 1.23.2, 1 thread)**:
-```bash
-# CPU Latency (p50, p95, mean)
-python scripts/benchmark_latency.py --model results/checkpoints/arn_model.onnx --threads 1 --runs 500 --output-json results/latency_fp32.json
-python scripts/benchmark_latency.py --model results/checkpoints/arn_model_int8.onnx --threads 1 --runs 500 --output-json results/latency_int8.json
-
-# Memory RSS Footprint (Peak & Incremental RSS via psutil)
-python scripts/measure_memory.py --model results/checkpoints/arn_model.onnx --output-json results/memory_fp32.json
-python scripts/measure_memory.py --model results/checkpoints/arn_model_int8.onnx --output-json results/memory_int8.json
-```
-
-### 6. Automated LaTeX Table Generation
-```bash
-python scripts/make_tables.py --results-dir results --output-dir docs/paper/tables
-```
+Exports ONNX FP32 and Dynamic INT8 models, validates mathematical equivalence of fast NumPy Viterbi against PyTorch CRF, and logs 500-iteration latency distributions and isolated subprocess RSS to `results/deployment_benchmark.json`.
 
 ---
 
-## Peer Review Audit & Historical Artifacts
+## Repository Documentation Index
 
-In response to peer review feedback:
-- The complete forensic audit is documented in [`AUDIT.md`](AUDIT.md).
-- Untraceable claims (e.g. historical 5.55 MB RAM and 14.2 ms Raspberry Pi figures, unverified LoRA assertions, and synthetic percentages) are withdrawn.
-- All historical checkpoints and pre-refactor scripts are preserved in [`_archive/`](_archive/).
-- Third-party licenses and attribution are detailed in [`THIRD_PARTY.md`](THIRD_PARTY.md).
-
----
-
-## Standalone Repository Extraction
-
-To publish ARN as a clean, independent standalone repository without historical parent repo commits:
-
-```bash
-# 1. From the repository root, create an orphan split branch of ARN/
-git subtree split --prefix=ARN -b arn-standalone-clean
-
-# 2. Clone into a clean new directory
-git clone --branch arn-standalone-clean . ../ARN-standalone
-
-# 3. Add fresh remote origin and push
-cd ../ARN-standalone
-git remote remove origin
-git remote add origin https://github.com/Anishp-cell/ARN.git
-git push -u origin main
-```
+- [`MODEL_CARD.md`](MODEL_CARD.md): Detailed model card, operational envelope, ethical considerations, and limitations.
+- [`DATA_STATEMENT.md`](DATA_STATEMENT.md): Dataset curation, representability audit, and split stratification details.
+- [`CHANGELOG.md`](CHANGELOG.md): Project release history and audit milestones.
+- [`docs/PREREGISTRATION.md`](docs/PREREGISTRATION.md): Pre-registered evaluation protocols and decision rules.
+- [`docs/RECONCILIATION.md`](docs/RECONCILIATION.md): Complete forensic audit and resolution of historical discrepancies.
+- [`docs/HUMAN_EVAL_PENDING.md`](docs/HUMAN_EVAL_PENDING.md): Status, guide, and harness for the 250-utterance human evaluation benchmark.
+- [`docs/PYPI_NOTE.md`](docs/PYPI_NOTE.md): Deprecation notice for legacy unverified checkpoints.
 
 ---
 
-## License & Citation
-
-Licensed under the [MIT License](LICENSE).
+## Citation & Attribution
 
 ```bibtex
 @article{pattnaik2026arn,
   title={ARN: A Sub-18MB Non-Generative Joint Encoder-CRF Model for Real-Time On-Device Tool Orchestration},
   author={Pattnaik, Anish},
-  journal={arXiv preprint},
-  year={2026}
+  year={2026},
+  journal={arXiv preprint}
 }
 ```
+
+Licensed under the [MIT License](LICENSE).

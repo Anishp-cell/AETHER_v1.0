@@ -71,6 +71,17 @@ This document records all non-trivial decisions made during the ARN project revi
   5. Recorded the status as PENDING in `results/ledger.json` and deferred empirical claims to future multi-rater user studies.
 - **Alternative Rejected:** Populating "human" evaluation entries using LLM synthetic generations or reporting fictitious user ratings.
 
+### D-008: Repository Finalization and Architecture Harmonization (Phase 10)
+- **Date:** 2026-10-18
+- **Context:** To finalize the repository for public release, CLI routing, documentation, model card, data statement, and changelog needed to be aligned with the Outcome A winning model (`CLSCRFModel`) while preserving backward compatibility.
+- **Decision:**
+  1. Updated `src/arn/cli.py` to prioritize `checkpoints/arn_final_model/model.pt` and dynamically detect whether a checkpoint belongs to `CLSCRFModel` or `AetherRoutingNetwork`.
+  2. Updated `src/arn/inference.py` to accept both dual-output models (`tool_logits, emissions`) and 4-tuple models (`tool_probs, tool_preds, tag_preds, loss`).
+  3. Rewrote `README.md` strictly using verified ledger numbers and deployment benchmark outputs (16.91% Joint EM, 1.39 ms INT8 latency, 4.21 MB peak RSS).
+  4. Authored standard documentation suite: `MODEL_CARD.md`, `DATA_STATEMENT.md`, `CHANGELOG.md`, and validated `LICENSE`.
+- **Alternative Rejected:** Forcing legacy FAR-only checkpoint loading in the CLI or publishing unverified marketing statistics in `README.md`.
+
+
 
 
 

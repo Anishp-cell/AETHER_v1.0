@@ -131,7 +131,14 @@ def predict(
     attention_mask = inputs["attention_mask"].to(device)
 
     with torch.no_grad():
-        tool_probs, tool_preds, tag_preds, _ = model(input_ids, attention_mask)
+        if hasattr(model, "tool_classifier"):
+            tool_logits, emissions = model(input_ids, attention_mask)
+            tool_probs = torch.sigmoid(tool_logits)
+            tau = getattr(cfg, "optimal_threshold", 0.30)
+            tool_preds = (tool_probs >= tau)
+            tag_preds = model.crf.viterbi_decode(emissions, mask=attention_mask.bool())
+        else:
+            tool_probs, tool_preds, tag_preds, _ = model(input_ids, attention_mask)
 
     # Process tool probabilities and activations
     probs_row = tool_probs[0].cpu()

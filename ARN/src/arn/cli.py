@@ -22,6 +22,9 @@ from .inference import predict
 def find_default_checkpoint() -> Optional[Path]:
     """Search for available checkpoints in order of priority."""
     search_paths = [
+        Path("checkpoints/arn_final_model/model.pt"),
+        Path("ARN/checkpoints/arn_final_model/model.pt"),
+        Path(__file__).resolve().parent.parent.parent / "checkpoints" / "arn_final_model" / "model.pt",
         Path("checkpoints/arn_best_model.pt"),
         Path("ARN/checkpoints/arn_best_model.pt"),
         Path("_archive/checkpoints/arn_best_model.pt"),
@@ -100,19 +103,33 @@ def main() -> int:
 
     device = torch.device(args.device)
 
-    # Initialize model
-    model = AetherRoutingNetwork(config=config, load_pretrained=True).to(device)
-
     # Load checkpoint
     ckpt_path = Path(args.checkpoint) if args.checkpoint else find_default_checkpoint()
+    model = None
+
     if ckpt_path and ckpt_path.exists():
         try:
             state = torch.load(str(ckpt_path), map_location=device)
-            model.load_state_dict(state, strict=False)
+            # Detect architecture: CLSCRFModel vs AetherRoutingNetwork
+            is_cls_crf = any("tool_classifier" in k for k in state.keys())
+            if is_cls_crf:
+                from .baselines import CLSCRFModel
+                model = CLSCRFModel(
+                    num_tools=config.num_tools,
+                    num_tags=config.num_tags,
+                    hidden_dim=config.hidden_dim,
+                    freeze_backbone=False,
+                ).to(device)
+                model.load_state_dict(state)
+            else:
+                model = AetherRoutingNetwork(config=config, load_pretrained=True).to(device)
+                model.load_state_dict(state, strict=False)
         except Exception as e:
             if not args.json:
                 print(f"[Warning] Could not load checkpoint from {ckpt_path}: {e}", file=sys.stderr)
-    else:
+
+    if model is None:
+        model = AetherRoutingNetwork(config=config, load_pretrained=True).to(device)
         if not args.json:
             print("[Note] No trained checkpoint found. Running forward pass with initial weights.", file=sys.stderr)
 

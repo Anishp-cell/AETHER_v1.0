@@ -28,6 +28,14 @@
     "tools.json": {
       "sha256": "6c7f9d7b5dd07762d24b30a310cec1852f810ce1fa6ee203c5ebc7ff69eca291",
       "size_bytes": 1143
+    },
+    "model.onnx": {
+      "sha256": "c7853f484f77da66dea66200c7310e650f2f01d4aa3eb6fc7a75f998fbb3299e",
+      "size_bytes": 17558520
+    },
+    "model_int8.onnx": {
+      "sha256": "a6a0fd71e3c4d30a42fd1eaca7963be10806481f534d823afcb49e4f02e99507",
+      "size_bytes": 4483346
     }
   }
 }

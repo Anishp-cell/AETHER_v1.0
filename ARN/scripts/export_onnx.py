@@ -1,130 +1,140 @@
-#!/usr/bin/env python3
 """
-ARN ONNX Export and INT8 Quantization Utility.
-Exports PyTorch checkpoints to:
-1. Full FP32 ONNX Graph
-2. Dynamic INT8 Quantized ONNX Graph
-Verifies outputs against PyTorch using ONNX Runtime.
+ONNX Export and Dynamic INT8 Quantization (Phase 8).
+
+Exports the final CLSCRFModel to:
+  1. FP32 ONNX graph: checkpoints/arn_final_model/model.onnx
+  2. Dynamic INT8 quantized ONNX graph: checkpoints/arn_final_model/model_int8.onnx
+
+Verifies numerical parity between PyTorch FP32 and ONNX FP32 runtime outputs (tol <= 1e-4).
 """
 
-import argparse
+import json
 import logging
-import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
-from typing import Dict, Any
+import sys
 
 import numpy as np
-import torch
+import onnx
 import onnxruntime as ort
 from onnxruntime.quantization import quantize_dynamic, QuantType
+import torch
+import torch.nn as nn
 
-from arn import AetherRoutingNetwork, ARNConfig
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+
+from arn.baselines import CLSCRFModel
+from arn.tokenizer import TOKENIZER
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("arn.export_onnx")
 
 
-class ARNONNXWrapper(torch.nn.Module):
-    """Export wrapper returning tool logits and slot emissions."""
-    def __init__(self, model: AetherRoutingNetwork):
+class ONNXExportWrapper(nn.Module):
+    """Wraps CLSCRFModel encoder + heads for ONNX export (excluding non-differentiable CRF)."""
+    def __init__(self, model: CLSCRFModel):
         super().__init__()
-        self.model = model
+        self.encoder = model.encoder
+        self.tool_classifier = model.tool_classifier
+        self.slot_tagger = model.slot_tagger
 
     def forward(self, input_ids: torch.Tensor, attention_mask: torch.Tensor):
-        outputs = self.model.encoder(input_ids=input_ids, attention_mask=attention_mask)
-        h = outputs.last_hidden_state
-        tool_logits, _ = self.model.far(h, attention_mask)
-        emissions = self.model.slot_tagger(h)
-        tool_probs = torch.sigmoid(tool_logits)
-        return tool_probs, emissions
+        # 4D extended attention mask: (B, 1, 1, seq_len)
+        ext_mask = (1.0 - attention_mask[:, None, None, :].float()) * -10000.0
+        outputs = self.encoder(input_ids=input_ids, attention_mask=ext_mask, return_dict=False)
+        last_hidden = outputs[0]
+        cls_hidden = last_hidden[:, 0, :]
+        tool_logits = self.tool_classifier(cls_hidden)
+        emissions = self.slot_tagger(last_hidden)
+        return tool_logits, emissions
 
 
-def export_models(checkpoint_path: Path, output_dir: Path, opset: int = 17) -> Dict[str, Path]:
-    output_dir.mkdir(parents=True, exist_ok=True)
-    device = torch.device("cpu")
+def export_and_quantize():
+    repo_dir = Path(__file__).resolve().parent.parent
+    checkpoint_dir = repo_dir / "checkpoints" / "arn_final_model"
 
-    ckpt = torch.load(checkpoint_path, map_location=device)
-    config_dict = ckpt.get("config", {})
-    config = ARNConfig(**{k: v for k, v in config_dict.items() if hasattr(ARNConfig, k)}) if config_dict else ARNConfig()
+    config_path = checkpoint_dir / "config.json"
+    weights_path = checkpoint_dir / "model.pt"
 
-    model = AetherRoutingNetwork(config)
-    model.load_state_dict(ckpt["model_state_dict"])
+    with open(config_path, "r", encoding="utf-8") as f:
+        config = json.load(f)
+
+    logger.info("Loading PyTorch model weights...")
+    model = CLSCRFModel(num_tools=config["num_tools"], num_tags=config["num_tags"])
+    model.load_state_dict(torch.load(weights_path, map_location="cpu"))
     model.eval()
 
-    wrapper = ARNONNXWrapper(model)
+    wrapper = ONNXExportWrapper(model)
     wrapper.eval()
 
-    dummy_input_ids = torch.ones((1, 32), dtype=torch.long)
+    # Dummy inputs for export (batch_size=1, seq_len=32)
+    dummy_input_ids = torch.randint(100, 2000, (1, 32), dtype=torch.long)
     dummy_attention_mask = torch.ones((1, 32), dtype=torch.long)
 
-    fp32_path = output_dir / "arn_model.onnx"
-    int8_path = output_dir / "arn_model_int8.onnx"
+    # 1. Trace model to guarantee TorchScript graph stability
+    logger.info("Tracing wrapper model...")
+    traced_model = torch.jit.trace(wrapper, (dummy_input_ids, dummy_attention_mask))
 
-    logger.info("Exporting FP32 ONNX model to %s (opset %d)...", fp32_path, opset)
+    # 2. Export FP32 ONNX
+    onnx_fp32_path = checkpoint_dir / "model.onnx"
+    logger.info(f"Exporting FP32 ONNX graph to {onnx_fp32_path}...")
+
     torch.onnx.export(
-        wrapper,
+        traced_model,
         (dummy_input_ids, dummy_attention_mask),
-        str(fp32_path),
+        str(onnx_fp32_path),
         input_names=["input_ids", "attention_mask"],
-        output_names=["tool_probs", "slot_emissions"],
+        output_names=["tool_logits", "emissions"],
         dynamic_axes={
-            "input_ids": {0: "batch_size", 1: "sequence_length"},
-            "attention_mask": {0: "batch_size", 1: "sequence_length"},
-            "tool_probs": {0: "batch_size"},
-            "slot_emissions": {0: "batch_size", 1: "sequence_length"},
+            "input_ids": {0: "batch_size", 1: "seq_len"},
+            "attention_mask": {0: "batch_size", 1: "seq_len"},
+            "tool_logits": {0: "batch_size"},
+            "emissions": {0: "batch_size", 1: "seq_len"},
         },
-        opset_version=opset,
+        opset_version=14,
         do_constant_folding=True,
+        dynamo=False,
     )
-    fp32_size_mb = fp32_path.stat().st_size / (1024 * 1024)
-    logger.info("FP32 ONNX export complete: %.2f MB", fp32_size_mb)
 
-    logger.info("Quantizing to dynamic INT8 (%s)...", int8_path)
-    quantize_dynamic(
-        model_input=str(fp32_path),
-        model_output=str(int8_path),
-        weight_type=QuantType.QInt8,
-    )
-    int8_size_mb = int8_path.stat().st_size / (1024 * 1024)
-    logger.info("INT8 dynamic quantization complete: %.2f MB", int8_size_mb)
+    onnx_model = onnx.load(str(onnx_fp32_path))
+    onnx.checker.check_model(onnx_model)
+    logger.info(f"FP32 ONNX graph valid! Size: {onnx_fp32_path.stat().st_size / (1024*1024):.2f} MB")
 
-    # Verification with ONNX Runtime
-    logger.info("Verifying exported graphs with ONNX Runtime...")
-    sess_fp32 = ort.InferenceSession(str(fp32_path), providers=["CPUExecutionProvider"])
-    sess_int8 = ort.InferenceSession(str(int8_path), providers=["CPUExecutionProvider"])
+    # 2. Verify parity between PyTorch and ONNX Runtime
+    with torch.no_grad():
+        pt_tool_logits, pt_emissions = wrapper(dummy_input_ids, dummy_attention_mask)
 
-    inputs = {
+    ort_session = ort.InferenceSession(str(onnx_fp32_path), providers=["CPUExecutionProvider"])
+    ort_inputs = {
         "input_ids": dummy_input_ids.numpy(),
         "attention_mask": dummy_attention_mask.numpy(),
     }
-    with torch.no_grad():
-        py_probs, py_emissions = wrapper(dummy_input_ids, dummy_attention_mask)
+    ort_tool_logits, ort_emissions = ort_session.run(None, ort_inputs)
 
-    ort_fp32_out = sess_fp32.run(None, inputs)
-    np.testing.assert_allclose(py_probs.numpy(), ort_fp32_out[0], rtol=1e-3, atol=1e-4)
-    logger.info("FP32 ONNX Runtime verification PASSED (max diff < 1e-4)")
+    max_diff_tools = np.max(np.abs(pt_tool_logits.numpy() - ort_tool_logits))
+    max_diff_slots = np.max(np.abs(pt_emissions.numpy() - ort_emissions))
+    logger.info(f"Parity verification: max diff tools={max_diff_tools:.2e}, slots={max_diff_slots:.2e}")
+    assert max_diff_tools < 1e-4, f"Tool logits mismatch: {max_diff_tools}"
+    assert max_diff_slots < 1e-4, f"Slot emissions mismatch: {max_diff_slots}"
+    logger.info("Numerical parity confirmed (tol < 1e-4)!")
 
-    ort_int8_out = sess_int8.run(None, inputs)
-    logger.info("INT8 ONNX Runtime inference test PASSED")
+    # 3. Dynamic INT8 Quantization
+    onnx_int8_path = checkpoint_dir / "model_int8.onnx"
+    logger.info(f"Quantizing to dynamic INT8: {onnx_int8_path}...")
+    quantize_dynamic(
+        model_input=str(onnx_fp32_path),
+        model_output=str(onnx_int8_path),
+        weight_type=QuantType.QInt8,
+    )
 
-    return {"fp32": fp32_path, "int8": int8_path}
+    int8_size = onnx_int8_path.stat().st_size / (1024 * 1024)
+    fp32_size = onnx_fp32_path.stat().st_size / (1024 * 1024)
+    logger.info(f"INT8 Model saved! FP32={fp32_size:.2f} MB, INT8={int8_size:.2f} MB (Compression ratio: {fp32_size/int8_size:.2f}x)")
 
-
-def main():
-    parser = argparse.ArgumentParser(description="ARN ONNX Export and Quantization")
-    parser.add_argument("--checkpoint", type=str, required=True, help="Path to PyTorch .pt checkpoint")
-    parser.add_argument("--output-dir", type=str, default="results/checkpoints", help="Output directory")
-    parser.add_argument("--opset", type=int, default=17, help="ONNX opset version")
-    args = parser.parse_args()
-
-    ckpt_path = Path(args.checkpoint)
-    if not ckpt_path.exists():
-        logger.error("Checkpoint not found: %s", ckpt_path)
-        return
-
-    export_models(ckpt_path, Path(args.output_dir), opset=args.opset)
+    # Verify INT8 runnable
+    ort_int8_session = ort.InferenceSession(str(onnx_int8_path), providers=["CPUExecutionProvider"])
+    int8_out = ort_int8_session.run(None, ort_inputs)
+    logger.info("INT8 ONNX model ran successfully in ONNX Runtime!")
 
 
 if __name__ == "__main__":
-    main()
+    export_and_quantize()

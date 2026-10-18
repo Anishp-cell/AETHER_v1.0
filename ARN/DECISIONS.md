@@ -29,3 +29,10 @@ This document records all non-trivial decisions made during the ARN project revi
   5. FAR described as a contribution ONLY if matching CLS-head is beaten by the rule; otherwise reported as evaluated alternative.
   6. Outcome A (fine-tuning supported) vs. Outcome B (otherwise) determining paper narrative.
 - **Alternative Rejected:** Selecting model by tool accuracy alone or evaluating significance at the utterance level.
+
+### D-004: Tool-Stratified Cluster Allocation and Coverage Confound Elimination (Phase 1)
+- **Date:** 2026-10-18
+- **Context:** An audit of the Stage 2d cross-validation folds revealed that greedy descending binning caused rare tools to be absent from training in several folds (e.g., Old Fold 5 missing 3 tools affecting 33.25% of its validation set; Old Fold 2 missing `read_specific_url` affecting 7.9% of its validation set).
+- **Decision:** Built a tool-stratified grouped K-fold allocation (5 folds $\times$ 3 shuffles = 15 outer folds) across all 5,000 samples. Tools with $\le 5$ clusters are distributed across folds first before general clusters are allocated. `open_url` (1 cluster, 37 samples) is designated train-only across all 15 folds. Every fold guarantees $\ge 1$ cluster per tool in outer training and inner training. Maximum skeleton token-edit similarity is verified $< 0.80$ (range 0.71–0.79). Frozen in `ARN/data/splits/cv_manifest.json`.
+- **Alternative Rejected:** Random cluster assignment (causes severe tool starvation on rare classes); standard stratified k-fold without grouping (causes data leakage across paraphrased templates).
+

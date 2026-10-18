@@ -8,9 +8,9 @@ Status: IN_PROGRESS
 
 | Phase | Description | Status | Commit Hash | Next Action |
 | :---: | :--- | :---: | :---: | :--- |
-| **0** | Orient & Environment Recording | IN_PROGRESS | pending | Finalize tracking docs & PREREGISTRATION.md |
-| **1** | Split Redesign (Coverage Fix) | PENDING | - | Audit coverage; build tool-stratified grouped K-folds |
-| **2** | Results Ledger & Reconciliation | PENDING | - | Initialize ledger.json; reconcile discrepancies |
+| **0** | Orient & Environment Recording | DONE | `3b46e1b` | Recorded environment.json; created tracking docs |
+| **1** | Split Redesign (Coverage Fix) | DONE | pending | Generated cv_manifest.json, audits, tests, PROTOCOL.md |
+| **2** | Results Ledger & Reconciliation | IN_PROGRESS | - | Initialize ledger.json; write docs/RECONCILIATION.md |
 | **3** | Baseline Debugging | PENDING | - | Fix TF-IDF kNN/LogReg; verify Softmax + masked Viterbi |
 | **4** | Master Protocol (Main Experiment) | PENDING | - | Run 15 folds nested CV across models |
 | **5** | Ablations & Curves | PENDING | - | CRF decomposition, supervision ablation, learning curves |

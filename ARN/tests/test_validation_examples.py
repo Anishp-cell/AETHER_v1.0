@@ -1,10 +1,11 @@
 import json
-import pytest
+from pathlib import Path
 from arn.tokenizer import TOOL_REGISTRY, TOOL_TO_IDX
 
 def test_validation_examples_provenance_and_registry():
-    val_jsonl_path = "ARN/data/splits/group_disjoint_val.jsonl"
-    examples_path = "ARN/results/stage1b_val_examples_and_spans.json"
+    repo_dir = Path(__file__).resolve().parent.parent
+    val_jsonl_path = repo_dir / "data" / "splits" / "group_disjoint_val.jsonl"
+    examples_path = repo_dir / "results" / "stage1b_val_examples_and_spans.json"
 
     # Load raw validation samples
     val_samples = []

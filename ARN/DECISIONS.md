@@ -112,6 +112,19 @@ This document records all non-trivial decisions made during the ARN project revi
   5. Enforced zero banned claims, zero unverified statistics, and strict citation of `results/ledger.json` across all public-facing drafts.
 - **Alternative Rejected:** Publishing sensationalized or unverified claims regarding latency, memory, or model rankings.
 
+### D-012: Final Self-Audit, Banned Claims Enforcement, and Goal Completion (Phase 14)
+- **Date:** 2026-10-18
+- **Context:** Project completion requires an exhaustive self-audit across the entire test suite, codebase, documentation, and manuscript artifacts to guarantee zero regression, complete traceability, and absolute adherence to scientific integrity constraints.
+- **Decision:**
+  1. Relocated obsolete draft markdown workspace (`docs/paper/current_section_workspace.md`) into `_archive/legacy_root/` to prevent contamination by legacy unverified claims.
+  2. Executed automated paper numbers and integrity audit (`scripts/audit_paper_numbers.py`), passing all 4 manuscript files with zero banned phrases and complete macro consistency against `results/master_protocol_summary.json`.
+  3. Conducted comprehensive multi-term grep audit across all repository files for banned marketing claims and ungrounded figures (e.g., "14.2 ms", "5.55 MB", "810x", "38x", "216x", "180x", "88.0", "92.3%", "96.0%", "62.4", "tool-prefixed BIO", "dynamic registry", "beats Jev", "beats Laya", "before TypeSafe", "peer-reviewed", "published at AAAI", "SOTA"), confirming 100% compliance.
+  4. Executed secrets and privacy audit, verifying no API tokens, private credentials, or unauthorized external references exist.
+  5. Authored `FINAL_REPORT.md` providing an exhaustive account of the end-to-end journey from forensic reconciliation through pre-registered cross-validation, Outcome A model selection, CPU deployment benchmarking, release staging, and launch drafts.
+  6. Verified that all 26 tests in the test suite pass cleanly (`pytest tests/`).
+- **Alternative Rejected:** Marking the goal complete without automated verification of paper macros or without full repository grep scans.
+
+
 
 
 

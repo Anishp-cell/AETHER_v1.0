@@ -213,3 +213,28 @@ STATE.md reflects committed work accurately (Phases 0-14 DONE) but:
 1. Contains erroneous "4.21MB RSS"
 2. Does not acknowledge unresolved integrity issues
 3. `Status: DONE` is premature given known defects
+
+---
+
+## 7. Baseline & Ledger Integrity Audit (Forensics for WP-M)
+
+### 7.1 The TF-IDF Logistic Regression Discrepancy & Routing Anomaly
+- **Briefing claim:** TF-IDF LogReg tool accuracy was claimed to be `18.06%`.
+- **Repo ground truth:** `results/ledger.json` records a 15-fold average of **`74.24%`** ($\pm 9.42\%$ in ledger, $12.19\%$ in `master_protocol_summary.json`).
+- **Core Scientific Issue:** If TF-IDF LogReg legitimately achieves 74.24% tool subset accuracy on cluster-disjoint splits while fine-tuned CLS+CRF achieves 39.91%, a bag-of-words linear model is outperforming the 4.39M parameter neural encoder on tool routing by +34.33 percentage points.
+- **Audit Mandate for WP-M:**
+  1. Verify strict fold isolation: Ensure `TfidfVectorizer` vocabulary and IDF weights were learned strictly on training indices without test fold leakage.
+  2. Verify threshold calibration: Multi-label thresholds $\tau_k$ must be chosen on inner validation folds, not test folds.
+  3. Execute label-shuffle test: Randomly permuting training labels must cause test accuracy to collapse to majority chance (~7.90%).
+  4. Compare with Stage 2b reports: Stage 2b reported kNN 53% and LogReg 34.5%. Reconcile the jump to 74.24% via Phase 3 (D-006) sublinear TF and n-gram tuning.
+  5. Evaluate Hybrid Router-Tagger: Measure Joint Exact Match of TF-IDF LogReg router (74.24%) + frozen BERT-tiny CRF tagger (34.34%).
+  6. Measure size (MB) and CPU latency (ms) for all baselines.
+
+### 7.2 Three-Column Master Verification Gate
+Before finalizing any results, every metric across all 10 models must be verified across three files:
+1. Pre-context-loss `FINAL_REPORT.md`
+2. `results/master_protocol_summary.json`
+3. Direct computation from `results/ledger.json` runs
+
+`results/master_protocol_summary.json` (compiled deterministically from `results/ledger.json`) is the sole authoritative source of truth. All downstream tables and macros must derive strictly from it.
+

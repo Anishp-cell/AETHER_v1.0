@@ -33,28 +33,34 @@
 
 ```mermaid
 graph TD
-    A[WP-A: State Verification] --> B[WP-B: Doc Integrity Fixes]
-    A --> C[WP-C: Results Reconciliation]
-    A --> D[WP-D: FAR Fairness Experiment]
+    A[WP-A: State Verification] --> M[WP-M: Baseline & Ledger Integrity]
+    A --> B[WP-B: Doc Integrity Fixes]
+    M --> C[WP-C: Results Reconciliation]
+    M --> D[WP-D: FAR Fairness Retraining]
     B --> E[WP-E: Memory & Latency Protocol]
     C --> E
     D --> C
     E --> H[WP-H: Final Model & Packaging]
-    C --> I[WP-I: Paper]
-    E --> I
+    M -.->|blocks| I[WP-I: Paper]
+    M -.->|blocks| J[WP-J: Repo Finalization]
+    M -.->|blocks| K[WP-K: Launch Materials]
+    C --> I
     D --> I
+    E --> I
     A --> F[WP-F: Mobile-Actions]
     A --> G[WP-G: Human Eval]
-    H --> J[WP-J: Repo Finalization]
+    H --> J
     I --> J
     G --> J
-    J --> K[WP-K: Launch Materials]
+    J --> K
     K --> L[WP-L: Final Self-Audit]
     F -.-> I
     F -.-> J
 ```
 
-**Critical Path:** A → D → C → E → I → J → K → L
+**Critical Path:** A → M → D → C → E → I → J → K → L
+
+**Crucial Gate:** WP-M blocks WP-I (paper), WP-J (README), and WP-K (launch) until the TF-IDF LogReg baseline audit and decision tree are resolved.
 
 ---
 
@@ -89,6 +95,63 @@ graph TD
 - Decision documented with evidence
 
 **Commit:** `docs: verify Phase 16 state and document salvage decision`
+
+---
+
+### WP-M: Baseline & Ledger Integrity Audit
+
+**Goal:** Audit all 10 master table models via a 3-column diff, comprehensively audit the TF-IDF LogReg baseline (74.24% tool accuracy), evaluate TF-IDF kNN and a hybrid router-tagger baseline, measure baseline memory and latency, and resolve the architectural value proposition decision tree.
+
+**Size:** Large (1 session, ~90–120 min)
+
+**Inputs:**
+- `STATE.md`, `DECISIONS.md`
+- `results/ledger.json`, `results/master_protocol_summary.json`
+- `FINAL_REPORT.md` (last pre-context-loss report)
+- `data/splits/cv_manifest.json`
+- `scripts/run_baselines.py` (or baseline scripts)
+
+**Steps:**
+1. **Three-Column Master Table Diff:**
+   Build a verification diff across all 10 models comparing:
+   - Column 1: Value in pre-context-loss `FINAL_REPORT.md` (e.g. 16.91 / 39.91 etc.)
+   - Column 2: Value in `results/master_protocol_summary.json`
+   - Column 3: 15-fold average in `results/ledger.json`
+   - Reconcile differences and explicitly designate `master_protocol_summary.json` (compiled from `ledger.json`) as authoritative.
+2. **Exhaustive TF-IDF Logistic Regression Audit (74.24% Tool Accuracy):**
+   - Confirm evaluation used identical 15 cluster-disjoint folds from `cv_manifest.json`.
+   - Verify `TfidfVectorizer` fit strictly inside each training fold (no global vocabulary or IDF leakage).
+   - Verify multi-label threshold calibration $\tau_k$ restricted strictly to inner validation folds.
+   - Verify exact-subset scoring $\mathbb{I}(\hat{Y} = Y_{\text{gold}})$.
+   - Provide exact $k/N$ counts per fold ($N \approx 333$, total $N=5,000$).
+   - Run label-shuffle sanity test: train on permuted labels, evaluate on unpermuted test fold (accuracy must collapse to chance / majority class ~7.90%).
+   - Run random vs cluster-disjoint split sanity test.
+   - Generate per-tool and per-cluster breakdown.
+   - Compare against Stage 2b reports (kNN 53%, LogReg 34.5%) and explain the difference.
+3. **Evaluate TF-IDF kNN & Hybrid Router-Tagger Baseline:**
+   - Evaluate TF-IDF kNN ($k=5$) over identical 15 folds with exact subset scoring.
+   - Evaluate Hybrid Baseline: TF-IDF LogReg tool router (74.24% tool acc) + frozen BERT-tiny linear-chain CRF tagger (34.34% span F1) on identical folds; compute Joint Exact Match and compare against fine-tuned CLS+CRF (16.91%).
+4. **Baseline Memory & Latency Profiling:**
+   - Measure on-disk footprint (serialized model size in MB) and CPU inference latency (single-thread and 4-thread ms per query) for all baselines (Majority, First-Token, TF-IDF kNN, TF-IDF LogReg, and Hybrid).
+5. **Decision Tree Execution (Value Proposition Framing):**
+   - **Branch A (LogReg 74.24% is Legitimate):** Conclude bag-of-words provides strong routing on 5,000 template queries. Remove claims that the neural encoder is a superior tool router. Restate value proposition: *ARN is a unified, single-pass joint model that performs argument extraction (43.61% strict F1) and routing in a single 4.28 MB INT8 binary in 0.75 ms CPU latency, eliminating the multi-stage pipeline overhead, serialization lag, and separate memory footprint of hybrid systems.*
+   - **Branch B (Bug Discovered):** Document bug in `RECONCILIATION.md`, fix code, rerun across 15 folds with inner-val tuning, and append corrected runs to `ledger.json`.
+   - **Enforce Gate:** WP-I (paper), WP-J (README), and WP-K (launch) remain strictly blocked until this decision is resolved.
+
+**Outputs:**
+- `results/baseline_audit_report.json`
+- Three-column master diff table
+- Updated `DECISIONS.md` recording decision branch
+- Updated `docs/RECONCILIATION.md`
+
+**Acceptance Tests:**
+- 3-column diff covers all 10 models with zero unverified cells.
+- Label-shuffle test collapses to $\le 10\%$.
+- Hybrid baseline evaluated with joint EM.
+- Size and latency profiled for all baselines.
+- Decision tree resolved and documented.
+
+**Commit:** `feat: complete baseline and ledger integrity audit (WP-M)`
 
 ---
 
@@ -149,13 +212,17 @@ graph TD
    - Master table CLS+CRF strict F1: 43.61%
    - Explanation: ablation runs on a subset/single fold with the frozen trunk, while master uses 15-fold unfrozen. Document this explicitly.
    - Source: `ablations_summary.json` ablation uses frozen trunk (CRF decomposition tests frozen_arn model under different decoders). Master table CLS+CRF is unfrozen. This is the explanation.
-4. **Multi-tool count reconciliation:**
-   - Verify 1,132 total multi-tool samples by counting from raw data
-   - Verify 114 = handle_smart_home + media_control pair (from `ablations_summary.json`)
-   - Verify 7 = number of multi-tool pairs (from `numbers.tex`)
-   - Document that the 6 other pairs have 0 samples (template-generated, never instantiated)
-   - Add note: "7 pairs defined in templates; only 1 pair (handle_smart_home + media_control) has training samples (114); the other 6 pairs have 0 samples"
-5. **TF-IDF baseline history narrative:** Write a single paragraph explaining the evolution (early bugs → fix → current 63.52%/74.24%), referencing RECONCILIATION.md D-006
+4. **Script-Based Multi-Tool Count Verification:**
+   - Implement and execute `scripts/verify_multitool_counts.py` on `data/raw/synthetic_5000.jsonl`:
+     - Verify total sample count = 5,000.
+     - Verify total multi-tool count (`len(gold_tools) > 1`) = 1,132.
+     - Compute per-pair breakdown across all tool combinations.
+     - Verify exactly 114 samples for `handle_smart_home` + `media_control`.
+     - Verify 0 training samples for the other 6 template pairs.
+     - Verify 142 spans with label collisions / boundary overlaps.
+     - Save audit record to `results/multitool_audit.json`.
+   - Update `docs/RECONCILIATION.md`, `FINAL_REPORT.md`, and `docs/paper/numbers.tex` so that 1,132 is the universal multi-tool count, and 114 is specifically qualified as the smart home + media control collision subset.
+5. **TF-IDF baseline history narrative:** Integrate the findings from WP-M explaining the progression (early bugs → fix → current 63.52%/74.24%), referencing RECONCILIATION.md D-006
 6. **Add missing N/A markings:** Confirm Table 1 uses `--` for span metrics on tool-only baselines (acceptable alternative to "N/A")
 7. **Add paired tool-acc deltas** in Table 1 or a supplementary table
 8. **Verify FINAL_REPORT numbers match master_protocol_summary** — fix the incorrect SD values
@@ -170,28 +237,32 @@ graph TD
 - Every number in Table 1 traces to a specific JSON field in master_protocol_summary.json
 - Every number in FINAL_REPORT traces to a specific JSON field
 - Decoder ablation section explains the 36.58% vs 43.61% gap
-- Multi-tool count is 1,132 everywhere, with 114 explicitly labeled as one pair
+- `python scripts/verify_multitool_counts.py` passes with 0 exit code (1,132 total, 114 collision pair)
 - `scripts/audit_paper_numbers.py` passes
 
-**Commit:** `fix: reconcile all numbers, explain decoder ablation gap, unify multi-tool counts`
+**Commit:** `fix: reconcile all numbers, explain decoder ablation gap, verify multi-tool counts via script`
 
 ---
 
-### WP-D: FAR Fairness Experiment
+### WP-D: FAR Fairness Retraining & Diagnostic Integration
 
-**Goal:** Properly validate and integrate (or re-run) the FAR fairness retraining.
+**Goal:** Fairly evaluate the Factored Attention Routing (FAR) head under an expanded LR grid $\{3\text{e-}4, 1\text{e-}3, 3\text{e-}3\}$ with inner-validation tuning, training curves, and gradient diagnostics.
 
-**Size:** Large (1 session, ~2–4 hours including GPU compute)
+**Size:** Large (1 session, ~2–4 hours including GPU compute if rerunning; ~45 min if salvaging)
 
 **Inputs:**
 - `scripts/run_far_fairness_study.py` (untracked)
 - `results/far_fairness_study.json` (untracked)
 - `data/splits/cv_manifest.json`
 - `results/ledger.json`
-- WP-A decision on salvage vs re-run
+- WP-A decision D-014 and WP-M baseline audit report
 
-**Steps (if SALVAGE, per WP-A decision):**
-1. Verify `run_far_fairness_study.py` protocol:
+**Non-Negotiable Salvage Criteria:**
+- **Strict Salvage Gate:** Untracked Phase 16 FAR results (`results/far_fairness_study.json`) are usable ONLY IF every single one of the 15 folds, seeds, and variants completed under the identical protocol (same `cv_manifest.json` cluster-disjoint splits, identical inner-validation-only hyperparameter tuning, identical loss weighting, identical seeds). If any fold, seed, or variant is missing, truncated, or drifted in protocol, discard and re-run from scratch.
+- **Never Mix Results:** Never mix partial, salvage, or new FAR results with original v1 results in any single table row or aggregate summary. Always keep original baseline labeled "Fine-Tuned FAR+CRF (v1, pre-fix)" and new results labeled "Fine-Tuned FAR+CRF (v2, fairness-tuned)".
+
+**Steps (if SALVAGE, per WP-A/WP-M verification):**
+1. Verify `run_far_fairness_study.py` protocol matches the strict salvage gate:
    - Uses `cv_manifest.json` splits
    - Tunes threshold on inner validation only
    - Uses same model architecture as Phase 4 `unfrozen_arn`
@@ -208,7 +279,7 @@ graph TD
 7. Update `master_protocol_summary.json` with new variant statistics
 
 **Steps (if RE-RUN):**
-1. Re-run `run_far_fairness_study.py` with documented seed
+1. Re-run `run_far_fairness_study.py` with documented seed across all 15 folds
 2. Verify all 15 folds complete
 3. Follow steps 2-7 above with fresh results
 
@@ -537,7 +608,43 @@ graph TD
 
 ---
 
-## 4. Global Verification Suite
+## 4. Single Authoritative Source of Truth Architecture
+
+Every single number published in any document, table, or launch draft MUST originate from an unambiguous, single source of truth. No manual number entry is permitted.
+
+### 4.1 Master Mapping: One File, One Key, One Definition
+
+| Metric Domain | Authoritative File | Authoritative Key / Path | Exact Definition / Formula |
+| :--- | :--- | :--- | :--- |
+| **Raw Run Metrics** (per fold/seed) | `results/ledger.json` | `runs[id == "<exp_id>"].metrics.<metric>` | Exact integer counts $\{k, N\}$ and rate $k/N$. |
+| **Primary Model Macro Aggregates** | `results/master_protocol_summary.json` | `models["unfrozen_cls_crf"].<metric>` | 15-fold sample mean across outer folds: $\bar{x} = \frac{1}{15} \sum_{i=1}^{15} x_i$. |
+| **Standard Deviations** (ALL metrics) | `results/master_protocol_summary.json` | `models[<model>].<metric>_std` | **Single Definition:** Sample standard deviation across the 15 outer CV folds with Bessel's correction ($\text{ddof}=1$): $s = \sqrt{\frac{1}{14} \sum_{i=1}^{15} (x_i - \bar{x})^2}$. |
+| **Paired Differences & Bootstrap CIs** | `results/master_protocol_summary.json` | `comparisons[<pair>].ci_95` | Cluster-level percentile bootstrap ($B=2000$, resampling 253 semantic clusters with replacement). |
+| **Hardware Memory Metrics** | `results/deployment_benchmark.json` | `memory.<runtime>.<peak/incremental>` | **Peak RSS:** Max resident set size during inference. **Incr. RSS:** $\text{Peak} - \text{Baseline}$. |
+| **Hardware Latency Metrics** | `results/deployment_benchmark.json` | `latency.<runtime>.<threads>_<engine/e2e>` | Median latency (ms) over 100 warm iterations on i7-13700HX CPU. |
+| **Model Disk Size** | `results/deployment_benchmark.json` | `storage.<model_format>_mb` | Exact on-disk file size in megabytes (e.g., INT8 ONNX = 4.28 MB). |
+| **Dataset Sample Counts** | `results/multitool_audit.json` (from `data/raw/synthetic_5000.jsonl`) | `counts.total`, `counts.multitool`, `counts.pairs` | Computed strictly via `scripts/verify_multitool_counts.py` ($N=5,000$, multi-tool = 1,132, collision pair = 114). |
+| **Ablation Metrics** | `results/ablations_summary.json` | `ablations.<type>.<metric>` | Strict span F1 and BIO violation rate under frozen trunk. |
+
+### 4.2 List of Documents Required to be Regenerated
+
+When `ledger.json` or `master_protocol_summary.json` is updated, the following downstream files **MUST** be regenerated via automated scripts:
+
+1. `ARN/docs/paper/numbers.tex` (via `python scripts/generate_paper_numbers.py`)
+2. `ARN/docs/paper/tables/table1_main_results.tex` (via `python scripts/make_tables.py`)
+3. `ARN/docs/paper/tables/table2_hardware.tex` (via `python scripts/make_tables.py`)
+4. `ARN/FINAL_REPORT.md` (via audit script synchronization)
+5. `ARN/README.md` (metrics block)
+6. `ARN/MODEL_CARD.md` (metrics and memory block)
+7. `ARN/docs/RECONCILIATION.md`
+8. `ARN/docs/launch/LINKEDIN.md`
+9. `ARN/docs/launch/X_THREAD.md`
+10. `ARN/docs/launch/MEDIUM_OUTLINE.md`
+11. `ARN/docs/launch/FAQ.md`
+
+---
+
+## 5. Global Verification Suite
 
 Run after EVERY WP that modifies code or results:
 
@@ -565,47 +672,49 @@ git grep "4\.21" | grep -v "34\.21\|14\.21\|24\.21"
 
 ---
 
-## 5. Timeline (Estimated)
+## 6. Timeline (Estimated)
 
 | WP | Effort | GPU Needed | Dependencies | Calendar Estimate |
 | :--- | :--- | :--- | :--- | :--- |
 | A | 30 min | No | None | Day 1 |
+| M | 90–120 min | No | A | Day 1 |
 | B | 60 min | No | A | Day 1 |
-| D | 2-4 hours | Maybe | A | Day 1-2 |
-| C | 90 min | No | D | Day 2 |
+| D | 2–4 hours | Maybe | A, M | Day 1–2 |
+| C | 90 min | No | M, D | Day 2 |
 | E | 45 min | No | B, C | Day 2 |
 | G | 30 min | No | A | Day 2 (parallel) |
-| F | 3-4 hours | Yes | A | Day 3 (optional) |
+| F | 3–4 hours | Yes | A | Day 3 (optional) |
 | H | 60 min | Maybe | E | Day 3 |
-| I | 3-4 hours | No | C, D, E | Day 3-4 |
-| J | 60 min | No | H, I, G | Day 4 |
-| K | 60 min | No | J | Day 4 |
+| I | 3–4 hours | No | C, D, E, M (gate) | Day 3–4 |
+| J | 60 min | No | H, I, G, M (gate) | Day 4 |
+| K | 60 min | No | J, M (gate) | Day 4 |
 | L | 60 min | No | K | Day 5 |
 
-**Critical path:** A → D → C → E → I → J → K → L = ~5 working days
+**Critical path:** A → M → D → C → E → I → J → K → L = ~5 working days
 
 **If time runs out, cut first:** WP-F (Mobile-Actions), then WP-K (launch materials can be done later), then WP-G (human eval tooling — the author can do this manually).
 
 ---
 
-## 6. Stop Conditions
+## 7. Stop Conditions
 
 1. **Hard stop:** If any data file is corrupted or ledger entries are inconsistent → halt and investigate before proceeding
 2. **Cut Mobile-Actions (WP-F)** if behind schedule by Day 3
 3. **Cut launch materials (WP-K)** if behind schedule by Day 4 — can be done independently later
-4. **Never cut:** WP-B (integrity fixes), WP-C (reconciliation), WP-L (final audit)
+4. **Never cut:** WP-M (baseline audit), WP-B (integrity fixes), WP-C (reconciliation), WP-L (final audit)
 
 ---
 
-## 7. First 90 Minutes — What the Author Should Do Immediately
+## 8. First 90 Minutes — What the Author Should Do Immediately
 
 1. **Read STATE_RECONSTRUCTION.md** (this document's companion) — 15 min
 2. **Resolve author name:** Is it "Pattnaik, Anish" or "Pathak, Anish Sohan"? Update CITATION.cff and paper. — 2 min
 3. **Set up the Python venv:** `python -m venv .venv && .venv\Scripts\activate && pip install -e .` — 5 min
 4. **Run WP-A** (paste WP_01_state_verification.md into a fresh agent session) — 30 min
-5. **Run WP-B** (paste WP_02_doc_integrity.md into a fresh agent session) — 40 min
+5. **Run WP-M** (paste WP_13_baseline_ledger_integrity.md into a fresh agent session) — 40 min
+6. **Run WP-B** (paste WP_02_doc_integrity.md into a fresh agent session) — 40 min
 
-These two WPs unblock everything else and can be done today.
+These three initial WPs unblock everything else and establish true data foundation.
 
 ---
 
@@ -614,18 +723,20 @@ These two WPs unblock everything else and can be done today.
 | File | Contents |
 | :--- | :--- |
 | `STATE_RECONSTRUCTION.md` | Forensic analysis of repo state, Phase 16 status, briefing discrepancies |
-| `IMPLEMENTATION_PLAN.md` | This file — master plan with all WPs, dependencies, timeline |
-| `WP_01_state_verification.md` | Standalone prompt for WP-A |
-| `WP_02_doc_integrity.md` | Standalone prompt for WP-B |
-| `WP_03_results_reconciliation.md` | Standalone prompt for WP-C |
-| `WP_04_far_fairness.md` | Standalone prompt for WP-D |
-| `WP_05_memory_latency.md` | Standalone prompt for WP-E |
-| `WP_06_mobile_actions.md` | Standalone prompt for WP-F |
-| `WP_07_human_eval.md` | Standalone prompt for WP-G |
-| `WP_08_final_packaging.md` | Standalone prompt for WP-H |
-| `WP_09_paper.md` | Standalone prompt for WP-I |
-| `WP_10_repo_finalization.md` | Standalone prompt for WP-J |
-| `WP_11_launch_materials.md` | Standalone prompt for WP-K |
-| `WP_12_final_audit.md` | Standalone prompt for WP-L |
+| `IMPLEMENTATION_PLAN.md` | This file — master plan with all WPs, dependencies, timeline, authoritative sources |
+| `WP_01_state_verification.md` | Standalone prompt for WP-A (State Verification & Salvage Decision) |
+| `WP_13_baseline_ledger_integrity.md` | Standalone prompt for WP-M (Baseline & Ledger Integrity Audit, TF-IDF audit, Hybrid baseline) |
+| `WP_02_doc_integrity.md` | Standalone prompt for WP-B (Documentation Integrity & 4.21 MB Eradication) |
+| `WP_03_results_reconciliation.md` | Standalone prompt for WP-C (Results Reconciliation & Multi-Tool Script Audit) |
+| `WP_04_far_fairness.md` | Standalone prompt for WP-D (FAR Fairness Retraining & Diagnostic Integration) |
+| `WP_05_memory_latency.md` | Standalone prompt for WP-E (Memory & Latency Protocol Finalization) |
+| `WP_06_mobile_actions.md` | Standalone prompt for WP-F (Mobile-Actions External Benchmark Assessment) |
+| `WP_07_human_eval.md` | Standalone prompt for WP-G (Human-Written Evaluation Tooling & Staging) |
+| `WP_08_final_packaging.md` | Standalone prompt for WP-H (Final Model Packaging & Release Artifact Integrity) |
+| `WP_09_paper.md` | Standalone prompt for WP-I (Paper Revision, Neutral Template, & Reviewer Notes) |
+| `WP_10_repo_finalization.md` | Standalone prompt for WP-J (Repository Finalization & Release Staging) |
+| `WP_11_launch_materials.md` | Standalone prompt for WP-K (Launch Communications & Verified Narrative) |
+| `WP_12_final_audit.md` | Standalone prompt for WP-L (Final Forensic Audit & Definitive Final Report) |
 | `RISKS_AND_DECISIONS.md` | Risks, mitigations, decisions for author |
 | `USER_CHECKLIST.md` | Human-only action items |
+

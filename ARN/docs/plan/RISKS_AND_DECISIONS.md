@@ -47,7 +47,15 @@ This document outlines the major scientific and strategic risks facing the ARN p
   1. Upload directly to arXiv and submit to an on-device/edge AI workshop (e.g., MLSys on-device workshop, ACL Workshop on Tool Learning, or EMNLP demo track).
   2. Target a major conference (AAAI-28, ACL 2027) without uploading to arXiv.
   3. Upload to Zenodo / GitHub with no formal venue submission.
-* **Recommended Default:** **Option 1.** Post the preprint to arXiv (or Zenodo if arXiv endorsement is unavailable) under a CC-BY license and submit to an upcoming edge ML / system workshop. Workshops welcome candid evaluation audits and practical deployment benchmarks.
+### Decision 5: Architectural Framing If Bag-of-Words Outperforms the Neural Primary Model
+* **Context:** In `results/ledger.json`, TF-IDF Logistic Regression records a 15-fold average of **74.24%** tool subset accuracy, compared to **39.91%** for the primary fine-tuned CLS+CRF model. If WP-M verifies this result is leak-free and mathematically sound, a linear bag-of-words classifier substantially outperforms the 4.39M parameter neural encoder on tool routing.
+* **Options:**
+  1. Attempt to minimize, relegate, or omit the TF-IDF baseline to protect the neural routing narrative. (*Unacceptable — violates core research integrity*).
+  2. Candidly report the finding and execute the **Narrative Pivot**:
+     - Remove all claims that BERT-tiny's semantic representations provide superior tool routing over surface lexical cues on template queries.
+     - Restate ARN's primary value proposition as **unified, single-pass joint execution**: ARN performs argument span extraction (43.61% strict F1) and tool routing simultaneously in a single 4.28 MB INT8 binary executing in 0.75 ms CPU engine latency.
+     - Benchmark the **Hybrid Baseline** (TF-IDF LogReg router + frozen BERT-tiny CRF tagger): show that while hybrid pipelines achieve good routing, they require maintaining two disjoint runtimes/models, serializing intermediate representations, increasing memory footprint, and incurring multi-stage pipeline latency.
+* **Recommended Default:** **Option 2.** Transparently embracing empirical reality establishes extraordinary scientific credibility. It shifts the contribution from "BERT-tiny is a magical router" to "here is what a unified sub-5MB joint model achieves on CPU vs decoupled pipeline alternatives."
 
 ---
 
@@ -55,6 +63,7 @@ This document outlines the major scientific and strategic risks facing the ARN p
 
 | Risk | Impact | Probability | Mitigation Strategy |
 | :--- | :--- | :--- | :--- |
+| **Bag-of-Words Outperforms Primary Model** (TF-IDF LogReg 74.24% vs CLS 39.91% tool acc) | Threatens the premise that pre-trained transformer embeddings are necessary for routing | Critical | Execute WP-M audit immediately. If verified: pivot the paper's value proposition from "encoder is a superior router" to "unified joint single-pass inference vs hybrid pipeline complexity", supported by empirical hybrid latency/size comparisons. |
 | **Headline Accuracy Gap** (Tool acc 39.91% / Joint EM 16.91% vs old 90%+) | Public audience expects generative LLM-level accuracy | High | Emphasize latency (0.75 ms engine), tiny disk size (4.28 MB), and deterministic guarantees (0% JSON syntax errors). Clearly frame this as a 4.39M parameter model running on CPU. |
 | **Synthetic Template Bias** (Evaluation limited to 5,000 synthetic queries) | Reviewers question real-world conversational transfer | High | Acknowledge directly in Limitations. Stage the human-written evaluation protocol so the community or author can collect out-of-distribution real queries. |
 | **Overlapping BIO Spans** (142 utterances with colliding slots) | Flat linear-chain CRF mathematically cannot tag overlapping spans | Medium | Document that single-layer flat BIO models cannot represent overlapping slot boundaries by design; measure the exact impact (2.8% of test set) and propose multi-head or transition-based decoders in Future Work. |

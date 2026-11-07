@@ -1,0 +1,29 @@
+{
+  "model": "functiongemma_270m_sft_mobile",
+  "params": 268098176,
+  "n_rows": 961,
+  "missing_predictions": 0,
+  "strict_em": 85.12,
+  "strict_em_legacy_subset": 85.33,
+  "relaxed_em_date_only": 85.12,
+  "unordered_em": 85.12,
+  "tool_sequence_acc": 93.86,
+  "tool_set_acc": 93.86,
+  "single_call_em": 88.44,
+  "multi_call_em": 78.5,
+  "datetime_arg_acc": 84.38,
+  "counts": {
+    "strict": 818,
+    "strict_legacy": 820,
+    "relaxed": 818,
+    "unordered": 818,
+    "names": 902,
+    "name_sets": 902,
+    "single_n": 640,
+    "single_strict": 566,
+    "dt_n": 365,
+    "dt_ok": 308,
+    "multi_n": 321,
+    "multi_strict": 252
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "model": "qwen3_0.6b",
+  "params": 596049920,
+  "n_rows": 961,
+  "missing_predictions": 0,
+  "strict_em": 65.24,
+  "relaxed_em_date_only": 66.18,
+  "unordered_em": 65.24,
+  "tool_sequence_acc": 89.39,
+  "tool_set_acc": 89.39,
+  "single_call_em": 67.19,
+  "multi_call_em": 61.37,
+  "datetime_arg_acc": 72.88,
+  "counts": {
+    "strict": 627,
+    "relaxed": 636,
+    "unordered": 627,
+    "names": 859,
+    "name_sets": 859,
+    "single_n": 640,
+    "single_strict": 430,
+    "dt_n": 365,
+    "dt_ok": 266,
+    "multi_n": 321,
+    "multi_strict": 197
+  }
+}

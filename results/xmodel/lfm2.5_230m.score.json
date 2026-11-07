@@ -1,0 +1,27 @@
+{
+  "model": "lfm2.5_230m",
+  "params": 229693184,
+  "n_rows": 961,
+  "missing_predictions": 0,
+  "strict_em": 69.09,
+  "relaxed_em_date_only": 69.09,
+  "unordered_em": 69.09,
+  "tool_sequence_acc": 88.55,
+  "tool_set_acc": 88.55,
+  "single_call_em": 79.84,
+  "multi_call_em": 47.66,
+  "datetime_arg_acc": 72.33,
+  "counts": {
+    "strict": 664,
+    "relaxed": 664,
+    "unordered": 664,
+    "names": 851,
+    "name_sets": 851,
+    "single_n": 640,
+    "single_strict": 511,
+    "dt_n": 365,
+    "dt_ok": 264,
+    "multi_n": 321,
+    "multi_strict": 153
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "experiment_id": "smoke_v2",
+  "protocol": "v2_mobile_actions",
+  "model": "smoke_v2",
+  "params": 4440019,
+  "seed": 42,
+  "args": {
+    "data": "C:\\Users\\Lenovo\\.cache\\huggingface\\hub\\datasets--google--mobile-actions\\snapshots\\e920309bc2acbc2e99a5e3201cf37df2b9fd9151\\dataset.jsonl",
+    "trunk": "google/bert_uncased_L-2_H-128_A-2",
+    "router": "far",
+    "epochs": 1,
+    "bs": 32,
+    "lr": 0.0002,
+    "head_lr": 0.002,
+    "max_len": 160,
+    "seed": 42,
+    "policy": "D:\\python\\AETHER_V1.0\\ARN-public\\results\\temporal_policy.json",
+    "no_constrained": false,
+    "no_canon": false,
+    "tag": "smoke_v2"
+  },
+  "best_epoch": 1,
+  "val_strict_em": 73.76,
+  "eval": {
+    "n_rows": 961,
+    "missing_predictions": 0,
+    "strict_em": 74.09,
+    "relaxed_em_date_only": 74.19,
+    "unordered_em": 81.27,
+    "tool_sequence_acc": 87.62,
+    "tool_set_acc": 95.53,
+    "single_call_em": 86.88,
+    "multi_call_em": 48.6,
+    "datetime_arg_acc": 93.7,
+    "counts": {
+      "strict": 712,
+      "relaxed": 713,
+      "unordered": 781,
+      "names": 842,
+      "name_sets": 918,
+      "single_n": 640,
+      "single_strict": 556,
+      "dt_n": 365,
+      "dt_ok": 342,
+      "multi_n": 321,
+      "multi_strict": 156
+    }
+  },
+  "cpu_latency": {
+    "p50_ms": 47.84,
+    "p95_ms": 52.43,
+    "threads": 1,
+    "n": 200
+  },
+  "git_hash": "7511642",
+  "command": "scripts/v2_train_mobile.py --data C:\\Users\\Lenovo\\.cache\\huggingface\\hub\\datasets--google--mobile-actions\\snapshots\\e920309bc2acbc2e99a5e3201cf37df2b9fd9151\\dataset.jsonl --epochs 1 --tag smoke_v2",
+  "timestamp": "2026-11-07T11:51:57.950899+00:00"
+}

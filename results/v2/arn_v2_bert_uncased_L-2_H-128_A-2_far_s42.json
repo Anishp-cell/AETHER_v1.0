@@ -1,0 +1,58 @@
+{
+  "experiment_id": "arn_v2_bert_uncased_L-2_H-128_A-2_far_s42",
+  "protocol": "v2_mobile_actions",
+  "model": "arn_v2_bert_uncased_L-2_H-128_A-2_far_s42",
+  "params": 4440019,
+  "seed": 42,
+  "args": {
+    "data": "C:\\Users\\Lenovo\\.cache\\huggingface\\hub\\datasets--google--mobile-actions\\snapshots\\e920309bc2acbc2e99a5e3201cf37df2b9fd9151\\dataset.jsonl",
+    "trunk": "google/bert_uncased_L-2_H-128_A-2",
+    "router": "far",
+    "epochs": 20,
+    "bs": 32,
+    "lr": 0.0002,
+    "head_lr": 0.002,
+    "max_len": 160,
+    "seed": 42,
+    "policy": "D:\\python\\AETHER_V1.0\\ARN-public\\results\\temporal_policy.json",
+    "no_constrained": false,
+    "no_canon": false,
+    "tag": null
+  },
+  "best_epoch": 5,
+  "val_strict_em": 80.44,
+  "eval": {
+    "n_rows": 961,
+    "missing_predictions": 0,
+    "strict_em": 77.32,
+    "relaxed_em_date_only": 77.42,
+    "unordered_em": 87.3,
+    "tool_sequence_acc": 86.47,
+    "tool_set_acc": 96.88,
+    "single_call_em": 90.94,
+    "multi_call_em": 50.16,
+    "datetime_arg_acc": 95.62,
+    "counts": {
+      "strict": 743,
+      "relaxed": 744,
+      "unordered": 839,
+      "names": 831,
+      "name_sets": 931,
+      "single_n": 640,
+      "single_strict": 582,
+      "dt_n": 365,
+      "dt_ok": 349,
+      "multi_n": 321,
+      "multi_strict": 161
+    }
+  },
+  "cpu_latency": {
+    "p50_ms": 18.96,
+    "p95_ms": 21.16,
+    "threads": 1,
+    "n": 200
+  },
+  "git_hash": "7511642",
+  "command": "scripts/v2_train_mobile.py --data C:\\Users\\Lenovo\\.cache\\huggingface\\hub\\datasets--google--mobile-actions\\snapshots\\e920309bc2acbc2e99a5e3201cf37df2b9fd9151\\dataset.jsonl --epochs 20 --seed 42",
+  "timestamp": "2026-11-07T12:38:27.054021+00:00"
+}

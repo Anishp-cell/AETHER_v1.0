@@ -1,0 +1,34 @@
+{
+  "experiment_id": "slu_MixATIS_clean_bert_uncased_L-2_H-128_A-2_far_s2",
+  "protocol": "v2_slu_preregistered_1fa7a50",
+  "params": 4481719,
+  "seed": 2,
+  "args": {
+    "dataset": "MixATIS_clean",
+    "trunk": "google/bert_uncased_L-2_H-128_A-2",
+    "router": "far",
+    "seed": 2,
+    "epochs": 20,
+    "bs": 32,
+    "lr": 0.0002,
+    "head_lr": 0.002,
+    "max_len": 128,
+    "no_test": false
+  },
+  "best_epoch": 13,
+  "dev_overall": 74.7,
+  "test": {
+    "overall_acc": 39.25,
+    "intent_acc": 66.43,
+    "slot_f1": 87.0,
+    "n": 828
+  },
+  "cpu_latency": {
+    "p50_ms": 2.19,
+    "threads": 1,
+    "n": 200
+  },
+  "git_hash": "1fa7a50",
+  "command": "scripts/v2_train_slu.py --dataset MixATIS_clean --seed 2",
+  "timestamp": "2026-11-07T15:42:34.137078+00:00"
+}

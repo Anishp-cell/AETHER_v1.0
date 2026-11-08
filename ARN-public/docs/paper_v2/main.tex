@@ -27,7 +27,7 @@ while trailing an LFM2.5-230M fine-tuned and tuned on the same split (92.51). En
 11.4\,ms median on one CPU thread versus 4.3\,s for LFM2.5-230M. In a pre-registered evaluation on
 multi-intent SLU benchmarks without any rules, \arn{} obtains 40.94 (MixATIS) and 70.29 (MixSNIPS)
 overall accuracy, on par with or below small task-specific BiLSTM models. We document every
-development choice that touched the test split, the contribution of rule-based components ($\approx$33
+development choice that touched the test split, the contribution of rule-based components ($\approx$34
 points), and the scope limits of a closed tool registry.
 \end{abstract}
 
@@ -48,7 +48,7 @@ train-fitted temporal canonicalizer that raises datetime accuracy from 75.1\% to
 (3) A same-harness comparison against base and same-split fine-tuned generative models, with
 reproductions of three published numbers, paired significance tests, an equal-budget baseline sweep and
 single-stream CPU latency (\S\ref{sec:results}).
-(4) A pre-registered confirmatory evaluation on MixATIS/MixSNIPS and a complete disclosure of
+(4) Three-seed ablations of every decoder component (Table~\ref{tab:abl}). (5) A pre-registered confirmatory evaluation on MixATIS/MixSNIPS and a complete disclosure of
 test-split exposure and rule contributions (\S\ref{sec:limits}).
 
 \section{Related Work}
@@ -94,6 +94,7 @@ FunctionGemma-270M, LFM2.5-230M, Qwen3-0.6B (thinking off), base and fine-tuned 
 \textbf{Statistics.} Bootstrap 95\% CIs over test rows; paired bootstrap for system differences; 3 seeds.
 
 \section{Results}\label{sec:results}
+Figure~\ref{fig:pareto} summarizes accuracy against model size.
 \begin{table}[t]\centering\small
 \caption{Google Mobile Actions, strict exact match (961 rows). ``Ours'' = measured in our harness.}
 \begin{tabular}{lrcrl}\toprule
@@ -106,8 +107,17 @@ LFM2.5-230M, base & 230M & no & 68.05 & ours (Cactus: 69.1)\\
 Qwen3-0.6B, base & 596M & no & 65.04 & ours\\
 FunctionGemma-270M, base & 268M & no & 60.15 & ours (Google: 58)\\
 ARN v1 & 4.4M & yes & 49.74 & legacy\\\midrule
+\arn{}, [CLS] router, 3 seeds & 4.4M & yes & 89.07 $\pm$ 0.38 & ours\\
+\arn{}, BERT-Mini trunk, 3 seeds & 11.4M & yes & 89.91 $\pm$ 0.46 & ours\\\midrule
 \multicolumn{5}{l}{\emph{Vendor-reported (other harnesses):} DeepSeek V4 Flash 88.4; Needle~3 (121M) 86.0; LFM2.5-1.2B 82.4.}\\\bottomrule
 \end{tabular}\end{table}
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.78\linewidth]{fig_pareto.pdf}
+\caption{Strict exact match vs.\ parameters on Mobile Actions (961 test rows). Every point is measured in our
+harness on the same split; error bars are $\pm$1 SD over 3 seeds (ours). \arn{} is 50--60$\times$ smaller than the
+fine-tuned generative baselines.}\label{fig:pareto}
+\end{figure}
 
 \arn{} beats same-split fine-tuned FunctionGemma on every seed (paired $\Delta$ $+4.16$ [$+1.77$, $+6.66$],
 $+4.68$ [$+2.19$, $+7.08$], $+3.75$ [$+1.25$, $+6.24$]) and trails fine-tuned LFM2.5 ($-2.29$
@@ -116,15 +126,31 @@ with a near-duplicate in train changes \arn{} by $<$1 point. Giving base LMs \ar
 them to 71.9 (LFM2.5) and 72.5 (Qwen3). Our harness reproduces Cactus's LFM2.5 (69.1) and Google's
 FunctionGemma base (58) and fine-tuned (85) numbers.
 
-\paragraph{Ablations.} \PENDING{re-run on the three final seeds; numbers below are from one earlier
-seed-42 checkpoint at 86.99.} Without the canonicalizer: 54.01; FAR-attention instead of keyword call
-ordering: 77.00; without multi-span joining: 86.58; without the registry mask: 86.99.
-Router choice is not decisive: [CLS] 88.97 vs FAR-v2 89.32 \PENDING{[CLS] over 3 seeds};
-a BERT-Mini trunk (11.4M) gives 89.59 \PENDING{3 seeds}.
+\paragraph{Ablations (3 seeds, seed-matched paired bootstrap vs.\ the full system).}
+\begin{table}[t]\centering\small
+\caption{Decoder ablations on the three final BERT-Tiny + FAR-v2 checkpoints (strict EM, 961 rows).}
+\label{tab:abl}
+\begin{tabular}{lccc}\toprule
+Variant & Seeds 42 / 1 / 2 & Mean $\pm$ SD & Paired $\Delta$ vs.\ full (95\% CI, per seed)\\\midrule
+Full system & 89.28 / 89.80 / 88.87 & 89.32 $\pm$ 0.47 & ---\\
+No canonicalizer & 55.25 / 55.57 / 54.84 & 55.22 $\pm$ 0.37 & $-34.0$ to $-34.2$, all CIs below 0\\
+FAR-attention call ordering & 78.77 / 89.80 / 88.87 & 85.81 $\pm$ 6.12 & $-10.51$ [$-12.49$, $-8.64$]; 0.00; 0.00\\
+No multi-span join & 88.24 / 88.55 / 87.72 & 88.17 $\pm$ 0.42 & $-1.04$ to $-1.25$, all CIs below 0\\
+No registry mask in Viterbi & 89.18 / 89.70 / 88.76 & 89.21 $\pm$ 0.47 & $-0.10$ [$-0.31$, $0.00$] each\\\bottomrule
+\end{tabular}\end{table}
+Table~\ref{tab:abl}: the canonicalizer is the largest single component; multi-span joining gives a small but
+consistent gain; the registry mask is nearly redundant once the tool set is chosen jointly. Using FAR attention
+to order argument-less calls is seed-unstable (no change on two seeds, $-10.5$ on one), so keyword ordering is
+used. Router and trunk choice are not decisive: a plain [CLS] router gives $89.07 \pm 0.38$ (seed-matched
+FAR-v2 $-$ [CLS]: $+0.31$, $+0.31$, $+0.10$, all CIs include 0, i.e.\ no significant difference), and a
+BERT-Mini trunk (11.4M) gives $89.91 \pm 0.46$ (Mini $-$ Tiny: $+0.31$ [$-0.83$, $+1.56$], $-0.10$
+[$-1.04$, $+0.94$], $+1.56$ [$+0.31$, $+2.81$]), so $2.6\times$ the parameters buys at most about one point.
 
 \paragraph{Latency.} Single-stream, batch 1, FP32, one CPU thread: \arn{} 11.40\,ms p50 / 18.22\,ms p90
-end to end, LFM2.5-230M 4,316\,ms / 9,250\,ms \PENDING{FunctionGemma, Qwen3 and 4-thread rows from
-\texttt{results/latency\_v2.json}}. No optimized LM runtime was used.
+end to end, versus 4,316\,ms (LFM2.5-230M), 4,613\,ms (FunctionGemma-270M) and 22,815\,ms (Qwen3-0.6B)
+p50 for the generative baselines; with four threads \arn{} takes 4.1\,ms versus 2,276\,ms, 2,834\,ms and
+8,815\,ms. No optimized LM runtime (llama.cpp, int8) was used, so LM latencies are upper bounds for
+optimized deployment; the gap is nonetheless two to three orders of magnitude.
 
 \paragraph{Pre-registered SLU evaluation.} Without rules, \arn{} obtains 40.94 $\pm$ 2.62 (MixATIS) and
 70.29 $\pm$ 0.46 (MixSNIPS) overall accuracy, versus AGIF 40.8 / 74.2 and GL-GIN 43.5 / 75.4, which are
@@ -134,15 +160,17 @@ architecture transfers without rules, not that it is more parameter-efficient th
 \section{Limitations and Disclosures}\label{sec:limits}
 (i) Mobile Actions has no dev/test split; decoder changes were first motivated by eval-split errors of an
 early checkpoint and then confirmed on validation and train; the pre-registered SLU benchmarks are the
-confirmatory evidence. (ii) $\approx$33 points depend on the rule-based canonicalizer and $\approx$10 on
-keyword ordering. (iii) A closed registry: new tools need training data; the same tool cannot be called
+confirmatory evidence. (ii) $\approx$34 points depend on the rule-based canonicalizer (Table~\ref{tab:abl}); keyword call ordering
+is a rule, preferred over FAR-attention ordering because the latter is seed-unstable. (iii) A closed registry: new tools need training data; the same tool cannot be called
 twice in one request; BFCL is out of scope (no train split, per-item tools, many non-extractive values).
 (iv) One function-calling benchmark, of undocumented (likely synthetic) origin. (v) LM latencies are for
 unoptimized FP32 PyTorch. (vi) Only LFM2.5 received a tuning sweep.
 
 \section{Reproducibility and AI Assistance}
 Code, prediction files with SHA-256 fingerprints, logs, the environment record and the pre-registration
-(commit \texttt{1fa7a50}) are released; MixATIS/MixSNIPS are fetched and hash-verified by a script, not
+(commit \texttt{1fa7a50}) are released at \url{https://github.com/Anishp-cell/AETHER_v1.0}
+(directory \texttt{ARN-public}); \texttt{scripts/aggregate\_key\_results.py} recomputes every ablation and
+seed statistic from the released prediction files; MixATIS/MixSNIPS are fetched and hash-verified by a script, not
 redistributed. Code and experiments were largely produced with Claude (Anthropic); evaluation code was
 independently reviewed with Gemini 3.8 Flash. The authors take full responsibility for all content.
 

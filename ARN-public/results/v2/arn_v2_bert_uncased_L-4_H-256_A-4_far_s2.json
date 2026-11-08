@@ -1,0 +1,62 @@
+{
+  "experiment_id": "arn_v2_bert_uncased_L-4_H-256_A-4_far_s2",
+  "protocol": "v2_mobile_actions",
+  "model": "arn_v2_bert_uncased_L-4_H-256_A-4_far_s2",
+  "params": 11376595,
+  "seed": 2,
+  "args": {
+    "data": "C:\\Users\\Lenovo\\.cache\\huggingface\\hub\\datasets--google--mobile-actions\\snapshots\\e920309bc2acbc2e99a5e3201cf37df2b9fd9151\\dataset.jsonl",
+    "trunk": "google/bert_uncased_L-4_H-256_A-4",
+    "router": "far",
+    "epochs": 20,
+    "bs": 32,
+    "lr": 0.0001,
+    "head_lr": 0.002,
+    "max_len": 160,
+    "seed": 2,
+    "policy": "D:\\python\\AETHER_V1.0\\ARN-public\\results\\temporal_policy.json",
+    "no_constrained": false,
+    "no_canon": false,
+    "anchor": "keyword",
+    "multi_span_min_rate": 0.05,
+    "tag": null
+  },
+  "best_epoch": 3,
+  "val_strict_em": 92.75,
+  "eval": {
+    "n_rows": 961,
+    "missing_predictions": 0,
+    "strict_em": 90.43,
+    "strict_em_legacy_subset": 90.43,
+    "relaxed_em_date_only": 90.53,
+    "unordered_em": 90.53,
+    "tool_sequence_acc": 97.81,
+    "tool_set_acc": 97.92,
+    "single_call_em": 93.59,
+    "multi_call_em": 84.11,
+    "datetime_arg_acc": 96.16,
+    "counts": {
+      "strict": 869,
+      "strict_legacy": 869,
+      "relaxed": 870,
+      "unordered": 870,
+      "names": 940,
+      "name_sets": 941,
+      "single_n": 640,
+      "single_strict": 599,
+      "dt_n": 365,
+      "dt_ok": 351,
+      "multi_n": 321,
+      "multi_strict": 270
+    }
+  },
+  "cpu_latency": {
+    "p50_ms": 15.58,
+    "p95_ms": 26.76,
+    "threads": 1,
+    "n": 200
+  },
+  "git_hash": "3122959",
+  "command": "scripts/v2_train_mobile.py --data C:\\Users\\Lenovo\\.cache\\huggingface\\hub\\datasets--google--mobile-actions\\snapshots\\e920309bc2acbc2e99a5e3201cf37df2b9fd9151\\dataset.jsonl --epochs 20 --seed 2 --trunk google/bert_uncased_L-4_H-256_A-4 --lr 1e-4",
+  "timestamp": "2026-11-08T02:51:07.047395+00:00"
+}

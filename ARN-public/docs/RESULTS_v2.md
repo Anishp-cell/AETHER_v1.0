@@ -15,8 +15,8 @@ equal values after lower-casing and stripping quotes/dots; datetime compared as 
 | LFM2.5-230M, fine-tuned, best of 5-config sweep (selected on val) | 230M | yes | 92.51 | — | ours |
 | LFM2.5-230M, fine-tuned (default recipe) | 230M | yes | 91.57 | [89.80, 93.34] | ours |
 | **Aether Routing Network v2, BERT-Tiny + FAR-v2** | **4.44M** | yes | **89.32 ± 0.47** (seeds 42/1/2: 89.28, 89.80, 88.87) | s42 [87.41, 91.26] | ours |
-| ARN-v2, BERT-Mini trunk (single seed) | 11.38M | yes | 89.59 | [87.62, 91.47] | ours |
-| ARN-v2, [CLS] router (single seed) | 4.39M | yes | 88.97 | [86.99, 91.05] | ours |
+| ARN-v2, BERT-Mini trunk (3 seeds) | 11.38M | yes | 89.91 ± 0.46 (89.59, 89.70, 90.43) | s42 [87.62, 91.47] | ours |
+| ARN-v2, [CLS] router (3 seeds) | 4.39M | yes | 89.07 ± 0.38 (88.97, 89.49, 88.76) | s42 [86.99, 91.05] | ours |
 | FunctionGemma-270M, fine-tuned (same split, same recipe as LFM2.5 default) | 268M | yes | 85.12 | — | ours (Google reports 85) |
 | LFM2.5-230M, base | 230M | no | 68.05 | [65.14, 71.18] | ours (69.09 under the lenient subset rule; Cactus reports 69.1) |
 | Qwen3-0.6B, base, thinking off | 596M | no | 65.04 | [61.81, 68.05] | ours |
@@ -38,9 +38,22 @@ LFM2.5-1.2B 82.4, Qwen3.5-0.8B 76.0, LFM2.5-350M 72.8, Needle 2 (45M) 63.5, Appl
 - Same rules for baselines (ARN's canonicalizer applied to their datetime values): LFM2.5 base 68.05 → 71.90; Qwen3 base 65.04 → 72.53.
 - Scorer sanity: gold-as-prediction 100.00.
 
-**Ablations (seed-42 checkpoint selected with the earlier decoder, full system 86.99 on that checkpoint; to be re-run on the three final seeds):**
-no canonicalizer 54.01; FAR-attention call ordering instead of keyword ordering 77.00; no multi-span join 86.58;
-no registry mask in Viterbi 86.99.
+**Ablations (three final checkpoints, `results/key_results_v2.json`, `scripts/aggregate_key_results.py`):**
+
+| Variant | Seeds 42 / 1 / 2 | Mean ± SD | Seed-matched paired Δ vs full (95% CI) |
+|---|---|---|---|
+| Full | 89.28 / 89.80 / 88.87 | 89.32 ± 0.47 | — |
+| No canonicalizer | 55.25 / 55.57 / 54.84 | 55.22 ± 0.37 | −34.03 [−37.04, −31.11]; −34.24 [−37.25, −31.32]; −34.03 [−37.04, −31.22] |
+| FAR-attention call ordering | 78.77 / 89.80 / 88.87 | 85.81 ± 6.12 | −10.51 [−12.49, −8.64]; 0.00; 0.00 |
+| No multi-span join | 88.24 / 88.55 / 87.72 | 88.17 ± 0.42 | −1.04 [−1.87, −0.31]; −1.25 [−2.08, −0.42]; −1.14 [−1.98, −0.42] |
+| No registry mask in Viterbi | 89.18 / 89.70 / 88.76 | 89.21 ± 0.47 | −0.10 [−0.31, 0.00] each |
+
+FAR-attention ordering on seeds 1 and 2 changed no prediction (verified: 0 of 961 rows differ, although the
+attention anchors differ from keyword anchors; the induced call order is the same), on seed 42 it reordered 106 rows.
+It is seed-unstable, which is why keyword ordering is used.
+
+**Variants (seed-matched paired Δ):** FAR-v2 − [CLS]: +0.31 [−0.83, +1.46], +0.31 [−0.83, +1.56], +0.10 [−1.04, +1.25]
+(no significant difference). BERT-Mini − BERT-Tiny: +0.31 [−0.83, +1.56], −0.10 [−1.04, +0.94], +1.56 [+0.31, +2.81].
 
 ## 2. Pre-registered confirmatory benchmarks (commit `1fa7a50`, test read once per seed)
 
@@ -79,12 +92,12 @@ No optimized LM runtime (llama.cpp / int8) was used; LM latencies are upper boun
    vs 97.26% eval). Mobile Actions has no separate dev/test split; its eval split therefore served as a
    development test set. The pre-registered MixATIS/MixSNIPS evaluation is the confirmatory evidence.
 2. **Rule-based components.** The datetime canonicalizer (conventions fitted on train only) and keyword-based
-   call ordering contribute ~33 and ~10 points respectively. The system is neuro-symbolic.
+   call ordering contribute ~34 points (3-seed ablation) and up to ~10 points (seed-dependent) respectively. The system is neuro-symbolic.
 3. **External code review** (Antigravity CLI, Gemini 3.8 Flash) found a lenient scorer rule (extra arguments
    accepted); fixed, all files re-scored, no ARN-v2 number changed.
 4. **Closed registry.** ARN-v2 needs training data for a fixed tool set, cannot call the same tool twice in one
    utterance (0 eval rows require it), and is not applicable to BFCL (no train split, per-item tools).
-5. **Single-seed results:** the [CLS]-router and BERT-Mini variants (to be extended to 3 seeds).
+5. **Seeds:** all ARN-v2 Mobile Actions variants are reported over 3 seeds (42, 1, 2); baselines are single runs.
 6. **Baseline tuning:** LFM2.5 received a 5-config sweep selected on validation; FunctionGemma and Qwen3 did not.
 
 ## 5. Planned before running (pre-specified 2026-11-08, committed before any run)

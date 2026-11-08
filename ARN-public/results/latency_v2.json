@@ -1,0 +1,78 @@
+{
+  "protocol": "single-stream, batch 1, FP32, CPU, warmup discarded",
+  "results": [
+    {
+      "system": "Aether Routing Network v2 (BERT-Tiny)",
+      "params": 4440019,
+      "threads": 1,
+      "p50_ms": 11.4,
+      "p90_ms": 18.22,
+      "mean_ms": 12.37,
+      "n": 500
+    },
+    {
+      "system": "LiquidAI/LFM2.5-230M",
+      "params": 229693184,
+      "threads": 1,
+      "p50_ms": 4315.97,
+      "p90_ms": 9249.54,
+      "mean_ms": 5165.92,
+      "n": 30
+    },
+    {
+      "system": "google/functiongemma-270m-it",
+      "params": 268098176,
+      "threads": 1,
+      "p50_ms": 4613.49,
+      "p90_ms": 8299.36,
+      "mean_ms": 4893.55,
+      "n": 30
+    },
+    {
+      "system": "Qwen/Qwen3-0.6B",
+      "params": 596049920,
+      "threads": 1,
+      "p50_ms": 22815.22,
+      "p90_ms": 32097.44,
+      "mean_ms": 21306.87,
+      "n": 30
+    },
+    {
+      "system": "Aether Routing Network v2 (BERT-Tiny)",
+      "params": 4440019,
+      "threads": 4,
+      "p50_ms": 4.1,
+      "p90_ms": 6.15,
+      "mean_ms": 4.4,
+      "n": 500
+    },
+    {
+      "system": "LiquidAI/LFM2.5-230M",
+      "params": 229693184,
+      "threads": 4,
+      "p50_ms": 2275.78,
+      "p90_ms": 4455.07,
+      "mean_ms": 2547.17,
+      "n": 30
+    },
+    {
+      "system": "google/functiongemma-270m-it",
+      "params": 268098176,
+      "threads": 4,
+      "p50_ms": 2833.8,
+      "p90_ms": 4608.4,
+      "mean_ms": 2832.21,
+      "n": 30
+    },
+    {
+      "system": "Qwen/Qwen3-0.6B",
+      "params": 596049920,
+      "threads": 4,
+      "p50_ms": 8814.57,
+      "p90_ms": 12917.31,
+      "mean_ms": 8104.73,
+      "n": 30
+    }
+  ],
+  "cpu": "Intel64 Family 6 Model 191 Stepping 2, GenuineIntel"
+}

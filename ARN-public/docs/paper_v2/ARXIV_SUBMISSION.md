@@ -10,7 +10,7 @@ TeX rules (help/submit_tex), metadata rules (help/prep), moderation (help/modera
 Copy, Don't Generate: Aether Routing Network v2, a 4.4M-Parameter Extractive Function-Calling Router
 
 **Authors** (form "First Last", affiliation in parentheses, city and country only)
-<YOUR FULL NAME> (<Institution>, <City>, <Country>)
+Anish Pathak (Vishwakarma University, Pune, India)
 
 **Abstract** (arXiv limit: 1,920 characters; this text: 1,419 characters)
 On-device assistants must map a user request to function calls with exact arguments, usually with generative language models of hundreds of millions of parameters. We observe that on Google's Mobile Actions benchmark 94.8% of rows have every non-date argument appearing verbatim in the request, and ask how far a non-generative model that copies argument spans can go. We present the Aether Routing Network v2 (ARN-v2), a 4.4M-parameter encoder with a multi-label tool router, a linear-chain CRF over tool-qualified BIO tags, registry-constrained joint decoding, and a train-fitted rule-based datetime canonicalizer. On Mobile Actions (961 test requests, strict exact match) ARN-v2 reaches 89.32 +/- 0.47 (3 seeds), outperforming FunctionGemma-270M fine-tuned on the same split (85.12; paired difference +3.75 to +4.68, all 95% CIs above zero) and all evaluated base models, while trailing an LFM2.5-230M fine-tuned and tuned on the same split (92.51). End to end it runs at 11.4 ms median on one CPU thread versus 4.3 s for LFM2.5-230M. In a pre-registered evaluation on multi-intent SLU benchmarks without any rules, ARN-v2 obtains 40.94 (MixATIS) and 70.29 (MixSNIPS) overall accuracy, on par with or below small task-specific BiLSTM models. We document every development choice that touched the test split, the contribution of rule-based components (about 34 points), and the scope limits of a closed tool registry.
@@ -44,10 +44,10 @@ Do NOT upload: the compiled `main.pdf`, `.aux`, `.log`, `.out`, hidden files, `A
 | No `\pdfoutput` override, no JavaScript/animation (submit_tex) | OK |
 | `.bbl` matches main file name (submit_tex) | Generate `main.bbl` (step 4) |
 | Abstract <= 1,920 chars, no word "Abstract", ASCII (prep) | OK (1,419 chars, ASCII) |
-| Authors as "First Last", no honorifics (prep) | **TODO: fill your name** in `main.tex` line 10 and the form |
+| Authors as "First Last", no honorifics (prep) | OK |
 | Significant generative-AI use disclosed; AI not an author; authors responsible (moderation) | OK: section "Reproducibility and AI Assistance" + `docs/AI_ASSISTANCE.md` |
 | Refereeable original research, topical for category (moderation) | OK: new method + experiments, cs.CL |
-| No `[PENDING]` markers left | **TODO: only the author line remains** |
+| No `[PENDING]` markers left | OK: none left |
 
 ## 4. Your steps
 

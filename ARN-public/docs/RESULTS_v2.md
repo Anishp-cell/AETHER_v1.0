@@ -86,3 +86,17 @@ No optimized LM runtime (llama.cpp / int8) was used; LM latencies are upper boun
    utterance (0 eval rows require it), and is not applicable to BFCL (no train split, per-item tools).
 5. **Single-seed results:** the [CLS]-router and BERT-Mini variants (to be extended to 3 seeds).
 6. **Baseline tuning:** LFM2.5 received a 5-config sweep selected on validation; FunctionGemma and Qwen3 did not.
+
+## 5. Planned before running (pre-specified 2026-11-08, committed before any run)
+
+**Key result 1: decoder ablations on the three final checkpoints** (`arn_v2_tiny_far_s42_newdec`, `..._far_s1`,
+`..._far_s2`), re-decoded with `scripts/v2_redecode.py`: full, `--no-canon`, `--anchor far`,
+`--multi-span-min-rate 2`, `--no-constrained`. Report mean ± SD and a seed-matched paired bootstrap vs full.
+A "generic (non-tool-qualified) tags" ablation is **not run**: every Mobile Actions argument name belongs to exactly one
+tool, so generic and tool-qualified tag sets are identical on this dataset (stated as a limitation of the evidence for
+contribution 1).
+
+**Key result 2: three seeds for single-seed variants**: BERT-Tiny + [CLS] router seeds 1, 2; BERT-Mini + FAR-v2 seeds 1, 2;
+same recipe (20 epochs, val selection, eval decoded once). Report mean ± SD and seed-matched paired differences
+(FAR-v2 vs [CLS], Tiny vs Mini). Reading rule: if the 95% CI of a paired difference includes 0, report "no significant
+difference".

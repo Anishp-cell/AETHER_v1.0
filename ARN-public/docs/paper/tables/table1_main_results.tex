@@ -1,0 +1,27 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Master Protocol Evaluation across 15 tool-stratified cluster folds ($N=5{,}000$, 253 semantic clusters, 2,000 cluster bootstrap iterations). The fine-tuned joint CLS+CRF model achieves +13.47\% Joint Exact Match over the frozen trunk baseline, confirming Outcome A under pre-registered Decision Rule P-2. FAR is evaluated neutrally as an architectural variant and did not outperform the simpler CLS head.}
+\label{tab:main_results}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Architecture} & \textbf{Joint EM (\%)} & \textbf{95\% Bootstrap CI} & \textbf{Tool Acc (\%)} & \textbf{Strict F1 (\%)} & \textbf{Lenient F1 (\%)} & \textbf{Paired $\Delta$ vs Frozen ARN} \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel A: Statistical & Heuristic Baselines}} \\
+Majority Prior (Most Frequent) & $0.00 \pm 0.00$ & -- & $7.94 \pm 3.20$ & -- & -- & $-3.44\%$ \\
+TF-IDF + 1-NN ($k=5$, Cosine) & $0.00 \pm 0.00$ & -- & $63.52 \pm 8.36$ & -- & -- & $-3.44\%$ \\
+TF-IDF + Logistic Regression (OvR) & $0.00 \pm 0.00$ & -- & $74.24 \pm 9.36$ & -- & -- & $-3.44\%$ \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel B: Neural Architectures with Frozen BERT-tiny Trunk (4.4M params)}} \\
+Frozen Trunk + FAR (No CRF) & $0.43 \pm 0.81$ & [0.18, 0.74] & $10.95 \pm 5.08$ & $15.14 \pm 5.30$ & $49.28 \pm 11.99$ & $-3.01\%$ \\
+Frozen Trunk + JointBERT & $0.78 \pm 0.92$ & [0.39, 1.20] & $11.99 \pm 4.29$ & $20.25 \pm 5.90$ & $56.37 \pm 10.88$ & $-2.66\%$ \\
+Frozen Trunk + FAR + CRF (Frozen ARN) & $3.44 \pm 3.37$ & [2.27, 4.70] & $14.21 \pm 8.14$ & $24.76 \pm 13.33$ & $52.71 \pm 14.12$ & Baseline ($0.0\%$) \\
+Frozen Trunk + CLS + CRF & $6.03 \pm 2.85$ & [4.38, 7.75] & $21.56 \pm 8.84$ & $40.84 \pm 7.50$ & $65.13 \pm 7.88$ & $+2.59\%$ \\
+\midrule
+\multicolumn{7}{l}{\textit{Panel C: Neural Architectures with Fine-Tuned Trunk}} \\
+Fine-Tuned Trunk + FAR + CRF (Unfrozen ARN) & $5.90 \pm 3.79$ & [4.03, 7.75] & $21.28 \pm 7.12$ & $29.56 \pm 7.71$ & $58.61 \pm 8.17$ & $+2.46\%$ \\
+Fine-Tuned JointBERT (Chen et al. 2019) & $6.52 \pm 5.18$ & [4.54, 8.78] & $29.91 \pm 10.19$ & $29.31 \pm 11.14$ & $61.47 \pm 9.78$ & $+3.08\%$ \\
+\textbf{Fine-Tuned CLS+CRF (Selected / Ours)} & \textbf{16.91 $\pm$ 6.56} & \textbf{[13.51, 20.59]} & \textbf{39.91 $\pm$ 12.19} & \textbf{43.61 $\pm$ 10.43} & \textbf{67.88 $\pm$ 9.86} & \textbf{+13.47\%} \\
+\bottomrule
+\end{tabular}
+\end{table*}

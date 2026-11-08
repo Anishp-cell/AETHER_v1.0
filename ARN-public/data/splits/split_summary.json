@@ -1,0 +1,131 @@
+{
+  "total_samples": 5000,
+  "raw_unique_frames": 421,
+  "merged_clusters_count": 253,
+  "merged_near_duplicate_pairs": 1177,
+  "train_samples": 3926,
+  "val_samples": 501,
+  "test_samples": 573,
+  "train_clusters": 209,
+  "val_clusters": 22,
+  "test_clusters": 22,
+  "train_skels_count": 367,
+  "val_skels_count": 24,
+  "test_skels_count": 30,
+  "val_max_similarity_to_train": 0.7857,
+  "test_max_similarity_to_train": 0.75,
+  "val_mean_similarity_to_train": 0.4993,
+  "test_mean_similarity_to_train": 0.5515,
+  "val_near_duplicates_above_80": 0,
+  "test_near_duplicates_above_80": 0,
+  "per_tool_distribution": {
+    "open_url": {
+      "train": 37,
+      "val": 0,
+      "test": 0,
+      "total": 37
+    },
+    "open_app_and_type": {
+      "train": 121,
+      "val": 58,
+      "test": 50,
+      "total": 229
+    },
+    "route_to_deepseek": {
+      "train": 98,
+      "val": 40,
+      "test": 32,
+      "total": 170
+    },
+    "read_specific_url": {
+      "train": 62,
+      "val": 28,
+      "test": 21,
+      "total": 111
+    },
+    "search_and_read_web": {
+      "train": 91,
+      "val": 40,
+      "test": 39,
+      "total": 170
+    },
+    "set_timer": {
+      "train": 254,
+      "val": 48,
+      "test": 44,
+      "total": 346
+    },
+    "browser_open_and_interact": {
+      "train": 232,
+      "val": 68,
+      "test": 147,
+      "total": 447
+    },
+    "teach_new_skill": {
+      "train": 103,
+      "val": 8,
+      "test": 2,
+      "total": 113
+    },
+    "write_and_run_script": {
+      "train": 275,
+      "val": 35,
+      "test": 34,
+      "total": 344
+    },
+    "run_computer_command": {
+      "train": 305,
+      "val": 34,
+      "test": 53,
+      "total": 392
+    },
+    "analyze_screen_with_llava": {
+      "train": 74,
+      "val": 32,
+      "test": 26,
+      "total": 132
+    },
+    "get_current_time": {
+      "train": 237,
+      "val": 13,
+      "test": 6,
+      "total": 256
+    },
+    "media_control": {
+      "train": 281,
+      "val": 17,
+      "test": 5,
+      "total": 303
+    },
+    "search_web": {
+      "train": 668,
+      "val": 27,
+      "test": 23,
+      "total": 718
+    },
+    "handle_smart_home": {
+      "train": 310,
+      "val": 14,
+      "test": 4,
+      "total": 328
+    },
+    "get_system_diagnostics": {
+      "train": 330,
+      "val": 34,
+      "test": 2,
+      "total": 366
+    },
+    "send_whatsapp_message": {
+      "train": 1091,
+      "val": 23,
+      "test": 63,
+      "total": 1177
+    },
+    "browser_task": {
+      "train": 464,
+      "val": 5,
+      "test": 24,
+      "total": 493
+    }
+  }
+}

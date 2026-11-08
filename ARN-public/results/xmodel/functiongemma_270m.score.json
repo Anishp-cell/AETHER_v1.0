@@ -1,0 +1,27 @@
+{
+  "model": "functiongemma_270m",
+  "params": 268098176,
+  "n_rows": 961,
+  "missing_predictions": 0,
+  "strict_em": 60.35,
+  "relaxed_em_date_only": 60.98,
+  "unordered_em": 60.35,
+  "tool_sequence_acc": 80.85,
+  "tool_set_acc": 80.85,
+  "single_call_em": 69.06,
+  "multi_call_em": 42.99,
+  "datetime_arg_acc": 64.66,
+  "counts": {
+    "strict": 580,
+    "relaxed": 586,
+    "unordered": 580,
+    "names": 777,
+    "name_sets": 777,
+    "single_n": 640,
+    "single_strict": 442,
+    "dt_n": 365,
+    "dt_ok": 236,
+    "multi_n": 321,
+    "multi_strict": 138
+  }
+}

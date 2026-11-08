@@ -1,0 +1,123 @@
+{
+  "jointbert_evaluation": {
+    "greedy_softmax": {
+      "span_metrics": {
+        "strict_precision": 0.14684996358339403,
+        "strict_recall": 0.24562204964215015,
+        "strict_f1": 0.1838071904734773,
+        "strict_correct": 1613,
+        "lenient_precision": 0.4788783685360524,
+        "lenient_recall": 0.8009745698187909,
+        "lenient_f1": 0.5993960458093556,
+        "lenient_correct": 5260,
+        "total_gold": 6567,
+        "total_pred": 10984
+      },
+      "tag_metrics": {
+        "tag_micro_acc": 0.7724775755002389,
+        "tag_macro_f1": 0.5696156589792613,
+        "invalid_bio_rate": 0.09450260738027945,
+        "invalid_bio_count": 7122,
+        "total_transitions": 75363
+      }
+    },
+    "constrained_softmax": {
+      "span_metrics": {
+        "strict_precision": 0.43450042698548247,
+        "strict_recall": 0.3873915029693924,
+        "strict_f1": 0.40959587828047017,
+        "strict_correct": 2544,
+        "lenient_precision": 0.8122971818958156,
+        "lenient_recall": 0.7242271965890056,
+        "lenient_f1": 0.7657382064079857,
+        "lenient_correct": 4756,
+        "total_gold": 6567,
+        "total_pred": 5855
+      },
+      "tag_metrics": {
+        "tag_micro_acc": 0.8014171222334271,
+        "tag_macro_f1": 0.6061799816987916,
+        "invalid_bio_rate": 0.0,
+        "invalid_bio_count": 0,
+        "total_transitions": 75363
+      }
+    }
+  },
+  "clscrf_evaluation": {
+    "greedy_softmax": {
+      "span_metrics": {
+        "strict_precision": 0.01809477930992955,
+        "strict_recall": 0.09151819704583523,
+        "strict_f1": 0.0302154294763832,
+        "strict_correct": 601,
+        "lenient_precision": 0.16071536099235262,
+        "lenient_recall": 0.8128521394853053,
+        "lenient_f1": 0.2683693220381589,
+        "lenient_correct": 5338,
+        "total_gold": 6567,
+        "total_pred": 33214
+      },
+      "tag_metrics": {
+        "tag_micro_acc": 0.41174831484528424,
+        "tag_macro_f1": 0.24382267432101856,
+        "invalid_bio_rate": 0.4272919071693006,
+        "invalid_bio_count": 32202,
+        "total_transitions": 75363
+      }
+    },
+    "constrained_softmax": {
+      "span_metrics": {
+        "strict_precision": 0.38125750901081296,
+        "strict_recall": 0.2899345210903,
+        "strict_f1": 0.3293832713433094,
+        "strict_correct": 1904,
+        "lenient_precision": 0.6680016019223067,
+        "lenient_recall": 0.5079945180447692,
+        "lenient_f1": 0.5771127065132774,
+        "lenient_correct": 3336,
+        "total_gold": 6567,
+        "total_pred": 4994
+      },
+      "tag_metrics": {
+        "tag_micro_acc": 0.565760840719707,
+        "tag_macro_f1": 0.4549674332442199,
+        "invalid_bio_rate": 0.0,
+        "invalid_bio_count": 0,
+        "total_transitions": 75363
+      }
+    },
+    "crf_decoding": {
+      "span_metrics": {
+        "strict_precision": 0.7046777755470789,
+        "strict_recall": 0.5344906349931475,
+        "strict_f1": 0.607897471423623,
+        "strict_correct": 3510,
+        "lenient_precision": 0.940975707689219,
+        "lenient_recall": 0.713720115730166,
+        "lenient_f1": 0.8117422930377555,
+        "lenient_correct": 4687,
+        "total_gold": 6567,
+        "total_pred": 4981
+      },
+      "tag_metrics": {
+        "tag_micro_acc": 0.8489199087097288,
+        "tag_macro_f1": 0.7447367991682887,
+        "invalid_bio_rate": 0.0,
+        "invalid_bio_count": 0,
+        "total_transitions": 75363
+      }
+    }
+  },
+  "decomposition": {
+    "greedy_strict_f1": 0.1838071904734773,
+    "greedy_lenient_f1": 0.5993960458093556,
+    "constrained_strict_f1": 0.40959587828047017,
+    "constrained_lenient_f1": 0.7657382064079857,
+    "crf_strict_f1": 0.607897471423623,
+    "crf_lenient_f1": 0.8117422930377555,
+    "delta_from_grammar_masking": 22.57886878069929,
+    "delta_from_crf_transitions": 19.83015931431529,
+    "pct_explained_by_grammar": 53.240712638150654,
+    "pct_explained_by_learned_transitions": 46.759287361849346
+  }
+}

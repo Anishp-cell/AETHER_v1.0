@@ -1,0 +1,34 @@
+{
+  "experiment_id": "slu_MixSNIPS_clean_bert_uncased_L-2_H-128_A-2_far_s42",
+  "protocol": "v2_slu_preregistered_1fa7a50",
+  "params": 4453879,
+  "seed": 42,
+  "args": {
+    "dataset": "MixSNIPS_clean",
+    "trunk": "google/bert_uncased_L-2_H-128_A-2",
+    "router": "far",
+    "seed": 42,
+    "epochs": 20,
+    "bs": 32,
+    "lr": 0.0002,
+    "head_lr": 0.002,
+    "max_len": 128,
+    "no_test": false
+  },
+  "best_epoch": 13,
+  "dev_overall": 73.66,
+  "test": {
+    "overall_acc": 69.76,
+    "intent_acc": 91.95,
+    "slot_f1": 93.6,
+    "n": 2199
+  },
+  "cpu_latency": {
+    "p50_ms": 4.09,
+    "threads": 1,
+    "n": 200
+  },
+  "git_hash": "1fa7a50",
+  "command": "scripts/v2_train_slu.py --dataset MixSNIPS_clean --seed 42",
+  "timestamp": "2026-11-07T16:01:21.158774+00:00"
+}

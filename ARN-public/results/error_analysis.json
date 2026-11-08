@@ -1,0 +1,744 @@
+{
+  "timestamp": "2026-10-18T16:26:14.197594Z",
+  "model": "unfrozen_cls_crf",
+  "num_val_samples_analyzed": 5000,
+  "per_tool_performance": {
+    "get_current_time": {
+      "support": 256,
+      "tp": 92,
+      "fp": 12,
+      "fn": 164,
+      "precision": 0.8846153846153846,
+      "recall": 0.359375,
+      "f1": 0.5111111111111112
+    },
+    "handle_smart_home": {
+      "support": 328,
+      "tp": 68,
+      "fp": 28,
+      "fn": 260,
+      "precision": 0.7083333333333334,
+      "recall": 0.2073170731707317,
+      "f1": 0.32075471698113206
+    },
+    "route_to_deepseek": {
+      "support": 170,
+      "tp": 157,
+      "fp": 4,
+      "fn": 13,
+      "precision": 0.9751552795031055,
+      "recall": 0.9235294117647059,
+      "f1": 0.9486404833836858
+    },
+    "open_app_and_type": {
+      "support": 229,
+      "tp": 1,
+      "fp": 35,
+      "fn": 228,
+      "precision": 0.027777777777777776,
+      "recall": 0.004366812227074236,
+      "f1": 0.007547169811320755
+    },
+    "open_url": {
+      "support": 0,
+      "tp": 0,
+      "fp": 19,
+      "fn": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "search_web": {
+      "support": 718,
+      "tp": 427,
+      "fp": 343,
+      "fn": 291,
+      "precision": 0.5545454545454546,
+      "recall": 0.5947075208913649,
+      "f1": 0.5739247311827957
+    },
+    "run_computer_command": {
+      "support": 392,
+      "tp": 110,
+      "fp": 234,
+      "fn": 282,
+      "precision": 0.31976744186046513,
+      "recall": 0.28061224489795916,
+      "f1": 0.29891304347826086
+    },
+    "analyze_screen_with_llava": {
+      "support": 132,
+      "tp": 0,
+      "fp": 0,
+      "fn": 132,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "search_and_read_web": {
+      "support": 170,
+      "tp": 3,
+      "fp": 12,
+      "fn": 167,
+      "precision": 0.2,
+      "recall": 0.01764705882352941,
+      "f1": 0.032432432432432434
+    },
+    "read_specific_url": {
+      "support": 111,
+      "tp": 45,
+      "fp": 36,
+      "fn": 66,
+      "precision": 0.5555555555555556,
+      "recall": 0.40540540540540543,
+      "f1": 0.46875
+    },
+    "write_and_run_script": {
+      "support": 344,
+      "tp": 326,
+      "fp": 23,
+      "fn": 18,
+      "precision": 0.9340974212034384,
+      "recall": 0.9476744186046512,
+      "f1": 0.9408369408369409
+    },
+    "get_system_diagnostics": {
+      "support": 366,
+      "tp": 30,
+      "fp": 0,
+      "fn": 336,
+      "precision": 1.0,
+      "recall": 0.08196721311475409,
+      "f1": 0.1515151515151515
+    },
+    "media_control": {
+      "support": 303,
+      "tp": 66,
+      "fp": 74,
+      "fn": 237,
+      "precision": 0.4714285714285714,
+      "recall": 0.21782178217821782,
+      "f1": 0.2979683972911964
+    },
+    "send_whatsapp_message": {
+      "support": 1177,
+      "tp": 1086,
+      "fp": 44,
+      "fn": 91,
+      "precision": 0.9610619469026549,
+      "recall": 0.9226847918436704,
+      "f1": 0.94148244473342
+    },
+    "set_timer": {
+      "support": 346,
+      "tp": 120,
+      "fp": 14,
+      "fn": 226,
+      "precision": 0.8955223880597015,
+      "recall": 0.3468208092485549,
+      "f1": 0.5
+    },
+    "teach_new_skill": {
+      "support": 113,
+      "tp": 50,
+      "fp": 0,
+      "fn": 63,
+      "precision": 1.0,
+      "recall": 0.4424778761061947,
+      "f1": 0.6134969325153374
+    },
+    "browser_task": {
+      "support": 493,
+      "tp": 84,
+      "fp": 0,
+      "fn": 409,
+      "precision": 1.0,
+      "recall": 0.17038539553752535,
+      "f1": 0.29116117850953205
+    },
+    "browser_open_and_interact": {
+      "support": 447,
+      "tp": 445,
+      "fp": 99,
+      "fn": 2,
+      "precision": 0.8180147058823529,
+      "recall": 0.9955257270693513,
+      "f1": 0.898082744702321
+    }
+  },
+  "slot_error_taxonomy": {
+    "counts": {
+      "exact_match": 3241,
+      "boundary_error": 3633,
+      "label_mismatch": 129,
+      "false_positive": 403,
+      "false_negative": 1100
+    },
+    "shares": {
+      "exact_match": 0.3810251587114978,
+      "boundary_error": 0.42711027509992944,
+      "label_mismatch": 0.015165765342111451,
+      "false_positive": 0.04737832118504585,
+      "false_negative": 0.12932047966141547
+    },
+    "total_spans_evaluated": 8506
+  },
+  "top_10_hardest_clusters": [
+    {
+      "cluster_id": "get_system_diagnostics+send_whatsapp_message || mera system ka status batao & send whats app msg to <CONTACT_NAME> saying <MESSAGE>",
+      "n_samples": 9,
+      "tool_acc": 0.0,
+      "joint_em": 0.0,
+      "failure_examples": [
+        {
+          "sample_idx": 12,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics",
+            "send_whatsapp_message"
+          ],
+          "pred_tools": [
+            "send_whatsapp_message"
+          ],
+          "gold_spans": [
+            "contact:17-22",
+            "message:23-27"
+          ],
+          "pred_spans": [
+            "message:10-19",
+            "message:23-27"
+          ]
+        },
+        {
+          "sample_idx": 211,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics",
+            "send_whatsapp_message"
+          ],
+          "pred_tools": [
+            "send_whatsapp_message"
+          ],
+          "gold_spans": [
+            "contact:18-20",
+            "message:21-25"
+          ],
+          "pred_spans": [
+            "message:11-20",
+            "message:21-25"
+          ]
+        },
+        {
+          "sample_idx": 357,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics",
+            "send_whatsapp_message"
+          ],
+          "pred_tools": [
+            "send_whatsapp_message"
+          ],
+          "gold_spans": [
+            "contact:17-18",
+            "message:19-22"
+          ],
+          "pred_spans": [
+            "message:10-16",
+            "message:19-21"
+          ]
+        }
+      ]
+    },
+    {
+      "cluster_id": "get_current_time+send_whatsapp_message || check the time and then whatsapp <CONTACT_NAME> saying <MESSAGE>",
+      "n_samples": 124,
+      "tool_acc": 0.0,
+      "joint_em": 0.0,
+      "failure_examples": [
+        {
+          "sample_idx": 40,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_current_time",
+            "send_whatsapp_message"
+          ],
+          "pred_tools": [
+            "send_whatsapp_message"
+          ],
+          "gold_spans": [
+            "contact:10-12",
+            "message:13-21"
+          ],
+          "pred_spans": [
+            "contact:10-13",
+            "message:13-21"
+          ]
+        },
+        {
+          "sample_idx": 89,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_current_time",
+            "send_whatsapp_message"
+          ],
+          "pred_tools": [
+            "send_whatsapp_message"
+          ],
+          "gold_spans": [
+            "contact:11-13",
+            "message:14-20"
+          ],
+          "pred_spans": [
+            "contact:11-14",
+            "message:14-20"
+          ]
+        },
+        {
+          "sample_idx": 148,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_current_time",
+            "send_whatsapp_message"
+          ],
+          "pred_tools": [
+            "send_whatsapp_message"
+          ],
+          "gold_spans": [
+            "contact:10-14",
+            "message:15-22"
+          ],
+          "pred_spans": [
+            "contact:10-15",
+            "message:15-22"
+          ]
+        }
+      ]
+    },
+    {
+      "cluster_id": "get_system_diagnostics || show me cpu and ram usage",
+      "n_samples": 7,
+      "tool_acc": 0.0,
+      "joint_em": 0.0,
+      "failure_examples": [
+        {
+          "sample_idx": 239,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics"
+          ],
+          "pred_tools": [],
+          "gold_spans": [],
+          "pred_spans": [
+            "query:2-8"
+          ]
+        },
+        {
+          "sample_idx": 318,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics"
+          ],
+          "pred_tools": [],
+          "gold_spans": [],
+          "pred_spans": [
+            "query:3-9"
+          ]
+        },
+        {
+          "sample_idx": 530,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics"
+          ],
+          "pred_tools": [],
+          "gold_spans": [],
+          "pred_spans": [
+            "query:3-9"
+          ]
+        }
+      ]
+    },
+    {
+      "cluster_id": "get_system_diagnostics+send_whatsapp_message || give me a system health report & send whats app msg to <CONTACT_NAME> saying <MESSAGE>",
+      "n_samples": 5,
+      "tool_acc": 0.0,
+      "joint_em": 0.0,
+      "failure_examples": [
+        {
+          "sample_idx": 240,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics",
+            "send_whatsapp_message"
+          ],
+          "pred_tools": [
+            "send_whatsapp_message"
+          ],
+          "gold_spans": [
+            "contact:16-18",
+            "message:19-26"
+          ],
+          "pred_spans": [
+            "message:9-26"
+          ]
+        },
+        {
+          "sample_idx": 1312,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics",
+            "send_whatsapp_message"
+          ],
+          "pred_tools": [
+            "send_whatsapp_message"
+          ],
+          "gold_spans": [
+            "contact:17-22",
+            "message:23-26"
+          ],
+          "pred_spans": [
+            "message:10-20",
+            "message:23-26"
+          ]
+        },
+        {
+          "sample_idx": 1540,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics",
+            "send_whatsapp_message"
+          ],
+          "pred_tools": [
+            "send_whatsapp_message"
+          ],
+          "gold_spans": [
+            "contact:16-17",
+            "message:18-23"
+          ],
+          "pred_spans": [
+            "message:9-22"
+          ]
+        }
+      ]
+    },
+    {
+      "cluster_id": "browser_task || search for flights from delhi to goa",
+      "n_samples": 6,
+      "tool_acc": 0.0,
+      "joint_em": 0.0,
+      "failure_examples": [
+        {
+          "sample_idx": 377,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "browser_task"
+          ],
+          "pred_tools": [
+            "search_web"
+          ],
+          "gold_spans": [
+            "browser_task:2-9"
+          ],
+          "pred_spans": [
+            "query:4-9"
+          ]
+        },
+        {
+          "sample_idx": 650,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "browser_task"
+          ],
+          "pred_tools": [
+            "search_web"
+          ],
+          "gold_spans": [
+            "browser_task:3-10"
+          ],
+          "pred_spans": [
+            "query:5-10"
+          ]
+        },
+        {
+          "sample_idx": 1127,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "browser_task"
+          ],
+          "pred_tools": [
+            "search_web"
+          ],
+          "gold_spans": [
+            "browser_task:2-9"
+          ],
+          "pred_spans": [
+            "query:4-9"
+          ]
+        }
+      ]
+    },
+    {
+      "cluster_id": "get_system_diagnostics+send_whatsapp_message || check the laptop battery level & send whats app msg to <CONTACT_NAME> saying <MESSAGE>",
+      "n_samples": 10,
+      "tool_acc": 0.0,
+      "joint_em": 0.0,
+      "failure_examples": [
+        {
+          "sample_idx": 394,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics",
+            "send_whatsapp_message"
+          ],
+          "pred_tools": [
+            "send_whatsapp_message"
+          ],
+          "gold_spans": [
+            "contact:15-17",
+            "message:18-22"
+          ],
+          "pred_spans": [
+            "contact:15-18",
+            "message:18-22"
+          ]
+        },
+        {
+          "sample_idx": 591,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics",
+            "send_whatsapp_message"
+          ],
+          "pred_tools": [
+            "search_web",
+            "send_whatsapp_message"
+          ],
+          "gold_spans": [
+            "contact:16-20",
+            "message:21-25"
+          ],
+          "pred_spans": [
+            "message:10-18",
+            "message:21-25"
+          ]
+        },
+        {
+          "sample_idx": 779,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics",
+            "send_whatsapp_message"
+          ],
+          "pred_tools": [
+            "send_whatsapp_message"
+          ],
+          "gold_spans": [
+            "contact:15-20",
+            "message:21-25"
+          ],
+          "pred_spans": [
+            "contact:15-17",
+            "message:21-25"
+          ]
+        }
+      ]
+    },
+    {
+      "cluster_id": "get_system_diagnostics || is my laptop overheating",
+      "n_samples": 20,
+      "tool_acc": 0.0,
+      "joint_em": 0.0,
+      "failure_examples": [
+        {
+          "sample_idx": 512,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics"
+          ],
+          "pred_tools": [],
+          "gold_spans": [],
+          "pred_spans": []
+        },
+        {
+          "sample_idx": 646,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics"
+          ],
+          "pred_tools": [],
+          "gold_spans": [],
+          "pred_spans": []
+        },
+        {
+          "sample_idx": 951,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics"
+          ],
+          "pred_tools": [],
+          "gold_spans": [],
+          "pred_spans": []
+        }
+      ]
+    },
+    {
+      "cluster_id": "get_system_diagnostics || check the phone battery life",
+      "n_samples": 11,
+      "tool_acc": 0.0,
+      "joint_em": 0.0,
+      "failure_examples": [
+        {
+          "sample_idx": 627,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics"
+          ],
+          "pred_tools": [],
+          "gold_spans": [],
+          "pred_spans": []
+        },
+        {
+          "sample_idx": 767,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics"
+          ],
+          "pred_tools": [],
+          "gold_spans": [],
+          "pred_spans": []
+        },
+        {
+          "sample_idx": 1116,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics"
+          ],
+          "pred_tools": [],
+          "gold_spans": [],
+          "pred_spans": []
+        }
+      ]
+    },
+    {
+      "cluster_id": "get_system_diagnostics+send_whatsapp_message || give me a system health report and then send a whatsapp to <CONTACT_NAME> saying <MESSAGE>",
+      "n_samples": 5,
+      "tool_acc": 0.0,
+      "joint_em": 0.0,
+      "failure_examples": [
+        {
+          "sample_idx": 840,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics",
+            "send_whatsapp_message"
+          ],
+          "pred_tools": [
+            "send_whatsapp_message"
+          ],
+          "gold_spans": [
+            "contact:18-22",
+            "message:23-29"
+          ],
+          "pred_spans": [
+            "contact:18-20",
+            "message:23-29"
+          ]
+        },
+        {
+          "sample_idx": 1185,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics",
+            "send_whatsapp_message"
+          ],
+          "pred_tools": [
+            "send_whatsapp_message"
+          ],
+          "gold_spans": [
+            "contact:17-21",
+            "message:22-26"
+          ],
+          "pred_spans": [
+            "contact:17-22",
+            "message:22-26"
+          ]
+        },
+        {
+          "sample_idx": 2553,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "get_system_diagnostics",
+            "send_whatsapp_message"
+          ],
+          "pred_tools": [
+            "send_whatsapp_message"
+          ],
+          "gold_spans": [
+            "contact:17-21",
+            "message:22-31"
+          ],
+          "pred_spans": [
+            "contact:17-19",
+            "message:22-31"
+          ]
+        }
+      ]
+    },
+    {
+      "cluster_id": "browser_task || search for flights from delhi to mumbai",
+      "n_samples": 7,
+      "tool_acc": 0.0,
+      "joint_em": 0.0,
+      "failure_examples": [
+        {
+          "sample_idx": 965,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "browser_task"
+          ],
+          "pred_tools": [
+            "search_web"
+          ],
+          "gold_spans": [
+            "browser_task:4-11"
+          ],
+          "pred_spans": [
+            "query:6-11"
+          ]
+        },
+        {
+          "sample_idx": 1408,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "browser_task"
+          ],
+          "pred_tools": [
+            "search_web"
+          ],
+          "gold_spans": [
+            "browser_task:3-10"
+          ],
+          "pred_spans": [
+            "query:5-10"
+          ]
+        },
+        {
+          "sample_idx": 3075,
+          "text": "You are a tool-calling orchestrator. Output ONLY a raw JSON array of tool calls. No text, no markdown, no explanation.",
+          "gold_tools": [
+            "browser_task"
+          ],
+          "pred_tools": [
+            "search_web"
+          ],
+          "gold_spans": [
+            "browser_task:2-9"
+          ],
+          "pred_spans": [
+            "query:4-9"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "onnx_runtime_version": "1.23.2",
+  "onnx_version": "1.22.0",
+  "size_disparity_explanation": "In Stage 2c, PyTorch eager dynamic quantization (torch.ao.quantization.quantize_dynamic) was used targeting only {nn.Linear} modules. In BERT-tiny, the token embeddings table (BertEmbeddings: 30,522 vocab x 128 hidden) contains 3,906,816 parameters (15.62 MB in FP32), which PyTorch eager quantization leaves in float32. In contrast, ONNX Runtime dynamic quantization (onnxruntime.quantization.quantize_dynamic) quantizes both linear projection weights and embedded tensors down to 8-bit integers, compressing the entire model to ~4.54 MB.",
+  "models": {
+    "unfrozen_cls_crf": {
+      "onnx_fp32": {
+        "size_mb": 17.553181,
+        "size_mib": 16.740017890930176,
+        "size_bytes": 17553181
+      },
+      "onnx_int8": {
+        "size_mb": 4.474896,
+        "size_mib": 4.2675933837890625,
+        "size_bytes": 4474896,
+        "compression_ratio": 3.922589709347435
+      },
+      "int8_validation_accuracy": {
+        "tool_subset_acc": 0.4643765903307888,
+        "span_f1": 0.5683333333333332,
+        "joint_em": 0.26208651399491095
+      },
+      "latency_1thread": {
+        "forward_only_ms": {
+          "p50": 1.1879499998030951,
+          "p95": 1.2928449996252311,
+          "p99": 1.3933999994333133,
+          "mean": 1.1948822000194923
+        },
+        "end_to_end_ms": {
+          "p50": 11.416400000598514,
+          "p95": 12.588330000471615,
+          "p99": 14.142239998582225,
+          "mean": 11.545594800074468
+        },
+        "rss_memory_mb": {
+          "baseline": 828.3359375,
+          "peak": 828.36328125,
+          "incremental": 0.02734375
+        }
+      },
+      "latency_4threads": {
+        "forward_only_ms": {
+          "p50": 0.772149998738314,
+          "p95": 0.8791349991952301,
+          "p99": 0.9942169981877667,
+          "mean": 0.7812766000570264
+        },
+        "end_to_end_ms": {
+          "p50": 12.245649999385932,
+          "p95": 15.482029999111528,
+          "p99": 19.54916200022125,
+          "mean": 12.795958799935761
+        },
+        "rss_memory_mb": {
+          "baseline": 828.3984375,
+          "peak": 829.9453125,
+          "incremental": 1.546875
+        }
+      },
+      "fp32_validation_accuracy": {
+        "tool_subset_acc": 0.4707379134860051,
+        "span_f1": 0.5456821026282854,
+        "joint_em": 0.2595419847328244
+      },
+      "quantization_deltas": {
+        "tool_subset_acc_delta": -0.6361323155216259,
+        "span_f1_delta": 2.265123070504782,
+        "joint_em_delta": 0.2544529262086537
+      }
+    },
+    "unfrozen_arn": {
+      "onnx_fp32": {
+        "size_mb": 17.751875,
+        "size_mib": 16.9295072555542,
+        "size_bytes": 17751875
+      },
+      "onnx_int8": {
+        "size_mb": 4.52881,
+        "size_mib": 4.319009780883789,
+        "size_bytes": 4528810,
+        "compression_ratio": 3.919765898768109
+      },
+      "int8_validation_accuracy": {
+        "tool_subset_acc": 0.5407124681933843,
+        "span_f1": 0.7066666666666666,
+        "joint_em": 0.4402035623409669
+      },
+      "latency_1thread": {
+        "forward_only_ms": {
+          "p50": 1.5662999994674465,
+          "p95": 1.9345750000866246,
+          "p99": 2.0903339968208456,
+          "mean": 1.582033600017894
+        },
+        "end_to_end_ms": {
+          "p50": 11.559799999304232,
+          "p95": 12.78935999944224,
+          "p99": 14.488588999774946,
+          "mean": 11.71048220006196
+        },
+        "rss_memory_mb": {
+          "baseline": 850.95703125,
+          "peak": 850.95703125,
+          "incremental": 0.0
+        }
+      },
+      "latency_4threads": {
+        "forward_only_ms": {
+          "p50": 0.8297999993374106,
+          "p95": 1.1346300025252272,
+          "p99": 1.6028040017772578,
+          "mean": 0.8700573999522021
+        },
+        "end_to_end_ms": {
+          "p50": 11.8821999985812,
+          "p95": 15.28869499925349,
+          "p99": 20.435417997214245,
+          "mean": 12.30272299999342
+        },
+        "rss_memory_mb": {
+          "baseline": 850.95703125,
+          "peak": 852.0078125,
+          "incremental": 1.05078125
+        }
+      },
+      "fp32_validation_accuracy": {
+        "tool_subset_acc": 0.5419847328244275,
+        "span_f1": 0.720233139050791,
+        "joint_em": 0.44529262086513993
+      },
+      "quantization_deltas": {
+        "tool_subset_acc_delta": -0.12722646310432406,
+        "span_f1_delta": -1.356647238412445,
+        "joint_em_delta": -0.5089058524173018
+      }
+    }
+  }
+}

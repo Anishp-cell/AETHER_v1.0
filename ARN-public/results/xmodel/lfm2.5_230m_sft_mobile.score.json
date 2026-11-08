@@ -1,0 +1,27 @@
+{
+  "model": "lfm2.5_230m_sft_mobile",
+  "params": 229693184,
+  "n_rows": 961,
+  "missing_predictions": 0,
+  "strict_em": 91.57,
+  "relaxed_em_date_only": 91.57,
+  "unordered_em": 91.57,
+  "tool_sequence_acc": 99.79,
+  "tool_set_acc": 99.79,
+  "single_call_em": 93.91,
+  "multi_call_em": 86.92,
+  "datetime_arg_acc": 92.05,
+  "counts": {
+    "strict": 880,
+    "relaxed": 880,
+    "unordered": 880,
+    "names": 959,
+    "name_sets": 959,
+    "single_n": 640,
+    "single_strict": 601,
+    "dt_n": 365,
+    "dt_ok": 336,
+    "multi_n": 321,
+    "multi_strict": 279
+  }
+}

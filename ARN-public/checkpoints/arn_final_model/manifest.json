@@ -1,0 +1,41 @@
+{
+  "model_name": "arn_final_model",
+  "version": "1.0.0",
+  "architecture": "CLSCRFModel (BERT-tiny backbone + joint multi-label tool classifier + linear-chain CRF slot tagger)",
+  "selection_outcome": "Outcome A (Fine-tuning superiority supported)",
+  "created_at": "2026-10-18T16:29:35.884955Z",
+  "files": {
+    "config.json": {
+      "sha256": "a3e0537850e7a0958c2d694aa2e7047c83d6d46064e25427ca7a1a41f99bcf66",
+      "size_bytes": 451
+    },
+    "model.pt": {
+      "sha256": "985feb4dfa185c0844f188a93486396288141cc827161ad8c5d39402d0bbdb5f",
+      "size_bytes": 17585201
+    },
+    "slots.json": {
+      "sha256": "2d28c50f98170cb4c63544414589592d67dd6d5db136101ae9f76996620c0e46",
+      "size_bytes": 1155
+    },
+    "tokenizer/tokenizer.json": {
+      "sha256": "41b9d12a4c559e4098f30173bc0f76d092c43d7b1f873e7027da45a256f30f87",
+      "size_bytes": 711659
+    },
+    "tokenizer/tokenizer_config.json": {
+      "sha256": "3321471a4131cb5897aa9b49949383f6d5077758ea5f558a2a21aff15ed140cf",
+      "size_bytes": 364
+    },
+    "tools.json": {
+      "sha256": "6c7f9d7b5dd07762d24b30a310cec1852f810ce1fa6ee203c5ebc7ff69eca291",
+      "size_bytes": 1143
+    },
+    "model.onnx": {
+      "sha256": "c7853f484f77da66dea66200c7310e650f2f01d4aa3eb6fc7a75f998fbb3299e",
+      "size_bytes": 17558520
+    },
+    "model_int8.onnx": {
+      "sha256": "a6a0fd71e3c4d30a42fd1eaca7963be10806481f534d823afcb49e4f02e99507",
+      "size_bytes": 4483346
+    }
+  }
+}

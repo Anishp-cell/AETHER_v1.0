@@ -1,0 +1,154 @@
+{
+  "total_arguments": 8748,
+  "verbatim_arguments": 8292,
+  "verbatim_rate": 0.9478737997256516,
+  "non_verbatim_arguments": 456,
+  "non_verbatim_rate": 0.05212620027434842,
+  "unmapped_schema_keys": [],
+  "non_verbatim_by_arg_key": {
+    "action_type": 363,
+    "action": 93
+  },
+  "sample_non_verbatim_examples": [
+    {
+      "sample_idx": 3,
+      "tool": "run_computer_command",
+      "arg_key": "action_type",
+      "arg_value": "press_key",
+      "user_text": "real quick search the web for latest iPhone price in India then run a shell ctrl+z yaar"
+    },
+    {
+      "sample_idx": 48,
+      "tool": "media_control",
+      "arg_key": "action",
+      "arg_value": "set_volume",
+      "user_text": "do me a favor and set the volume to 100 right now"
+    },
+    {
+      "sample_idx": 58,
+      "tool": "media_control",
+      "arg_key": "action",
+      "arg_value": "set_volume",
+      "user_text": "volume 70 asap"
+    },
+    {
+      "sample_idx": 60,
+      "tool": "run_computer_command",
+      "arg_key": "action_type",
+      "arg_value": "open_app",
+      "user_text": "can you google the latest stock price of NVIDIA and execute command Calculator na"
+    },
+    {
+      "sample_idx": 64,
+      "tool": "run_computer_command",
+      "arg_key": "action_type",
+      "arg_value": "shell",
+      "user_text": "check on our local k8s cluster health status chalao asap"
+    },
+    {
+      "sample_idx": 71,
+      "tool": "run_computer_command",
+      "arg_key": "action_type",
+      "arg_value": "open_app",
+      "user_text": "alright google how to remove dark circles and execute command Task Manager quickly"
+    },
+    {
+      "sample_idx": 99,
+      "tool": "media_control",
+      "arg_key": "action",
+      "arg_value": "set_volume",
+      "user_text": "aether volume 30 will you"
+    },
+    {
+      "sample_idx": 105,
+      "tool": "run_computer_command",
+      "arg_key": "action_type",
+      "arg_value": "press_key",
+      "user_text": "bro open alt+tab ok?"
+    },
+    {
+      "sample_idx": 106,
+      "tool": "media_control",
+      "arg_key": "action",
+      "arg_value": "set_volume",
+      "user_text": "volume 70 kar do dude"
+    },
+    {
+      "sample_idx": 137,
+      "tool": "media_control",
+      "arg_key": "action",
+      "arg_value": "set_volume",
+      "user_text": "plz change volume to 50 ty"
+    },
+    {
+      "sample_idx": 142,
+      "tool": "media_control",
+      "arg_key": "action",
+      "arg_value": "set_volume",
+      "user_text": "volume 20 kar do quickly"
+    },
+    {
+      "sample_idx": 143,
+      "tool": "run_computer_command",
+      "arg_key": "action_type",
+      "arg_value": "press_key",
+      "user_text": "can you google how to remove dark circles and execute command ctrl+z will you"
+    },
+    {
+      "sample_idx": 144,
+      "tool": "run_computer_command",
+      "arg_key": "action_type",
+      "arg_value": "shell",
+      "user_text": "alright google symptoms of vitamin D deficiency and execute command ping google.com thx"
+    },
+    {
+      "sample_idx": 146,
+      "tool": "run_computer_command",
+      "arg_key": "action_type",
+      "arg_value": "press_key",
+      "user_text": "bro search the web for how to make cold coffee at home then run a shell ctrl+s ok?"
+    },
+    {
+      "sample_idx": 159,
+      "tool": "media_control",
+      "arg_key": "action",
+      "arg_value": "set_volume",
+      "user_text": "please change volume to 30 ty"
+    },
+    {
+      "sample_idx": 165,
+      "tool": "run_computer_command",
+      "arg_key": "action_type",
+      "arg_value": "press_key",
+      "user_text": "aether search the web for symptoms of vitamin D deficiency then run a shell alt+tab yaar"
+    },
+    {
+      "sample_idx": 176,
+      "tool": "run_computer_command",
+      "arg_key": "action_type",
+      "arg_value": "shell",
+      "user_text": "do me a favor and run dir please"
+    },
+    {
+      "sample_idx": 185,
+      "tool": "media_control",
+      "arg_key": "action",
+      "arg_value": "set_volume",
+      "user_text": "can you set the volume to 20 thx"
+    },
+    {
+      "sample_idx": 192,
+      "tool": "run_computer_command",
+      "arg_key": "action_type",
+      "arg_value": "press_key",
+      "user_text": "plzzz run win+d"
+    },
+    {
+      "sample_idx": 208,
+      "tool": "run_computer_command",
+      "arg_key": "action_type",
+      "arg_value": "shell",
+      "user_text": "please run ping google.com quickly"
+    }
+  ]
+}

@@ -1,0 +1,514 @@
+{
+  "most_frequent": {
+    "mean_tool_subset_acc": 0.0749618320610687,
+    "sd_tool_subset_acc": 0.05360639523871365,
+    "mean_tool_micro_f1": 0.149739536144498,
+    "sd_tool_micro_f1": 0.06798503006946433,
+    "raw_folds": [
+      {
+        "tool_subset_acc": 0.1272264631043257,
+        "tool_subset_acc_count": 100,
+        "n_samples": 786,
+        "tool_micro_p": 0.16412213740458015,
+        "tool_micro_r": 0.13109756097560976,
+        "tool_micro_f1": 0.14576271186440679
+      },
+      {
+        "tool_subset_acc": 0.05477707006369427,
+        "tool_subset_acc_count": 43,
+        "n_samples": 785,
+        "tool_micro_p": 0.05477707006369427,
+        "tool_micro_r": 0.03859964093357271,
+        "tool_micro_f1": 0.04528699315429173
+      },
+      {
+        "tool_subset_acc": 0.0,
+        "tool_subset_acc_count": 0,
+        "n_samples": 785,
+        "tool_micro_p": 0.2178343949044586,
+        "tool_micro_r": 0.16177861873226113,
+        "tool_micro_f1": 0.18566775244299674
+      },
+      {
+        "tool_subset_acc": 0.17834394904458598,
+        "tool_subset_acc_count": 140,
+        "n_samples": 785,
+        "tool_micro_p": 0.17834394904458598,
+        "tool_micro_r": 0.1511879049676026,
+        "tool_micro_f1": 0.1636469900642899
+      },
+      {
+        "tool_subset_acc": 0.05987261146496815,
+        "tool_subset_acc_count": 47,
+        "n_samples": 785,
+        "tool_micro_p": 0.27261146496815286,
+        "tool_micro_r": 0.22478991596638656,
+        "tool_micro_f1": 0.24640184225676454
+      },
+      {
+        "tool_subset_acc": 0.1272264631043257,
+        "tool_subset_acc_count": 100,
+        "n_samples": 786,
+        "tool_micro_p": 0.1743002544529262,
+        "tool_micro_r": 0.1381048387096774,
+        "tool_micro_f1": 0.15410573678290213
+      },
+      {
+        "tool_subset_acc": 0.07643312101910828,
+        "tool_subset_acc_count": 60,
+        "n_samples": 785,
+        "tool_micro_p": 0.07643312101910828,
+        "tool_micro_r": 0.055762081784386616,
+        "tool_micro_f1": 0.06448146157979581
+      },
+      {
+        "tool_subset_acc": 0.0,
+        "tool_subset_acc_count": 0,
+        "n_samples": 785,
+        "tool_micro_p": 0.2318471337579618,
+        "tool_micro_r": 0.1704119850187266,
+        "tool_micro_f1": 0.19643820831084727
+      },
+      {
+        "tool_subset_acc": 0.15286624203821655,
+        "tool_subset_acc_count": 120,
+        "n_samples": 785,
+        "tool_micro_p": 0.15286624203821655,
+        "tool_micro_r": 0.12671594508975711,
+        "tool_micro_f1": 0.13856812933025403
+      },
+      {
+        "tool_subset_acc": 0.05987261146496815,
+        "tool_subset_acc_count": 47,
+        "n_samples": 785,
+        "tool_micro_p": 0.2700636942675159,
+        "tool_micro_r": 0.2231578947368421,
+        "tool_micro_f1": 0.24438040345821324
+      },
+      {
+        "tool_subset_acc": 0.06997455470737914,
+        "tool_subset_acc_count": 55,
+        "n_samples": 786,
+        "tool_micro_p": 0.11195928753180662,
+        "tool_micro_r": 0.08906882591093117,
+        "tool_micro_f1": 0.09921082299887259
+      },
+      {
+        "tool_subset_acc": 0.08025477707006369,
+        "tool_subset_acc_count": 63,
+        "n_samples": 785,
+        "tool_micro_p": 0.08025477707006369,
+        "tool_micro_r": 0.057692307692307696,
+        "tool_micro_f1": 0.06712839637719765
+      },
+      {
+        "tool_subset_acc": 0.0,
+        "tool_subset_acc_count": 0,
+        "n_samples": 785,
+        "tool_micro_p": 0.22547770700636943,
+        "tool_micro_r": 0.1665098777046096,
+        "tool_micro_f1": 0.19155844155844157
+      },
+      {
+        "tool_subset_acc": 0.07770700636942675,
+        "tool_subset_acc_count": 61,
+        "n_samples": 785,
+        "tool_micro_p": 0.07770700636942675,
+        "tool_micro_r": 0.06414300736067298,
+        "tool_micro_f1": 0.07027649769585254
+      },
+      {
+        "tool_subset_acc": 0.05987261146496815,
+        "tool_subset_acc_count": 47,
+        "n_samples": 785,
+        "tool_micro_p": 0.25605095541401274,
+        "tool_micro_r": 0.21405750798722045,
+        "tool_micro_f1": 0.23317865429234338
+      }
+    ]
+  },
+  "tfidf_logistic": {
+    "mean_tool_subset_acc": 0.344718237954004,
+    "sd_tool_subset_acc": 0.12453214577960871,
+    "mean_tool_micro_f1": 0.6100974398341485,
+    "sd_tool_micro_f1": 0.11011455498201576,
+    "raw_folds": [
+      {
+        "tool_subset_acc": 0.30788804071246817,
+        "tool_subset_acc_count": 242,
+        "n_samples": 786,
+        "tool_micro_p": 1.0,
+        "tool_micro_r": 0.36890243902439024,
+        "tool_micro_f1": 0.5389755011135857
+      },
+      {
+        "tool_subset_acc": 0.29044585987261146,
+        "tool_subset_acc_count": 228,
+        "n_samples": 785,
+        "tool_micro_p": 1.0,
+        "tool_micro_r": 0.49371633752244165,
+        "tool_micro_f1": 0.6610576923076923
+      },
+      {
+        "tool_subset_acc": 0.24331210191082803,
+        "tool_subset_acc_count": 191,
+        "n_samples": 785,
+        "tool_micro_p": 0.9705093833780161,
+        "tool_micro_r": 0.3424787133396405,
+        "tool_micro_f1": 0.5062937062937063
+      },
+      {
+        "tool_subset_acc": 0.6089171974522293,
+        "tool_subset_acc_count": 478,
+        "n_samples": 785,
+        "tool_micro_p": 0.9903691813804173,
+        "tool_micro_r": 0.6663066954643628,
+        "tool_micro_f1": 0.7966429954809554
+      },
+      {
+        "tool_subset_acc": 0.22165605095541402,
+        "tool_subset_acc_count": 174,
+        "n_samples": 785,
+        "tool_micro_p": 0.8973684210526316,
+        "tool_micro_r": 0.3581932773109244,
+        "tool_micro_f1": 0.5120120120120121
+      },
+      {
+        "tool_subset_acc": 0.361323155216285,
+        "tool_subset_acc_count": 284,
+        "n_samples": 786,
+        "tool_micro_p": 0.9764150943396226,
+        "tool_micro_r": 0.4173387096774194,
+        "tool_micro_f1": 0.5847457627118644
+      },
+      {
+        "tool_subset_acc": 0.40382165605095544,
+        "tool_subset_acc_count": 317,
+        "n_samples": 785,
+        "tool_micro_p": 1.0,
+        "tool_micro_r": 0.5650557620817844,
+        "tool_micro_f1": 0.7220902612826604
+      },
+      {
+        "tool_subset_acc": 0.2585987261146497,
+        "tool_subset_acc_count": 203,
+        "n_samples": 785,
+        "tool_micro_p": 0.9242053789731052,
+        "tool_micro_r": 0.3539325842696629,
+        "tool_micro_f1": 0.5118483412322274
+      },
+      {
+        "tool_subset_acc": 0.5414012738853503,
+        "tool_subset_acc_count": 425,
+        "n_samples": 785,
+        "tool_micro_p": 1.0,
+        "tool_micro_r": 0.6114044350580782,
+        "tool_micro_f1": 0.7588466579292267
+      },
+      {
+        "tool_subset_acc": 0.2535031847133758,
+        "tool_subset_acc_count": 199,
+        "n_samples": 785,
+        "tool_micro_p": 0.9075,
+        "tool_micro_r": 0.3821052631578947,
+        "tool_micro_f1": 0.5377777777777778
+      },
+      {
+        "tool_subset_acc": 0.27353689567430023,
+        "tool_subset_acc_count": 215,
+        "n_samples": 786,
+        "tool_micro_p": 1.0,
+        "tool_micro_r": 0.3451417004048583,
+        "tool_micro_f1": 0.5131677953348383
+      },
+      {
+        "tool_subset_acc": 0.3592356687898089,
+        "tool_subset_acc_count": 282,
+        "n_samples": 785,
+        "tool_micro_p": 1.0,
+        "tool_micro_r": 0.5393772893772893,
+        "tool_micro_f1": 0.7007733491969066
+      },
+      {
+        "tool_subset_acc": 0.2573248407643312,
+        "tool_subset_acc_count": 202,
+        "n_samples": 785,
+        "tool_micro_p": 0.9334975369458128,
+        "tool_micro_r": 0.3565380997177799,
+        "tool_micro_f1": 0.5159972770592239
+      },
+      {
+        "tool_subset_acc": 0.5388535031847134,
+        "tool_subset_acc_count": 423,
+        "n_samples": 785,
+        "tool_micro_p": 1.0,
+        "tool_micro_r": 0.6172450052576236,
+        "tool_micro_f1": 0.7633289986996099
+      },
+      {
+        "tool_subset_acc": 0.25095541401273885,
+        "tool_subset_acc_count": 197,
+        "n_samples": 785,
+        "tool_micro_p": 0.9043927648578811,
+        "tool_micro_r": 0.37273695420660274,
+        "tool_micro_f1": 0.5279034690799397
+      }
+    ]
+  },
+  "tfidf_knn": {
+    "mean_tool_subset_acc": 0.5299331723418853,
+    "sd_tool_subset_acc": 0.156570159264229,
+    "mean_tool_micro_f1": 0.7439033616117031,
+    "sd_tool_micro_f1": 0.11433184491462065,
+    "raw_folds": [
+      {
+        "tool_subset_acc": 0.688295165394402,
+        "tool_subset_acc_count": 541,
+        "n_samples": 786,
+        "tool_micro_p": 0.935361216730038,
+        "tool_micro_r": 0.75,
+        "tool_micro_f1": 0.8324873096446701
+      },
+      {
+        "tool_subset_acc": 0.4012738853503185,
+        "tool_subset_acc_count": 315,
+        "n_samples": 785,
+        "tool_micro_p": 0.7015570934256056,
+        "tool_micro_r": 0.7280071813285458,
+        "tool_micro_f1": 0.7145374449339206
+      },
+      {
+        "tool_subset_acc": 0.4535031847133758,
+        "tool_subset_acc_count": 356,
+        "n_samples": 785,
+        "tool_micro_p": 0.7642105263157895,
+        "tool_micro_r": 0.6868495742667928,
+        "tool_micro_f1": 0.7234678624813153
+      },
+      {
+        "tool_subset_acc": 0.7070063694267515,
+        "tool_subset_acc_count": 555,
+        "n_samples": 785,
+        "tool_micro_p": 0.8929411764705882,
+        "tool_micro_r": 0.8196544276457883,
+        "tool_micro_f1": 0.8547297297297297
+      },
+      {
+        "tool_subset_acc": 0.26369426751592356,
+        "tool_subset_acc_count": 207,
+        "n_samples": 785,
+        "tool_micro_p": 0.5084134615384616,
+        "tool_micro_r": 0.44432773109243695,
+        "tool_micro_f1": 0.4742152466367713
+      },
+      {
+        "tool_subset_acc": 0.6717557251908397,
+        "tool_subset_acc_count": 528,
+        "n_samples": 786,
+        "tool_micro_p": 0.9105392156862745,
+        "tool_micro_r": 0.748991935483871,
+        "tool_micro_f1": 0.8219026548672566
+      },
+      {
+        "tool_subset_acc": 0.5095541401273885,
+        "tool_subset_acc_count": 400,
+        "n_samples": 785,
+        "tool_micro_p": 0.8221757322175732,
+        "tool_micro_r": 0.7304832713754646,
+        "tool_micro_f1": 0.7736220472440946
+      },
+      {
+        "tool_subset_acc": 0.41273885350318473,
+        "tool_subset_acc_count": 324,
+        "n_samples": 785,
+        "tool_micro_p": 0.77,
+        "tool_micro_r": 0.648876404494382,
+        "tool_micro_f1": 0.7042682926829269
+      },
+      {
+        "tool_subset_acc": 0.759235668789809,
+        "tool_subset_acc_count": 596,
+        "n_samples": 785,
+        "tool_micro_p": 0.9571603427172583,
+        "tool_micro_r": 0.8257655755015839,
+        "tool_micro_f1": 0.8866213151927437
+      },
+      {
+        "tool_subset_acc": 0.3592356687898089,
+        "tool_subset_acc_count": 282,
+        "n_samples": 785,
+        "tool_micro_p": 0.6397146254458977,
+        "tool_micro_r": 0.5663157894736842,
+        "tool_micro_f1": 0.6007816862088219
+      },
+      {
+        "tool_subset_acc": 0.6768447837150128,
+        "tool_subset_acc_count": 532,
+        "n_samples": 786,
+        "tool_micro_p": 0.9128329297820823,
+        "tool_micro_r": 0.7631578947368421,
+        "tool_micro_f1": 0.8313120176405734
+      },
+      {
+        "tool_subset_acc": 0.5426751592356688,
+        "tool_subset_acc_count": 426,
+        "n_samples": 785,
+        "tool_micro_p": 0.7932405566600398,
+        "tool_micro_r": 0.7307692307692307,
+        "tool_micro_f1": 0.7607244995233555
+      },
+      {
+        "tool_subset_acc": 0.3974522292993631,
+        "tool_subset_acc_count": 312,
+        "n_samples": 785,
+        "tool_micro_p": 0.7688888888888888,
+        "tool_micro_r": 0.6509877704609596,
+        "tool_micro_f1": 0.7050433010697911
+      },
+      {
+        "tool_subset_acc": 0.689171974522293,
+        "tool_subset_acc_count": 541,
+        "n_samples": 785,
+        "tool_micro_p": 0.8971428571428571,
+        "tool_micro_r": 0.825446898002103,
+        "tool_micro_f1": 0.859802847754655
+      },
+      {
+        "tool_subset_acc": 0.41656050955414015,
+        "tool_subset_acc_count": 327,
+        "n_samples": 785,
+        "tool_micro_p": 0.6609547123623011,
+        "tool_micro_r": 0.5750798722044729,
+        "tool_micro_f1": 0.6150341685649203
+      }
+    ]
+  },
+  "bert_tiny_full_finetune": {
+    "mean_tool_subset_acc": 0.5015759874232184,
+    "sd_tool_subset_acc": 0.2217602437373315,
+    "mean_tool_micro_f1": 0.7021755291416927,
+    "sd_tool_micro_f1": 0.18400967893447448,
+    "raw_folds": [
+      {
+        "tool_subset_acc": 0.7086513994910941,
+        "tool_subset_acc_count": 557,
+        "n_samples": 786,
+        "tool_micro_p": 0.9683544303797469,
+        "tool_micro_r": 0.7774390243902439,
+        "tool_micro_f1": 0.8624577226606539
+      },
+      {
+        "tool_subset_acc": 0.5184713375796178,
+        "tool_subset_acc_count": 407,
+        "n_samples": 785,
+        "tool_micro_p": 0.8941736028537456,
+        "tool_micro_r": 0.6750448833034112,
+        "tool_micro_f1": 0.7693094629156011
+      },
+      {
+        "tool_subset_acc": 0.3019108280254777,
+        "tool_subset_acc_count": 237,
+        "n_samples": 785,
+        "tool_micro_p": 0.783109404990403,
+        "tool_micro_r": 0.3859981078524125,
+        "tool_micro_f1": 0.5171102661596958
+      },
+      {
+        "tool_subset_acc": 0.7388535031847133,
+        "tool_subset_acc_count": 580,
+        "n_samples": 785,
+        "tool_micro_p": 0.9429657794676806,
+        "tool_micro_r": 0.8034557235421166,
+        "tool_micro_f1": 0.8676384839650144
+      },
+      {
+        "tool_subset_acc": 0.20127388535031848,
+        "tool_subset_acc_count": 158,
+        "n_samples": 785,
+        "tool_micro_p": 0.5938628158844765,
+        "tool_micro_r": 0.34558823529411764,
+        "tool_micro_f1": 0.43691899070385126
+      },
+      {
+        "tool_subset_acc": 0.6145038167938931,
+        "tool_subset_acc_count": 483,
+        "n_samples": 786,
+        "tool_micro_p": 0.9387483355525965,
+        "tool_micro_r": 0.7106854838709677,
+        "tool_micro_f1": 0.8089500860585198
+      },
+      {
+        "tool_subset_acc": 0.7044585987261146,
+        "tool_subset_acc_count": 553,
+        "n_samples": 785,
+        "tool_micro_p": 0.9478168264110756,
+        "tool_micro_r": 0.8271375464684015,
+        "tool_micro_f1": 0.8833746898263026
+      },
+      {
+        "tool_subset_acc": 0.26878980891719745,
+        "tool_subset_acc_count": 211,
+        "n_samples": 785,
+        "tool_micro_p": 0.7729007633587787,
+        "tool_micro_r": 0.3792134831460674,
+        "tool_micro_f1": 0.5087939698492463
+      },
+      {
+        "tool_subset_acc": 0.7261146496815286,
+        "tool_subset_acc_count": 570,
+        "n_samples": 785,
+        "tool_micro_p": 0.9533417402269861,
+        "tool_micro_r": 0.7983104540654699,
+        "tool_micro_f1": 0.8689655172413794
+      },
+      {
+        "tool_subset_acc": 0.25095541401273885,
+        "tool_subset_acc_count": 197,
+        "n_samples": 785,
+        "tool_micro_p": 0.6827697262479872,
+        "tool_micro_r": 0.4463157894736842,
+        "tool_micro_f1": 0.5397835773392743
+      },
+      {
+        "tool_subset_acc": 0.6195928753180662,
+        "tool_subset_acc_count": 487,
+        "n_samples": 786,
+        "tool_micro_p": 0.9601648351648352,
+        "tool_micro_r": 0.7074898785425101,
+        "tool_micro_f1": 0.8146853146853146
+      },
+      {
+        "tool_subset_acc": 0.686624203821656,
+        "tool_subset_acc_count": 539,
+        "n_samples": 785,
+        "tool_micro_p": 0.946843853820598,
+        "tool_micro_r": 0.782967032967033,
+        "tool_micro_f1": 0.8571428571428571
+      },
+      {
+        "tool_subset_acc": 0.2089171974522293,
+        "tool_subset_acc_count": 164,
+        "n_samples": 785,
+        "tool_micro_p": 0.6883408071748879,
+        "tool_micro_r": 0.2888052681091251,
+        "tool_micro_f1": 0.4068919814446653
+      },
+      {
+        "tool_subset_acc": 0.7146496815286624,
+        "tool_subset_acc_count": 561,
+        "n_samples": 785,
+        "tool_micro_p": 0.9330855018587361,
+        "tool_micro_r": 0.7917981072555205,
+        "tool_micro_f1": 0.856655290102389
+      },
+      {
+        "tool_subset_acc": 0.25987261146496815,
+        "tool_subset_acc_count": 204,
+        "n_samples": 785,
+        "tool_micro_p": 0.7122557726465364,
+        "tool_micro_r": 0.42705005324813633,
+        "tool_micro_f1": 0.5339547270306259
+      }
+    ]
+  }
+}

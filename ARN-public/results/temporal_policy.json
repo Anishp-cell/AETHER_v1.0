@@ -1,0 +1,16 @@
+{
+  "policy": {
+    "next_weekday": "upcoming",
+    "bare_weekday_allows_today": false,
+    "roll_year_forward": true,
+    "default_time": [
+      9,
+      0
+    ]
+  },
+  "train_examples": 3179,
+  "train_accuracy": 0.9736,
+  "eval_examples": 365,
+  "eval_accuracy_oracle_text": 0.9726,
+  "baseline_legacy_resolver_eval": 0.751
+}

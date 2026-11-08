@@ -1,0 +1,580 @@
+{
+  "overall_summary": {
+    "frozen_arn": {
+      "mean_tool_acc": 0.19094806675202458,
+      "sd_tool_acc": 0.10172133231647493,
+      "ci_tool_acc": [
+        0.21746988835233924,
+        0.29314792265387657
+      ],
+      "mean_span_f1": 0.27828369053129937,
+      "sd_span_f1": 0.1251270789550333,
+      "mean_joint_em": 0.042872562843389896,
+      "sd_joint_em": 0.03958855768630051
+    },
+    "frozen_cls_crf": {
+      "mean_tool_acc": 0.21538257078491438,
+      "sd_tool_acc": 0.09408516149451143,
+      "ci_tool_acc": [
+        0.29212521326703933,
+        0.3891934729561075
+      ],
+      "mean_span_f1": 0.41038804884259267,
+      "sd_span_f1": 0.10798374953011766,
+      "mean_joint_em": 0.08090176820472926,
+      "sd_joint_em": 0.03386345905351765
+    },
+    "unfrozen_arn": {
+      "mean_tool_acc": 0.35358357238942645,
+      "sd_tool_acc": 0.12290918678920935,
+      "ci_tool_acc": [
+        0.5274088841189313,
+        0.6208699155169213
+      ],
+      "mean_span_f1": 0.451721639553078,
+      "sd_span_f1": 0.10177248021129026,
+      "mean_joint_em": 0.19024586311405,
+      "sd_joint_em": 0.08605375047929367
+    },
+    "unfrozen_cls_crf": {
+      "mean_tool_acc": 0.34087108258645193,
+      "sd_tool_acc": 0.11939974514935904,
+      "ci_tool_acc": [
+        0.5804025191689827,
+        0.6800152543733199
+      ],
+      "mean_span_f1": 0.5230825944440313,
+      "sd_span_f1": 0.10140467985447839,
+      "mean_joint_em": 0.19484189883470288,
+      "sd_joint_em": 0.05122063670204083
+    },
+    "unfrozen_joint_bert": {
+      "mean_tool_acc": 0.36083499457059054,
+      "sd_tool_acc": 0.1285305562336145,
+      "ci_tool_acc": [
+        0.6287472746679256,
+        0.729051223709253
+      ],
+      "mean_span_f1": 0.2806726634207452,
+      "sd_span_f1": 0.06304922556114473,
+      "mean_joint_em": 0.13388988833244192,
+      "sd_joint_em": 0.043268006560964085
+    },
+    "tfidf_knn": {
+      "mean_tool_acc": 0.025470359745655115,
+      "sd_tool_acc": 0.03499887744856777,
+      "ci_tool_acc": [
+        0.003189792663476874,
+        0.028708133971291867
+      ],
+      "mean_span_f1": 0.0,
+      "sd_span_f1": 0.0,
+      "mean_joint_em": 0.0,
+      "sd_joint_em": 0.0
+    },
+    "tfidf_logistic": {
+      "mean_tool_acc": 0.0,
+      "sd_tool_acc": 0.0,
+      "ci_tool_acc": [
+        0.0,
+        0.0
+      ],
+      "mean_span_f1": 0.0,
+      "sd_span_f1": 0.0,
+      "mean_joint_em": 0.0,
+      "sd_joint_em": 0.0
+    }
+  },
+  "paired_cluster_deltas_vs_arn": {
+    "frozen_cls_crf": {
+      "mean_delta": 0.0871679461409116,
+      "ci_95": [
+        0.03754273971771972,
+        0.13657158293464672
+      ]
+    },
+    "unfrozen_arn": {
+      "mean_delta": 0.31973699171249215,
+      "ci_95": [
+        0.27618264403271514,
+        0.36608745838473555
+      ]
+    },
+    "unfrozen_cls_crf": {
+      "mean_delta": 0.3766464399582995,
+      "ci_95": [
+        0.3299175538399527,
+        0.4241982951986977
+      ]
+    },
+    "unfrozen_joint_bert": {
+      "mean_delta": 0.4250879063473444,
+      "ci_95": [
+        0.3763183062934195,
+        0.4742003786474175
+      ]
+    },
+    "tfidf_knn": {
+      "mean_delta": -0.24058949980732394,
+      "ci_95": [
+        -0.2835518849585949,
+        -0.1989033489002921
+      ]
+    },
+    "tfidf_logistic": {
+      "mean_delta": -0.2547585588184882,
+      "ci_95": [
+        -0.29398989493400524,
+        -0.21697516540474487
+      ]
+    }
+  },
+  "single_vs_multitool_out_of_fold": {
+    "frozen_arn": {
+      "single_tool_acc": 0.2192266761262859,
+      "single_joint_em": 0.04800756769540026,
+      "multi_tool_acc": 0.11894007828967179,
+      "multi_joint_em": 0.02981029810298103
+    },
+    "frozen_cls_crf": {
+      "single_tool_acc": 0.26936265815300936,
+      "single_joint_em": 0.1051200189192385,
+      "multi_tool_acc": 0.07798855766335441,
+      "multi_joint_em": 0.019271303824149353
+    },
+    "unfrozen_arn": {
+      "single_tool_acc": 0.40286153482322334,
+      "single_joint_em": 0.2166252808324465,
+      "multi_tool_acc": 0.2282445046672689,
+      "multi_joint_em": 0.12315567600120446
+    },
+    "unfrozen_cls_crf": {
+      "single_tool_acc": 0.3806314295849592,
+      "single_joint_em": 0.23211540735485398,
+      "multi_tool_acc": 0.23968684131285758,
+      "multi_joint_em": 0.09996988858777477
+    },
+    "unfrozen_joint_bert": {
+      "single_tool_acc": 0.4056994205983209,
+      "single_joint_em": 0.15289109613338064,
+      "multi_tool_acc": 0.24661246612466126,
+      "multi_joint_em": 0.08551641071966275
+    },
+    "tfidf_knn": {
+      "single_tool_acc": 0.0354735721887194,
+      "single_joint_em": 0.0,
+      "multi_tool_acc": 0.0,
+      "multi_joint_em": 0.0
+    },
+    "tfidf_logistic": {
+      "single_tool_acc": 0.0,
+      "single_joint_em": 0.0,
+      "multi_tool_acc": 0.0,
+      "multi_joint_em": 0.0
+    }
+  },
+  "tool_pair_accuracy_out_of_fold": {
+    "send_whatsapp_message + set_timer": {
+      "frozen_arn": 0.0,
+      "frozen_cls_crf": 0.0,
+      "unfrozen_arn": 0.0,
+      "unfrozen_cls_crf": 0.0,
+      "unfrozen_joint_bert": 0.0,
+      "tfidf_knn": 0.0,
+      "tfidf_logistic": 0.0
+    },
+    "search_web + write_and_run_script": {
+      "frozen_arn": 0.08117443868739206,
+      "frozen_cls_crf": 0.26770293609671847,
+      "unfrozen_arn": 0.34196891191709844,
+      "unfrozen_cls_crf": 0.6649395509499136,
+      "unfrozen_joint_bert": 0.6338514680483592,
+      "tfidf_knn": 0.0,
+      "tfidf_logistic": 0.0
+    },
+    "run_computer_command + search_web": {
+      "frozen_arn": 0.0,
+      "frozen_cls_crf": 0.001851851851851852,
+      "unfrozen_arn": 0.0,
+      "unfrozen_cls_crf": 0.007407407407407408,
+      "unfrozen_joint_bert": 0.009259259259259259,
+      "tfidf_knn": 0.0,
+      "tfidf_logistic": 0.0
+    },
+    "get_current_time + send_whatsapp_message": {
+      "frozen_arn": 0.2849462365591398,
+      "frozen_cls_crf": 0.0,
+      "unfrozen_arn": 0.3279569892473118,
+      "unfrozen_cls_crf": 0.0,
+      "unfrozen_joint_bert": 0.0,
+      "tfidf_knn": 0.0,
+      "tfidf_logistic": 0.0
+    },
+    "handle_smart_home + media_control": {
+      "frozen_arn": 0.0,
+      "frozen_cls_crf": 0.0,
+      "unfrozen_arn": 0.0,
+      "unfrozen_cls_crf": 0.0,
+      "unfrozen_joint_bert": 0.0,
+      "tfidf_knn": 0.0,
+      "tfidf_logistic": 0.0
+    },
+    "get_system_diagnostics + send_whatsapp_message": {
+      "frozen_arn": 0.4384057971014493,
+      "frozen_cls_crf": 0.18659420289855072,
+      "unfrozen_arn": 0.7880434782608695,
+      "unfrozen_cls_crf": 0.7373188405797102,
+      "unfrozen_joint_bert": 0.7989130434782609,
+      "tfidf_knn": 0.0,
+      "tfidf_logistic": 0.0
+    },
+    "search_web + send_whatsapp_message": {
+      "frozen_arn": 0.0,
+      "frozen_cls_crf": 0.0,
+      "unfrozen_arn": 0.00641025641025641,
+      "unfrozen_cls_crf": 0.0,
+      "unfrozen_joint_bert": 0.01282051282051282,
+      "tfidf_knn": 0.0,
+      "tfidf_logistic": 0.0
+    }
+  },
+  "tool_pair_fold_status": [
+    {
+      "shuffle": 1,
+      "fold": 1,
+      "pairs": {
+        "search_web + write_and_run_script": {
+          "count": 90,
+          "is_held_out": false,
+          "train_count": 103
+        },
+        "run_computer_command + search_web": {
+          "count": 79,
+          "is_held_out": false,
+          "train_count": 101
+        },
+        "get_system_diagnostics + send_whatsapp_message": {
+          "count": 29,
+          "is_held_out": false,
+          "train_count": 155
+        }
+      }
+    },
+    {
+      "shuffle": 1,
+      "fold": 2,
+      "pairs": {
+        "send_whatsapp_message + set_timer": {
+          "count": 156,
+          "is_held_out": true,
+          "train_count": 0
+        },
+        "search_web + write_and_run_script": {
+          "count": 103,
+          "is_held_out": false,
+          "train_count": 90
+        },
+        "get_system_diagnostics + send_whatsapp_message": {
+          "count": 70,
+          "is_held_out": false,
+          "train_count": 114
+        }
+      }
+    },
+    {
+      "shuffle": 1,
+      "fold": 3,
+      "pairs": {
+        "search_web + send_whatsapp_message": {
+          "count": 156,
+          "is_held_out": true,
+          "train_count": 0
+        },
+        "run_computer_command + search_web": {
+          "count": 101,
+          "is_held_out": false,
+          "train_count": 79
+        },
+        "get_system_diagnostics + send_whatsapp_message": {
+          "count": 15,
+          "is_held_out": false,
+          "train_count": 169
+        }
+      }
+    },
+    {
+      "shuffle": 1,
+      "fold": 4,
+      "pairs": {
+        "handle_smart_home + media_control": {
+          "count": 114,
+          "is_held_out": true,
+          "train_count": 0
+        },
+        "get_system_diagnostics + send_whatsapp_message": {
+          "count": 27,
+          "is_held_out": false,
+          "train_count": 157
+        }
+      }
+    },
+    {
+      "shuffle": 1,
+      "fold": 5,
+      "pairs": {
+        "get_current_time + send_whatsapp_message": {
+          "count": 124,
+          "is_held_out": true,
+          "train_count": 0
+        },
+        "get_system_diagnostics + send_whatsapp_message": {
+          "count": 43,
+          "is_held_out": false,
+          "train_count": 141
+        }
+      }
+    },
+    {
+      "shuffle": 2,
+      "fold": 1,
+      "pairs": {
+        "search_web + write_and_run_script": {
+          "count": 90,
+          "is_held_out": false,
+          "train_count": 103
+        },
+        "run_computer_command + search_web": {
+          "count": 79,
+          "is_held_out": false,
+          "train_count": 101
+        },
+        "get_system_diagnostics + send_whatsapp_message": {
+          "count": 37,
+          "is_held_out": false,
+          "train_count": 147
+        }
+      }
+    },
+    {
+      "shuffle": 2,
+      "fold": 2,
+      "pairs": {
+        "search_web + send_whatsapp_message": {
+          "count": 156,
+          "is_held_out": true,
+          "train_count": 0
+        },
+        "search_web + write_and_run_script": {
+          "count": 103,
+          "is_held_out": false,
+          "train_count": 90
+        },
+        "get_system_diagnostics + send_whatsapp_message": {
+          "count": 32,
+          "is_held_out": false,
+          "train_count": 152
+        }
+      }
+    },
+    {
+      "shuffle": 2,
+      "fold": 3,
+      "pairs": {
+        "send_whatsapp_message + set_timer": {
+          "count": 156,
+          "is_held_out": true,
+          "train_count": 0
+        },
+        "run_computer_command + search_web": {
+          "count": 101,
+          "is_held_out": false,
+          "train_count": 79
+        },
+        "get_system_diagnostics + send_whatsapp_message": {
+          "count": 26,
+          "is_held_out": false,
+          "train_count": 158
+        }
+      }
+    },
+    {
+      "shuffle": 2,
+      "fold": 4,
+      "pairs": {
+        "handle_smart_home + media_control": {
+          "count": 114,
+          "is_held_out": true,
+          "train_count": 0
+        },
+        "get_system_diagnostics + send_whatsapp_message": {
+          "count": 48,
+          "is_held_out": false,
+          "train_count": 136
+        }
+      }
+    },
+    {
+      "shuffle": 2,
+      "fold": 5,
+      "pairs": {
+        "get_current_time + send_whatsapp_message": {
+          "count": 124,
+          "is_held_out": true,
+          "train_count": 0
+        },
+        "get_system_diagnostics + send_whatsapp_message": {
+          "count": 41,
+          "is_held_out": false,
+          "train_count": 143
+        }
+      }
+    },
+    {
+      "shuffle": 3,
+      "fold": 1,
+      "pairs": {
+        "search_web + write_and_run_script": {
+          "count": 90,
+          "is_held_out": false,
+          "train_count": 103
+        },
+        "run_computer_command + search_web": {
+          "count": 79,
+          "is_held_out": false,
+          "train_count": 101
+        },
+        "get_system_diagnostics + send_whatsapp_message": {
+          "count": 33,
+          "is_held_out": false,
+          "train_count": 151
+        }
+      }
+    },
+    {
+      "shuffle": 3,
+      "fold": 2,
+      "pairs": {
+        "send_whatsapp_message + set_timer": {
+          "count": 156,
+          "is_held_out": true,
+          "train_count": 0
+        },
+        "search_web + write_and_run_script": {
+          "count": 103,
+          "is_held_out": false,
+          "train_count": 90
+        },
+        "get_system_diagnostics + send_whatsapp_message": {
+          "count": 48,
+          "is_held_out": false,
+          "train_count": 136
+        }
+      }
+    },
+    {
+      "shuffle": 3,
+      "fold": 3,
+      "pairs": {
+        "search_web + send_whatsapp_message": {
+          "count": 156,
+          "is_held_out": true,
+          "train_count": 0
+        },
+        "run_computer_command + search_web": {
+          "count": 101,
+          "is_held_out": false,
+          "train_count": 79
+        },
+        "get_system_diagnostics + send_whatsapp_message": {
+          "count": 21,
+          "is_held_out": false,
+          "train_count": 163
+        }
+      }
+    },
+    {
+      "shuffle": 3,
+      "fold": 4,
+      "pairs": {
+        "handle_smart_home + media_control": {
+          "count": 114,
+          "is_held_out": true,
+          "train_count": 0
+        },
+        "get_system_diagnostics + send_whatsapp_message": {
+          "count": 52,
+          "is_held_out": false,
+          "train_count": 132
+        }
+      }
+    },
+    {
+      "shuffle": 3,
+      "fold": 5,
+      "pairs": {
+        "get_current_time + send_whatsapp_message": {
+          "count": 124,
+          "is_held_out": true,
+          "train_count": 0
+        },
+        "get_system_diagnostics + send_whatsapp_message": {
+          "count": 30,
+          "is_held_out": false,
+          "train_count": 154
+        }
+      }
+    }
+  ],
+  "held_out_crf_decomposition": {
+    "greedy_strict_f1_mean": 0.014068999175707635,
+    "constrained_strict_f1_mean": 0.16497718574500134,
+    "crf_strict_f1_mean": 0.41038804884259267,
+    "pct_from_grammar": 38.07744964470807,
+    "pct_from_learned": 61.92255035529194
+  },
+  "intraclass_correlation_rho": 0.8388260278881358,
+  "raw_cluster_distribution": {
+    "frozen_arn": {
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.2544000614636924,
+      "median": 0.16666666666666666
+    },
+    "frozen_cls_crf": {
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.34170036687815425,
+      "median": 0.2222222222222222
+    },
+    "unfrozen_arn": {
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.5736795278859326,
+      "median": 0.6666666666666666
+    },
+    "unfrozen_cls_crf": {
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.631818216659354,
+      "median": 0.75
+    },
+    "unfrozen_joint_bert": {
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.6801529840180532,
+      "median": 0.8888888888888888
+    },
+    "tfidf_knn": {
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.014354066985645933,
+      "median": 0.0
+    },
+    "tfidf_logistic": {
+      "min": 0.0,
+      "max": 0.0,
+      "mean": 0.0,
+      "median": 0.0
+    }
+  }
+}

@@ -24,8 +24,8 @@ The ARN dataset was developed to evaluate non-generative, real-time neural tool 
   - System Utilities: `get_current_time`, `set_timer`
   - Reasoning & Vision: `route_to_deepseek`, `analyze_screen_with_llava`
   - Automation Authoring: `teach_new_skill`, `write_and_run_script`
-- **Slot Tag Inventory ($|Y|=26$ BIO Tags):**
-  - Entity types: `action`, `device`, `query`, `url`, `app_name`, `text_to_type`, `recipient`, `message`, `duration`, `label`, `media_item`, `command`, `instruction`, `task_description`, `skill_name`, `language`, `code_description`.
+- **Slot Tag Inventory ($|Y|=26$ BIO Tags = 12 slot types × B/I + O + PAD):**
+  - Slot types (from `src/arn/tokenizer.py` `TAG_REGISTRY`): `contact`, `url`, `app`, `device`, `query`, `message`, `action`, `target`, `value`, `reminder`, `site`, `browser_task`. Tool argument names (e.g. `text_to_type`, `instruction`, `skill_name`) are mapped onto these 12 types by `ARG_TO_SLOT_BASE`; an earlier version of this statement listed 17 argument names as if they were tag types.
 
 ---
 
@@ -44,10 +44,7 @@ The ARN dataset was developed to evaluate non-generative, real-time neural tool 
 
 An audit conducted in Phase 5 evaluated whether slot argument strings can be extracted verbatim from the input text:
 - **Verbatim Substrings:** **94.79%** of all slot values appear as exact, case-insensitive contiguous substrings in the utterance text.
-- **Non-Verbatim / Implied Values:** **5.21%** of slot values are non-verbatim:
-  - Relative temporal offsets (e.g., "tomorrow morning" mapped to ISO dates)
-  - Boolean or state flags (e.g., implied "toggle=true")
-  - Categorical action normalizations.
+- **Non-Verbatim / Implied Values:** **5.21%** (456 of 8,748) of slot values are non-verbatim. Per `results/argument_representability_audit.json`, they are categorical action labels implied by the utterance (e.g. `action=set_volume` for "volume 70 asap", `action_type=open_app`, `action_type=shell`). An earlier version of this statement described them as temporal offsets and boolean flags; that was not supported by the audit.
 
 This confirms that sequence tagging (BIO tagging) represents a sound, highly representative formulation for 95% of target arguments.
 
@@ -56,9 +53,14 @@ This confirms that sequence tagging (BIO tagging) represents a sound, highly rep
 ## 5. Multi-Tool Compositionality
 
 A complete audit of multi-label combinations across all 5,000 samples revealed:
-- **Single-Tool Utterances:** 4,886 samples (97.72%)
-- **Multi-Tool Utterances:** 114 samples (2.28%)
-- **Active Pair:** All 114 multi-tool utterances correspond to compound commands combining `handle_smart_home` + `media_control` (e.g., "turn on living room lamp and play relaxing acoustic guitar"). All other hypothetical pairs have 0 occurrences in the dataset.
+*Corrected 2026-11-08 by recounting `data/raw/aether_orchestrator_dataset.jsonl`; the previous figures (114 multi-tool, 2.28%, one pair) were wrong.*
+- **Single-Tool Utterances:** 3,868 samples (77.36%)
+- **Multi-Tool Utterances:** 1,132 samples (22.64%) across 7 tool pairs:
+  `get_system_diagnostics+send_whatsapp_message` 209, `search_web+write_and_run_script` 193, `run_computer_command+search_web` 180, `search_web+send_whatsapp_message` 156, `send_whatsapp_message+set_timer` 156, `get_current_time+send_whatsapp_message` 124, `handle_smart_home+media_control` 114.
+
+## 5b. Provenance of the augmented file
+
+`data/raw/aether_orchestrator_dataset_augmented.jsonl` (13,798 rows, 4,095 multi-tool) is a legacy file. Earlier paper drafts described it as produced with LLM paraphrase augmentation (Groq-hosted Llama-3 70B), and the legacy codebase contains such a script (`ARN/groq_paraphrase_augment.py`). Its exact generation procedure is not documented, and **it is not used for any reported result**; all v1 results use the 5,000-row template-generated file above.
 
 ---
 

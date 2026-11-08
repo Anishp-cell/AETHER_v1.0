@@ -5,6 +5,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [2.0.0-rc] - 2026-11-08 (Aether Routing Network v2, branch `arn-v2-confirmatory`)
+
+### Added
+- ARN-v2 extractive router: tool-qualified CRF tags, registry-constrained joint decoding, FAR-v2 router (`src/arn/v2/`).
+- Train-fitted temporal canonicalizer (`src/arn/canon/temporal.py`, 14 unit tests).
+- Model-agnostic Mobile Actions scorer (`src/arn/eval/mobile_actions_scorer.py`) and cross-model harness (`scripts/xmodel/`): base and same-split fine-tuned FunctionGemma-270M, LFM2.5-230M, Qwen3-0.6B, with an equal-budget tuning sweep for LFM2.5.
+- Pre-registered confirmatory evaluation on MixATIS / MixSNIPS (`docs/PREREGISTRATION_v2_confirmatory.md`, commit `1fa7a50`), data fetched and hash-verified by `scripts/get_slu_data.sh` (not redistributed).
+- MLPerf-style single-stream latency benchmark (`scripts/benchmark_latency_v2.py`), environment record (`results/environment_v2.json`), baseline parameter estimates (`results/baseline_param_estimates.json`), results and disclosures (`docs/RESULTS_v2.md`, `docs/PREREG_DEVIATIONS.md`, `docs/AI_ASSISTANCE.md`).
+
+### Fixed
+- Scorer accepted extra (non-gold) arguments; now requires exact argument-key equality (found by an external review with Gemini 3.8 Flash; no ARN number changed).
+- Documentation errors: memory footprint (4.21 MB → 58.69 MB peak RSS), multi-tool count (114 → 1,132 over 7 pairs), slot-tag inventory, augmented-file provenance.
+
+### Removed
+- Legacy "routing accuracy" leaderboard numbers (93.0 / 87.3 / 98.3 / 94.2) with no primary source.
+
+---
+
 ## [1.0.0] - 2026-10-18 (Master Protocol & Audited Release)
 
 ### Added
@@ -14,7 +32,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Final Model Artifacts:** Packaged `checkpoints/arn_final_model/` with `model.pt` (17.58 MB), `config.json`, `tools.json`, `slots.json`, `tokenizer/`, and `manifest.json` with SHA-256 verification.
 - **Fast Vectorized NumPy Viterbi:** Implemented in `src/arn/viterbi_fast.py`, verified with 100% exact mathematical equivalence across 10,000 randomized test sequences (`tests/test_viterbi_fast.py`).
 - **ONNX FP32 & Dynamic INT8 Deployment:** Exported `model.onnx` (16.75 MB) and `model_int8.onnx` (4.28 MB, 3.92x compression ratio).
-- **Hardware & Latency Benchmarks:** Measured 1.39 ms (1T) and 0.75 ms (4T) ONNX INT8 latency, 3.10 ms (1T) end-to-end pipeline latency, and 4.21 MB isolated peak RSS (`results/deployment_benchmark.json`).
+- **Hardware & Latency Benchmarks:** Measured 1.39 ms (1T) and 0.75 ms (4T) ONNX INT8 latency, 3.10 ms (1T) end-to-end pipeline latency (`results/deployment_benchmark.json`). *(The "4.21 MB isolated peak RSS" originally listed here was withdrawn in 2.0.0-rc; see above.)*
 - **Error Taxonomy Analysis:** Detailed categorization of 8,506 test spans across boundary shifts (42.71%), exact matches (38.10%), false negatives (12.93%), false positives (4.74%), and label mismatches (1.52%).
 - **CRF Decomposition & Ablations:** Quantified CRF contribution (36.58% strict F1) vs Masked-Viterbi (8.89%) vs Greedy (1.45%).
 - **Human Evaluation Protocol:** Sealed 250-utterance benchmark template (`data/human_eval_template.jsonl`), automated verification script (`scripts/make_human_eval_template.py`), evaluation harness (`scripts/run_human_eval.py`), and documentation (`docs/HUMAN_EVAL_PENDING.md`).

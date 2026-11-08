@@ -75,7 +75,7 @@ Evaluated on host **13th Gen Intel Core i7-13700HX (Windows 11, ONNX Runtime 1.2
 | **ONNX Runtime INT8** | **1.39 ms mean** | **0.75 ms mean** | **4.28 MB** | **3.92x** |
 | **Full Pipeline (INT8 + Viterbi)** | **3.10 ms mean** | **2.34 ms mean** | — | — |
 
-- **Subprocess-Isolated Peak RSS:** **4.21 MB** (measured via isolated process spawning).
+- **Peak RSS:** **58.69 MB** (12.37 MB incremental over the bare ONNX runtime), per `results/deployment_benchmark.json`. The previously stated 4.21 MB was a measurement artefact (identical for PyTorch and ONNX) and is withdrawn.
 
 ---
 
@@ -86,7 +86,8 @@ Evaluated on host **13th Gen Intel Core i7-13700HX (Windows 11, ONNX Runtime 1.2
 2. **Rare Tool Cold-Start:**
    - Single-cluster tools (e.g., `open_url` with 37 samples in 1 cluster) cannot be reliably evaluated under zero-shot cluster holdouts and require template diversification.
 3. **Multi-Tool Pair Density:**
-   - The current dataset contains real natural multi-tool compositions predominantly for `handle_smart_home + media_control` (114 samples). Generalization to unseen pairwise compositions remains constrained by training pair support.
+   - The 5,000-sample dataset contains 1,132 multi-tool utterances (22.64%) over 7 tool pairs (recounted 2026-11-08 from `data/raw/aether_orchestrator_dataset.jsonl`; the earlier "114" was the count of one pair, `handle_smart_home + media_control`). Generalization to unseen pairwise compositions remains constrained by training pair support.
+4. **v2 scope:** Aether Routing Network v2 results (Google Mobile Actions, MixATIS, MixSNIPS) and their limitations are documented in `docs/RESULTS_v2.md`.
 
 ---
 

@@ -6,7 +6,21 @@
 
 **ARN (Aether Routing Network)** is an ultra-compact, non-generative neural tool orchestrator and argument extractor designed for real-time edge dispatch. Rather than querying multi-billion parameter autoregressive LLMs for standard on-device commands, ARN formulates tool selection and argument parsing as a joint multi-label classification and linear-chain conditional random field (CRF) sequence tagging problem over a 4.39M parameter bidirectional Transformer trunk (`google/bert_uncased_L-2_H-128_A-2`).
 
-In rigorous 15-fold cluster-stratified cross-validation, the fine-tuned joint encoder-CRF architecture achieves **16.91% Joint Exact Match** and **67.88% Lenient Slot F1**, with an ONNX INT8 runtime latency of **1.39 ms** (1 thread) / **0.75 ms** (4 threads) and an isolated memory footprint of **4.21 MB RSS** on host CPU.
+In rigorous 15-fold cluster-stratified cross-validation, the fine-tuned joint encoder-CRF architecture achieves **16.91% Joint Exact Match** and **67.88% Lenient Slot F1**, with an ONNX INT8 runtime latency of **1.39 ms** (1 thread) / **0.75 ms** (4 threads) and a peak process memory of **58.69 MB RSS** (12.37 MB incremental over the bare runtime) on host CPU.
+
+---
+
+## Aether Routing Network v2 (branch `arn-v2-confirmatory`, Nov 2026)
+
+v2 is a rebuilt extractive router: tool-qualified BIO tags (`B-send_email.subject`), registry-constrained joint decoding over (tool set, spans), a train-fitted rule-based datetime canonicalizer, and FAR-v2 (FAR plus per-tool bias and a [CLS] residual). All numbers below come from `results/xmodel/*.json` prediction files scored by one shared scorer (`src/arn/eval/mobile_actions_scorer.py`); see `docs/RESULTS_v2.md` for the full tables, confidence intervals and disclosures.
+
+| Benchmark (test split) | Aether Routing Network v2, 4.4M params | Comparison (same harness unless noted) |
+|---|---|---|
+| Google Mobile Actions, strict exact match (961) | **89.32 ± 0.47** (3 seeds) | FunctionGemma-270M fine-tuned on the same split 85.12; LFM2.5-230M fine-tuned + tuned 92.51; FunctionGemma base 60.15; LFM2.5 base 68.05; Qwen3-0.6B base 65.04 |
+| MixATIS overall accuracy (828), pre-registered | 40.94 ± 2.62 | AGIF 40.8, GL-GIN 43.5 (published; ~0.6-0.9M param BiLSTMs) |
+| MixSNIPS overall accuracy (2,199), pre-registered | 70.29 ± 0.46 | AGIF 74.2, GL-GIN 75.4 (published) |
+
+Important limitations: ~33 points of the Mobile Actions score depend on the rule-based datetime canonicalizer; the Mobile Actions eval split was inspected during decoder development (disclosed); the model only supports a closed, pre-trained tool registry and is not applicable to BFCL. The v1 "routing accuracy" leaderboard numbers in the legacy repository (93.0 / 87.3 / 98.3 / 94.2) have no primary source and are **withdrawn**.
 
 ---
 
@@ -23,7 +37,7 @@ All metrics reported below trace directly to [`results/ledger.json`](results/led
 | **ONNX INT8 Latency (1T)** | **1.39 ms** mean (p50: 1.25 ms, p95: 1.83 ms) | Intel Core i7-13700HX, ONNX Runtime 1.23.2 |
 | **ONNX INT8 Latency (4T)** | **0.75 ms** mean (p50: 0.69 ms, p95: 1.09 ms) | Intel Core i7-13700HX, 4 execution threads |
 | **End-to-End Pipeline Latency** | **3.10 ms** (1 thread) / **2.34 ms** (4 threads) | Tokenize + INT8 ONNX + NumPy Viterbi + Extract |
-| **Isolated Memory Footprint** | **4.21 MB peak RSS** | Clean subprocess measurement (`results/deployment_benchmark.json`) |
+| **Memory Footprint** | **58.69 MB peak RSS** (12.37 MB incremental) | `results/deployment_benchmark.json`; the earlier "4.21 MB" figure was a measurement artefact and is withdrawn |
 | **Model Size (PyTorch FP32)** | **17.58 MB** (`model.pt`) | 4,386,474 total parameters |
 | **Model Size (ONNX FP32)** | **16.75 MB** (`model.onnx`) | Maximum absolute tensor difference $< 5 \times 10^{-6}$ |
 | **Model Size (ONNX INT8)** | **4.28 MB** (`model_int8.onnx`) | Dynamic 8-bit quantization (3.92x compression) |

@@ -1,0 +1,151 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,booktabs,amsmath,amssymb,xcolor,hyperref,graphicx}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\newcommand{\PENDING}[1]{\textcolor{red}{[PENDING: #1]}}
+\newcommand{\arn}{ARN-v2}
+
+\title{Copy, Don't Generate: Aether Routing Network v2, a 4.4M-Parameter\\Extractive Function-Calling Router}
+\author{\PENDING{author names and affiliations}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+On-device assistants must map a user request to function calls with exact arguments, usually with
+generative language models of hundreds of millions of parameters. We observe that on Google's Mobile
+Actions benchmark 94.8\% of rows have every non-date argument appearing verbatim in the request, and
+ask how far a non-generative model that \emph{copies} argument spans can go. We present the Aether
+Routing Network v2 (\arn{}), a 4.4M-parameter encoder with a multi-label tool router, a linear-chain
+CRF over \emph{tool-qualified} BIO tags, registry-constrained joint decoding, and a train-fitted
+rule-based datetime canonicalizer. On Mobile Actions (961 test requests, strict exact match) \arn{}
+reaches $89.32 \pm 0.47$ (3 seeds), outperforming FunctionGemma-270M fine-tuned on the same split
+(85.12; paired difference $+3.75$ to $+4.68$, all 95\% CIs above zero) and all evaluated base models,
+while trailing an LFM2.5-230M fine-tuned and tuned on the same split (92.51). End to end it runs at
+11.4\,ms median on one CPU thread versus 4.3\,s for LFM2.5-230M. In a pre-registered evaluation on
+multi-intent SLU benchmarks without any rules, \arn{} obtains 40.94 (MixATIS) and 70.29 (MixSNIPS)
+overall accuracy, on par with or below small task-specific BiLSTM models. We document every
+development choice that touched the test split, the contribution of rule-based components ($\approx$33
+points), and the scope limits of a closed tool registry.
+\end{abstract}
+
+\section{Introduction}
+Function calling turns a natural-language request into one or more structured calls, e.g.
+\texttt{send\_email(to=..., subject=...)}. Recent small models for this task are generative:
+FunctionGemma-270M~\cite{functiongemma}, Needle~\cite{needle}, LFM2.5~\cite{lfm25},
+Octopus~v2~\cite{octopus}, TinyAgent~\cite{tinyagent}. When the tool registry is fixed and arguments are
+mostly substrings of the request, generation is not required: selecting tools and copying spans is a
+joint multi-intent detection and slot-filling problem~\cite{jointbert,agif}. We revisit this view for
+modern function-calling benchmarks.
+
+\paragraph{Contributions.}
+(1) An extractive formulation of function calling with tool-qualified BIO tags and exact joint MAP
+decoding over (tool set, spans) under a registry constraint (\S\ref{sec:method}).
+(2) A measured extractive ceiling on Mobile Actions (97.1\% strict exact match with oracle spans) and a
+train-fitted temporal canonicalizer that raises datetime accuracy from 75.1\% to 97.3\% on oracle text.
+(3) A same-harness comparison against base and same-split fine-tuned generative models, with
+reproductions of three published numbers, paired significance tests, an equal-budget baseline sweep and
+single-stream CPU latency (\S\ref{sec:results}).
+(4) A pre-registered confirmatory evaluation on MixATIS/MixSNIPS and a complete disclosure of
+test-split exposure and rule contributions (\S\ref{sec:limits}).
+
+\section{Related Work}
+\textbf{Joint intent detection and slot filling.} JointBERT~\cite{jointbert} pairs a [CLS] intent head
+with token-level slot tagging; DIET~\cite{diet} is a lightweight joint transformer with a CRF.
+Multi-intent SLU adds intent--slot interaction: AGIF~\cite{agif}, GL-GIN~\cite{glgin},
+Co-guiding~\cite{coguiding}, MISCA~\cite{misca}.
+\textbf{Label-wise attention.} CAML~\cite{caml}, LAAT~\cite{laat}, Query2Label~\cite{query2label} and
+ML-Decoder~\cite{mldecoder} use per-label queries over token states; our FAR router is of this family.
+\textbf{Small function-calling models.} FunctionGemma~\cite{functiongemma}, Needle~\cite{needle},
+LFM2.5~\cite{lfm25}, Qwen3~\cite{qwen3}, Octopus~v2~\cite{octopus}, TinyAgent~\cite{tinyagent} and
+ToolkenGPT~\cite{toolkengpt} are generative. To our knowledge no prior work evaluates span-copying
+CRF tagging as a function-calling model against these on a function-calling benchmark.
+\textbf{Efficiency reporting.} We follow~\cite{effmisnomer} in reporting parameters and latency
+together, and MLPerf single-stream conventions for latency.
+
+\section{Method}\label{sec:method}
+\paragraph{Encoder.} BERT-Tiny~\cite{berttiny} (2 layers, $d{=}128$), fully fine-tuned.
+\paragraph{Router.} For $K$ tools, FAR-v2 computes $\ell_k = w^\top c_k + b_k + (W_c h_{\text{[CLS]}})_k$,
+where $c_k$ is single-head cross-attention of a learned tool query over token states; $\sigma(\ell_k)$ gives
+independent tool probabilities. A plain [CLS] head ($\ell = W h_{\text{[CLS]}}$) is evaluated as an ablation.
+\paragraph{Tool-qualified tags.} The tag set is $\{\text{O}\}\cup\{\text{B},\text{I}\}\times\{t.a\}$ over
+every tool $t$ and taggable argument $a$ (non-datetime). Spans therefore carry their call identity.
+A linear-chain CRF with hard BIO transition masks~\cite{crf} scores tag paths.
+\paragraph{Joint decoding.} Candidate tool sets $S$ are the top-$k$ subsets under
+$\log p(S)=\sum_{k\in S}\log p_k+\sum_{k\notin S}\log(1-p_k)$. For each $S$, Viterbi runs with emissions of
+tags of tools outside $S$ masked; the decoder returns
+$\arg\max_S\,[\log p(S)+\log p(y^*_S\mid x)]$ over sets whose required arguments are present.
+\paragraph{Canonicalization and ordering.} Datetime arguments are produced by a deterministic
+canonicalizer from the utterance and the reference time; its conventions (weekday semantics, year
+roll-forward, default time) are selected by grid search on the \emph{train} split only. Calls are ordered by
+their earliest span, falling back to tool keywords for argument-less tools.
+
+\section{Experimental Setup}
+\textbf{Data.} Google Mobile Actions~\cite{mobileactions}: 8,693 train / 961 eval rows, 7 tools; we hold out a
+seeded 10\% of train for model selection. MixATIS and MixSNIPS~\cite{agif} (official cleaned splits, hashes in
+the pre-registration). \textbf{Metric.} Strict exact match: ordered call list with identical names, identical
+non-null argument key sets and equal values; overall accuracy for SLU.
+\textbf{Baselines.} Run in one harness with each model's own chat template and the row's tool schemas:
+FunctionGemma-270M, LFM2.5-230M, Qwen3-0.6B (thinking off), base and fine-tuned on the identical fit split
+(loss on target tokens only). LFM2.5 receives a 5-configuration sweep selected on validation.
+\textbf{Hardware.} One RTX 5050 Laptop GPU (sm\_120); latency on the host CPU.
+\textbf{Statistics.} Bootstrap 95\% CIs over test rows; paired bootstrap for system differences; 3 seeds.
+
+\section{Results}\label{sec:results}
+\begin{table}[t]\centering\small
+\caption{Google Mobile Actions, strict exact match (961 rows). ``Ours'' = measured in our harness.}
+\begin{tabular}{lrcrl}\toprule
+System & Params & Fine-tuned & EM & Source\\\midrule
+LFM2.5-230M, fine-tuned + sweep & 230M & yes & 92.51 & ours\\
+LFM2.5-230M, fine-tuned & 230M & yes & 91.57 & ours\\
+\textbf{\arn{} (FAR-v2), 3 seeds} & \textbf{4.4M} & yes & \textbf{89.32 $\pm$ 0.47} & ours\\
+FunctionGemma-270M, fine-tuned & 268M & yes & 85.12 & ours (Google: 85)\\
+LFM2.5-230M, base & 230M & no & 68.05 & ours (Cactus: 69.1)\\
+Qwen3-0.6B, base & 596M & no & 65.04 & ours\\
+FunctionGemma-270M, base & 268M & no & 60.15 & ours (Google: 58)\\
+ARN v1 & 4.4M & yes & 49.74 & legacy\\\midrule
+\multicolumn{5}{l}{\emph{Vendor-reported (other harnesses):} DeepSeek V4 Flash 88.4; Needle~3 (121M) 86.0; LFM2.5-1.2B 82.4.}\\\bottomrule
+\end{tabular}\end{table}
+
+\arn{} beats same-split fine-tuned FunctionGemma on every seed (paired $\Delta$ $+4.16$ [$+1.77$, $+6.66$],
+$+4.68$ [$+2.19$, $+7.08$], $+3.75$ [$+1.25$, $+6.24$]) and trails fine-tuned LFM2.5 ($-2.29$
+[$-4.27$, $-0.31$] against the default recipe; $\approx -3.2$ against the tuned one). Removing the 59 test rows
+with a near-duplicate in train changes \arn{} by $<$1 point. Giving base LMs \arn{}'s canonicalizer raises
+them to 71.9 (LFM2.5) and 72.5 (Qwen3). Our harness reproduces Cactus's LFM2.5 (69.1) and Google's
+FunctionGemma base (58) and fine-tuned (85) numbers.
+
+\paragraph{Ablations.} \PENDING{re-run on the three final seeds; numbers below are from one earlier
+seed-42 checkpoint at 86.99.} Without the canonicalizer: 54.01; FAR-attention instead of keyword call
+ordering: 77.00; without multi-span joining: 86.58; without the registry mask: 86.99.
+Router choice is not decisive: [CLS] 88.97 vs FAR-v2 89.32 \PENDING{[CLS] over 3 seeds};
+a BERT-Mini trunk (11.4M) gives 89.59 \PENDING{3 seeds}.
+
+\paragraph{Latency.} Single-stream, batch 1, FP32, one CPU thread: \arn{} 11.40\,ms p50 / 18.22\,ms p90
+end to end, LFM2.5-230M 4,316\,ms / 9,250\,ms \PENDING{FunctionGemma, Qwen3 and 4-thread rows from
+\texttt{results/latency\_v2.json}}. No optimized LM runtime was used.
+
+\paragraph{Pre-registered SLU evaluation.} Without rules, \arn{} obtains 40.94 $\pm$ 2.62 (MixATIS) and
+70.29 $\pm$ 0.46 (MixSNIPS) overall accuracy, versus AGIF 40.8 / 74.2 and GL-GIN 43.5 / 75.4, which are
+BiLSTM models of roughly 0.6--0.9M parameters, and MISCA+RoBERTa 59.1 / 86.2. These results show the
+architecture transfers without rules, not that it is more parameter-efficient than task-specific SLU models.
+
+\section{Limitations and Disclosures}\label{sec:limits}
+(i) Mobile Actions has no dev/test split; decoder changes were first motivated by eval-split errors of an
+early checkpoint and then confirmed on validation and train; the pre-registered SLU benchmarks are the
+confirmatory evidence. (ii) $\approx$33 points depend on the rule-based canonicalizer and $\approx$10 on
+keyword ordering. (iii) A closed registry: new tools need training data; the same tool cannot be called
+twice in one request; BFCL is out of scope (no train split, per-item tools, many non-extractive values).
+(iv) One function-calling benchmark, of undocumented (likely synthetic) origin. (v) LM latencies are for
+unoptimized FP32 PyTorch. (vi) Only LFM2.5 received a tuning sweep.
+
+\section{Reproducibility and AI Assistance}
+Code, prediction files with SHA-256 fingerprints, logs, the environment record and the pre-registration
+(commit \texttt{1fa7a50}) are released; MixATIS/MixSNIPS are fetched and hash-verified by a script, not
+redistributed. Code and experiments were largely produced with Claude (Anthropic); evaluation code was
+independently reviewed with Gemini 3.8 Flash. The authors take full responsibility for all content.
+
+\bibliographystyle{plain}
+\bibliography{refs}
+\end{document}

@@ -46,3 +46,7 @@ _archive/**/__pycache__/
 # OS artifacts
 .DS_Store
 Thumbs.db
+
+# Third-party benchmark data: not redistributed (ATIS is LDC-licensed; AGIF repo is GPL-2.0).
+# Fetch with scripts/get_slu_data.sh, which verifies the pre-registered SHA-256 hashes.
+data/external/

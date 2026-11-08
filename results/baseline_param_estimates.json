@@ -1,0 +1,15 @@
+{
+  "purpose": "Parameter counts for SLU comparators. Neither AGIF (arXiv 2004.10087) nor GL-GIN (arXiv 2106.01925) reports a total; these are analytic estimates from the official default configs.",
+  "sources": {
+    "AGIF": "https://github.com/LooperXX/AGIF/blob/master/utils/config.py",
+    "GL-GIN": "https://github.com/yizhen20133868/GL-GIN/blob/master/utils/config.py"
+  },
+  "config_defaults": {"word_embedding_dim": 32, "encoder_hidden_dim": 256, "attention_hidden_dim": 1024,
+                      "attention_output_dim": 128, "slot_decoder_hidden_dim": 64, "intent_embedding_dim": 64,
+                      "gat_heads": 8, "gat_hidden_dim": 16, "pretrained_encoder": false},
+  "vocab_from_train_split": {"MixATIS_clean": 766, "MixSNIPS_clean": 11411},
+  "estimate_total_params": {"MixATIS_clean": 590000, "MixSNIPS_clean": 930000},
+  "uncertainty": "approximate (+/- ~30%): decoder/GAT/attention internals were approximated, not instantiated; third-party code was not executed",
+  "comparison": "ARN-v2 (BERT-Tiny) is 4.48M params on these tasks, i.e. ~5-7x LARGER than AGIF/GL-GIN; the SLU benchmarks are therefore a generality check, not a size-efficiency claim",
+  "computed": "2026-11-08"
+}

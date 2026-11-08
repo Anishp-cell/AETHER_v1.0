@@ -1,0 +1,30 @@
+{
+ "multi_span_args": [
+  "show_map.query"
+ ],
+ "val": {
+  "strict_em": 91.02,
+  "unordered_em": 91.02,
+  "tool_set_acc": 98.73,
+  "single_call_em": 93.71,
+  "multi_call_em": 85.86,
+  "datetime_arg_acc": 97.8
+ },
+ "eval": {
+  "strict_em": 88.76,
+  "unordered_em": 88.76,
+  "tool_set_acc": 97.61,
+  "single_call_em": 92.19,
+  "multi_call_em": 81.93,
+  "datetime_arg_acc": 95.89
+ },
+ "cpu_latency": {
+  "p50_ms": 9.0,
+  "p95_ms": 14.83,
+  "threads": 1,
+  "n": 200
+ },
+ "constrained": false,
+ "use_canon": true,
+ "anchor": "keyword"
+}

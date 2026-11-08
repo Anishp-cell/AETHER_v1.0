@@ -1,0 +1,28 @@
+{
+ "multi_span_args": [],
+ "val": {
+  "strict_em": 88.84,
+  "unordered_em": 88.84,
+  "tool_set_acc": 98.04,
+  "single_call_em": 90.6,
+  "multi_call_em": 84.98,
+  "datetime_arg_acc": 95.1
+ },
+ "eval": {
+  "strict_em": 88.55,
+  "unordered_em": 88.66,
+  "tool_set_acc": 97.61,
+  "single_call_em": 91.56,
+  "multi_call_em": 82.55,
+  "datetime_arg_acc": 95.34
+ },
+ "cpu_latency": {
+  "p50_ms": 8.96,
+  "p95_ms": 14.83,
+  "threads": 1,
+  "n": 200
+ },
+ "constrained": true,
+ "use_canon": true,
+ "anchor": "keyword"
+}
